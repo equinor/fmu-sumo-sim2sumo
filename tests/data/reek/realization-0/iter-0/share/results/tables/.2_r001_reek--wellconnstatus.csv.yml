@@ -1,0 +1,83 @@
+$schema: https://main-fmu-schemas-dev.radix.equinor.com/schemas/0.8.0/fmu_results.json
+version: 0.8.0
+source: fmu
+tracklog:
+  - datetime: "2023-08-25T09:23:11.776770"
+    user:
+      id: dbs
+    event: created
+class: table
+fmu:
+  model:
+    name: ff
+    revision: 21.x.0.dev
+  context:
+    stage: realization
+  case:
+    name: test-sim2sumo
+    uuid: 866add28-1233-40a8-a83b-cba958483cb7
+    user:
+      id: dbs
+  iteration:
+    id: 0
+    uuid: e7406b9b-ed85-8200-2994-56a0fa716d51
+    name: iter-0
+  realization:
+    id: 0
+    uuid: a0a64ede-5747-6c73-0ffa-1091f6576543
+    name: realization-0
+file:
+  relative_path: realization-0/iter-0/share/results/tables/2_r001_reek--wellconnstatus.csv
+  absolute_path: /tmp/pytest-of-dbs/pytest-55/test_export_w_config_config_pa0/realization-0/iter-0/share/results/tables/2_r001_reek--wellconnstatus.csv
+  checksum_md5: 20ff68eae3380c52eaa8b69959861b78
+data:
+  name: 2_R001_REEK
+  stratigraphic: false
+  content: unset
+  tagname: wellconnstatus
+  format: csv
+  layout: table
+  unit: ""
+  vertical_domain: depth
+  depth_reference: msl
+  spec:
+    columns:
+      - DATE
+      - WELL
+      - I
+      - J
+      - K
+      - OP/SH
+    size: 0
+  table_index:
+    - DATE
+    - WELL
+  undef_is_zero: false
+  is_prediction: true
+  is_observation: false
+display:
+  name: 2_R001_REEK
+access:
+  asset:
+    name: Drogon
+  ssdl:
+    access_level: internal
+    rep_include: true
+  classification: internal
+masterdata:
+  smda:
+    country:
+      - identifier: Norway
+        uuid: ad214d85-8a1d-19da-e053-c918a4889309
+    discovery:
+      - short_identifier: DROGON
+        uuid: ad214d85-8a1d-19da-e053-c918a4889309
+    field:
+      - identifier: DROGON
+        uuid: 00000000-0000-0000-0000-000000000000
+    coordinate_system:
+      identifier: ST_WGS84_UTM37N_P32637
+      uuid: ad214d85-dac7-19da-e053-c918a4889309
+    stratigraphic_column:
+      identifier: DROGON_HAS_NO_STRATCOLUMN
+      uuid: 00000000-0000-0000-0000-000000000000
