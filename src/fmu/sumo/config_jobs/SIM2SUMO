@@ -1,0 +1,25 @@
+-- This forward model uploads results from reservoir simulators eclipse or opm
+-- to sumo. It is called from the ERT config file as a regular forward model
+
+-- Arguments:
+-- S2S_CONF_PATH: path to config
+-- SUMO_ENV: sumo environment to upload to
+
+DEFAULT <S2S_CONF_PATH> fmuconfig/output/global_variables.yml
+DEFAULT <SUMO_ENV> prod
+
+STDERR sim2sumo.stderr
+STDOUT sim2sumo.stdout
+
+
+EXECUTABLE sim2sumo
+
+ARGLIST execute "--config_path" <S2S_CONF_PATH> "--env" <SUMO_ENV>
+
+MIN_ARG 5
+MAX_ARG 5
+ARG_TYPE 0 STRING
+ARG_TYPE 1 STRING
+ARG_TYPE 2 STRING
+ARG_TYPE 3 STRING
+ARG_TYPE 4 STRING
