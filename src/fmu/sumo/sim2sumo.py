@@ -162,9 +162,10 @@ def get_results(
                         output = convert_to_arrow(output)
                     except pa.lib.ArrowInvalid:
                         logger.warning(
-                            "Cannot convert to arrow, keeping pandas format"
+                            "Arrow invalid, cannot convert to arrow, keeping pandas format"
                         )
-
+                    except TypeError:
+                        logger.warning("Type error, cannot convert to arrow")
         except TypeError:
             trace = sys.exc_info()[1]
         except FileNotFoundError:
