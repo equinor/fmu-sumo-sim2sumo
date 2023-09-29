@@ -112,7 +112,15 @@ def convert_to_arrow(frame):
     Returns:
         pa.Table: the converted dataframe
     """
-    table = pa.Table.from_pandas(frame)
+    standard = {"DATE": pa.timestamp("ms")}
+    scheme = []
+    for column_name in frame.columns:
+        if pd.api.types.is_string_dtype(frame[column_name]):
+            scheme.append((column_name, pa.string()))
+        else:
+            scheme.append((column_name, standard.get(column_name, pa.float32())))
+    print(scheme)
+    table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
 
 

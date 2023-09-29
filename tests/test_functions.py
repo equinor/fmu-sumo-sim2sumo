@@ -245,10 +245,18 @@ def test_export_w_config(tmp_path, config_path):
 
 def test_convert_to_arrow():
     """Test function convert_to_arrow"""
-    dframe = pd.DataFrame([1, 2], columns=["a"])
+    dframe = pd.DataFrame(
+        {
+            "DATE": ["2020-01-01", "1984-12-06", "1972-07-16"],
+            "NUM": [1, 2, 4],
+            "string": ["A", "BE", "SEE"],
+        }
+    )
+    dframe["DATE"] = dframe["DATE"].astype("datetime64[ms]")
+    print(dframe.dtypes)
     table = sim2sumo.convert_to_arrow(dframe)
     assert isinstance(table, pa.Table), "Did not convert to table"
 
 
 if __name__ == "__main__":
-    pass
+    test_convert_to_arrow()
