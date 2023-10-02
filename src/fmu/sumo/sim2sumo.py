@@ -167,6 +167,8 @@ def get_results(
                         )
                     except TypeError:
                         logger.warning("Type error, cannot convert to arrow")
+        except RuntimeError:
+            print(give_help(None))
         except TypeError:
             trace = sys.exc_info()[1]
         except FileNotFoundError:
@@ -426,6 +428,8 @@ def give_help(submod, only_general=False):
                option is replaced with what is under datafile
 
     """
+    if submod is None:
+        only_general = True
     if only_general:
         text_to_return = general_info
     else:
