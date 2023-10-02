@@ -112,6 +112,7 @@ def convert_to_arrow(frame):
     Returns:
         pa.Table: the converted dataframe
     """
+
     standard = {"DATE": pa.timestamp("ms")}
     scheme = []
     for column_name in frame.columns:
