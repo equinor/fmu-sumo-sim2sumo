@@ -67,7 +67,8 @@ def test_get_results(submod):
     assert isinstance(
         frame, pa.Table
     ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
-
+    if submod == "summary":
+        assert frame.schema.field("FOPT").metadata is not None, "Metdata not carried across for summary"
 
 @pytest.mark.parametrize(
     "submod",

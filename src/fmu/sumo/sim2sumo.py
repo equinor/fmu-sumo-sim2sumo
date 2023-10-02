@@ -159,7 +159,7 @@ def get_results(
             output = extract_df(sim2df.EclFiles(datafile_path), **right_kwargs)
             if arrow:
                 try:
-                    output = kwargs["arrow_convertor"](output)
+                    output = SUBMOD_DICT[submod]["arrow_convertor"](output)
                 except KeyError:
                     logger.debug("No arrow convertor defined for %s", submod)
                     try:
