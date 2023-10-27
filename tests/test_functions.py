@@ -8,7 +8,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 from sumo.wrapper import SumoClient
-from fmu.sumo import sim2sumo
+from fmu.sumo.sim2sumo import sim2sumo
 from fmu.sumo.uploader import CaseOnDisk, SumoConnection
 
 
