@@ -16,8 +16,6 @@ from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
 from ._special_treatments import final_touches
 
-logging.basicConfig(level="DEBUG")
-
 
 def yaml_load(file_name):
     """Load yaml config file into dict
