@@ -15,4 +15,4 @@ def final_touches(options):
         options["zonemap"] = convert_lyrlist_to_zonemap(
             parse_lyrfile(options["zonemap"])
         )
-        return options
+    return options
