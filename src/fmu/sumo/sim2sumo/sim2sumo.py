@@ -72,12 +72,8 @@ def _define_submodules():
 
         logger.debug("Assigning %s to %s", submodules[submod], submod)
 
-    logger.debug(
-        "Returning the submodule names as a list: %s ", submodules.keys()
-    )
-    logger.debug(
-        "Returning the submodules extra args as a dictionary: %s ", submodules
-    )
+    logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
+    logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
 
     return tuple(submodules.keys()), submodules
 
@@ -95,9 +91,7 @@ def give_name(datafile_path: str) -> str:
         str: derived name
     """
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(
-        datafile_path_posix.suffix, ""
-    )
+    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
@@ -116,7 +110,7 @@ def convert_to_arrow(frame):
     logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(frame["DATE"] , infer_datetime_format=True)
+        frame["DATE"] = pd.to_datetime(frame["DATE"], infer_datetime_format=True)
     scheme = []
     for column_name in frame.columns:
         if pd.api.types.is_string_dtype(frame[column_name]):
@@ -149,10 +143,9 @@ def get_results(
     if print_help:
         print(SUBMOD_DICT[submod]["doc"])
     else:
+        logger.debug("Checking these passed options %s", kwargs)
         right_kwargs = {
-            key: value
-            for key, value in kwargs.items()
-            if key in SUBMOD_DICT[submod]
+            key: value for key, value in kwargs.items() if key in SUBMOD_DICT[submod]
         }
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
@@ -220,7 +213,7 @@ def export_results(
         str: path of export
     """
     logger = logging.getLogger(__file__ + ".export_results")
-    # check_options(submod, kwargs)
+    logger.debug("Export will be using these options: %s", kwargs)
     frame = get_results(datafile_path, submod, **kwargs)
     if frame is not None:
         logger.debug("Reading global variables from %s", config_file)
@@ -257,26 +250,24 @@ def read_config(config):
     try:
         simconfig = config["sim2sumo"]
     except KeyError:
-        logger.warning(
-            "No specification in config, will use defaults %s", defaults
-        )
+        logger.warning("No specification in config, will use defaults %s", defaults)
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
 
     datafile = simconfig.get("datafile", "eclipse/model/")
     if isinstance(datafile, str):
-        logger.debug("Using %s to read results", datafile)
+        logger.debug("Using this string %s to find datafile(s)", datafile)
         datafile_posix = Path(datafile)
         if datafile_posix.is_dir():
             logger.debug("Directory, globbing for datafiles")
             datafiles = list(datafile_posix.glob("*.DATA"))
 
         else:
-            logger.debug("File path, will just use this")
+            logger.debug("File path, will just use this one")
             datafiles = [datafile]
     else:
-        logger.debug("List")
+        logger.debug("String is list")
         datafiles = datafile
     logger.debug("Datafile(s) to use %s", datafiles)
 
@@ -286,6 +277,7 @@ def read_config(config):
         submods = SUBMODULES
     try:
         options = simconfig["options"]
+        logger.info("Will use these options %s", options)
     except KeyError:
         logger.info("No special options selected")
         options = {}
