@@ -14,7 +14,7 @@ import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import final_touches
+from ._special_treatments import convert_options
 
 
 def yaml_load(file_name):
@@ -154,7 +154,7 @@ def get_results(
         try:
             output = extract_df(
                 sim2df.EclFiles(datafile_path),
-                **final_touches(right_kwargs),
+                **convert_options(right_kwargs),
             )
             if arrow:
                 try:

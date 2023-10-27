@@ -2,7 +2,7 @@
 from ecl2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 
-def final_touches(options):
+def convert_options(options):
     """Convert dictionary options further
 
     Args:
