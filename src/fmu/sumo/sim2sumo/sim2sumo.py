@@ -15,6 +15,8 @@ import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
 
+logging.basicConfig(level="DEBUG")
+
 
 def yaml_load(file_name):
     """Load yaml config file into dict
@@ -145,7 +147,9 @@ def get_results(
     else:
         logger.debug("Checking these passed options %s", kwargs)
         right_kwargs = {
-            key: value for key, value in kwargs.items() if key in SUBMOD_DICT[submod]
+            key: value
+            for key, value in kwargs.items()
+            if key in SUBMOD_DICT[submod]["options"]
         }
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
