@@ -14,6 +14,7 @@ import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
+from ._special_treatments import final_touches
 
 logging.basicConfig(level="DEBUG")
 
@@ -122,24 +123,6 @@ def convert_to_arrow(frame):
     logger.debug(scheme)
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
-
-
-def final_touches(options):
-    """Convert dictionary options further
-
-    Args:
-        options (dict): the input options
-
-    Returns:
-        dict: options after special treatment
-    """
-    if "zonemap" in options:
-        from ecl2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
-
-        options["zonemap"] = convert_lyrlist_to_zonemap(
-            parse_lyrfile(options["zonemap"])
-        )
-        return options
 
 
 def get_results(
