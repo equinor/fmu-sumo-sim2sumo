@@ -100,11 +100,13 @@ def _define_submodules():
     submod_paths.append("_vfp.py")
     for submod_path in submod_paths:
         try:
-            submod = str(submod_path.name.replace(".py", ""))
+            submod_string = str(submod_path.name.replace(".py", ""))
+            submod = submod_string
         except AttributeError:
-            submod = "vfp._vfp"
+            submod_string = "vfp._vfp"
+            submod = "vfp"
         try:
-            submodules[submod] = find_functions_and_docstring(submod)
+            submodules[submod] = find_functions_and_docstring(submod_string)
             logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
             logger.debug("No df function in %s", submod_path)
