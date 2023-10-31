@@ -33,10 +33,6 @@ def yaml_load(file_name):
     return config
 
 
-
-
-
-
 def give_name(datafile_path: str) -> str:
     """Return name to assign in metadata
 
@@ -51,31 +47,6 @@ def give_name(datafile_path: str) -> str:
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
-
-
-def convert_to_arrow(frame):
-    """Convert pd.DataFrame to arrow
-
-    Args:
-        frame (pd.DataFrame): the frame to convert
-
-    Returns:
-        pa.Table: the converted dataframe
-    """
-    logger = logging.getLogger(__file__ + ".convert_to_arrow")
-    logger.debug("!!!!Using convert to arrow!!!")
-    standard = {"DATE": pa.timestamp("ms")}
-    if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(frame["DATE"], infer_datetime_format=True)
-    scheme = []
-    for column_name in frame.columns:
-        if pd.api.types.is_string_dtype(frame[column_name]):
-            scheme.append((column_name, pa.string()))
-        else:
-            scheme.append((column_name, standard.get(column_name, pa.float32())))
-    logger.debug(scheme)
-    table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
-    return table
 
 
 def get_results(
@@ -114,16 +85,13 @@ def get_results(
             if arrow:
                 try:
                     output = SUBMOD_DICT[submod]["arrow_convertor"](output)
-                except KeyError:
-                    logger.debug("No arrow convertor defined for %s", submod)
-                    try:
-                        output = convert_to_arrow(output)
-                    except pa.lib.ArrowInvalid:
-                        logger.warning(
-                            "Arrow invalid, cannot convert to arrow, keeping pandas format"
-                        )
-                    except TypeError:
-                        logger.warning("Type error, cannot convert to arrow")
+
+                except pa.lib.ArrowInvalid:
+                    logger.warning(
+                        "Arrow invalid, cannot convert to arrow, keeping pandas format"
+                    )
+                except TypeError:
+                    logger.warning("Type error, cannot convert to arrow")
         except RuntimeError:
             print(give_help(None))
         except TypeError:

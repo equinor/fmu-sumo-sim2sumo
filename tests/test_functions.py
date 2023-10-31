@@ -8,7 +8,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 from fmu.sumo.sim2sumo import sim2sumo
-from fmu.sumo.sim2sumo._special_treatments import _define_submodules
+from fmu.sumo.sim2sumo._special_treatments import _define_submodules, convert_to_arrow
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -122,7 +122,7 @@ def test_export_results_w_options(tmp_path, submod="summary"):
 CHECK_DICT = {
     "global_variables_w_eclpath.yml": {
         "nrdatafile": 1,
-        "nrsubmods": 16,
+        "nrsubmods": 17,
         "nroptions": 1,
         "arrow": True,
     },
@@ -254,7 +254,7 @@ def test_convert_to_arrow():
     )
     dframe["DATE"] = dframe["DATE"].astype("datetime64[ms]")
     print(dframe.dtypes)
-    table = sim2sumo.convert_to_arrow(dframe)
+    table = convert_to_arrow(dframe)
     assert isinstance(table, pa.Table), "Did not convert to table"
 
 

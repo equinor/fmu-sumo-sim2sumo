@@ -5,6 +5,82 @@ import logging
 from pathlib import Path
 import ecl2df
 from ecl2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
+import pandas as pd
+import pyarrow as pa
+
+
+def convert_to_arrow(frame):
+    """Convert pd.DataFrame to arrow
+
+    Args:
+        frame (pd.DataFrame): the frame to convert
+
+    Returns:
+        pa.Table: the converted dataframe
+    """
+    logger = logging.getLogger(__file__ + ".convert_to_arrow")
+    logger.debug("!!!!Using convert to arrow!!!")
+    standard = {"DATE": pa.timestamp("ms")}
+    if "DATE" in frame.columns:
+        frame["DATE"] = pd.to_datetime(frame["DATE"], infer_datetime_format=True)
+    scheme = []
+    for column_name in frame.columns:
+        if pd.api.types.is_string_dtype(frame[column_name]):
+            scheme.append((column_name, pa.string()))
+        else:
+            scheme.append((column_name, standard.get(column_name, pa.float32())))
+    logger.debug(scheme)
+    table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
+    return table
+
+
+def find_arrow_convertor(path):
+    """Find function for converting pandas dataframe to arrow
+
+    Args:
+        path (str): path to where to look for function
+
+    Returns:
+        function: function for converting to arrow
+    """
+    logger = logging.getLogger(__file__ + ".find_arrow_convertor")
+    try:
+        func = importlib.import_module(
+                path
+        )._df2pyarrow
+    except AttributeError:
+        logger.info(
+            "No premade function for converting to arrow in %s",
+            path,
+        )
+        func = convert_to_arrow
+
+    return func
+
+
+def find_functions_and_docstring(submod):
+    """Find functions for extracting and converting from eclipse native
+
+    Args:
+        submod (str): path to where to look for function
+
+    Returns:
+        dictionary: includes functions and doc string
+    """
+    logger = logging.getLogger(__file__ + ".find_func_and_info")
+
+
+    import_path = "ecl2df." + submod
+    func = importlib.import_module(import_path).df
+    logger.debug("Assigning %s to %s", func.__name__, submod)
+    returns = {"extract": func, "options": tuple(name
+        for name in signature(func).parameters.keys()
+        if name not in {"deck", "eclfiles"}
+    ),
+    "arrow_convertor": find_arrow_convertor(import_path),
+    "doc": func.__doc__}
+
+    return returns
 
 
 def _define_submodules():
@@ -18,31 +94,20 @@ def _define_submodules():
     package_path = Path(ecl2df.__file__).parent
 
     submodules = {}
-    for submod_path in package_path.glob("*.py"):
-        submod = str(submod_path.name.replace(".py", ""))
+    submod_paths = list(package_path.glob("*.py"))
+    # vfp breakes the pattern
+    submod_paths.append("_vfp.py")
+    for submod_path in submod_paths:
         try:
-            func = importlib.import_module("ecl2df." + submod).df
+            submod = str(submod_path.name.replace(".py", ""))
+        except AttributeError:
+            submod = "vfp._vfp"
+        try:
+            submodules[submod] = find_functions_and_docstring(submod)
+            logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
             logger.debug("No df function in %s", submod_path)
-            continue
-        submodules[submod] = {"extract": func}
-        submodules[submod]["options"] = tuple(
-            name
-            for name in signature(func).parameters.keys()
-            if name not in {"deck", "eclfiles"}
-        )
-        submodules[submod]["doc"] = func.__doc__
-        try:
-            submodules[submod]["arrow_convertor"] = importlib.import_module(
-                "ecl2df." + submod
-            )._df2pyarrow
-        except AttributeError:
-            logger.info(
-                "No premade function for converting to arrow in %s",
-                submod_path,
-            )
 
-        logger.debug("Assigning %s to %s", submodules[submod], submod)
 
     logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
     logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
@@ -66,4 +131,3 @@ def convert_options(options):
     return options
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
-
