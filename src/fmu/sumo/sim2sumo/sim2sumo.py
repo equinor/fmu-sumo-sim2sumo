@@ -221,6 +221,7 @@ def export_results(
     logger = logging.getLogger(__file__ + ".export_results")
     logger.debug("Export will be using these options: %s", kwargs)
     frame = get_results(datafile_path, submod, **kwargs)
+    allowed_contents = {"summary": "timeseries"}
     if frame is not None:
         logger.debug("Reading global variables from %s", config_file)
         cfg = yaml_load(config_file)
@@ -228,6 +229,7 @@ def export_results(
             config=cfg,
             name=give_name(datafile_path),
             tagname=submod,
+            content=allowed_contents.get(submod, "property")
         )
         exp_path = exp.export(frame)
     else:
