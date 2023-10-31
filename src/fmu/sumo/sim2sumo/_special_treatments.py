@@ -45,9 +45,7 @@ def find_arrow_convertor(path):
     """
     logger = logging.getLogger(__file__ + ".find_arrow_convertor")
     try:
-        func = importlib.import_module(
-                path
-        )._df2pyarrow
+        func = importlib.import_module(path)._df2pyarrow
     except AttributeError:
         logger.info(
             "No premade function for converting to arrow in %s",
@@ -69,16 +67,19 @@ def find_functions_and_docstring(submod):
     """
     logger = logging.getLogger(__file__ + ".find_func_and_info")
 
-
     import_path = "ecl2df." + submod
     func = importlib.import_module(import_path).df
     logger.debug("Assigning %s to %s", func.__name__, submod)
-    returns = {"extract": func, "options": tuple(name
-        for name in signature(func).parameters.keys()
-        if name not in {"deck", "eclfiles"}
-    ),
-    "arrow_convertor": find_arrow_convertor(import_path),
-    "doc": func.__doc__}
+    returns = {
+        "extract": func,
+        "options": tuple(
+            name
+            for name in signature(func).parameters.keys()
+            if name not in {"deck", "eclfiles"}
+        ),
+        "arrow_convertor": find_arrow_convertor(import_path),
+        "doc": func.__doc__,
+    }
 
     return returns
 
@@ -108,7 +109,6 @@ def _define_submodules():
         except AttributeError:
             logger.debug("No df function in %s", submod_path)
 
-
     logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
     logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
 
@@ -129,5 +129,6 @@ def convert_options(options):
             parse_lyrfile(options["zonemap"])
         )
     return options
+
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
