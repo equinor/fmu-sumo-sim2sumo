@@ -7,9 +7,8 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import pytest
-from sumo.wrapper import SumoClient
 from fmu.sumo.sim2sumo import sim2sumo
-from fmu.sumo.uploader import CaseOnDisk, SumoConnection
+from fmu.sumo.sim2sumo._special_treatments import _define_submodules
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -30,7 +29,7 @@ LOGGER = logging.getLogger(__file__)
 
 def test_submodules_dict():
     """Test generation of submodule list"""
-    sublist, submods = sim2sumo._define_submodules()
+    sublist, submods = _define_submodules()
     LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)

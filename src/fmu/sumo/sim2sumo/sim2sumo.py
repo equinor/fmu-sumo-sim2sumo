@@ -4,17 +4,14 @@ import re
 from typing import Union
 from pathlib import Path
 import logging
-import importlib
 import argparse
-from inspect import signature
 import pandas as pd
 import ecl2df as sim2df
-import ecl2df
 import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import convert_options
+from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options
 
 
 def yaml_load(file_name):
@@ -36,50 +33,8 @@ def yaml_load(file_name):
     return config
 
 
-def _define_submodules():
-    """Fetch all submodules
-
-    Returns:
-        list: list of submodules
-    """
-
-    logger = logging.getLogger(__file__ + "define_submodules")
-    package_path = Path(ecl2df.__file__).parent
-
-    submodules = {}
-    for submod_path in package_path.glob("*.py"):
-        submod = str(submod_path.name.replace(".py", ""))
-        try:
-            func = importlib.import_module("ecl2df." + submod).df
-        except AttributeError:
-            logger.debug("No df function in %s", submod_path)
-            continue
-        submodules[submod] = {"extract": func}
-        submodules[submod]["options"] = tuple(
-            name
-            for name in signature(func).parameters.keys()
-            if name not in {"deck", "eclfiles"}
-        )
-        submodules[submod]["doc"] = func.__doc__
-        try:
-            submodules[submod]["arrow_convertor"] = importlib.import_module(
-                "ecl2df." + submod
-            )._df2pyarrow
-        except AttributeError:
-            logger.info(
-                "No premade function for converting to arrow in %s",
-                submod_path,
-            )
-
-        logger.debug("Assigning %s to %s", submodules[submod], submod)
-
-    logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
-    logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
-
-    return tuple(submodules.keys()), submodules
 
 
-SUBMODULES, SUBMOD_DICT = _define_submodules()
 
 
 def give_name(datafile_path: str) -> str:
