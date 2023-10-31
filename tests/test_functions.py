@@ -30,6 +30,7 @@ LOGGER = logging.getLogger(__file__)
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
+    print(sublist, submods)
     LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
@@ -67,7 +68,10 @@ def test_get_results(submod):
         frame, pa.Table
     ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
     if submod == "summary":
-        assert frame.schema.field("FOPT").metadata is not None, "Metdata not carried across for summary"
+        assert (
+            frame.schema.field("FOPT").metadata is not None
+        ), "Metdata not carried across for summary"
+
 
 @pytest.mark.parametrize(
     "submod",
