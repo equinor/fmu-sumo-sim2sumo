@@ -152,6 +152,7 @@ def export_results(
     submod_contents.update(
         {name: name for name in ["rft", "pvt", "transmissibilities"]}
     )
+    allowed_contents = {"summary": "timeseries"}
     if frame is not None:
         logger.debug("Reading global variables from %s", config_file)
         cfg = yaml_load(config_file)
@@ -159,7 +160,7 @@ def export_results(
             config=cfg,
             name=give_name(datafile_path),
             tagname=submod,
-            content=submod_contents.get(submod, "property"),
+            content=submod_contents.get(submod, "property")
         )
         exp_path = exp.export(frame)
     else:
