@@ -4,17 +4,14 @@ import re
 from typing import Union
 from pathlib import Path
 import logging
-import importlib
 import argparse
-from inspect import signature
 import pandas as pd
 import ecl2df as sim2df
-import ecl2df
 import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import convert_options
+from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options
 
 
 def yaml_load(file_name):
@@ -36,52 +33,6 @@ def yaml_load(file_name):
     return config
 
 
-def _define_submodules():
-    """Fetch all submodules
-
-    Returns:
-        list: list of submodules
-    """
-
-    logger = logging.getLogger(__file__ + "define_submodules")
-    package_path = Path(ecl2df.__file__).parent
-
-    submodules = {}
-    for submod_path in package_path.glob("*.py"):
-        submod = str(submod_path.name.replace(".py", ""))
-        try:
-            func = importlib.import_module("ecl2df." + submod).df
-        except AttributeError:
-            logger.debug("No df function in %s", submod_path)
-            continue
-        submodules[submod] = {"extract": func}
-        submodules[submod]["options"] = tuple(
-            name
-            for name in signature(func).parameters.keys()
-            if name not in {"deck", "eclfiles"}
-        )
-        submodules[submod]["doc"] = func.__doc__
-        try:
-            submodules[submod]["arrow_convertor"] = importlib.import_module(
-                "ecl2df." + submod
-            )._df2pyarrow
-        except AttributeError:
-            logger.info(
-                "No premade function for converting to arrow in %s",
-                submod_path,
-            )
-
-        logger.debug("Assigning %s to %s", submodules[submod], submod)
-
-    logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
-    logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
-
-    return tuple(submodules.keys()), submodules
-
-
-SUBMODULES, SUBMOD_DICT = _define_submodules()
-
-
 def give_name(datafile_path: str) -> str:
     """Return name to assign in metadata
 
@@ -96,31 +47,6 @@ def give_name(datafile_path: str) -> str:
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
-
-
-def convert_to_arrow(frame):
-    """Convert pd.DataFrame to arrow
-
-    Args:
-        frame (pd.DataFrame): the frame to convert
-
-    Returns:
-        pa.Table: the converted dataframe
-    """
-    logger = logging.getLogger(__file__ + ".convert_to_arrow")
-    logger.debug("!!!!Using convert to arrow!!!")
-    standard = {"DATE": pa.timestamp("ms")}
-    if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(frame["DATE"], infer_datetime_format=True)
-    scheme = []
-    for column_name in frame.columns:
-        if pd.api.types.is_string_dtype(frame[column_name]):
-            scheme.append((column_name, pa.string()))
-        else:
-            scheme.append((column_name, standard.get(column_name, pa.float32())))
-    logger.debug(scheme)
-    table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
-    return table
 
 
 def get_results(
@@ -159,16 +85,13 @@ def get_results(
             if arrow:
                 try:
                     output = SUBMOD_DICT[submod]["arrow_convertor"](output)
-                except KeyError:
-                    logger.debug("No arrow convertor defined for %s", submod)
-                    try:
-                        output = convert_to_arrow(output)
-                    except pa.lib.ArrowInvalid:
-                        logger.warning(
-                            "Arrow invalid, cannot convert to arrow, keeping pandas format"
-                        )
-                    except TypeError:
-                        logger.warning("Type error, cannot convert to arrow")
+
+                except pa.lib.ArrowInvalid:
+                    logger.warning(
+                        "Arrow invalid, cannot convert to arrow, keeping pandas format"
+                    )
+                except TypeError:
+                    logger.warning("Type error, cannot convert to arrow")
         except RuntimeError:
             print(give_help(None))
         except TypeError:
@@ -221,7 +144,14 @@ def export_results(
     logger = logging.getLogger(__file__ + ".export_results")
     logger.debug("Export will be using these options: %s", kwargs)
     frame = get_results(datafile_path, submod, **kwargs)
-    allowed_contents = {"summary": "timeseries"}
+    submod_contents = {
+        "summary": "timeseries",
+        "satfunc": "relperm",
+        "vfp": "lift_curves",
+    }
+    submod_contents.update(
+        {name: name for name in ["rft", "pvt", "transmissibilities"]}
+    )
     if frame is not None:
         logger.debug("Reading global variables from %s", config_file)
         cfg = yaml_load(config_file)
@@ -229,7 +159,7 @@ def export_results(
             config=cfg,
             name=give_name(datafile_path),
             tagname=submod,
-            content=allowed_contents.get(submod, "property")
+            content=submod_contents.get(submod, "property"),
         )
         exp_path = exp.export(frame)
     else:

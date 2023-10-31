@@ -7,9 +7,8 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import pytest
-from sumo.wrapper import SumoClient
 from fmu.sumo.sim2sumo import sim2sumo
-from fmu.sumo.uploader import CaseOnDisk, SumoConnection
+from fmu.sumo.sim2sumo._special_treatments import _define_submodules, convert_to_arrow
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -30,7 +29,8 @@ LOGGER = logging.getLogger(__file__)
 
 def test_submodules_dict():
     """Test generation of submodule list"""
-    sublist, submods = sim2sumo._define_submodules()
+    sublist, submods = _define_submodules()
+    print(sublist, submods)
     LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
@@ -68,7 +68,10 @@ def test_get_results(submod):
         frame, pa.Table
     ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
     if submod == "summary":
-        assert frame.schema.field("FOPT").metadata is not None, "Metdata not carried across for summary"
+        assert (
+            frame.schema.field("FOPT").metadata is not None
+        ), "Metdata not carried across for summary"
+
 
 @pytest.mark.parametrize(
     "submod",
@@ -123,7 +126,7 @@ def test_export_results_w_options(tmp_path, submod="summary"):
 CHECK_DICT = {
     "global_variables_w_eclpath.yml": {
         "nrdatafile": 1,
-        "nrsubmods": 16,
+        "nrsubmods": 17,
         "nroptions": 1,
         "arrow": True,
     },
@@ -255,7 +258,7 @@ def test_convert_to_arrow():
     )
     dframe["DATE"] = dframe["DATE"].astype("datetime64[ms]")
     print(dframe.dtypes)
-    table = sim2sumo.convert_to_arrow(dframe)
+    table = convert_to_arrow(dframe)
     assert isinstance(table, pa.Table), "Did not convert to table"
 
 
