@@ -38,6 +38,7 @@ jobs:
           python -m pip install --upgrade pip &&
           python -m pip install git+https://github.com/equinor/fmu-sumo-uploader.git@main &&
           python -m pip install pytest &&
+          python -m pip install pytest-timeout &&
           python -m pip install .
       - name: Run tests
         shell: bash
@@ -51,4 +52,4 @@ jobs:
           access_token=$(az account get-access-token --scope api://88d2b022-3539-4dda-9e66-853801334a86/.default --query accessToken --output tsv)
           export ACCESS_TOKEN=$access_token
 
-          pytest -s --timeout=300
+          pytest -s -v --timeout=300
