@@ -37,12 +37,14 @@ jobs:
         run: >
           python -m pip install --upgrade pip &&
           python -m pip install .
+          python -m pip install git+https://github.com/equinor/fmu-sumo-uploader.git@main
       - name: Run tests
         shell: bash
         run: |
           az --version
           az account list
           pip show sumo-wrapper-python
+          pip show fmu-sumo-uploader
           python -c  'import sys; print(sys.platform)'
           python -c 'import os; import sys; print(os.path.dirname(sys.executable))'
           access_token=$(az account get-access-token --scope api://88d2b022-3539-4dda-9e66-853801334a86/.default --query accessToken --output tsv)
