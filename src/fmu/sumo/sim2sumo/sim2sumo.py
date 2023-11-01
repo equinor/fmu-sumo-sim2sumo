@@ -211,8 +211,10 @@ def read_config(config):
 
     try:
         submods = simconfig["datatypes"]
+        if submods == "all":
+            submods = SUBMODULES
     except KeyError:
-        submods = SUBMODULES
+        submods = defaults["datatypes"]
     try:
         options = simconfig["options"]
         logger.info("Will use these options %s", options)
