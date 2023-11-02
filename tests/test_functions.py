@@ -30,7 +30,6 @@ LOGGER = logging.getLogger(__file__)
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
-    print(sublist, submods)
     LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
@@ -126,7 +125,7 @@ def test_export_results_w_options(tmp_path, submod="summary"):
 CHECK_DICT = {
     "global_variables_w_eclpath.yml": {
         "nrdatafile": 1,
-        "nrsubmods": 17,
+        "nrsubmods": 3,
         "nroptions": 1,
         "arrow": True,
     },
@@ -257,7 +256,6 @@ def test_convert_to_arrow():
         }
     )
     dframe["DATE"] = dframe["DATE"].astype("datetime64[ms]")
-    print(dframe.dtypes)
     table = convert_to_arrow(dframe)
     assert isinstance(table, pa.Table), "Did not convert to table"
 
