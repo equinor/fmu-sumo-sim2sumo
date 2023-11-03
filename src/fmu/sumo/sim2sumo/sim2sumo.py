@@ -11,7 +11,9 @@ import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options
+from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
+
+logging.basicConfig(level="DEBUG")
 
 
 def yaml_load(file_name):
@@ -82,10 +84,11 @@ def get_results(
                 sim2df.EclFiles(datafile_path),
                 **convert_options(right_kwargs),
             )
+            if submod == "rft":
+                output = tidy(output)
             if arrow:
                 try:
                     output = SUBMOD_DICT[submod]["arrow_convertor"](output)
-
                 except pa.lib.ArrowInvalid:
                     logger.warning(
                         "Arrow invalid, cannot convert to arrow, keeping pandas format"
@@ -105,25 +108,8 @@ def get_results(
                 "Trace: %s, \nNo results produced ",
                 trace,
             )
-    if submod == "rft":
-        tidy()
+
     return output
-
-
-def tidy():
-    """Utility function to tidy up mess from ecl2df"""
-    # Ecl2df creates three files for rft data, see unwanted list below
-    logger = logging.getLogger(__file__ + ".tidy")
-    unwanteds = ["seg.csv", "con.csv", "icd.csv"]
-    cwd = Path().cwd()
-    for unwanted in unwanteds:
-        unwanted_posix = cwd / unwanted
-        if unwanted_posix.is_file():
-            logger.info(
-                "Deleting unwanted file from rft export %s",
-                str(unwanted_posix),
-            )
-            unwanted_posix.unlink()
 
 
 def export_results(
