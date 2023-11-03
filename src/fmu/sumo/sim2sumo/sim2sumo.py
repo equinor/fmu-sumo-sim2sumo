@@ -267,7 +267,14 @@ def export_with_config(config_path):
     return export_folder, suffixes
 
 
-def upload(upload_folder, suffixes, env="prod", threads=5, start_del="real"):
+def upload(
+    upload_folder,
+    suffixes,
+    conf_path="./fmuconfig/output/global_variables.yml",
+    env="prod",
+    threads=5,
+    start_del="real",
+):
     """Upload to sumo
 
     Args:
@@ -288,6 +295,7 @@ def upload(upload_folder, suffixes, env="prod", threads=5, start_del="real"):
             logger.info("Upload folder %s", upload_search)
             sumo_upload_main(
                 case_path,
+                conf_path,
                 upload_search,
                 env,
                 case_meta_path,
@@ -391,7 +399,7 @@ def upload_with_config(config_path, env="prod"):
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
     upload_folder, suffixes = export_with_config(config_path)
-    upload(upload_folder, suffixes, env)
+    upload(upload_folder, suffixes, config_path, env)
 
 
 def main():
