@@ -270,10 +270,10 @@ def export_with_config(config_path):
 def upload(
     upload_folder,
     suffixes,
-    conf_path="./fmuconfig/output/global_variables.yml",
     env="prod",
     threads=5,
     start_del="real",
+    config_path="./fmuconfig/output/global_variables.yml",
 ):
     """Upload to sumo
 
@@ -295,11 +295,11 @@ def upload(
             logger.info("Upload folder %s", upload_search)
             sumo_upload_main(
                 case_path,
-                conf_path,
                 upload_search,
                 env,
                 case_meta_path,
                 threads,
+                config_path,
             )
             logger.debug("Uploaded")
     except TypeError:
@@ -399,7 +399,7 @@ def upload_with_config(config_path, env="prod"):
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
     upload_folder, suffixes = export_with_config(config_path)
-    upload(upload_folder, suffixes, config_path, env)
+    upload(upload_folder, suffixes, env, config_path=config_path)
 
 
 def main():
