@@ -273,7 +273,7 @@ def upload(
     env="prod",
     threads=5,
     start_del="real",
-    config_path="./fmuconfig/output/global_variables.yml",
+    config_path="fmuconfig/output/global_variables.yml",
 ):
     """Upload to sumo
 
