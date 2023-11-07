@@ -153,7 +153,7 @@ def export_results(
     return exp_path
 
 
-def read_config(config, **kwargs):
+def read_config(config, datafile=None, datatype=None):
     """Read config settings
 
     Args:
@@ -179,8 +179,9 @@ def read_config(config, **kwargs):
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
+    if datafile is None:
+        datafile = simconfig.get("datafile", "eclipse/model/")
 
-    datafile = simconfig.get("datafile", "eclipse/model/")
     if isinstance(datafile, str):
         logger.debug("Using this string %s to find datafile(s)", datafile)
         datafile_posix = Path(datafile)
@@ -195,13 +196,16 @@ def read_config(config, **kwargs):
         logger.debug("String is list")
         datafiles = datafile
     logger.debug("Datafile(s) to use %s", datafiles)
+    if datatype is None:
+        try:
+            submods = simconfig["datatypes"]
+            if submods == "all":
+                submods = SUBMODULES
+        except KeyError:
+            submods = defaults["datatypes"]
+    else:
+        submods = [datatype]
 
-    try:
-        submods = simconfig["datatypes"]
-        if submods == "all":
-            submods = SUBMODULES
-    except KeyError:
-        submods = defaults["datatypes"]
     try:
         options = simconfig["options"]
         logger.info("Will use these options %s", options)
@@ -209,9 +213,6 @@ def read_config(config, **kwargs):
         logger.info("No special options selected")
         options = {}
     options["arrow"] = options.get("arrow", True)
-    datafiles = kwargs.get("datafile", datafiles)
-    if "datatype" in kwargs:
-        submods = [kwargs["datatype"]]
     logger.info(
         "Running with: datafile(s): \n%s \n Types: \n %s \noptions:\n %s",
         datafiles,
@@ -221,7 +222,7 @@ def read_config(config, **kwargs):
     return datafiles, submods, options
 
 
-def export_with_config(config_path, **extras):
+def export_with_config(config_path, datafile=None, datatype=None):
     """Export several datatypes with yaml config file
 
     Args:
@@ -230,14 +231,16 @@ def export_with_config(config_path, **extras):
 
     """
     logger = logging.getLogger(__file__ + ".export_w_config")
-    logger.debug("Using extras %s", extras)
+    logger.debug("Using extras %s", [datafile, datatype])
     suffixes = set()
     export_folder = None
     export_path = None
     try:
         count = 0
 
-        datafiles, submods, options = read_config(yaml_load(config_path), **extras)
+        datafiles, submods, options = read_config(
+            yaml_load(config_path), datafile, datatype
+        )
         for datafile in datafiles:
             for submod in submods:
                 logger.info("Exporting %s", submod)
@@ -384,7 +387,7 @@ def give_help(submod, only_general=False):
     return text_to_return
 
 
-def upload_with_config(config_path, env="prod", **extras):
+def upload_with_config(config_path, datafile, datatype, env):
     """Upload simulator results to sumo
 
     Args:
@@ -396,7 +399,7 @@ def upload_with_config(config_path, env="prod", **extras):
     logger.debug("Executing with:")
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
-    upload_folder, suffixes = export_with_config(config_path, **extras)
+    upload_folder, suffixes = export_with_config(config_path, datafile, datatype, env)
     upload(upload_folder, suffixes, env)
 
 
@@ -404,16 +407,10 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
-    extras = {
-        key: value
-        for key, value in vars(args).items()
-        if key in ["datafile", "datatype"] and value is not None
-    }
-    logger.debug(vars(args))
     try:
         print(give_help(args.help_on))
     except AttributeError:
-        upload_with_config(args.config_path, args.env, **extras)
+        upload_with_config(args.config_path, args.datafile, args.datatype, args.env)
 
 
 if __name__ == "__main__":
