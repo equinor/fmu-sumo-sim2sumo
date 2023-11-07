@@ -153,7 +153,7 @@ def tidy(frame):
             unwanted_posix.unlink()
     if "WELLETC" in frame.columns:
         frame.drop(["WELLETC"], axis=1, inplace=True)
-        print(frame.head())
+
     return frame
 
 
