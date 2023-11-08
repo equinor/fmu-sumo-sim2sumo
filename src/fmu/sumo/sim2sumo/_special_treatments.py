@@ -133,4 +133,28 @@ def convert_options(options):
     return options
 
 
+def tidy(frame):
+    """Utility function to tidy up mess from ecl2df for rft
+
+    Args:
+        frame (pd.DataFrame): the dataframe fixed with no WELLETC
+    """
+    # Ecl2df creates three files for rft data, see unwanted list below
+    logger = logging.getLogger(__file__ + ".tidy")
+    unwanteds = ["seg.csv", "con.csv", "icd.csv"]
+    cwd = Path().cwd()
+    for unwanted in unwanteds:
+        unwanted_posix = cwd / unwanted
+        if unwanted_posix.is_file():
+            logger.info(
+                "Deleting unwanted file from rft export %s",
+                str(unwanted_posix),
+            )
+            unwanted_posix.unlink()
+    if "WELLETC" in frame.columns:
+        frame.drop(["WELLETC"], axis=1, inplace=True)
+
+    return frame
+
+
 SUBMODULES, SUBMOD_DICT = _define_submodules()
