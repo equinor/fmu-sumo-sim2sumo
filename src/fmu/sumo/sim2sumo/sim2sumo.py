@@ -399,7 +399,7 @@ def upload_with_config(config_path, datafile, datatype, env):
     logger.debug("Executing with:")
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
-    upload_folder, suffixes = export_with_config(config_path, datafile, datatype, env)
+    upload_folder, suffixes = export_with_config(config_path, datafile, datatype)
     upload(upload_folder, suffixes, env)
 
 
