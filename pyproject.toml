@@ -3,7 +3,44 @@ requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-write_to = "src/fmu/sumo/sim2sumo/version.py"
+
+[tool.isort]
+profile = "black"
 
 [tool.black]
 line-length = 79
+
+[project]
+name = "fmu-sumo-sim2sumo"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+    "sumo-wrapper-python>=1.0.3",
+    "fmu-sumo-uploader",
+    "fmu-dataio",
+    "opm<=2022.4,>=2020.10.2",
+    "ecl2df",
+    "pandas<2.0",
+    "arrow",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+dev = ["pytest", "black", "flake8"]
+
+# [tool.setuptools]
+# package-dir = { "" = "src" }
+# include-package-data = true
+# platforms = ["any"]
+#
+# [tool.setuptools.packages.find]
+# where = ["src"]
+
+[bdist_wheel]
+universal = 1
+
+[aliases]
+test = "pytest"
+
+[project.scripts]
+sim2sumo = "fmu.sumo.sim2sumo.sim2sumo:main"
