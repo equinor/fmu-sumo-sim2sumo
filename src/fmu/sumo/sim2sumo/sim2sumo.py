@@ -11,7 +11,9 @@ import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options
+from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
+
+logging.basicConfig(level="DEBUG")
 
 
 def yaml_load(file_name):
@@ -43,9 +45,7 @@ def give_name(datafile_path: str) -> str:
         str: derived name
     """
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(
-        datafile_path_posix.suffix, ""
-    )
+    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
@@ -84,10 +84,11 @@ def get_results(
                 sim2df.EclFiles(datafile_path),
                 **convert_options(right_kwargs),
             )
+            if submod == "rft":
+                output = tidy(output)
             if arrow:
                 try:
                     output = SUBMOD_DICT[submod]["arrow_convertor"](output)
-
                 except pa.lib.ArrowInvalid:
                     logger.warning(
                         "Arrow invalid, cannot convert to arrow, keeping pandas format"
@@ -107,25 +108,8 @@ def get_results(
                 "Trace: %s, \nNo results produced ",
                 trace,
             )
-    if submod == "rft":
-        tidy()
+
     return output
-
-
-def tidy():
-    """Utility function to tidy up mess from ecl2df"""
-    # Ecl2df creates three files for rft data, see unwanted list below
-    logger = logging.getLogger(__file__ + ".tidy")
-    unwanteds = ["seg.csv", "con.csv", "icd.csv"]
-    cwd = Path().cwd()
-    for unwanted in unwanteds:
-        unwanted_posix = cwd / unwanted
-        if unwanted_posix.is_file():
-            logger.info(
-                "Deleting unwanted file from rft export %s",
-                str(unwanted_posix),
-            )
-            unwanted_posix.unlink()
 
 
 def export_results(
@@ -169,11 +153,12 @@ def export_results(
     return exp_path
 
 
-def read_config(config):
+def read_config(config, datafile=None, datatype=None):
     """Read config settings
 
     Args:
         config (dict): the settings for export of simulator results
+        kwargs (dict): overiding settings
 
     Returns:
         tuple: datafiles as list, submodules to use as list, and options as kwargs
@@ -190,14 +175,13 @@ def read_config(config):
     try:
         simconfig = config["sim2sumo"]
     except KeyError:
-        logger.warning(
-            "No specification in config, will use defaults %s", defaults
-        )
+        logger.warning("No specification in config, will use defaults %s", defaults)
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
+    if datafile is None:
+        datafile = simconfig.get("datafile", "eclipse/model/")
 
-    datafile = simconfig.get("datafile", "eclipse/model/")
     if isinstance(datafile, str):
         logger.debug("Using this string %s to find datafile(s)", datafile)
         datafile_posix = Path(datafile)
@@ -212,13 +196,16 @@ def read_config(config):
         logger.debug("String is list")
         datafiles = datafile
     logger.debug("Datafile(s) to use %s", datafiles)
+    if datatype is None:
+        try:
+            submods = simconfig["datatypes"]
+            if submods == "all":
+                submods = SUBMODULES
+        except KeyError:
+            submods = defaults["datatypes"]
+    else:
+        submods = [datatype]
 
-    try:
-        submods = simconfig["datatypes"]
-        if submods == "all":
-            submods = SUBMODULES
-    except KeyError:
-        submods = defaults["datatypes"]
     try:
         options = simconfig["options"]
         logger.info("Will use these options %s", options)
@@ -235,20 +222,25 @@ def read_config(config):
     return datafiles, submods, options
 
 
-def export_with_config(config_path):
+def export_with_config(config_path, datafile=None, datatype=None):
     """Export several datatypes with yaml config file
 
     Args:
         config_path (str): path to existing yaml file
+        extras (dict): extra arguments
+
     """
     logger = logging.getLogger(__file__ + ".export_w_config")
+    logger.debug("Using extras %s", [datafile, datatype])
     suffixes = set()
     export_folder = None
     export_path = None
     try:
         count = 0
 
-        datafiles, submods, options = read_config(yaml_load(config_path))
+        datafiles, submods, options = read_config(
+            yaml_load(config_path), datafile, datatype
+        )
         for datafile in datafiles:
             for submod in submods:
                 logger.info("Exporting %s", submod)
@@ -340,6 +332,18 @@ def parse_args():
         help="Which sumo environment to upload to",
         default="prod",
     )
+    exec_parser.add_argument(
+        "--datatype",
+        type=str,
+        default=None,
+        help="Override datatype setting, intented for testing only",
+    )
+    exec_parser.add_argument(
+        "--datafile",
+        type=str,
+        default=None,
+        help="Override datafile setting, intented for testing only",
+    )
     help_parser.add_argument(
         "help_on",
         type=str,
@@ -392,18 +396,20 @@ def give_help(submod, only_general=False):
     return text_to_return
 
 
-def upload_with_config(config_path, env="prod"):
+def upload_with_config(config_path, datafile, datatype, env):
     """Upload simulator results to sumo
 
     Args:
         config_path (str): Path to config file
         env (str, optional): The sumo environment. Defaults to "prod".
+        extras (dict): extra arguments
     """
     logger = logging.getLogger(__file__ + ".upload_with_config")
     logger.debug("Executing with:")
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
-    upload_folder, suffixes = export_with_config(config_path)
+
+    upload_folder, suffixes = export_with_config(config_path, datafile, datatype)
     upload(upload_folder, suffixes, env, config_path=config_path)
 
 
@@ -411,11 +417,10 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
-    logger.debug(vars(args))
     try:
         print(give_help(args.help_on))
     except AttributeError:
-        upload_with_config(args.config_path, args.env)
+        upload_with_config(args.config_path, args.datafile, args.datatype, args.env)
 
 
 if __name__ == "__main__":
