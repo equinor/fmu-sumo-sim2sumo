@@ -43,7 +43,9 @@ def give_name(datafile_path: str) -> str:
         str: derived name
     """
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
+    base_name = datafile_path_posix.name.replace(
+        datafile_path_posix.suffix, ""
+    )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
@@ -188,7 +190,9 @@ def read_config(config):
     try:
         simconfig = config["sim2sumo"]
     except KeyError:
-        logger.warning("No specification in config, will use defaults %s", defaults)
+        logger.warning(
+            "No specification in config, will use defaults %s", defaults
+        )
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
@@ -284,6 +288,7 @@ def upload(
         threads (int, optional): Threads to use in upload. Defaults to 5.
     """
     logger = logging.getLogger(__file__ + ".upload")
+    print(f"CONFIG_PATH: {config_path}")
     try:
         case_path = Path(re.sub(rf"\/{start_del}.*", "", upload_folder))
         logger.info("Case to upload from %s", case_path)
