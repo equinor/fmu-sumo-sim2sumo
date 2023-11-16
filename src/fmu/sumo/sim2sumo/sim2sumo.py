@@ -45,7 +45,9 @@ def give_name(datafile_path: str) -> str:
         str: derived name
     """
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
+    base_name = datafile_path_posix.name.replace(
+        datafile_path_posix.suffix, ""
+    )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     return base_name
@@ -175,7 +177,9 @@ def read_config(config, datafile=None, datatype=None):
     try:
         simconfig = config["sim2sumo"]
     except KeyError:
-        logger.warning("No specification in config, will use defaults %s", defaults)
+        logger.warning(
+            "No specification in config, will use defaults %s", defaults
+        )
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
@@ -280,7 +284,6 @@ def upload(
         threads (int, optional): Threads to use in upload. Defaults to 5.
     """
     logger = logging.getLogger(__file__ + ".upload")
-    print(f"CONFIG_PATH: {config_path}")
     try:
         case_path = Path(re.sub(rf"\/{start_del}.*", "", upload_folder))
         logger.info("Case to upload from %s", case_path)
@@ -409,7 +412,9 @@ def upload_with_config(config_path, datafile, datatype, env):
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
 
-    upload_folder, suffixes = export_with_config(config_path, datafile, datatype)
+    upload_folder, suffixes = export_with_config(
+        config_path, datafile, datatype
+    )
     upload(upload_folder, suffixes, env, config_path=config_path)
 
 
@@ -420,7 +425,9 @@ def main():
     try:
         print(give_help(args.help_on))
     except AttributeError:
-        upload_with_config(args.config_path, args.datafile, args.datatype, args.env)
+        upload_with_config(
+            args.config_path, args.datafile, args.datatype, args.env
+        )
 
 
 if __name__ == "__main__":
