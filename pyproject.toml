@@ -4,3 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 write_to = "src/fmu/sumo/sim2sumo/version.py"
+
+[tool.black]
+line-length = 79
+
+[project.entry-points.ert]
+fmu_sumo_jobs = "fmu.sumo.sim2sumo.hook_implementations.jobs"
