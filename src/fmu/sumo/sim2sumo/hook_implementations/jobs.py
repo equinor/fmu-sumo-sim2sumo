@@ -22,7 +22,7 @@ def _get_jobs_from_directory(directory):
 # pylint: disable=no-value-for-parameter
 @hook_implementation
 @plugin_response(
-    plugin_name="fmu_sumo"
+    plugin_name="fmu_sumo_sim2sumo"
 )  # pylint: disable=no-value-for-parameter
 def installable_jobs():
     return _get_jobs_from_directory("sumo/sim2sumo/config_jobs")
@@ -39,7 +39,7 @@ def _get_module_variable_if_exists(module_name, variable_name, default=""):
 
 @hook_implementation
 @plugin_response(
-    plugin_name="fmu_sumo"
+    plugin_name="fmu_sumo_sim2sumo"
 )  # pylint: disable=no-value-for-parameter
 def job_documentation(job_name):
     sumo_fmu_jobs = set(installable_jobs().data.keys())
