@@ -23,3 +23,17 @@ FORWARD_MODEL ECLIPSE100(...)
 --Note: SIM2SUMO must come after ECLIPSE100
 FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
 ```
+
+
+## Testing on top of Komodo
+Sim2sumo and [sumo uploader](https://github.com/equinor/fmu-sumo-uploader) are both installed under `fmu/sumo/`.
+This means that the uploader must also be installed to test a new version of sim2sumo on top of Komodo.
+
+Example: Installing sim2sumo from `mybranch` on top of Komodo bleeding
+```
+< Create a new komodo env from komodo bleeding >
+< Activate the new env >
+
+pip install git+https://github.com/equinor/fmu-sumo-sim2sumo.git@mybranch
+pip install git+https://github.com/equinor/fmu-sumo-uploader.git
+```
