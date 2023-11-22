@@ -13,7 +13,7 @@ from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
 from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
 
-logging.getLogger(__name__).setlevel(logging.DEBUG)
+logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 
 def yaml_load(file_name):
