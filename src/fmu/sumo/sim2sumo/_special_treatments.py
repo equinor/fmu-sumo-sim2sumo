@@ -8,6 +8,7 @@ from ecl2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 import pandas as pd
 import pyarrow as pa
 
+logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 def convert_to_arrow(frame):
     """Convert pd.DataFrame to arrow
