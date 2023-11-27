@@ -14,6 +14,9 @@ FORWARD_MODEL ECLIPSE100(...)
 FORWARD_MODEL SIM2SUMO
 ```
 
+## Contributing
+Want to contribute? Read our [contributing](./CONTRIBUTING.md) guidelines
+
 ## Pre-requisites
 SIM2SUMO expects the fmu-config file to be located at `fmuconfig/output/global_variables.yml`.
 
