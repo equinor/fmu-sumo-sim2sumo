@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm", "wheel"]
+requires = ["setuptools>=65.0", "setuptools-scm>=7.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
@@ -18,7 +18,7 @@ dependencies = [
     "sumo-wrapper-python>=1.0.3",
     "fmu-sumo-uploader",
     "fmu-dataio",
-    "opm<=2022.4,>=2020.10.2",
+   # "opm<=2022.4,>=2020.10.2",
     "ecl2df",
     "pandas<2.0",
     "arrow",
@@ -32,7 +32,11 @@ dev = ["pytest", "black", "flake8"]
 # package-dir = { "" = "src" }
 # include-package-data = true
 # platforms = ["any"]
+<<<<<<< HEAD
 #
+=======
+
+>>>>>>> 0cc9c1c (Comment out tool setuptools)
 # [tool.setuptools.packages.find]
 # where = ["src"]
 
