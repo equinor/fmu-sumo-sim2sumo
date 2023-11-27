@@ -32,11 +32,7 @@ dev = ["pytest", "black", "flake8"]
 # package-dir = { "" = "src" }
 # include-package-data = true
 # platforms = ["any"]
-<<<<<<< HEAD
 #
-=======
-
->>>>>>> 0cc9c1c (Comment out tool setuptools)
 # [tool.setuptools.packages.find]
 # where = ["src"]
 
