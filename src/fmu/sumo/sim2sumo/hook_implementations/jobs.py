@@ -1,6 +1,7 @@
 import importlib
 import os
-from pkg_resources import resource_filename
+import sys
+from pathlib import Path
 
 from ert.shared.plugins.plugin_manager import hook_implementation
 from ert.shared.plugins.plugin_response import plugin_response
@@ -9,7 +10,9 @@ from ert.shared.plugins.plugin_response import plugin_response
 def _get_jobs_from_directory(directory):
     """Do a filesystem lookup in a directory to check
     for available ERT forward models"""
-    resource_directory = resource_filename("fmu", directory)
+    resource_directory = (
+        Path(sys.modules["fmu.sumo.sim2sumo"].__file__).parent / directory
+    )
 
     all_files = [
         os.path.join(resource_directory, f)
@@ -25,7 +28,7 @@ def _get_jobs_from_directory(directory):
     plugin_name="fmu_sumo_sim2sumo"
 )  # pylint: disable=no-value-for-parameter
 def installable_jobs():
-    return _get_jobs_from_directory("sumo/sim2sumo/config_jobs")
+    return _get_jobs_from_directory("config_jobs")
 
 
 def _get_module_variable_if_exists(module_name, variable_name, default=""):
