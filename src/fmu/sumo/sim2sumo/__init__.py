@@ -1,1 +1,6 @@
-__path__ = __import__("pkgutil").extend_path(__path__, __name__)
+try:
+    from ._version import version
+
+    __version__ = version
+except ImportError:
+    __version__ = "0.0.0"
