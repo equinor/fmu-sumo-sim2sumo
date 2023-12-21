@@ -37,4 +37,4 @@ where = ["src"]
 sim2sumo = "fmu.sumo.sim2sumo.sim2sumo:main"
 
 [project.entry-points.ert]
-fmu_sumo_sim2sumo_jobs = fmu.sumo.sim2sumo.hook_implementations.jobs
+fmu_sumo_sim2sumo_jobs = fmu.sumo.sim2sumo.hook_implementations.jobs"
