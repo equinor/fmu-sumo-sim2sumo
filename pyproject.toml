@@ -33,9 +33,6 @@ nokomodo = ["ert"]
 where = ["src"]
 
 
-[aliases]
-test = "pytest"
-
 [project.scripts]
 sim2sumo = "fmu.sumo.sim2sumo.sim2sumo:main"
 
