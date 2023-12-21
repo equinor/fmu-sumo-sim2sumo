@@ -83,7 +83,7 @@ def get_results(
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
             output = extract_df(
-                res2df.EclFiles(datafile_path),
+                res2df.ResdataFiles(datafile_path),
                 **convert_options(right_kwargs),
             )
             if submod == "rft":
