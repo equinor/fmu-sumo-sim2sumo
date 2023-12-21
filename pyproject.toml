@@ -32,11 +32,12 @@ nokomodo = ["ert"]
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[bdist_wheel]
-universal = 1
 
 [aliases]
 test = "pytest"
 
 [project.scripts]
 sim2sumo = "fmu.sumo.sim2sumo.sim2sumo:main"
+
+[project.entry-points.ert]
+fmu_sumo_sim2sumo_jobs = fmu.sumo.sim2sumo.hook_implementations.jobs
