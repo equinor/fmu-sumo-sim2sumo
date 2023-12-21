@@ -28,13 +28,8 @@ dependencies = [
 test = ["pytest"]
 dev = ["pytest", "black", "flake8"]
 
-# [tool.setuptools]
-# package-dir = { "" = "src" }
-# include-package-data = true
-# platforms = ["any"]
-#
-# [tool.setuptools.packages.find]
-# where = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [bdist_wheel]
 universal = 1
