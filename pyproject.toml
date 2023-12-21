@@ -27,6 +27,7 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest"]
 dev = ["pytest", "black", "flake8"]
+nokomodo = ["ert"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
