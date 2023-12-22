@@ -1,10 +1,10 @@
-"""Special treatment of some options used in ecl2df"""
+"""Special treatment of some options used in res2df"""
 from inspect import signature
 import importlib
 import logging
 from pathlib import Path
-import ecl2df
-from ecl2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
+import res2df
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 import pandas as pd
 import pyarrow as pa
 
@@ -68,7 +68,7 @@ def find_functions_and_docstring(submod):
     """
     logger = logging.getLogger(__file__ + ".find_func_and_info")
 
-    import_path = "ecl2df." + submod
+    import_path = "res2df." + submod
     func = importlib.import_module(import_path).df
     logger.debug("Assigning %s to %s", func.__name__, submod)
     returns = {
@@ -93,7 +93,7 @@ def _define_submodules():
     """
 
     logger = logging.getLogger(__file__ + "define_submodules")
-    package_path = Path(ecl2df.__file__).parent
+    package_path = Path(res2df.__file__).parent
 
     submodules = {}
     submod_paths = list(package_path.glob("*.py"))
@@ -135,12 +135,12 @@ def convert_options(options):
 
 
 def tidy(frame):
-    """Utility function to tidy up mess from ecl2df for rft
+    """Utility function to tidy up mess from res2df for rft
 
     Args:
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
     """
-    # Ecl2df creates three files for rft data, see unwanted list below
+    # res2df creates three files for rft data, see unwanted list below
     logger = logging.getLogger(__file__ + ".tidy")
     unwanteds = ["seg.csv", "con.csv", "icd.csv"]
     cwd = Path().cwd()

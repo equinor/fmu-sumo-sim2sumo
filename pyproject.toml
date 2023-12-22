@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.0", "setuptools-scm>=7.0"]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
@@ -19,7 +19,7 @@ dependencies = [
     "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git@main",
     "fmu-dataio",
     "opm<=2022.4,>=2020.10.2",
-    "ecl2df",
+    "res2df",
     "pandas<2.0",
     "arrow",
 ]

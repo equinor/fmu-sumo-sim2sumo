@@ -3,7 +3,7 @@ Makes reservoir simulator (Eclipse, [OPM](https://opm-project.org/)) results ava
 
 Uploads files from reservoir simulators to azure assisted by Sumo. This is done in a three step process.
 
-1. Data is extracted in arrow format using [ecl2df](https://github.com/equinor/ecl2df).
+1. Data is extracted in arrow format using [res2df](https://github.com/equinor/res2df).
 2. Corresponding metadata is generated via [fmu-dataio](https://github.com/equinor/fmu-dataio).
 3. Data and metadata is then uploaded to Sumo using [fmu-sumo-uploader](https://github.com/equinor/fmu-sumo-uploader).
 

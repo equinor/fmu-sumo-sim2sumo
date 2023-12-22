@@ -6,7 +6,7 @@ from pathlib import Path
 import logging
 import argparse
 import pandas as pd
-import ecl2df as sim2df
+import res2df
 import pyarrow as pa
 import yaml
 from fmu.dataio import ExportData
@@ -83,7 +83,7 @@ def get_results(
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
             output = extract_df(
-                sim2df.EclFiles(datafile_path),
+                res2df.ResdataFiles(datafile_path),
                 **convert_options(right_kwargs),
             )
             if submod == "rft":
