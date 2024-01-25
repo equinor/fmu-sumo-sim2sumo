@@ -94,20 +94,8 @@ def job_documentation(job_name):
     if job_name not in sumo_fmu_jobs:
         return None
 
-    module_name = "jobs.scripts.{}".format(job_name.lower())
-
-    description = _get_module_variable_if_exists(
-        module_name=module_name, variable_name="description"
-    )
-    examples = _get_module_variable_if_exists(
-        module_name=module_name, variable_name="examples"
-    )
-    category = _get_module_variable_if_exists(
-        module_name=module_name, variable_name="category", default="other"
-    )
-
     return {
-        "description": description,
-        "examples": examples,
-        "category": category,
+        "description": DESCRIPTION,
+        "examples": EXAMPLES,
+        "category": "export",
     }
