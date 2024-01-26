@@ -61,7 +61,7 @@ def _get_jobs_from_directory(directory):
     """Do a filesystem lookup in a directory to check
     for available ERT forward models"""
     resource_directory = (
-        Path(sys.modules["fmu.sumo.sim2sumo"].__file__) / directory
+        Path(sys.modules["fmu.sumo.sim2sumo"].__file__).parent / directory
     )
     all_files = [
         os.path.join(resource_directory, f)
