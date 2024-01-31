@@ -1,26 +1,26 @@
-Sim2sumo
+fmu.sumo.sim2sumo
 #############
 
 The ``fmu.sumo.sim2sumo`` is a python package for uploading results to Sumo.
 The package facilitates upload of results from
 reservoir simulators such as eclipse, IX and OPM flow as arrow files.
 
-sim2sumo
+Short introduction
 --------
 .. note::
 
   **sim2sumo** couples together three packages often used in the FMU sphere.
+
+
   * **fmu-dataio** the FMU plugin for exporting data out of FMU workflows with rich metadata.
   * **res2df**, a plugin not strictly tied down to FMU, but often used in this domain
   * **fmu.sumo.uploader**, a plugin that uploads files exported to disc with metadata to sumo
-
-- User has necessary accesses
 
 .. note::
 Api Reference
 -------------
 
-- `API reference <apiref/fmu.sumo.utilities.html>`_
+- `API reference <apiref/fmu.sumo.sim2sumo.html>`_
 
 
 Usage and examples
