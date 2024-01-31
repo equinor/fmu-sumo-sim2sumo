@@ -1,17 +1,23 @@
-fmu-sumo-sim2sumo
-########
+.. fmu-sumo-sim2sumo documentation master file, created by
+   sphinx-quickstart on Wed Jan 31 10:50:22 2024.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-Sumo is a solution for indexing, storing and supplying results produced by FMU workflows
-and associated processes (post-processing). See the `Sumo front-end for FMU <https://fmu-sumo.app.radix.equinor.com>`_
-for additional information and documentation on Sumo.
-
-``fmu-sumo-sim2sumo`` is a Python library for uploading specific results to Sumo. It contains
-multiple modules:
-
+Welcome to fmu-sumo-sim2sumo's documentation!
+=============================================
 
 .. toctree::
-    :maxdepth: 2
-    :hidden:
+   :maxdepth: 2
+   :caption: Contents:
 
-    self
-    sim2sumo
+   self
+   sim2sumo
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
