@@ -1,9 +1,8 @@
 fmu.sumo.sim2sumo
 #############
 
-The ``fmu.sumo.sim2sumo`` is a python package for uploading results to Sumo.
-The package facilitates upload of results from
-reservoir simulators such as eclipse, IX and OPM flow as arrow files.
+``fmu.sumo.sim2sumo`` is a python package for uploading results to Sumo.
+The package facilitates upload of results from reservoir simulators such as **eclipse**, **IX**, and **OPM flow** as arrow files.
 
 Short introduction
 --------
@@ -12,11 +11,30 @@ Short introduction
   **sim2sumo** couples together three packages often used in the FMU sphere.
 
 
-  * **fmu-dataio** the FMU plugin for exporting data out of FMU workflows with rich metadata.
-  * **res2df**, a plugin not strictly tied down to FMU, but often used in this domain
-  * **fmu.sumo.uploader**, a plugin that uploads files exported to disc with metadata to sumo
+  * **fmu-dataio** (`docs <https://equinor.github.io/fmu-dataio/>`_) the FMU package for exporting data, with rich metadata, out of FMU workflows.
+  * **res2df** (`docs <https://equinor.github.io/res2df/>`_), a package used for extracting results from flow simulator runs, not strictly tied down to FMU, but often used in this domain
+  *  **fmu.sumo.uploader** (`repo <https://github.com/equinor/fmu-sumo>`_), a package that uploads files exported to disc with metadata to sumo
+
+
+The package makes available export of all datatypes that you can export with ``res2df``, and uploads these results to Sumo. It is part of ``komodo`` and can be accessed from the command line with ``sim2sumo``, or from
+``ert`` with the forward model **SIM2SUMO**. In it't simplest form it needs no extra configuration setting, but comes pre-configured to extract datatypes:
+
+
+* summary
+* rft
+* wellcompletions
+
+
+To run sim2sumo with ert it needs to be inserted in your *ert config file* after the simulator run, which is typically **eclipse** as of 2024.
+
 
 .. note::
+
+   Sim2sumo has the same requirements as fmu-sumo-uploader, and therefore needs some sections defined in the file fmu config file (aka global variables file)
+   For the simplest implementation this file needs to be stored at ``../fmuconfig/output/global_variables.yml``, for other name/location see
+   section :ref:`Config settings <target config settings>`
+
+
 Api Reference
 -------------
 
