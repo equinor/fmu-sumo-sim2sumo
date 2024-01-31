@@ -43,14 +43,31 @@ Api Reference
 
 Usage and examples
 ------------------
+Simplest case: As a FORWARD_MODEL in ERT
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. code-block::
+
+
+    FORWARD_MODEL ECLIPSE
+    -- Note: SIM2SUMO needs to be run after the reservoir simulation
+    FORWARD_MODEL SIM2SUMO
+
+Example above extracts results to ``share/results/tables``, and uploads those results to Sumo.
+You don't need to have more than one instance of this job, it automatically extracts the default results.
+If you want to include more datatypes add that to the configuration file, see :ref:`Config settings <target config settings>`
+
+
+.. _target config settings:
 Config settings
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 sim2sumo is set up such that you provide a config file with the section sim2sumo defined.
 The config file needs to be in yaml format. You can add this to the global_variables for the case,
 or make your own file. There are two sections that are relevant when using sim2sumo:
-1. The metadata needed for the upload to sumo, that is the three sections model, masterdata, and accesscd ..
+
+
+1. The metadata needed for the upload to sumo, that is the three sections model, masterdata, and access
 2. A section named sim2sumo. There are several ways to define this section sim2sumo.
 
 Simplest case
@@ -59,6 +76,7 @@ This is a snippet of the ``global_variables.yml`` containing enough data to uplo
  In real cases this file will be much longer. When the entire section for sum2sumo is equal to ''sim2sumo: true''
  sim2sumo will extract from all simulation runs in a folder called eclipse/model/ relative to where you are running from,
  and at the same time export all datatypes available. See the example file below.
+
 
 .. toggle::
 
@@ -71,9 +89,10 @@ Case where eclipse datafile is explicitly defined
 This is a snippet of the ``global_variables.yml`` file which holds the static metadata described in the
 `previous section <./preparations.html>`__. In real cases this file will be much longer.
 
+
 .. toggle::
 
-   .. literalinclude:: ../tests/data/reek/realization-0/iter-0/fmuconfig/output/global_variables_w_eclpath.yml
+   .. literalinclude:: ../../tests/data/reek/realization-0/iter-0/fmuconfig/output/global_variables_w_eclpath.yml
       :language: yaml
 
 |
@@ -82,9 +101,10 @@ Case where eclipse datafile, what types to export, and options to use are explic
 This is a snippet of the ``global_variables.yml`` file which holds the static metadata described in the
 `previous section <./preparations.html>`__. In real cases this file will be much longer.
 
+
 .. toggle::
 
-   .. literalinclude:: ../tests/data/reek/realization-0/iter-0/fmuconfig/output/global_variables_w_eclpath_and_extras.yml
+   .. literalinclude:: ../../tests/data/reek/realization-0/iter-0/fmuconfig/output/global_variables_w_eclpath_and_extras.yml
       :language: yaml
 
 |
@@ -101,17 +121,7 @@ This code exports summary data results from simulation
     SUBMODULE = "summary"
     s2s.export_csv(DATAFILE, SUBMODULE, CONFIG_PATH)
 
-As a FORWARD_MODEL in ERT
-^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block::
-
-    FORWARD_MODEL SIM2SUMO
-
-
-Example above uploads all surfaces dumped to ``share/results/maps``. You don't need to have more
-than one instance of this job, it will generate and upload the data specified in the corresponding
-config file.
 
 .. note::
 
