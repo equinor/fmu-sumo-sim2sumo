@@ -1,9 +1,9 @@
-Sumo Utilities
+Sim2sumo
 #############
 
-The ``fmu.sumo.utilities`` is a python package for integrating other tools into the FMU-SUMO ecosystem.
-So far the only utility available is the utility sim2sumo which facilitates upload of results from
-reservoir simulators such as eclipse and opm flow as csv or arrow format files.
+The ``fmu.sumo.sim2sumo`` is a python package for uploading results to Sumo.
+The package facilitates upload of results from
+reservoir simulators such as eclipse, IX and OPM flow as arrow files.
 
 sim2sumo
 --------
@@ -11,7 +11,7 @@ sim2sumo
 
   **sim2sumo** couples together three packages often used in the FMU sphere.
   * **fmu-dataio** the FMU plugin for exporting data out of FMU workflows with rich metadata.
-  * **ecl2df**, a plugin not strictly tied down to FMU, but often used in this domain
+  * **res2df**, a plugin not strictly tied down to FMU, but often used in this domain
   * **fmu.sumo.uploader**, a plugin that uploads files exported to disc with metadata to sumo
 
 - User has necessary accesses
@@ -31,8 +31,8 @@ Config settings
 
 sim2sumo is set up such that you provide a config file with the section sim2sumo defined.
 The config file needs to be in yaml format. You can add this to the global_variables for the case,
-or make your own file. The file needs to contain two parts:
-1. The metadata needed for the upload to sumo, that is the three sections model, masterdata, and access
+or make your own file. There are two sections that are relevant when using sim2sumo:
+1. The metadata needed for the upload to sumo, that is the three sections model, masterdata, and accesscd ..
 2. A section named sim2sumo. There are several ways to define this section sim2sumo.
 
 Simplest case
