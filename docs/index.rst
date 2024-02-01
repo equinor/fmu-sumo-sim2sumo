@@ -5,6 +5,8 @@
 
 Welcome to fmu-sumo-sim2sumo's documentation!
 =============================================
+``fmu.sumo.sim2sumo`` is a python package for uploading results to Sumo.
+The package facilitates upload of results from reservoir simulators such as **eclipse**, **IX**, and **OPM flow** as arrow files.
 
 .. toctree::
    :maxdepth: 2
