@@ -203,8 +203,11 @@ def read_config(config, datafile=None, datatype=None):
     if datatype is None:
         try:
             submods = simconfig["datatypes"]
-            if submods == "all":
-                submods = SUBMODULES
+            if isinstance(submods, str):
+                if submods == "all":
+                    submods = SUBMODULES
+                else:
+                    submods = [submods]
         except KeyError:
             submods = defaults["datatypes"]
     else:
