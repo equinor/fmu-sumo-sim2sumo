@@ -2,7 +2,7 @@ fmu.sumo.sim2sumo
 #################
 
 Short introduction
-------------------------
+*******************
 .. note::
 
   **sim2sumo** couples together three packages often used in the FMU sphere.
@@ -32,22 +32,22 @@ To run sim2sumo with ert it needs to be inserted in your *ert config file* after
 .. _target preconditions:
 
 Preconditions
-----------------
+***************
 There are some requirements that need to be in place for sim2sumo to run
 
 * Sim2sumo needs to be run in from a location where it can find a case metadata object stored on disk.
 * The case metadata object must have been uploaded to Sumo, and in the same environment that you are intending to upload to
 
 Api Reference
--------------
+***************
 
 - `API reference <apiref/fmu.sumo.sim2sumo.html>`_
 
 
 Usage and examples
-------------------
+********************
 Simplest case: As a FORWARD_MODEL in ERT
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=========================================
 
 .. code-block::
 
@@ -63,9 +63,6 @@ Simplest case: As a FORWARD_MODEL in ERT
 
 .. _target config settings:
 
-Config settings
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
 The config file
 *****************
 
@@ -79,8 +76,12 @@ There are two parts in the global variables file that are relevant for sim2sumo:
    for fmu-sumo-uploader
 2. A section named sim2sumo. This section is not strictly needed, but needs to exist for custom configuration of sim2sumo, see :ref:`Custom configuration <target custom config>`
 
+Config settings
+********************
+
+
 Config file with non-standard name/location
-**********************************************
+==============================================
 If you for some reason don't have the fmu config file in the standard location or with the standard name, use this in you *ert-config*
 
 .. code-block::
@@ -95,14 +96,14 @@ See also :ref:`preconditions <target preconditions>`.
 .. _target custom config:
 
 Custom configuration
-*************************
+=====================
 
 The sim2sumo section in the config file gives you full flexibility for extracting anything that ``res2df`` can extract.
 You can also change where you extract results from, and even use all the extra custumization options that ``res2df`` has makes available.
 The three relevant sections are:
 
 *datafile*:
-~~~~~~~~~~~~~~~~
+--------------------
 This section is for configuring where you extract results from, meaning where to look for simulation results. This section can configured in several ways:
 
 1. As a path to a file, or file stub (without an extension):
@@ -130,7 +131,7 @@ This section is for configuring where you extract results from, meaning where to
 
 
 datatypes:
-~~~~~~~~~~
+----------------
 This section is for configuration of what data to extract. This section can be configured in several ways.
 
 1. As list:
@@ -154,16 +155,16 @@ This section is for configuration of what data to extract. This section can be c
 
 
 options:
-~~~~~~~~~~
+-------------
    | This section is for adding extra optional configuration for extracting the different datatypes.
    | This section needs to be in a list format
 
 
 Using sim2sumo in scripts
-------------------------------
+*********************************
 
 Exporting data from eclipse with metadata
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===========================================
 | This code exports summary data results from an eclipse simulation run.
 | Will export to the "prod" environment of Sumo.
 
@@ -180,13 +181,16 @@ Exporting data from eclipse with metadata
 See also :ref:`preconditions <target preconditions>`.
 
 Using sim2sumo from the command line
--------------------------------------------
+***************************************
 
    sim2sumo can be run from any terminal window where komodo is activated. For execution it is mostly not of any use,
    but can be useful to run in help mode
 
 Getting help on sim2sumo from the command line
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=================================================
+
+You can get help on sim2sumo from the command line. Here are some examples:
+
 
 .. code-block::
    :caption: Accessing the help information
@@ -194,10 +198,10 @@ Getting help on sim2sumo from the command line
    sim2sumo -h
 
 Getting help on sim2sumo available options for a datatype from the command line
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+================================================================================
 
 .. code-block::
-   :caption: Printing the help info from ``res2df`` from the command line
+   :caption: Printing the help info from ``res2df`` with sim2sumo from the command line
 
    sim2sumo help summary
 
