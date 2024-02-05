@@ -41,7 +41,7 @@ There are some requirements that need to be in place for sim2sumo to run
 Api Reference
 ***************
 
-- `API reference <apiref/fmu.sumo.sim2sumo.html>`_
+- `API reference <apiref/sim2sumo.sim2sumo.html>`_
 
 
 Usage and examples
