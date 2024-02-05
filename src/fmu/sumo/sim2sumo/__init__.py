@@ -1,5 +1,5 @@
 try:
-    from ._version import version
+    from .version import version
 
     __version__ = version
 except ImportError:
