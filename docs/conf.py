@@ -30,7 +30,7 @@ extensions = [
     "sphinx_autodoc_typehints",
 ]
 
-autodoc_mock_imports = ["sim2sumo"]
+autodoc_mock_imports = []
 
 os.environ["SPHINX_APIDOC_OPTIONS"] = (
     "members,show-inheritance,inherited-members"
