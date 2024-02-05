@@ -1,0 +1,31 @@
+# build and test some end points
+name: Build and deploy docs for fmu-sumo
+
+on:
+  pull_request:
+    branches: [main, read-the-docs]
+  push:
+    branches: [main, read-the-docs]
+
+jobs:
+  build_pywheels:
+    name: Build docs with Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install and build docs
+        run: |
+          pip install pip -U && pip install wheel -U
+          pip install .[docs]
+          sphinx-build docs build/sphinx/html
