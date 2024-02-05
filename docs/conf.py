@@ -36,7 +36,7 @@ os.environ["SPHINX_APIDOC_OPTIONS"] = (
     "members,show-inheritance,inherited-members"
 )
 # autoapi_modules: dict = {"sim2sumo": None}
-apidoc_module_dir = "../src/fmu/sumo/sim2sumo/"
+apidoc_module_dir = "../src/fmu/sumo/sim2sumo"
 
 apidoc_output_dir = "apiref"
 apidoc_excluded_paths = [
