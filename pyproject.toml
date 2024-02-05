@@ -29,6 +29,14 @@ test = ["pytest"]
 dev = ["pytest", "black", "flake8"]
 nokomodo = ["ert"]
 
+docs = [
+  "sphinx==6.2.1",
+  "sphinx-rtd-theme",
+  "autoapi",
+  "sphinx-autodoc-typehints",
+  "sphinxcontrib-apidoc",
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
