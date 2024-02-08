@@ -103,6 +103,15 @@ Config settings
 
 .. _target custom config:
 
+Example of config settings for sim2sumo
+============================================
+
+
+.. literalinclude:: ../tests/data/reek/realization-0/iter-0/fmuconfig/output/global_variables_w_eclpath_and_extras.yml
+   :language: yaml
+
+|
+
 Custom configuration
 =====================
 
@@ -230,8 +239,8 @@ You can get help on sim2sumo from the command line. Here are some examples:
 
    sim2sumo -h
 
-Accessing the help from ``res2df`` via sim2sumo
-================================================================================
+Accessing help from ``res2df`` via sim2sumo
+==============================================
 | There is extensive information on extraction of individual datatypes with ``res2df``.
 | This information can be accessed from sim2sumo.
 
