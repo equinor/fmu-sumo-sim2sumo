@@ -230,13 +230,13 @@ You can get help on sim2sumo from the command line. Here are some examples:
 
    sim2sumo -h
 
-Getting help on sim2sumo available options for a datatype from the command line
+Accessing the help from ``res2df`` via sim2sumo
 ================================================================================
 | There is extensive information on extraction of individual datatypes with ``res2df``.
 | This information can be accessed from sim2sumo.
 
 .. code-block::
-   :caption: Printing the help info from ``res2df`` with sim2sumo from the command line
+   :caption: Getting help on summary data from ``res2df`` with sim2sumo from the command line
 
    sim2sumo help summary
 
