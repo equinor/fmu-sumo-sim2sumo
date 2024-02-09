@@ -33,7 +33,12 @@ The package makes available export of all datatypes that you can export with ``r
 
 Preconditions
 ***************
-There are some requirements that need to be in place for sim2sumo to run
+
+.. important:: First time uploading to sumo
+
+   There are some requirements that need to be in place for sim2sumo to run, these are the same preparations that are required for any upload to sumo.
+   Read the (`fmu-dataio preparations section <https://fmu-dataio.readthedocs.io/en/latest/preparations.html>`__) thoroughly.
+
 
 * Sim2sumo needs to be run from a location where it can find a case metadata object stored on disk.
   This means that it needs to be run from within an fmu workflow with ``RUNPATH = <CASE_PATH>realization-<IENS>/iter-<ITER>``
