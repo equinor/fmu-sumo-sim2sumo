@@ -23,13 +23,13 @@ The package makes available export of all datatypes that you can export with ``r
 
 
 | To run sim2sumo with ert it needs to be inserted in your *ert config file* after the reservoir simulator run, this is typically an **eclipse** run.
-| See :ref:`examples <target examples>`.
+| See :ref:`examples`.
 
 .. note::
 
-   Sim2sumo as fmu-sumo-uploader uses the fmu-config file (aka global variables) to pick up required metadata. For more on this topic see :ref:`Config file <target config file>`
+   Sim2sumo as fmu-sumo-uploader uses the fmu-config file (aka global variables) to pick up required metadata. For more on this topic see :ref:`config file`
 
-.. _target preconditions:
+.. _preconditions:
 
 Preconditions
 ***************
@@ -53,9 +53,9 @@ These are the conditions that need to be in place when extracting results with s
 * The case metadata object must have been uploaded to Sumo, and to the same environment that you are intending to upload to.
   Default sumo environment is **prod**, and you should have a good reason for uploading elsewhere.
 
-* a :ref:`config file <target config file>` with the required metadata to identify the asset that the data is coming from.
+* a :ref:`config file <config file>` with the required metadata to identify the asset that the data is coming from.
 
-.. _target config file:
+.. _config file:
 
 The config file
 *****************
@@ -67,10 +67,10 @@ There are two 'parts' in the global variables file that are relevant for sim2sum
 1. The master data needed for the upload to sumo, that is the three sections model, masterdata, and access.
    These are absolutely neccessary, as with all uploads to sumo. More on this topic can be found in the documentation
    for fmu-sumo-uploader
-2. A section named sim2sumo. This section is not strictly needed, but needs to exist for custom configuration of sim2sumo, see :ref:`Custom configuration <target custom config>`
+2. A section named sim2sumo. This section is not strictly needed, but needs to exist for custom configuration of sim2sumo, see :ref:`custom config`
 
 
-.. _target examples:
+.. _examples:
 
 Usage and examples
 ********************
@@ -79,8 +79,8 @@ As a FORWARD_MODEL in ERT
 
 | All examples below extracts results to *share/results/tables*, and uploads those results to Sumo.
 | You don't need to have more than one instance of this job, it automatically extracts the default results.
-| If you want to include more datatypes add that to the configuration file, see :ref:`Config settings <target config settings>`,
-| See also :ref:`preconditions <target preconditions>`.
+| If you want to include more datatypes add that to the configuration file, see :ref:`config settings`,
+| See also :ref:`preconditions`.
 
 Simplest case
 -----------------
@@ -105,14 +105,11 @@ If you for some reason don't have the fmu config file in the standard location o
     -- Note: SIM2SUMO needs to be run after the reservoir simulation
     FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
 
-.. _target config settings:
-
-
+.. _config settings:
 
 Config settings
 ********************
 
-.. _target custom config:
 
 Example of config settings for sim2sumo
 ============================================
@@ -122,6 +119,8 @@ Example of config settings for sim2sumo
    :language: yaml
 
 |
+
+.. _custom config:
 
 Custom configuration
 =====================
@@ -208,7 +207,7 @@ Exporting data from eclipse with metadata
    SUBMODULE = "summary"
    s2s.upload_with_config(CONFIG_PATH, DATAFILE, SUBMODULE, "prod")
 
-See also :ref:`preconditions <target preconditions>`.
+See also :ref:`preconditions`.
 
 Using sim2sumo from the command line
 ***************************************
@@ -228,7 +227,7 @@ Extracting the default datatypes with sim2sumo
 
    sum2sumo execute --config_path fmuconfig/output/global_variables.yml --env dev
 
-See also :ref:`preconditions <target preconditions>`.
+See also :ref:`preconditions`.
 
 Extracting rft data from specified datafile with sim2sumo
 ----------------------------------------------------------------
