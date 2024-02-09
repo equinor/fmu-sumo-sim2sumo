@@ -234,7 +234,7 @@ Extracting rft data from specified datafile with sim2sumo
 ----------------------------------------------------------------
 
 .. code-block::
-   :caption: Accessing the help information
+   :caption: Extracting rft
 
    sum2sumo execute --config_path fmuconfig/output/global_variables.yml --datatype rft --datafile eclipse/model/DROGON-0.DATA
 
