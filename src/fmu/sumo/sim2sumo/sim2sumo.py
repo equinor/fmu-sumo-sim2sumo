@@ -53,6 +53,23 @@ def give_name(datafile_path: str) -> str:
     return base_name
 
 
+def fix_suffix(datafile_path: str):
+    """Check if suffix is .DATA, if not change to
+
+    Args:
+        datafile_path (str): path to check
+
+    Returns:
+        PosixPath: the corrected path
+    """
+    logger = logging.getLogger(__file__ + ".fix_suffix")
+    if not datafile_path.endswith(".DATA"):
+        corrected_path = re.sub(r"\..*", ".DATA", datafile_path)
+        logger.debug("Changing %s to %s", datafile_path, corrected_path)
+        datafile_path = corrected_path
+    return datafile_path
+
+
 def get_results(
     datafile_path: str, submod: str, print_help=False, **kwargs
 ) -> Union[pa.Table, pd.DataFrame]:
@@ -69,6 +86,7 @@ def get_results(
     logger = logging.getLogger(__file__ + ".get_dataframe")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
+    datafile_path = fix_suffix(datafile_path)
     output = None
     trace = None
     if print_help:
