@@ -1,4 +1,5 @@
 """Special treatment of some options used in res2df"""
+
 from inspect import signature
 import importlib
 import logging
@@ -9,6 +10,7 @@ import pandas as pd
 import pyarrow as pa
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
+
 
 def convert_to_arrow(frame):
     """Convert pd.DataFrame to arrow
@@ -23,13 +25,17 @@ def convert_to_arrow(frame):
     logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(frame["DATE"], infer_datetime_format=True)
+        frame["DATE"] = pd.to_datetime(
+            frame["DATE"], infer_datetime_format=True
+        )
     scheme = []
     for column_name in frame.columns:
         if pd.api.types.is_string_dtype(frame[column_name]):
             scheme.append((column_name, pa.string()))
         else:
-            scheme.append((column_name, standard.get(column_name, pa.float32())))
+            scheme.append(
+                (column_name, standard.get(column_name, pa.float32()))
+            )
     logger.debug(scheme)
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
@@ -48,7 +54,7 @@ def find_arrow_convertor(path):
     try:
         func = importlib.import_module(path)._df2pyarrow
     except AttributeError:
-        logger.info(
+        logger.debug(
             "No premade function for converting to arrow in %s",
             path,
         )
@@ -112,8 +118,12 @@ def _define_submodules():
         except AttributeError:
             logger.debug("No df function in %s", submod_path)
 
-    logger.debug("Returning the submodule names as a list: %s ", submodules.keys())
-    logger.debug("Returning the submodules extra args as a dictionary: %s ", submodules)
+    logger.debug(
+        "Returning the submodule names as a list: %s ", submodules.keys()
+    )
+    logger.debug(
+        "Returning the submodules extra args as a dictionary: %s ", submodules
+    )
 
     return tuple(submodules.keys()), submodules
 

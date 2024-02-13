@@ -82,6 +82,11 @@ def get_results(
         }
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
+            logger.info(
+                "Extracting data from %s with %s",
+                datafile_path,
+                extract_df.__name__,
+            )
             output = extract_df(
                 res2df.ResdataFiles(datafile_path),
                 **convert_options(right_kwargs),
