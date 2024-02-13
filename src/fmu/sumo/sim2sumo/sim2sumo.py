@@ -1,4 +1,5 @@
 """Export with metadata"""
+
 import sys
 import re
 from typing import Union
@@ -445,9 +446,11 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
+    logger.debug("Running with arguments %s", args)
     try:
         print(give_help(args.help_on))
     except AttributeError:
+        logger.info("Will be extracting results")
         upload_with_config(
             args.config_path, args.datafile, args.datatype, args.env
         )
