@@ -3,7 +3,7 @@
 import sys
 import re
 from typing import Union
-from pathlib import Path
+from pathlib import Path, PosixPath
 import logging
 import argparse
 import pandas as pd
@@ -194,7 +194,7 @@ def read_config(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     defaults = {
-        "datafile": "eclipse/model/",
+        "datafile": ["eclipse/model/", "ix/model/", "opm/model/"],
         "datatypes": ["summary", "rft", "satfunc"],
         "options": {"arrow": True},
     }
@@ -207,23 +207,9 @@ def read_config(config, datafile=None, datatype=None):
         simconfig = defaults
     if isinstance(simconfig, bool):
         simconfig = defaults
-    if datafile is None:
-        datafile = simconfig.get("datafile", "eclipse/model/")
 
-    if isinstance(datafile, str):
-        logger.debug("Using this string %s to find datafile(s)", datafile)
-        datafile_posix = Path(datafile)
-        if datafile_posix.is_dir():
-            logger.debug("Directory, globbing for datafiles")
-            datafiles = list(datafile_posix.glob("*.DATA"))
+    datafiles = find_datafiles(datafile, simconfig)
 
-        else:
-            logger.debug("File path, will just use this one")
-            datafiles = [datafile]
-    else:
-        logger.debug("String is list")
-        datafiles = datafile
-    logger.debug("Datafile(s) to use %s", datafiles)
     if datatype is None:
         try:
             submods = simconfig["datatypes"]
@@ -248,6 +234,45 @@ def read_config(config, datafile=None, datatype=None):
         options,
     )
     return datafiles, submods, options
+
+
+def find_datafiles(datafile, simconfig):
+    """Find all relevant paths that can be datafiles
+
+    Args:
+        datafile (str, list): path of datafile, or list of folders where one can find one
+        simconfig (dict):
+
+    Returns:
+        list: list of datafiles to interrogate
+    """
+
+    logger = logging.getLogger(__file__ + ".find_datafiles")
+    datafiles = []
+    if datafile is None:
+        datafile = simconfig["datafile"]
+
+    if isinstance(datafile, (str, PosixPath)):
+        logger.debug("Using this string %s to find datafile(s)", datafile)
+        datafile_posix = Path(datafile)
+
+        if datafile_posix.is_dir():
+            logger.debug("%s is directory, globbing for datafiles", datafile)
+            glob_list = list(datafile_posix.glob("*.DATA")) + list(
+                datafile_posix.glob("*.afi")
+            )
+            logger.debug("Results are %s", glob_list)
+            datafiles.extend(find_datafiles(glob_list, simconfig))
+
+        else:
+            logger.debug("%s is file path, will just use this one", datafile)
+            datafiles.append(datafile)
+    else:
+        logger.debug("%s is list", datafile)
+        for item in datafile:
+            datafiles.extend(find_datafiles(item, simconfig))
+    logger.debug("Datafile(s) to use %s", datafiles)
+    return datafiles
 
 
 def export_with_config(config_path, datafile=None, datatype=None):
