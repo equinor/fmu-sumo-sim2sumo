@@ -194,7 +194,12 @@ def read_config(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     defaults = {
-        "datafile": ["eclipse/model/", "ix/model/", "opm/model/"],
+        "datafile": [
+            "eclipse/model/",
+            "ix/model/",
+            "opm/model/",
+            "pflotran/model",
+        ],
         "datatypes": ["summary", "rft", "satfunc"],
         "options": {"arrow": True},
     }
@@ -258,9 +263,12 @@ def find_datafiles(datafile, simconfig):
 
         if datafile_posix.is_dir():
             logger.debug("%s is directory, globbing for datafiles", datafile)
-            glob_list = list(datafile_posix.glob("*.DATA")) + list(
-                datafile_posix.glob("*.afi")
+            glob_list = (
+                list(datafile_posix.glob("*.DATA"))
+                + list(datafile_posix.glob("*.afi"))
+                + list(datafile_posix.glob("*.in"))
             )
+
             logger.debug("Results are %s", glob_list)
             datafiles.extend(find_datafiles(glob_list, simconfig))
 
