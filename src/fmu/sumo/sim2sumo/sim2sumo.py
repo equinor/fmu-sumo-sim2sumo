@@ -1,18 +1,20 @@
 """Export with metadata"""
 
-import sys
-import re
-from typing import Union
-from pathlib import Path, PosixPath
-import logging
 import argparse
+import logging
+import re
+import sys
+from pathlib import Path, PosixPath
+from typing import Union
+
 import pandas as pd
-import res2df
 import pyarrow as pa
+import res2df
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
+
+from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
