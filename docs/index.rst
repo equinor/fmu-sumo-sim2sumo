@@ -12,7 +12,12 @@ The package facilitates upload of results from reservoir simulators such as **ec
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: fmu.sumo.sim2sumo
+   self
+   sim2sumo
+
+API
+===
+.. automodule:: fmu.sumo.sim2sumo.sim2sumo
    :members:
    :undoc-members:
    :show-inheritance:
