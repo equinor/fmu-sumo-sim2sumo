@@ -260,14 +260,6 @@ Accessing help from ``res2df`` via sim2sumo
    sim2sumo help summary
 
 
-Api Reference
-***************
-
-- `API reference <apiref/sim2sumo.sim2sumo.html>`_
-
-
-
-
 
 
 

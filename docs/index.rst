@@ -14,17 +14,4 @@ The package facilitates upload of results from reservoir simulators such as **ec
 
    self
    sim2sumo
-
-API
-===
-.. automodule:: fmu.sumo.sim2sumo.sim2sumo
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-   Indices and tables
-   ==================
-
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
+   api
