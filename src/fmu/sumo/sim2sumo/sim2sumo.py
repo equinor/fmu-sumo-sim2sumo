@@ -1,4 +1,10 @@
-"""Export with metadata"""
+"""Module for uploading tabular data from reservoir simulators to sumo
+   Does three things:
+   1. Extracts data from simulator to arrow files
+   2. Adds the required metadata while exporting to disc
+   3. Uploads to Sumo
+"""
+
 import sys
 import re
 from typing import Union
