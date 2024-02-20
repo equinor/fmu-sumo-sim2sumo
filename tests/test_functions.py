@@ -1,4 +1,5 @@
 """Test utility ecl2csv"""
+
 import sys
 import os
 from time import sleep
@@ -8,7 +9,10 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 from fmu.sumo.sim2sumo import sim2sumo
-from fmu.sumo.sim2sumo._special_treatments import _define_submodules, convert_to_arrow
+from fmu.sumo.sim2sumo._special_treatments import (
+    _define_submodules,
+    convert_to_arrow,
+)
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -37,7 +41,9 @@ def test_submodules_dict():
         LOGGER.info(submod_name)
         LOGGER.info(submod_dict)
         assert isinstance(submod_name, str)
-        assert "/" not in submod_name, f"Left part of folder path for {submod_name}"
+        assert (
+            "/" not in submod_name
+        ), f"Left part of folder path for {submod_name}"
         assert isinstance(submod_dict, dict), f"{submod_name} has no subdict"
         assert (
             "options" in submod_dict.keys()
@@ -79,7 +85,9 @@ def test_get_results(submod):
 def test_export_results(tmp_path, submod):
     """Test writing of csv file"""
     os.chdir(tmp_path)
-    export_path = tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    export_path = (
+        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    )
     meta_path = export_path.parent / f".{export_path.name}.yml"
     actual_path = sim2sumo.export_results(
         REEK_DATA_FILE,
@@ -98,7 +106,9 @@ def test_export_results(tmp_path, submod):
 def test_export_results_w_options(tmp_path, submod="summary"):
     """Test writing of csv file"""
     os.chdir(tmp_path)
-    export_path = tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    export_path = (
+        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    )
     key_args = {
         "time_index": "daily",
         "start_date": "2002-01-02",
@@ -136,7 +146,7 @@ CHECK_DICT = {
         "arrow": False,
     },
     "global_variables.yml": {
-        "nrdatafile": 2,
+        "nrdatafile": 5,
         "nrsubmods": 3,
         "nroptions": 1,
         "arrow": True,
@@ -179,7 +189,9 @@ def test_read_config(config_path):
     _assert_right_len(checks, "nrsubmods", submods, name)
     _assert_right_len(checks, "nroptions", opts, name)
 
-    assert opts["arrow"] == checks["arrow"], f"Wrong choice for arrow for {name}"
+    assert (
+        opts["arrow"] == checks["arrow"]
+    ), f"Wrong choice for arrow for {name}"
 
 
 @pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
