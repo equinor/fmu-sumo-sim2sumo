@@ -1,8 +1,14 @@
-"""Export with metadata"""
+"""Module for uploading tabular data from reservoir simulators to sumo
+   Does three things:
+   1. Extracts data from simulator to arrow files
+   2. Adds the required metadata while exporting to disc
+   3. Uploads to Sumo
+"""
+
 import sys
 import re
 from typing import Union
-from pathlib import Path
+from pathlib import Path, PosixPath
 import logging
 import argparse
 import pandas as pd
@@ -16,7 +22,7 @@ from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 
-def yaml_load(file_name):
+def yaml_load(file_name: str) -> dict:
     """Load yaml config file into dict
 
     Args:
@@ -155,7 +161,7 @@ def export_results(
     return exp_path
 
 
-def read_config(config, datafile=None, datatype=None):
+def read_config(config, datafile=None, datatype=None) -> tuple:
     """Read config settings
 
     Args:
@@ -163,7 +169,7 @@ def read_config(config, datafile=None, datatype=None):
         kwargs (dict): overiding settings
 
     Returns:
-        tuple: datafiles as list, submodules to use as list, and options as kwargs
+        tuple: datafiles as list, submodules to use as list, and options as dict
     """
     # datafile can be read as list, or string which can be either folder or filepath
     logger = logging.getLogger(__file__ + ".read_config")
@@ -203,8 +209,11 @@ def read_config(config, datafile=None, datatype=None):
     if datatype is None:
         try:
             submods = simconfig["datatypes"]
-            if submods == "all":
-                submods = SUBMODULES
+            if isinstance(submods, str):
+                if submods == "all":
+                    submods = SUBMODULES
+                else:
+                    submods = [submods]
         except KeyError:
             submods = defaults["datatypes"]
     else:
@@ -226,7 +235,7 @@ def read_config(config, datafile=None, datatype=None):
     return datafiles, submods, options
 
 
-def export_with_config(config_path, datafile=None, datatype=None):
+def export_with_config(config_path, datafile=None, datatype=None) -> tuple:
     """Export several datatypes with yaml config file
 
     Args:
@@ -268,10 +277,10 @@ def export_with_config(config_path, datafile=None, datatype=None):
 
 
 def upload(
-    upload_folder,
-    suffixes,
-    env="prod",
-    threads=5,
+    upload_folder: str,
+    suffixes: list,
+    env: str = "prod",
+    threads: int = 5,
     start_del="real",
     config_path="fmuconfig/output/global_variables.yml",
 ):
@@ -306,7 +315,7 @@ def upload(
         logger.warning("Nothing to export..")
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """Parse arguments for command line tool
 
     Returns:
@@ -364,7 +373,7 @@ def parse_args():
     return args
 
 
-def give_help(submod, only_general=False):
+def give_help(submod: Union[None, str], only_general: bool = False) -> str:
     """Give descriptions of variables available for submodule
 
     Args:
@@ -399,7 +408,9 @@ def give_help(submod, only_general=False):
     return text_to_return
 
 
-def upload_with_config(config_path, datafile, datatype, env):
+def upload_with_config(
+    config_path: str, datafile: Union[str, PosixPath], datatype: str, env: str
+):
     """Upload simulator results to sumo
 
     Args:
