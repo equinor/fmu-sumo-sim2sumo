@@ -48,6 +48,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+html_logo = "_static/equinor-logo2.jpg"
 
 html_theme_options = {
     "style_nav_header_background": "#C0C0C0",
