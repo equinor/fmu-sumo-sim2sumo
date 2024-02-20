@@ -37,7 +37,7 @@ Preconditions
 .. important:: **First time uploading to sumo?**
 
    There are some requirements that need to be in place for sim2sumo to run, these are the same preparations that are required for any upload to sumo.
-   Read the (`fmu-dataio preparations section <https://fmu-dataio.readthedocs.io/en/latest/preparations.html>`__) thoroughly.
+   Read the `fmu-dataio preparations section <https://fmu-dataio.readthedocs.io/en/latest/preparations.html>`_ thoroughly.
 
 These are the conditions that need to be in place when extracting results with sim2sumo.
 
