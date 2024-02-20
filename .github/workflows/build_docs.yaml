@@ -3,9 +3,9 @@ name: Build and deploy docs for fmu-sumo
 
 on:
   pull_request:
-    branches: [main, readthedocs]
+    branches: [main]
   push:
-    branches: [main, readthedocs]
+    branches: [main]
 
 jobs:
   build_pywheels:
