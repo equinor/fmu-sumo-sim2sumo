@@ -66,8 +66,27 @@ There are two 'parts' in the global variables file that are relevant for sim2sum
 
 1. The master data needed for the upload to sumo, that is the three sections model, masterdata, and access.
    These are absolutely neccessary, as with all uploads to sumo. More on this topic can be found in the documentation
-   for fmu-sumo-uploader
+   for ``fmu-dataio``, see :ref:`preconditions`
+
 2. A section named sim2sumo. This section is not strictly needed, but needs to exist for custom configuration of sim2sumo, see :ref:`custom config`
+
+.. important::
+
+   If you need to configure sim2sumo for your needs it is strongly encouraged to to add the sim2sumo section to a *_sim2sumo.yml* file and link this into the file *global_master.yml* config file before
+   you generate the *global_variables.yml* and *global_variables.yml.tmpl* files.
+
+   Example:
+    .. code-block:: yaml
+
+      [...]
+
+      (rest of global_variables master file)
+
+      #===================================================================================
+      # Sim2sumo config settings
+      #===================================================================================
+
+      sim2sumo: !include _sim2sumo.yml
 
 
 .. _examples:
