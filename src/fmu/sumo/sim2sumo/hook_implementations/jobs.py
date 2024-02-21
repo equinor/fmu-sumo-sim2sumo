@@ -1,4 +1,5 @@
 """Install in ert, including documentation to ert-docs"""
+
 import importlib
 import os
 import sys
