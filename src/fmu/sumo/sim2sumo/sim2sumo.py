@@ -240,11 +240,11 @@ def find_datatypes(datatype, simconfig):
     return submods
 
 
-def find_datafiles(datafile, simconfig):
+def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
     Args:
-        datafile (str, list): path of datafile, or list of folders where one can find one
+        seedpoint (str, list): path of datafile, or list of folders where one can find one
         simconfig (dict): the sim2sumo config settings
 
     Returns:
@@ -253,8 +253,9 @@ def find_datafiles(datafile, simconfig):
 
     logger = logging.getLogger(__file__ + ".find_datafiles")
     datafiles = []
-    if datafile is None:
-        datafile = simconfig.get(
+
+    if seedpoint is None:
+        seedpoint = simconfig.get(
             "datafile",
             [
                 "eclipse/model/",
@@ -264,27 +265,27 @@ def find_datafiles(datafile, simconfig):
             ],
         )
 
-    if isinstance(datafile, (str, PosixPath)):
-        logger.debug("Using this string %s to find datafile(s)", datafile)
-        datafile_posix = Path(datafile)
+    if isinstance(seedpoint, (str, PosixPath)):
+        logger.debug("Using this string %s to find datafile(s)", seedpoint)
+        seedpoint_posix = Path(seedpoint)
 
-        if datafile_posix.is_dir():
-            logger.debug("%s is directory, globbing for datafiles", datafile)
+        if seedpoint_posix.is_dir():
+            logger.debug("%s is directory, globbing for datafiles", seedpoint)
             glob_list = (
-                list(datafile_posix.glob("*.DATA"))
-                + list(datafile_posix.glob("*.afi"))
-                + list(datafile_posix.glob("*.in"))
+                list(seedpoint_posix.glob("*.DATA"))
+                + list(seedpoint_posix.glob("*.afi"))
+                + list(seedpoint_posix.glob("*.in"))
             )
 
             logger.debug("Results are %s", glob_list)
             datafiles.extend(find_datafiles(glob_list, simconfig))
 
         else:
-            logger.debug("%s is file path, will just use this one", datafile)
-            datafiles.append(datafile)
+            logger.debug("%s is file path, will just use this one", seedpoint)
+            datafiles.append(seedpoint)
     else:
-        logger.debug("%s is list", datafile)
-        for item in datafile:
+        logger.debug("%s is list", seedpoint)
+        for item in seedpoint:
             datafiles.extend(find_datafiles(item, simconfig))
     logger.debug("Datafile(s) to use %s", datafiles)
     return datafiles
