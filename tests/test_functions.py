@@ -31,6 +31,32 @@ logging.basicConfig(
 LOGGER = logging.getLogger(__file__)
 
 
+def test_fix_suffix():
+
+    test_path = "simulator.banana"
+    corrected_path = sim2sumo.fix_suffix(test_path)
+    assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
+
+
+def test_find_datafiles_reek():
+    os.chdir(REEK_REAL)
+    datafiles = sim2sumo.find_datafiles(None, {})
+    expected_tools = ["eclipse", "opm", "ix", "pflotran"]
+    assert (
+        len(datafiles) == 5
+    ), f"Haven't found all 5 files only {len(datafiles)} ({datafiles})"
+    for datafile in datafiles:
+        found_path = datafile
+        parent = found_path.parent.parent.name
+        assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
+        correct_suff = ".DATA"
+        if parent == "ix":
+            correct_suff = ".afi"
+        if parent == "pflotran":
+            correct_suff = ".in"
+        assert found_path.suffix == correct_suff
+
+
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
