@@ -1,12 +1,13 @@
 """Special treatment of some options used in res2df"""
-from inspect import signature
 import importlib
 import logging
+from inspect import signature
 from pathlib import Path
-import res2df
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
+
 import pandas as pd
 import pyarrow as pa
+import res2df
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
