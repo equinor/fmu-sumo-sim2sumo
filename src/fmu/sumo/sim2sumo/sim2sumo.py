@@ -240,6 +240,22 @@ def find_datatypes(datatype, simconfig):
     return submods
 
 
+def is_datafile(results: PosixPath) -> bool:
+    """Filter results based on suffix
+
+    Args:
+        results (PosixPath): path to file
+
+    Returns:
+        bool: true if correct suffix
+    """
+    valid = [".afi", ".DATA", ".in"]
+    check = False
+    if results.suffix in valid:
+        check = True
+    return check
+
+
 def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
@@ -253,40 +269,19 @@ def find_datafiles(seedpoint, simconfig):
 
     logger = logging.getLogger(__file__ + ".find_datafiles")
     datafiles = []
-
+    seedpoint = simconfig.get("datafile", seedpoint)
     if seedpoint is None:
-        seedpoint = simconfig.get(
-            "datafile",
-            [
-                "eclipse/model/",
-                "ix/model/",
-                "opm/model/",
-                "pflotran/model",
-            ],
-        )
+        datafiles = list(filter(is_datafile, Path().cwd().glob("*/model/*.*")))
 
-    if isinstance(seedpoint, (str, PosixPath)):
+    elif isinstance(seedpoint, (str, PosixPath)):
         logger.debug("Using this string %s to find datafile(s)", seedpoint)
         seedpoint_posix = Path(seedpoint)
-
-        if seedpoint_posix.is_dir():
-            logger.debug("%s is directory, globbing for datafiles", seedpoint)
-            glob_list = (
-                list(seedpoint_posix.glob("*.DATA"))
-                + list(seedpoint_posix.glob("*.afi"))
-                + list(seedpoint_posix.glob("*.in"))
-            )
-
-            logger.debug("Results are %s", glob_list)
-            datafiles.extend(find_datafiles(glob_list, simconfig))
-
-        else:
+        if seedpoint_posix.is_file():
             logger.debug("%s is file path, will just use this one", seedpoint)
             datafiles.append(seedpoint)
     else:
         logger.debug("%s is list", seedpoint)
-        for item in seedpoint:
-            datafiles.extend(find_datafiles(item, simconfig))
+        datafiles.extend(seedpoint)
     logger.debug("Datafile(s) to use %s", datafiles)
     return datafiles
 

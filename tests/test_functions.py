@@ -17,11 +17,12 @@ from fmu.sumo.sim2sumo._special_treatments import (
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"
-REEK_REAL = REEK_ROOT / REAL_PATH
+REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
+REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
 REEK_BASE = "2_R001_REEK"
-REEK_ECL_MODEL = REEK_REAL / "eclipse/model/"
+REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
 REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL / "fmuconfig/output/"
+CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
 CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
 
 
@@ -38,13 +39,14 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-def test_find_datafiles_reek():
-    os.chdir(REEK_REAL)
+@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 5), (REEK_REAL1, 1)])
+def test_find_datafiles_reek(real, nrdfiles):
+    os.chdir(real)
     datafiles = sim2sumo.find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
-        len(datafiles) == 5
-    ), f"Haven't found all 5 files only {len(datafiles)} ({datafiles})"
+        len(datafiles) == nrdfiles
+    ), f"Haven't found all {nrdfiles} files only {len(datafiles)} ({datafiles})"
     for datafile in datafiles:
         found_path = datafile
         parent = found_path.parent.parent.name
@@ -200,7 +202,7 @@ def _assert_right_len(checks, key, to_messure, name):
 @pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
 def test_read_config(config_path):
     """Test reading of config file via read_config function"""
-    os.chdir(REEK_REAL)
+    os.chdir(REEK_REAL0)
     LOGGER.info(config_path)
     config = sim2sumo.yaml_load(config_path)
     assert isinstance(config, (dict, bool))
