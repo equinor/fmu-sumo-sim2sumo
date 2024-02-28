@@ -1,16 +1,18 @@
-"""Module for uploading tabular data from reservoir simulators to sumo
+"""Module for uploading tabular data from reservoir simulators to Sumo
    Does three things:
    1. Extracts data from simulator to arrow files
-   2. Adds the required metadata while exporting to disc
+   2. Exports to disk using fmu-dataio to produce rich metadata
    3. Uploads to Sumo
 """
 
+import os
 import argparse
 import logging
 import re
 import sys
 from pathlib import Path, PosixPath
 from typing import Union
+import getpass
 
 import pandas as pd
 import pyarrow as pa
@@ -412,6 +414,11 @@ def parse_args():
         default=None,
         help="Override datafile setting, intented for testing only",
     )
+    exec_parser.add_argument(
+        "--emulate_ert",
+        action="store_true",
+        help="Development tool: Emulate ERT by setting environment variables.",
+    )
     help_parser.add_argument(
         "help_on",
         type=str,
@@ -439,9 +446,9 @@ def give_help(submod, only_general=False):
         str: description of submodule input
     """
     general_info = """
-    This utility uses the library ecl2csv, but uploads directly to sumo. Required options are:
+    This utility uses the library ecl2csv, but uploads directly to Sumo. Required options are:
     A config file in yaml format, where you specifiy the variables to extract. What is required
-    is a keyword in the config called "sim2simo". under there you have three optional arguments:
+    is a keyword in the config called "sim2sumo". under there you have three optional arguments:
     * datafile: this can be a string, a list, or it can be absent altogether
     * datatypes: this needs to be a list, or non existent
     * options: The options are listed below in the original documentation from ecl2csv. The eclfiles
@@ -486,8 +493,14 @@ def upload_with_config(config_path, datafile, datatype, env):
 def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
+    logging.basicConfig()
     args = parse_args()
     logger.debug("Running with arguments %s", args)
+
+    if args.emulate_ert:
+        logger.warning("Emulating ERT by setting environment variables!")
+        emulate_ert()
+
     try:
         print(give_help(args.help_on))
     except AttributeError:
@@ -495,6 +508,74 @@ def main():
         upload_with_config(
             args.config_path, args.datafile, args.datatype, args.env
         )
+
+
+def emulate_ert():
+    """Emulate that we are being ran by ERT, for development purposes.
+
+    When running, ERT will set certain environment variables. fmu-dataio will use these
+    environment variables to detect if it is being ran in FMU runtime or not. In case
+    of the latter, fmu-dataio will not produce valid metadata (no FMU content can be
+    derived).
+
+    For development purposes, we sometimes want to invoke sim2sumo directly as an
+    executable. For fmu-dataio to work when we do this, we need to emulate being in an
+    ERT run by setting the same environment variables.
+
+    This method is invoked by using the --emulate_ert flag on the sim2sumo executable.
+
+    Will raise if ERT environment variables are already set.
+    """
+
+    # Check if environment variables already exists, and raise if they do.
+    # We don't want sim2sumo to overwrite these variables if invoked during an actual
+    # FMU run.
+
+    if os.getenv("_ERT_ENSEMBLE_ID") or os.getenv("_ERT_RUNPATH"):
+        raise RuntimeError(
+            "The --emulate_ert argument was called, but ERT environment variables are "
+            "already set. Do not use the --emulate_ert flag while in an ERT run."
+        )
+
+    user = getpass.getuser()
+
+    # Set mock values for ENSEMBLE_ID and EXPERIMENT_ID
+    os.environ["_ERT_EXPERIMENT_ID"] = f"tmp-sim2sumo-{user}"
+    os.environ["_ERT_ENSEMBLE_ID"] = f"tmp-sim2sumo-{user}"
+
+    # Set real-ish values for RUNPATH, REALIZATION_NUMBER and ITERATION_NUMBER
+    os.environ["_ERT_RUNPATH"] = os.getcwd()
+
+    # Derivation of realization- and iteration-id's is assuming the conventional path
+    # i.e. /scratch/asset/user/case/realization/iteration
+    folders = [folder for folder in os.getcwd().split("/") if folder]
+
+    for f, folder in enumerate(folders):
+        if folder and re.match("^realization-.", folder):
+            realfolder = folders[f]
+            iterfolder = folders[f + 1]
+
+    os.environ["_ERT_REALIZATION_NUMBER"] = realfolder.replace(
+        "realization-", ""
+    )
+
+    if iterfolder.startswith("iter-"):
+        iter_id = iterfolder.replace("iter-", "")
+    else:
+        iter_id = None
+
+    os.environ["_ERT_ITERATION_NUMBER"] = iter_id
+
+    logger = logging.getLogger(__file__ + ".emulate_ert")
+    logging.basicConfig()
+    logger.setLevel(logging.INFO)
+
+    logger.info("Environment vars set:")
+    logger.info(f"{os.getenv('_ERT_EXPERIMENT_ID')=}")
+    logger.info(f"{os.getenv('_ERT_ENSEMBLE_ID')=}")
+    logger.info(f"{os.getenv('_ERT_REALIZATION_NUMBER')=}")
+    logger.info(f"{os.getenv('_ERT_ITERATION_NUMBER')=}")
+    logger.info(f"{os.getenv('_ERT_RUNPATH')=}")
 
 
 if __name__ == "__main__":
