@@ -250,10 +250,7 @@ def is_datafile(results: PosixPath) -> bool:
         bool: true if correct suffix
     """
     valid = [".afi", ".DATA", ".in"]
-    check = False
-    if results.suffix in valid:
-        check = True
-    return check
+    return results.suffix in valid
 
 
 def find_datafiles(seedpoint, simconfig):
