@@ -1,4 +1,4 @@
-name: Build and test fmu-sumo-uploader
+name: Build and test fmu-sumo-sim2sumo
 
 on:
   pull_request:
