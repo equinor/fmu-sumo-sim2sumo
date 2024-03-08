@@ -1,5 +1,5 @@
 # build and test some end points
-name: Build and deploy docs for fmu-sumo
+name: Build and deploy docs for fmu-sumo-sim2sumo
 
 on:
   pull_request:
