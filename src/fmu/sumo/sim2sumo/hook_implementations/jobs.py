@@ -1,12 +1,11 @@
 """Install in ert, including documentation to ert-docs"""
-import importlib
+
 import os
 import sys
 from pathlib import Path
 
 from ert.shared.plugins.plugin_manager import hook_implementation
 from ert.shared.plugins.plugin_response import plugin_response
-
 
 DESCRIPTION = """
 Makes result simulator (Eclipse, OPM, IX) available in sumo.

@@ -1,17 +1,25 @@
-"""Export with metadata"""
-import sys
-import re
-from typing import Union
-from pathlib import Path
-import logging
+"""Module for uploading tabular data from reservoir simulators to sumo
+   Does three things:
+   1. Extracts data from simulator to arrow files
+   2. Adds the required metadata while exporting to disc
+   3. Uploads to Sumo
+"""
+
 import argparse
+import logging
+import re
+import sys
+from pathlib import Path, PosixPath
+from typing import Union
+
 import pandas as pd
-import res2df
 import pyarrow as pa
+import res2df
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
-from ._special_treatments import SUBMODULES, SUBMOD_DICT, convert_options, tidy
+
+from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -53,6 +61,24 @@ def give_name(datafile_path: str) -> str:
     return base_name
 
 
+def fix_suffix(datafile_path: str):
+    """Check if suffix is .DATA, if not change to
+
+    Args:
+        datafile_path (PosixPath): path to check
+
+    Returns:
+        str: the corrected path
+    """
+    logger = logging.getLogger(__file__ + ".fix_suffix")
+    string_datafile_path = str(datafile_path)
+    if not string_datafile_path.endswith(".DATA"):
+        corrected_path = re.sub(r"\..*", ".DATA", string_datafile_path)
+        logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
+        datafile_path = corrected_path
+    return datafile_path
+
+
 def get_results(
     datafile_path: str, submod: str, print_help=False, **kwargs
 ) -> Union[pa.Table, pd.DataFrame]:
@@ -69,6 +95,7 @@ def get_results(
     logger = logging.getLogger(__file__ + ".get_dataframe")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
+    datafile_path = fix_suffix(datafile_path)
     output = None
     trace = None
     if print_help:
@@ -82,6 +109,11 @@ def get_results(
         }
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
+            logger.info(
+                "Extracting data from %s with %s",
+                datafile_path,
+                extract_df.__name__,
+            )
             output = extract_df(
                 res2df.ResdataFiles(datafile_path),
                 **convert_options(right_kwargs),
@@ -169,54 +201,15 @@ def read_config(config, datafile=None, datatype=None):
     logger = logging.getLogger(__file__ + ".read_config")
     logger.debug("Input config keys are %s", config.keys())
 
-    defaults = {
-        "datafile": "eclipse/model/",
-        "datatypes": ["summary", "rft", "satfunc"],
-        "options": {"arrow": True},
-    }
-    try:
-        simconfig = config["sim2sumo"]
-    except KeyError:
-        logger.warning(
-            "No specification in config, will use defaults %s", defaults
-        )
-        simconfig = defaults
+    simconfig = config.get("sim2sumo", {})
     if isinstance(simconfig, bool):
-        simconfig = defaults
-    if datafile is None:
-        datafile = simconfig.get("datafile", "eclipse/model/")
+        simconfig = {}
+    datafiles = find_datafiles(datafile, simconfig)
 
-    if isinstance(datafile, str):
-        logger.debug("Using this string %s to find datafile(s)", datafile)
-        datafile_posix = Path(datafile)
-        if datafile_posix.is_dir():
-            logger.debug("Directory, globbing for datafiles")
-            datafiles = list(datafile_posix.glob("*.DATA"))
+    submods = find_datatypes(datatype, simconfig)
 
-        else:
-            logger.debug("File path, will just use this one")
-            datafiles = [datafile]
-    else:
-        logger.debug("String is list")
-        datafiles = datafile
-    logger.debug("Datafile(s) to use %s", datafiles)
-    if datatype is None:
-        try:
-            submods = simconfig["datatypes"]
-            if submods == "all":
-                submods = SUBMODULES
-        except KeyError:
-            submods = defaults["datatypes"]
-    else:
-        submods = [datatype]
+    options = simconfig.get("options", {"arrow": True})
 
-    try:
-        options = simconfig["options"]
-        logger.info("Will use these options %s", options)
-    except KeyError:
-        logger.info("No special options selected")
-        options = {}
-    options["arrow"] = options.get("arrow", True)
     logger.info(
         "Running with: datafile(s): \n%s \n Types: \n %s \noptions:\n %s",
         datafiles,
@@ -224,6 +217,70 @@ def read_config(config, datafile=None, datatype=None):
         options,
     )
     return datafiles, submods, options
+
+
+def find_datatypes(datatype, simconfig):
+    """Find datatypes to extract
+
+    Args:
+        datatype (str or None): datatype to extract
+        simconfig (dict): the config file settings
+
+    Returns:
+        list or dict: data types to extract
+    """
+
+    if datatype is None:
+        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+
+        if submods == "all":
+            submods = SUBMODULES
+    else:
+        submods = [datatype]
+    return submods
+
+
+def is_datafile(results: PosixPath) -> bool:
+    """Filter results based on suffix
+
+    Args:
+        results (PosixPath): path to file
+
+    Returns:
+        bool: true if correct suffix
+    """
+    valid = [".afi", ".DATA", ".in"]
+    return results.suffix in valid
+
+
+def find_datafiles(seedpoint, simconfig):
+    """Find all relevant paths that can be datafiles
+
+    Args:
+        seedpoint (str, list): path of datafile, or list of folders where one can find one
+        simconfig (dict): the sim2sumo config settings
+
+    Returns:
+        list: list of datafiles to interrogate
+    """
+
+    logger = logging.getLogger(__file__ + ".find_datafiles")
+    datafiles = []
+    seedpoint = simconfig.get("datafile", seedpoint)
+    if seedpoint is None:
+        datafiles = list(filter(is_datafile, Path().cwd().glob("*/model/*.*")))
+
+    elif isinstance(seedpoint, (str, PosixPath)):
+        logger.debug("Using this string %s to find datafile(s)", seedpoint)
+        seedpoint_posix = Path(seedpoint)
+        if seedpoint_posix.is_file():
+            logger.debug("%s is file path, will just use this one", seedpoint)
+            datafiles.append(seedpoint)
+    else:
+        logger.debug("%s is list", seedpoint)
+        datafiles.extend(seedpoint)
+    logger.debug("Datafile(s) to use %s", datafiles)
+    return datafiles
 
 
 def export_with_config(config_path, datafile=None, datatype=None):
@@ -422,9 +479,11 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
+    logger.debug("Running with arguments %s", args)
     try:
         print(give_help(args.help_on))
     except AttributeError:
+        logger.info("Will be extracting results")
         upload_with_config(
             args.config_path, args.datafile, args.datatype, args.env
         )

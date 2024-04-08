@@ -1,4 +1,5 @@
 """Test utility ecl2csv"""
+
 import sys
 import os
 from time import sleep
@@ -8,16 +9,20 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 from fmu.sumo.sim2sumo import sim2sumo
-from fmu.sumo.sim2sumo._special_treatments import _define_submodules, convert_to_arrow
+from fmu.sumo.sim2sumo._special_treatments import (
+    _define_submodules,
+    convert_to_arrow,
+)
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"
-REEK_REAL = REEK_ROOT / REAL_PATH
+REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
+REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
 REEK_BASE = "2_R001_REEK"
-REEK_ECL_MODEL = REEK_REAL / "eclipse/model/"
+REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
 REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL / "fmuconfig/output/"
+CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
 CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
 
 
@@ -25,6 +30,33 @@ logging.basicConfig(
     level=logging.info, format=" %(name)s :: %(levelname)s :: %(message)s"
 )
 LOGGER = logging.getLogger(__file__)
+
+
+def test_fix_suffix():
+
+    test_path = "simulator.banana"
+    corrected_path = sim2sumo.fix_suffix(test_path)
+    assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
+
+
+@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 5), (REEK_REAL1, 1)])
+def test_find_datafiles_reek(real, nrdfiles):
+    os.chdir(real)
+    datafiles = sim2sumo.find_datafiles(None, {})
+    expected_tools = ["eclipse", "opm", "ix", "pflotran"]
+    assert (
+        len(datafiles) == nrdfiles
+    ), f"Haven't found all {nrdfiles} files only {len(datafiles)} ({datafiles})"
+    for datafile in datafiles:
+        found_path = datafile
+        parent = found_path.parent.parent.name
+        assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
+        correct_suff = ".DATA"
+        if parent == "ix":
+            correct_suff = ".afi"
+        if parent == "pflotran":
+            correct_suff = ".in"
+        assert found_path.suffix == correct_suff
 
 
 def test_submodules_dict():
@@ -37,7 +69,9 @@ def test_submodules_dict():
         LOGGER.info(submod_name)
         LOGGER.info(submod_dict)
         assert isinstance(submod_name, str)
-        assert "/" not in submod_name, f"Left part of folder path for {submod_name}"
+        assert (
+            "/" not in submod_name
+        ), f"Left part of folder path for {submod_name}"
         assert isinstance(submod_dict, dict), f"{submod_name} has no subdict"
         assert (
             "options" in submod_dict.keys()
@@ -79,7 +113,9 @@ def test_get_results(submod):
 def test_export_results(tmp_path, submod):
     """Test writing of csv file"""
     os.chdir(tmp_path)
-    export_path = tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    export_path = (
+        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    )
     meta_path = export_path.parent / f".{export_path.name}.yml"
     actual_path = sim2sumo.export_results(
         REEK_DATA_FILE,
@@ -98,7 +134,9 @@ def test_export_results(tmp_path, submod):
 def test_export_results_w_options(tmp_path, submod="summary"):
     """Test writing of csv file"""
     os.chdir(tmp_path)
-    export_path = tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    export_path = (
+        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
+    )
     key_args = {
         "time_index": "daily",
         "start_date": "2002-01-02",
@@ -136,7 +174,7 @@ CHECK_DICT = {
         "arrow": False,
     },
     "global_variables.yml": {
-        "nrdatafile": 2,
+        "nrdatafile": 5,
         "nrsubmods": 3,
         "nroptions": 1,
         "arrow": True,
@@ -164,7 +202,7 @@ def _assert_right_len(checks, key, to_messure, name):
 @pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
 def test_read_config(config_path):
     """Test reading of config file via read_config function"""
-    os.chdir(REEK_REAL)
+    os.chdir(REEK_REAL0)
     LOGGER.info(config_path)
     config = sim2sumo.yaml_load(config_path)
     assert isinstance(config, (dict, bool))
@@ -179,7 +217,9 @@ def test_read_config(config_path):
     _assert_right_len(checks, "nrsubmods", submods, name)
     _assert_right_len(checks, "nroptions", opts, name)
 
-    assert opts["arrow"] == checks["arrow"], f"Wrong choice for arrow for {name}"
+    assert (
+        opts["arrow"] == checks["arrow"]
+    ), f"Wrong choice for arrow for {name}"
 
 
 @pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
