@@ -15,12 +15,10 @@ from typing import Union
 import pandas as pd
 import pyarrow as pa
 import res2df
-from fmu.dataio import ExportData
-from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
 
 from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
 
-from .common import yaml_load, give_name, fix_suffix
+from .common import yaml_load, fix_suffix, export_object
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -127,43 +125,6 @@ def export_results(
         frame,
         SUBMOD_CONTENT.get(submod, "property"),
     )
-    return exp_path
-
-
-def export_object(datafile_path, tagname, config_file, obj, content):
-    """Export object with fmu.dataio
-
-    Args:
-        datafile_path (str): path to datafile
-        tagname (str): tagname to use
-        config_file (str): config file with metadata
-        obj (object): object fit for dataio
-        contents (str): content to set for dataio
-
-    Returns:
-        str: path for exported path
-    """
-    logger = logging.getLogger(__file__ + ".export_object")
-    name = give_name(datafile_path)
-    if obj is not None:
-        logger.debug("Reading global variables from %s", config_file)
-        cfg = yaml_load(config_file)
-        exp = ExportData(
-            config=cfg,
-            name=name,
-            tagname=tagname,
-            content=content,
-        )
-        exp_path = exp.export(obj)
-        logger.info("Exported %s to path %s", type(obj), exp_path)
-    else:
-        exp_path = "Nothing produced"
-        logger.warning(
-            "Something went wrong, so no export happened for %s, %s",
-            name,
-            tagname,
-        )
-
     return exp_path
 
 
@@ -302,45 +263,6 @@ def export_with_config(config_path, datafile=None, datatype=None):
     except FileNotFoundError:
         logger.warning("No config file at: %s", config_path)
     return export_folder, suffixes
-
-
-def upload(
-    upload_folder,
-    suffixes,
-    env="prod",
-    threads=5,
-    start_del="real",
-    config_path="fmuconfig/output/global_variables.yml",
-):
-    """Upload to sumo
-
-    Args:
-        upload_folder (str): folder to upload from
-        suffixes (set, list, tuple): suffixes to include in upload
-        env (str, optional): sumo environment to upload to. Defaults to "prod".
-        threads (int, optional): Threads to use in upload. Defaults to 5.
-    """
-    logger = logging.getLogger(__file__ + ".upload")
-    try:
-        case_path = Path(re.sub(rf"\/{start_del}.*", "", upload_folder))
-        logger.info("Case to upload from %s", case_path)
-        case_meta_path = case_path / "share/metadata/fmu_case.yml"
-        logger.info("Case meta object %s", case_meta_path)
-        for suffix in suffixes:
-            logger.info(suffix)
-            upload_search = f"{upload_folder}/*{suffix}"
-            logger.info("Upload folder %s", upload_search)
-            sumo_upload_main(
-                case_path,
-                upload_search,
-                env,
-                case_meta_path,
-                threads,
-                config_path,
-            )
-            logger.debug("Uploaded")
-    except TypeError:
-        logger.warning("Nothing to export..")
 
 
 def parse_args():
