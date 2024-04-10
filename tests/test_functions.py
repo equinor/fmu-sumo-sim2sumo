@@ -39,14 +39,14 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 5), (REEK_REAL1, 1)])
+@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 6), (REEK_REAL1, 1)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
     datafiles = tables.find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
-    ), f"Haven't found all {nrdfiles} files only {len(datafiles)} ({datafiles})"
+    ), f"Haven't found correct nr of datafiles {nrdfiles} files but {len(datafiles)} ({datafiles})"
     for datafile in datafiles:
         found_path = datafile
         parent = found_path.parent.parent.name
@@ -174,7 +174,7 @@ CHECK_DICT = {
         "arrow": False,
     },
     "global_variables.yml": {
-        "nrdatafile": 5,
+        "nrdatafile": 6,
         "nrsubmods": 3,
         "nroptions": 1,
         "arrow": True,
