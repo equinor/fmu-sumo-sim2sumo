@@ -24,6 +24,15 @@ from .common import yaml_load, give_name, fix_suffix
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
+SUBMOD_CONTENT = {
+    "summary": "timeseries",
+    "satfunc": "relperm",
+    "vfp": "lift_curves",
+}
+SUBMOD_CONTENT.update(
+    {name: name for name in ["rft", "pvt", "transmissibilities"]}
+)
+
 
 def get_results(
     datafile_path: str, submod: str, print_help=False, **kwargs
@@ -110,29 +119,26 @@ def export_results(
     logger = logging.getLogger(__file__ + ".export_results")
     logger.debug("Export will be using these options: %s", kwargs)
     frame = get_results(datafile_path, submod, **kwargs)
-    submod_contents = {
-        "summary": "timeseries",
-        "satfunc": "relperm",
-        "vfp": "lift_curves",
-    }
-    submod_contents.update(
-        {name: name for name in ["rft", "pvt", "transmissibilities"]}
-    )
+
     exp_path = export_object(
-        datafile_path, submod, config_file, frame, submod_contents
+        datafile_path,
+        submod,
+        config_file,
+        frame,
+        SUBMOD_CONTENT.get(submod, "property"),
     )
     return exp_path
 
 
-def export_object(datafile_path, tagname, config_file, obj, submod_contents):
+def export_object(datafile_path, tagname, config_file, obj, content):
     """Export object with fmu.dataio
 
     Args:
         datafile_path (str): path to datafile
         tagname (str): tagname to use
         config_file (str): config file with metadata
-        obj (Object): object fit for dataio
-        submod_contents (str): content to set for dataio
+        obj (object): object fit for dataio
+        contents (str): content to set for dataio
 
     Returns:
         str: path for exported path
@@ -146,7 +152,7 @@ def export_object(datafile_path, tagname, config_file, obj, submod_contents):
             config=cfg,
             name=name,
             tagname=tagname,
-            content=submod_contents.get(tagname, "property"),
+            content=content,
         )
         exp_path = exp.export(obj)
         logger.info("Exported %s to path %s", type(obj), exp_path)
