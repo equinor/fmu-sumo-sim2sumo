@@ -43,19 +43,20 @@ def give_name(datafile_path: str) -> str:
     return base_name
 
 
-def fix_suffix(datafile_path: str):
+def fix_suffix(datafile_path: str, suffix=".DATA"):
     """Check if suffix is .DATA, if not change to
 
     Args:
         datafile_path (PosixPath): path to check
+        suffix (str): desired suffix
 
     Returns:
         str: the corrected path
     """
     logger = logging.getLogger(__file__ + ".fix_suffix")
     string_datafile_path = str(datafile_path)
-    if not string_datafile_path.endswith(".DATA"):
-        corrected_path = re.sub(r"\..*", ".DATA", string_datafile_path)
+    if not string_datafile_path.endswith(suffix):
+        corrected_path = re.sub(r"\..*", suffix, string_datafile_path)
         logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
         datafile_path = corrected_path
     return datafile_path
