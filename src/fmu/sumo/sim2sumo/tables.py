@@ -118,18 +118,46 @@ def export_results(
     submod_contents.update(
         {name: name for name in ["rft", "pvt", "transmissibilities"]}
     )
-    if frame is not None:
+    exp_path = export_object(
+        datafile_path, submod, config_file, frame, submod_contents
+    )
+    return exp_path
+
+
+def export_object(datafile_path, tagname, config_file, obj, submod_contents):
+    """Export object with fmu.dataio
+
+    Args:
+        datafile_path (str): path to datafile
+        tagname (str): tagname to use
+        config_file (str): config file with metadata
+        obj (Object): object fit for dataio
+        submod_contents (str): content to set for dataio
+
+    Returns:
+        str: path for exported path
+    """
+    logger = logging.getLogger(__file__ + ".export_object")
+    name = give_name(datafile_path)
+    if obj is not None:
         logger.debug("Reading global variables from %s", config_file)
         cfg = yaml_load(config_file)
         exp = ExportData(
             config=cfg,
-            name=give_name(datafile_path),
-            tagname=submod,
-            content=submod_contents.get(submod, "property"),
+            name=name,
+            tagname=tagname,
+            content=submod_contents.get(tagname, "property"),
         )
-        exp_path = exp.export(frame)
+        exp_path = exp.export(obj)
+        logger.info("Exported %s to path %s", type(obj), exp_path)
     else:
         exp_path = "Nothing produced"
+        logger.warning(
+            "Something went wrong, so no export happened for %s, %s",
+            name,
+            tagname,
+        )
+
     return exp_path
 
 
