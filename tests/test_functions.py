@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import pytest
-from fmu.sumo.sim2sumo import sim2sumo
+from fmu.sumo.sim2sumo import tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
@@ -35,14 +35,14 @@ LOGGER = logging.getLogger(__file__)
 def test_fix_suffix():
 
     test_path = "simulator.banana"
-    corrected_path = sim2sumo.fix_suffix(test_path)
+    corrected_path = tables.fix_suffix(test_path)
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 5), (REEK_REAL1, 1)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
-    datafiles = sim2sumo.find_datafiles(None, {})
+    datafiles = tables.find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
@@ -84,7 +84,7 @@ def test_submodules_dict():
 
 @pytest.mark.parametrize(
     "submod",
-    (name for name in sim2sumo.SUBMODULES if name != "wellcompletiondata"),
+    (name for name in tables.SUBMODULES if name != "wellcompletiondata"),
 )
 # Skipping wellcompletion data, since this needs zonemap, which none of the others do
 def test_get_results(submod):
@@ -92,11 +92,11 @@ def test_get_results(submod):
     extras = {}
     if submod == "wellcompletiondata":
         extras["zonemap"] = "data/reek/zones.lyr"
-    frame = sim2sumo.get_results(REEK_DATA_FILE, submod)
+    frame = tables.get_results(REEK_DATA_FILE, submod)
     assert isinstance(
         frame, pa.Table
     ), f"Call for get_dataframe should produce dataframe, but produces {type(frame)}"
-    frame = sim2sumo.get_results(REEK_DATA_FILE, submod, arrow=True)
+    frame = tables.get_results(REEK_DATA_FILE, submod, arrow=True)
     assert isinstance(
         frame, pa.Table
     ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
@@ -108,7 +108,7 @@ def test_get_results(submod):
 
 @pytest.mark.parametrize(
     "submod",
-    (name for name in sim2sumo.SUBMODULES if name != "wellcompletiondata"),
+    (name for name in tables.SUBMODULES if name != "wellcompletiondata"),
 )
 def test_export_results(tmp_path, submod):
     """Test writing of csv file"""
@@ -117,7 +117,7 @@ def test_export_results(tmp_path, submod):
         tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
     )
     meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = sim2sumo.export_results(
+    actual_path = tables.export_results(
         REEK_DATA_FILE,
         submod,
         CONFIG_PATH,
@@ -144,7 +144,7 @@ def test_export_results_w_options(tmp_path, submod="summary"):
     }
 
     meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = sim2sumo.export_results(
+    actual_path = tables.export_results(
         REEK_DATA_FILE, submod, CONFIG_PATH, **key_args
     )
     LOGGER.info(actual_path)
@@ -204,9 +204,9 @@ def test_read_config(config_path):
     """Test reading of config file via read_config function"""
     os.chdir(REEK_REAL0)
     LOGGER.info(config_path)
-    config = sim2sumo.yaml_load(config_path)
+    config = tables.yaml_load(config_path)
     assert isinstance(config, (dict, bool))
-    dfiles, submods, opts = sim2sumo.read_config(config)
+    dfiles, submods, opts = tables.read_config(config)
     name = config_path.name
     checks = CHECK_DICT[name]
     LOGGER.info(config)
@@ -245,7 +245,7 @@ def test_export_w_config(tmp_path, config_path):
     conf_path.mkdir(parents=True)
     (conf_path / config_path.name).symlink_to(config_path)
     # THE TEST
-    sim2sumo.export_with_config(config_path)
+    tables.export_with_config(config_path)
 
 
 # def test_upload(token):
