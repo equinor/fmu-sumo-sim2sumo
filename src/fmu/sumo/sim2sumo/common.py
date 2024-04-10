@@ -1,4 +1,4 @@
-"""Common functions for the other sim2sumo functions"""
+"""Common functions for the other sim2sumo modules"""
 
 import logging
 import re
