@@ -69,6 +69,20 @@ def test_find_datafiles_reek(real, nrdfiles):
         assert found_path.suffix == correct_suff
 
 
+def check_expected_exports(expected_exports, shared_grid):
+    parameters = list(shared_grid.glob("*.roff"))
+    meta = list(shared_grid.glob("*.roff.yml"))
+    nr_parameter = len(parameters)
+    nr_meta = len(meta)
+    assert nr_parameter == nr_meta
+    assert (
+        nr_parameter == expected_exports
+    ), f"exported {nr_parameter} params, should be {expected_exports}"
+    assert (
+        nr_meta == expected_exports
+    ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+
+
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
@@ -316,27 +330,36 @@ def test_get_xtgeo_egrid():
 
 
 def test_export_init(xtgeogrid, tmp_path):
+    real0, eight_datafile, config_path = set_up_tmp(tmp_path)
+    init_path = fix_suffix(eight_datafile, ".INIT")
+    expected_exports = 29
+    grid3d.export_init(init_path, xtgeogrid, config_path)
+    shared_grid = real0 / "share/results/grids"
+    check_expected_exports(expected_exports, shared_grid)
+
+
+def set_up_tmp(tmp_path):
     reek_tmp = tmp_path / "scratch/reek_mod"
     shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
     real0 = reek_tmp / "realization-0/iter-0"
-    expected_exports = 29
+    config_path = real0 / "fmuconfig/output/global_variables.yml"
     os.chdir(real0)
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
-    config_path = real0 / "fmuconfig/output/global_variables.yml"
-    init_path = fix_suffix(eight_datafile, ".INIT")
-    grid3d.export_init(init_path, xtgeogrid, config_path)
+    return real0, eight_datafile, config_path
+
+
+def test_export_restart(xtgeogrid, tmp_path):
+    real0, eight_datafile, config_path = set_up_tmp(tmp_path)
+    expected_exports = 12
+    restart_path = fix_suffix(eight_datafile, ".UNRST")
+    grid3d.export_restart(
+        restart_path,
+        xtgeogrid,
+        grid3d.get_timesteps(restart_path, xtgeogrid),
+        config_path,
+    )
     shared_grid = real0 / "share/results/grids"
-    parameters = list(shared_grid.glob("*.roff"))
-    meta = list(shared_grid.glob("*.roff.yml"))
-    nr_parameter = len(parameters)
-    nr_meta = len(meta)
-    assert nr_parameter == nr_meta
-    assert (
-        nr_parameter == expected_exports
-    ), f"exported {nr_parameter} params, should be {expected_exports}"
-    assert (
-        nr_meta == expected_exports
-    ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+    check_expected_exports(expected_exports, shared_grid)
 
 
 if __name__ == "__main__":

@@ -146,7 +146,7 @@ def export_grdecl_props(include_path, grid, exporter):
     # logger.debug(grdecls)
 
 
-def export_from_simulation_run(datafile):
+def export_from_simulation_run(datafile, config_file):
     """Export 3d grid properties from simulation run
 
     Args:
@@ -161,8 +161,8 @@ def export_from_simulation_run(datafile):
 
     time_steps = get_timesteps(restart_path, egrid)
 
-    count = export_init(init_path, xtgeoegrid)
-    count += export_restart(restart_path, xtgeoegrid, time_steps)
+    count = export_init(init_path, xtgeoegrid, config_file)
+    count += export_restart(restart_path, xtgeoegrid, time_steps, config_file)
     logger.info("Exported %s properties", count)
 
 
@@ -170,6 +170,7 @@ def export_restart(
     restart_path,
     xtgeoegrid,
     time_steps,
+    config_file,
     prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
 ):
     """Export properties from restart file
@@ -183,6 +184,8 @@ def export_restart(
     Returns:
         int: number of objects to export
     """
+    logger = logging.getLogger(__name__ + ".export_init")
+    logger.debug("File to load init from %s", restart_path)
     count = 0
     for base_name in prop_names:
         for time_step in time_steps:
@@ -190,6 +193,14 @@ def export_restart(
                 FileWrapper(restart_path), base_name, xtgeoegrid, time_step
             )
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
+            logger.debug("Exporting %s", xtgeo_prop.name)
+            export_object(
+                restart_path,
+                xtgeo_prop.name,
+                config_file,
+                xtgeo_prop,
+                "property",
+            )
             count += 1
     return count
 
