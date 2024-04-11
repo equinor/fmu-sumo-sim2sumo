@@ -4,8 +4,8 @@ import logging
 import re
 from pathlib import Path
 import argparse
-from fmu.dataio import ExportData
 from datetime import datetime
+from fmu.dataio import ExportData
 from fmu.config.utilities import yaml_load
 from resdata.resfile import ResdataRestartFile
 from resdata.grid import Grid
@@ -29,7 +29,9 @@ def parse_args():
         description=("Export grid data from "),
     )
     parser.add_argument("datafile", help="Path to eclipse datafile", type=str)
-    parser.add_argument("config_path", help="Path to fmu config path", type=str)
+    parser.add_argument(
+        "config_path", help="Path to fmu config path", type=str
+    )
     parser.add_argument("grdecl_grid", help="path to grdecl grid", type=str)
     args = parser.parse_args()
     return args
@@ -129,12 +131,12 @@ def export_grdecl_props(include_path, grid, exporter):
             logger.warning("Found no name, file is probably empty")
             continue
         try:
-            # Having a try after the if smacks of double dipping
-            # But better safe than sorry :-)
             prop = gridproperty_from_file(grdecl, name=name, grid=grid)
             logger.info(
                 "Exported to %s",
-                exporter.export(prop, name=name, tagname=grid.name + "_grdecl_grid"),
+                exporter.export(
+                    prop, name=name, tagname=grid.name + "_grdecl_grid"
+                ),
             )
         except ValueError:
             logger.warning("Something wrong with reading of file")
