@@ -5,14 +5,18 @@ import os
 from time import sleep
 import logging
 from pathlib import Path
+import shutil
 import pandas as pd
 import pyarrow as pa
 import pytest
+from fmu.sumo.sim2sumo.common import fix_suffix
 from fmu.sumo.sim2sumo import tables
+from fmu.sumo.sim2sumo import grid3d
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
 )
+from xtgeo import Grid
 
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -24,6 +28,7 @@ REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
 REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
 CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
 CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
+EIGHTCELLS_DATAFILE = REEK_ECL_MODEL / "EIGHTCELLS.DATA"
 
 
 logging.basicConfig(
@@ -32,10 +37,15 @@ logging.basicConfig(
 LOGGER = logging.getLogger(__file__)
 
 
+@pytest.fixture(scope="session", name="xtgeogrid")
+def _fix_xtgeogrid():
+    return grid3d.get_xtgeo_egrid(EIGHTCELLS_DATAFILE)
+
+
 def test_fix_suffix():
 
     test_path = "simulator.banana"
-    corrected_path = tables.fix_suffix(test_path)
+    corrected_path = fix_suffix(test_path)
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
@@ -298,6 +308,35 @@ def test_convert_to_arrow():
     dframe["DATE"] = dframe["DATE"].astype("datetime64[ms]")
     table = convert_to_arrow(dframe)
     assert isinstance(table, pa.Table), "Did not convert to table"
+
+
+def test_get_xtgeo_egrid():
+    egrid = grid3d.get_xtgeo_egrid(EIGHTCELLS_DATAFILE)
+    assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
+
+
+def test_export_init(xtgeogrid, tmp_path):
+    reek_tmp = tmp_path / "scratch/reek_mod"
+    shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
+    real0 = reek_tmp / "realization-0/iter-0"
+    expected_exports = 29
+    os.chdir(real0)
+    eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
+    config_path = real0 / "fmuconfig/output/global_variables.yml"
+    init_path = fix_suffix(eight_datafile, ".INIT")
+    grid3d.export_init(init_path, xtgeogrid, config_path)
+    shared_grid = real0 / "share/results/grids"
+    parameters = list(shared_grid.glob("*.roff"))
+    meta = list(shared_grid.glob("*.roff.yml"))
+    nr_parameter = len(parameters)
+    nr_meta = len(meta)
+    assert nr_parameter == nr_meta
+    assert (
+        nr_parameter == expected_exports
+    ), f"exported {nr_parameter} params, should be {expected_exports}"
+    assert (
+        nr_meta == expected_exports
+    ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
 
 
 if __name__ == "__main__":

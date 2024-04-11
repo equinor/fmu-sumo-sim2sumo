@@ -13,6 +13,7 @@ from xtgeo import grid_from_file, gridproperty_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 from xtgeo import GridProperty
+from .common import export_object
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
@@ -37,13 +38,15 @@ def parse_args():
     return args
 
 
-def export_egrid(datafile, exporter):
+def get_xtgeo_egrid(datafile):
     """Export egrid file to sumo
 
     Args:
         datafile (str): path to datafile
     """
-    egrid_path = datafile.replace(".DATA", ".EGRID")
+    logger = logging.getLogger(__name__ + ".get_xtgeo_egrid")
+    logger.debug("Fetching %s", datafile)
+    egrid_path = str(datafile).replace(".DATA", ".EGRID")
     egrid = grid_from_file(egrid_path)
     egrid_name = re.sub(r"-\d+\.", ".", egrid.name)
     # logger.info(
@@ -191,7 +194,7 @@ def export_restart(
     return count
 
 
-def export_init(init_path, xtgeoegrid):
+def export_init(init_path, xtgeoegrid, config_file):
     """Export properties from init file
 
     Args:
@@ -201,6 +204,9 @@ def export_init(init_path, xtgeoegrid):
     Returns:
         int: number of objects to export
     """
+    logger = logging.getLogger(__name__ + ".export_init")
+    logger.debug("File to load init from %s", init_path)
+    logger.debug("Config file to marry with data %s", config_file)
     unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
     init_props = list(
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
@@ -209,10 +215,19 @@ def export_init(init_path, xtgeoegrid):
     # logger.debug(f"{len(props)} properties found in init")
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
-            logger.info(f"%s will not be exported", init_prop["name"])
+            logger.warning(f"%s will not be exported", init_prop["name"])
             continue
         xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
+        logger.debug("Exporting %s", xtgeo_prop.name)
+        export_object(
+            init_path,
+            xtgeo_prop.name,
+            config_file,
+            xtgeo_prop,
+            "property",
+        )
         count += 1
+    logger.info("%s properties", count)
     return count
 
 
