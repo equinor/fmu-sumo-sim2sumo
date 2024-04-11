@@ -223,10 +223,10 @@ def export_init(init_path, xtgeoegrid, config_file):
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
     )
     count = 0
-    # logger.debug(f"{len(props)} properties found in init")
+    logger.debug("%s properties found in init", len(init_props))
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
-            logger.warning(f"%s will not be exported", init_prop["name"])
+            logger.warning("%s will not be exported", init_prop["name"])
             continue
         xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
         logger.debug("Exporting %s", xtgeo_prop.name)
