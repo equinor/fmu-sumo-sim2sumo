@@ -7,7 +7,6 @@
 
 import argparse
 import logging
-import re
 import sys
 from pathlib import Path, PosixPath
 from typing import Union
