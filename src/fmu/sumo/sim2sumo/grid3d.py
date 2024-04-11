@@ -150,7 +150,6 @@ def export_from_simulation_run(datafile):
         datafile (str): path to datafile
     """
 
-    unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
     init_path = datafile.replace(".DATA", ".INIT")
     restart_path = datafile.replace(".DATA", ".UNRST")
     grid_path = datafile.replace(".DATA", ".EGRID")
@@ -159,25 +158,62 @@ def export_from_simulation_run(datafile):
 
     time_steps = get_timesteps(restart_path, egrid)
 
-    init_props = list(eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid))
-    count = 0
-    # logger.debug(f"{len(props)} properties found in init")
-    for init_prop in init_props:
-        if init_prop["name"] in unwanted:
-            logger.info(f"{init_prop['name']} will not be exported")
-            continue
-        xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
-        count += 1
-    restart_usuals = ["SWAT", "SGAS", "SOIL", "PRESSURE"]
-    for base_name in restart_usuals:
-        for time_step in time_steps:
+    count = export_init(init_path, xtgeoegrid)
+    count += export_restart(restart_path, xtgeoegrid, time_steps)
+    logger.info("Exported %s properties", count)
 
+
+def export_restart(
+    restart_path,
+    xtgeoegrid,
+    time_steps,
+    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
+):
+    """Export properties from restart file
+
+    Args:
+        restart_path (str): path to restart file
+        xtgeoegrid (xtge.Grid): the grid to unpack the properties to
+        time_steps (list): the timesteps to use
+        prop_names (iterable, optional): the properties to export. Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
+
+    Returns:
+        int: number of objects to export
+    """
+    count = 0
+    for base_name in prop_names:
+        for time_step in time_steps:
             restart_prop = eclrun.import_gridprop_from_restart(
                 FileWrapper(restart_path), base_name, xtgeoegrid, time_step
             )
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             count += 1
-    logger.info("Exported %s properties", count)
+    return count
+
+
+def export_init(init_path, xtgeoegrid):
+    """Export properties from init file
+
+    Args:
+        init_path (str): path to init file
+        xtgeoegrid (xtgeo.Grid): The grid to upack the properties to
+
+    Returns:
+        int: number of objects to export
+    """
+    unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
+    init_props = list(
+        eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
+    )
+    count = 0
+    # logger.debug(f"{len(props)} properties found in init")
+    for init_prop in init_props:
+        if init_prop["name"] in unwanted:
+            logger.info(f"%s will not be exported", init_prop["name"])
+            continue
+        xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
+        count += 1
+    return count
 
 
 def get_timesteps(restart_path, egrid):
