@@ -15,9 +15,6 @@ from xtgeo.io._file import FileWrapper
 from xtgeo import GridProperty
 from .common import export_object
 
-logging.basicConfig(level="INFO")
-logger = logging.getLogger(__name__)
-
 
 def parse_args():
     """Parse arguments for script
@@ -48,11 +45,8 @@ def get_xtgeo_egrid(datafile):
     logger.debug("Fetching %s", datafile)
     egrid_path = str(datafile).replace(".DATA", ".EGRID")
     egrid = grid_from_file(egrid_path)
-    egrid_name = re.sub(r"-\d+\.", ".", egrid.name)
-    # logger.info(
-    #     "Exported to %s",
-    #     exporter.export(egrid, name=egrid_name, tagname="egrid", content="depth"),
-    # )
+
+    logger.info("Fetched %s", egrid.name)
     return egrid
 
 
@@ -196,7 +190,7 @@ def export_restart(
             logger.debug("Exporting %s", xtgeo_prop.name)
             export_object(
                 restart_path,
-                xtgeo_prop.name,
+                "UNRST-" + xtgeo_prop.name,
                 config_file,
                 xtgeo_prop,
                 "property",
@@ -232,7 +226,7 @@ def export_init(init_path, xtgeoegrid, config_file):
         logger.debug("Exporting %s", xtgeo_prop.name)
         export_object(
             init_path,
-            xtgeo_prop.name,
+            "INIT-" + xtgeo_prop.name,
             config_file,
             xtgeo_prop,
             "property",
