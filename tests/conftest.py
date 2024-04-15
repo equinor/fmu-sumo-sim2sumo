@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 import shutil
 from fmu.config.utilities import yaml_load
+from fmu.sumo.sim2sumo import grid3d
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"
@@ -35,7 +36,7 @@ def _fix_eight():
     return EIGHTCELLS_DATAFILE
 
 
-@pytest.fixture(scope="session", name="Sumo")
+@pytest.fixture(scope="session", name="sumo")
 def _fix_sumo():
     return SumoClient(env="dev")
 
@@ -73,8 +74,14 @@ def _fix_register(scratch_files):
     return sumo_uuid
 
 
+@pytest.fixture(scope="session", name="xtgeogrid")
+def _fix_xtgeogrid(eightcells_datafile):
+
+    return grid3d.get_xtgeo_egrid(eightcells_datafile)
+
+
 @pytest.fixture(name="teardown", autouse=True, scope="session")
-def fixture_teardown(case_uuid, Sumo, request):
+def fixture_teardown(case_uuid, sumo, request):
     """Remove case when all tests are run
 
     Args:
@@ -86,6 +93,6 @@ def fixture_teardown(case_uuid, Sumo, request):
         print(f"Killing object {case_uuid}!")
         path = f"/objects('{case_uuid}')"
 
-        Sumo.delete(path)
+        sumo.delete(path)
 
     request.addfinalizer(kill)
