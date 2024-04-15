@@ -118,11 +118,13 @@ def upload(
         threads (int, optional): Threads to use in upload. Defaults to 5.
     """
     logger = logging.getLogger(__file__ + ".upload")
+    logger.debug("Sending in path %s", str(upload_folder))
+    case_path = Path(re.sub(rf"\/{start_del}.*", "", str(upload_folder)))
+    logger.info("Case to upload from %s", case_path)
+    case_meta_path = case_path / "share/metadata/fmu_case.yml"
+    logger.info("Case meta object %s", case_meta_path)
+
     try:
-        case_path = Path(re.sub(rf"\/{start_del}.*", "", upload_folder))
-        logger.info("Case to upload from %s", case_path)
-        case_meta_path = case_path / "share/metadata/fmu_case.yml"
-        logger.info("Case meta object %s", case_meta_path)
         for suffix in suffixes:
             logger.info(suffix)
             upload_search = f"{upload_folder}/*{suffix}"
