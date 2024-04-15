@@ -146,7 +146,7 @@ def export_from_simulation_run(datafile, config_file):
     Args:
         datafile (str): path to datafile
     """
-
+    logger = logging.getLogger(__name__ + ".export_from_simulation_run")
     init_path = datafile.replace(".DATA", ".INIT")
     restart_path = datafile.replace(".DATA", ".UNRST")
     grid_path = datafile.replace(".DATA", ".EGRID")
