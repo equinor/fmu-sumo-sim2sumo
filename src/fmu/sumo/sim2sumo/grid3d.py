@@ -257,13 +257,13 @@ def get_timesteps(restart_path, egrid):
     return time_steps
 
 
-def make_xtgeo_prop(xtgeoegrid, prop_dict, describe=True):
+def make_xtgeo_prop(xtgeoegrid, prop_dict, describe=False):
     """Build an xtgeo property from xtgeo record
 
     Args:
         xtgeoegrid (xtgeo.Grid): the grid to connect property to
         prop_dict (dict): xtgeo record
-        describe (bool, optional): Print some statistics for property. Defaults to True.
+        describe (bool, optional): Print some statistics for property. Defaults to False.
 
     Returns:
         xtgeo.GridProperty: the extracted results
