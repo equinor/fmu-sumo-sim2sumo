@@ -20,8 +20,10 @@ dependencies = [
     "fmu-dataio",
     "opm>=2020.10.2",
     "res2df",
+    "xtgeo",
     "pandas",
     "arrow",
+    "urllib3<=1.26.18"
 ]
 
 [project.optional-dependencies]
