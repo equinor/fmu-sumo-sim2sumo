@@ -13,7 +13,7 @@ from xtgeo import grid_from_file, gridproperty_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 from xtgeo import GridProperty
-from .common import export_object
+from .common import export_object, upload
 
 
 def parse_args():
@@ -188,7 +188,7 @@ def export_restart(
             )
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             logger.debug("Exporting %s", xtgeo_prop.name)
-            export_object(
+            export_path = export_object(
                 restart_path,
                 "UNRST-" + xtgeo_prop.name,
                 config_file,
@@ -196,6 +196,9 @@ def export_restart(
                 "property",
             )
             count += 1
+    logger.info("%s properties", count)
+    export_folder = Path(export_path).parent
+    upload(export_folder, [".roff"], env="dev", config_path=config_file)
     return count
 
 
@@ -217,6 +220,7 @@ def export_init(init_path, xtgeoegrid, config_file):
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
     )
     count = 0
+    export_path = None
     logger.debug("%s properties found in init", len(init_props))
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
@@ -224,7 +228,7 @@ def export_init(init_path, xtgeoegrid, config_file):
             continue
         xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
         logger.debug("Exporting %s", xtgeo_prop.name)
-        export_object(
+        export_path = export_object(
             init_path,
             "INIT-" + xtgeo_prop.name,
             config_file,
@@ -233,6 +237,8 @@ def export_init(init_path, xtgeoegrid, config_file):
         )
         count += 1
     logger.info("%s properties", count)
+    export_folder = Path(export_path).parent
+    upload(export_folder, [".roff"], env="dev", config_path=config_file)
     return count
 
 
