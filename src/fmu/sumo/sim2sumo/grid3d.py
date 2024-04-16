@@ -253,7 +253,6 @@ def export_init(init_path, xtgeoegrid, config_file, env="prod"):
                 "property",
             )
             count += 1
-        else:
 
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
@@ -295,7 +294,7 @@ def make_xtgeo_prop(
     single_value = np.unique(values).size == 1
     if single_value:
         logger.info("%s has only one value", prop_name)
-    if  single_value and not return_single:
+    if single_value and not return_single:
         xtgeo_prop = None
         logging.debug("Will not return single value property")
     else:
