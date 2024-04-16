@@ -74,11 +74,17 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
 def write_ert_config_and_run(runpath):
     ert_config_path = "sim2sumo.ert"
     encoding = "utf-8"
-    with open(runpath / ert_config_path, "w", encoding=encoding) as stream:
+    ert_full_config_path = runpath / ert_config_path
+    print(f"Running with path {ert_full_config_path}")
+    with open(ert_full_config_path, "w", encoding=encoding) as stream:
 
-        stream.write(f"RUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO")
+        stream.write(
+            f"DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
+        )
     process = Popen(
-        ["ert", "test_run", ert_config_path], stdout=PIPE, stderr=PIPE
+        ["ert", "test_run", str(ert_full_config_path)],
+        stdout=PIPE,
+        stderr=PIPE,
     )
     stdout, stderr = process.communicate()
     if stdout:
@@ -87,7 +93,7 @@ def write_ert_config_and_run(runpath):
         print(stderr.decode(encoding))
     assert Path(
         "OK"
-    ).is_file(), f"running {ert_config_path}, ended with errors"
+    ).is_file(), f"running {ert_full_config_path}, ended with errors"
 
 
 def delete_objects(case_uuid, sumo, tag_prefix):
