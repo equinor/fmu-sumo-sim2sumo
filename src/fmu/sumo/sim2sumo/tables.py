@@ -17,7 +17,7 @@ import res2df
 
 from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
 
-from .common import give_name, yaml_load, fix_suffix, export_object
+from .common import yaml_load, fix_suffix, export_object, upload
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
