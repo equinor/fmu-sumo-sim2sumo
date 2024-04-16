@@ -195,8 +195,11 @@ def export_restart(
                 FileWrapper(restart_path), base_name, xtgeoegrid, time_step
             )
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
-            if xtgeo_prop is not None:
 
+            if xtgeo_prop is not None:
+                # TODO: refactor this if statement together with identical
+                # code in export_init
+                # These are identical, and should be treated as such
                 logger.debug("Exporting %s", xtgeo_prop.name)
                 export_path = export_object(
                     restart_path,
