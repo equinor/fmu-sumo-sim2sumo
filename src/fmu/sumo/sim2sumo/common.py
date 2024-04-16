@@ -104,6 +104,7 @@ def export_object(datafile_path, tagname, config_file, obj, content):
 def upload(
     upload_folder,
     suffixes,
+    search_element,
     env="prod",
     threads=5,
     start_del="real",
@@ -114,6 +115,7 @@ def upload(
     Args:
         upload_folder (str): folder to upload from
         suffixes (set, list, tuple): suffixes to include in upload
+        search_element(str): string to be part of search string
         env (str, optional): sumo environment to upload to. Defaults to "prod".
         threads (int, optional): Threads to use in upload. Defaults to 5.
     """
@@ -127,7 +129,7 @@ def upload(
     try:
         for suffix in suffixes:
             logger.info(suffix)
-            upload_search = f"{upload_folder}/*{suffix}"
+            upload_search = f"{upload_folder}/{search_element}*{suffix}"
             logger.info("Upload folder %s", upload_search)
             sumo_upload_main(
                 case_path,
