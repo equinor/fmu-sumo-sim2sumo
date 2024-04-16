@@ -363,6 +363,7 @@ def upload_with_config(config_path, datafile, datatype, env):
         extras (dict): extra arguments
     """
     logger = logging.getLogger(__file__ + ".upload_with_config")
+    logger.debug("Before exporting datafile is %s", datafile)
     logger.debug("Executing with:")
     logger.debug("config: %s: ", config_path)
     logger.debug("Sumo env: %s: ", env)
@@ -370,10 +371,11 @@ def upload_with_config(config_path, datafile, datatype, env):
     upload_folder, suffixes = export_with_config(
         config_path, datafile, datatype
     )
+    logger.debug("After exporting datafile is %s", datafile)
     upload(
         upload_folder,
         suffixes,
-        give_name(datafile),
+        "*",
         env,
         config_path=config_path,
     )
