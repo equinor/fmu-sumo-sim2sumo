@@ -4,6 +4,7 @@ import logging
 import re
 from pathlib import Path
 import argparse
+import numpy as np
 from datetime import datetime
 from fmu.dataio import ExportData
 from fmu.config.utilities import yaml_load
@@ -194,15 +195,18 @@ def export_restart(
                 FileWrapper(restart_path), base_name, xtgeoegrid, time_step
             )
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
-            logger.debug("Exporting %s", xtgeo_prop.name)
-            export_path = export_object(
-                restart_path,
-                "UNRST-" + xtgeo_prop.name,
-                config_file,
-                xtgeo_prop,
-                "property",
-            )
-            count += 1
+            if xtgeo_prop is not None:
+
+                logger.debug("Exporting %s", xtgeo_prop.name)
+                export_path = export_object(
+                    restart_path,
+                    "UNRST-" + xtgeo_prop.name,
+                    config_file,
+                    xtgeo_prop,
+                    "property",
+                )
+                count += 1
+
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
     upload(
@@ -236,15 +240,18 @@ def export_init(init_path, xtgeoegrid, config_file, env="prod"):
             logger.warning("%s will not be exported", init_prop["name"])
             continue
         xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
-        logger.debug("Exporting %s", xtgeo_prop.name)
-        export_path = export_object(
-            init_path,
-            "INIT-" + xtgeo_prop.name,
-            config_file,
-            xtgeo_prop,
-            "property",
-        )
-        count += 1
+        if xtgeo_prop is not None:
+            logger.debug("Exporting %s", xtgeo_prop.name)
+            export_path = export_object(
+                init_path,
+                "INIT-" + xtgeo_prop.name,
+                config_file,
+                xtgeo_prop,
+                "property",
+            )
+            count += 1
+        else:
+
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
     upload(export_folder, [".roff"], "*init", env=env, config_path=config_file)
@@ -266,7 +273,9 @@ def get_timesteps(restart_path, egrid):
     return time_steps
 
 
-def make_xtgeo_prop(xtgeoegrid, prop_dict, describe=False):
+def make_xtgeo_prop(
+    xtgeoegrid, prop_dict, describe=False, return_single=False
+):
     """Build an xtgeo property from xtgeo record
 
     Args:
@@ -277,12 +286,21 @@ def make_xtgeo_prop(xtgeoegrid, prop_dict, describe=False):
     Returns:
         xtgeo.GridProperty: the extracted results
     """
+    logger = logging.getLogger(__name__ + ".make_xtgeo_prop")
     prop_name = prop_dict["name"]
     values = prop_dict["values"]
-    xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
-    xtgeo_prop.values = values
-    if describe:
-        xtgeo_prop.describe()
+    single_value = np.unique(values).size == 1
+    if single_value:
+        logger.info("%s has only one value", prop_name)
+    if  single_value and not return_single:
+        xtgeo_prop = None
+        logging.debug("Will not return single value property")
+    else:
+        xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
+        xtgeo_prop.values = values
+        if describe:
+            xtgeo_prop.describe()
+
     return xtgeo_prop
 
 
