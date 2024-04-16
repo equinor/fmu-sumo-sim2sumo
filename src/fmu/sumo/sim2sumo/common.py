@@ -36,12 +36,15 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
+    logger = logging.getLogger(__name__ + ".give_name")
+    logger.debug("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
+    logger.debug("Returning name %s", base_name)
     return base_name
 
 
