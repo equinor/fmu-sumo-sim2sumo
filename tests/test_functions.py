@@ -391,3 +391,8 @@ def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
     # check_expected_exports(expected_exports, shared_grid, prefix)
     check_sumo(case_uuid, "*", expected_exports, "cpgrid_property", sumo)
     check_sumo(case_uuid, "*", 1, "cpgrid", sumo)
+
+
+def test_sim2sumo_with_ert(scratch_files):
+    real0 = scratch_files[0]
+    write_ert_config_and_run(real0)
