@@ -275,50 +275,47 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Parsing input to control export of simulator data",
     )
-    subparsers = parser.add_subparsers(dest="command")
-    subparsers.default = "execute"
 
-    exec_parser = subparsers.add_parser("execute")
-    help_parser = subparsers.add_parser("help")
-
-    exec_parser.add_argument(
+    parser.add_argument(
         "--config_path",
         type=str,
         help="config that controls the export",
         default="fmuconfig/output/global_variables.yml",
     )
-    exec_parser.add_argument(
+    parser.add_argument(
         "--env",
         type=str,
         help="Which sumo environment to upload to",
         default="prod",
     )
-    exec_parser.add_argument(
+    parser.add_argument(
         "--datatype",
         type=str,
         default=None,
         help="Override datatype setting, intented for testing only",
     )
-    exec_parser.add_argument(
+    parser.add_argument(
         "--datafile",
         type=str,
         default=None,
         help="Override datafile setting, intented for testing only",
     )
-    help_parser.add_argument(
-        "help_on",
+    parser.add_argument(
+        "--help_on",
         type=str,
         help=(
             "Use this to get documentation of one of the datatypes to upload\n"
             + f"valid options are \n{', '.join(SUBMODULES)}"
         ),
+        default="No help",
     )
+    parser.add_argument("--d", help="Activate debug mode", action="store_true")
     args = parser.parse_args()
-    if len(vars(args)) == 1 and args.command == "execute":
-        # Help out the default option, otherwise
-        # NameSpace will only contain execute
-        args = exec_parser.parse_args()
-    logger.debug("Returning %s", args)
+    if args.d:
+        logging.basicConfig(
+            level="DEBUG", format="%(name)s - %(levelname)s - %(message)s"
+        )
+    logger.debug("Returning args %s", vars(args))
     return args
 
 
@@ -387,9 +384,9 @@ def main():
     logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
     logger.debug("Running with arguments %s", args)
-    try:
+    if args.help_on != "No help":
         print(give_help(args.help_on))
-    except AttributeError:
+    else:
         logger.info("Will be extracting results")
         upload_with_config(
             args.config_path, args.datafile, args.datatype, args.env
