@@ -17,7 +17,7 @@ import res2df
 
 from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
 
-from .common import yaml_load, fix_suffix, export_object
+from .common import give_name, yaml_load, fix_suffix, export_object
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -373,7 +373,13 @@ def upload_with_config(config_path, datafile, datatype, env):
     upload_folder, suffixes = export_with_config(
         config_path, datafile, datatype
     )
-    upload(upload_folder, suffixes, env, config_path=config_path)
+    upload(
+        upload_folder,
+        suffixes,
+        give_name(datafile),
+        env,
+        config_path=config_path,
+    )
 
 
 def main():

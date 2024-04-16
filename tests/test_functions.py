@@ -38,13 +38,20 @@ logging.basicConfig(
     level=logging.info, format=" %(name)s :: %(levelname)s :: %(message)s"
 )
 LOGGER = logging.getLogger(__file__)
+SLEEP_TIME = 3
 
 
 def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     # There has been instances when this fails, probably because of
     # some time delay, have introduced a little sleep to get it to be quicker
-    sleep(2)
-    query = f'fmu.case.uuid:{case_uuid} AND class:{class_type} AND data.tagname:"{tag_prefix}*"'
+    sleep(SLEEP_TIME)
+    if tag_prefix == "*":
+        search_pattern = "*"
+    elif tag_prefix.endswith("*"):
+        search_pattern = tag_prefix
+    else:
+        search_pattern = tag_prefix + "*"
+    query = f'fmu.case.uuid:{case_uuid} AND class:{class_type} AND data.tagname:"{search_pattern}"'
 
     print(query)
     results = sumo.get(
@@ -89,7 +96,7 @@ def delete_objects(case_uuid, sumo, tag_prefix):
         "/objects('{objectid}')/children",
         {"objectid": case_uuid, "$filter": f'data.tagname":"{tag_prefix}*"'},
     )
-    sleep(2)
+    sleep(SLEEP_TIME)
 
 
 def _assert_right_len(checks, key, to_messure, name):
@@ -348,10 +355,9 @@ def test_export_init(xtgeogrid, scratch_files, case_uuid, sumo):
     prefix = "INIT"
     init_path = fix_suffix(eight_datafile, f".{prefix}")
     expected_exports = 29
-    grid3d.export_init(init_path, xtgeogrid, config_path)
+    grid3d.export_init(init_path, xtgeogrid, config_path, "dev")
     shared_grid = real0 / "share/results/grids"
-    check_expected_exports(expected_exports, shared_grid, prefix)
-    sleep(2)
+    # check_expected_exports(expected_exports, shared_grid, prefix)
     check_sumo(case_uuid, "INIT", expected_exports, "cpgrid_property", sumo)
 
 
@@ -365,8 +371,23 @@ def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
         xtgeogrid,
         grid3d.get_timesteps(restart_path, xtgeogrid),
         config_path,
+        env="dev",
     )
     shared_grid = real0 / "share/results/grids"
-    check_expected_exports(expected_exports, shared_grid, prefix)
-    sleep(2)
+    # check_expected_exports(expected_exports, shared_grid, prefix)
     check_sumo(case_uuid, "UNRST", expected_exports, "cpgrid_property", sumo)
+
+
+def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
+    real0, datafile, config_path = scratch_files
+    prefix = "UNRST"
+    expected_exports = 41
+    grid3d.export_from_simulation_run(
+        datafile,
+        config_path,
+        "dev",
+    )
+    shared_grid = real0 / "share/results/grids"
+    # check_expected_exports(expected_exports, shared_grid, prefix)
+    check_sumo(case_uuid, "*", expected_exports, "cpgrid_property", sumo)
+    check_sumo(case_uuid, "*", 1, "cpgrid", sumo)

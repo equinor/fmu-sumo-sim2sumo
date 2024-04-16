@@ -13,7 +13,7 @@ from xtgeo import grid_from_file, gridproperty_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 from xtgeo import GridProperty
-from .common import export_object, upload
+from .common import fix_suffix, export_object, upload
 
 
 def parse_args():
@@ -140,23 +140,29 @@ def export_grdecl_props(include_path, grid, exporter):
     # logger.debug(grdecls)
 
 
-def export_from_simulation_run(datafile, config_file):
+def export_from_simulation_run(datafile, config_file, env="prod"):
     """Export 3d grid properties from simulation run
 
     Args:
         datafile (str): path to datafile
     """
     logger = logging.getLogger(__name__ + ".export_from_simulation_run")
-    init_path = datafile.replace(".DATA", ".INIT")
-    restart_path = datafile.replace(".DATA", ".UNRST")
-    grid_path = datafile.replace(".DATA", ".EGRID")
+    init_path = fix_suffix(datafile, ".INIT")
+    restart_path = fix_suffix(datafile, ".UNRST")
+    grid_path = fix_suffix(datafile, ".EGRID")
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
+    grid_exp_path = export_object(
+        datafile, "grid", config_file, xtgeoegrid, "depth"
+    )
 
+    upload(Path(grid_exp_path).parent, [".roff"], "*grid", env)
     time_steps = get_timesteps(restart_path, egrid)
 
-    count = export_init(init_path, xtgeoegrid, config_file)
-    count += export_restart(restart_path, xtgeoegrid, time_steps, config_file)
+    count = export_init(init_path, xtgeoegrid, config_file, env)
+    count += export_restart(
+        restart_path, xtgeoegrid, time_steps, config_file, env=env
+    )
     logger.info("Exported %s properties", count)
 
 
@@ -166,6 +172,7 @@ def export_restart(
     time_steps,
     config_file,
     prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
+    env="prod",
 ):
     """Export properties from restart file
 
@@ -198,11 +205,13 @@ def export_restart(
             count += 1
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
-    upload(export_folder, [".roff"], env="dev", config_path=config_file)
+    upload(
+        export_folder, [".roff"], "*unrst", env=env, config_path=config_file
+    )
     return count
 
 
-def export_init(init_path, xtgeoegrid, config_file):
+def export_init(init_path, xtgeoegrid, config_file, env="prod"):
     """Export properties from init file
 
     Args:
@@ -238,7 +247,7 @@ def export_init(init_path, xtgeoegrid, config_file):
         count += 1
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
-    upload(export_folder, [".roff"], env="dev", config_path=config_file)
+    upload(export_folder, [".roff"], "*init", env=env, config_path=config_file)
     return count
 
 
