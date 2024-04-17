@@ -130,6 +130,20 @@ def export_grdecl_props(include_path, grid, exporter):
     # logger.debug(grdecls)
 
 
+def export_from_simulation_runs(datafiles, config, env="prod"):
+    """Export 3d grid properties from simulation runs
+
+    Args:
+        datafiles (list): path to datafiles
+        config (dict): config with metadata
+        env (str): environment to upload to
+    """
+    logger = logging.getLogger(__name__ + ".export_from_simulation_runs")
+    logger.debug("These datafiles are used to extract results %s", datafiles)
+    for datafile in datafiles:
+        export_from_simulation_run(datafile, config, env)
+
+
 def export_from_simulation_run(datafile, config, env="prod"):
     """Export 3d grid properties from simulation run
 
