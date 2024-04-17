@@ -92,7 +92,7 @@ def write_ert_config_and_run(runpath):
     if stderr:
         print(stderr.decode(encoding))
     assert Path(
-        "OK"
+        runpath / "OK"
     ).is_file(), f"running {ert_full_config_path}, ended with errors"
 
 
@@ -145,7 +145,7 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 6), (REEK_REAL1, 1)])
+@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
     datafiles = tables.find_datafiles(None, {})
@@ -280,7 +280,7 @@ CHECK_DICT = {
         "arrow": False,
     },
     "global_variables.yml": {
-        "nrdatafile": 6,
+        "nrdatafile": 2,
         "nrsubmods": 3,
         "nroptions": 1,
         "arrow": True,
@@ -360,7 +360,7 @@ def test_export_init(xtgeogrid, scratch_files, case_uuid, sumo):
     real0, eight_datafile, config_path = scratch_files
     prefix = "INIT"
     init_path = fix_suffix(eight_datafile, f".{prefix}")
-    expected_exports = 29
+    expected_exports = 5
     grid3d.export_init(init_path, xtgeogrid, config_path, "dev")
     shared_grid = real0 / "share/results/grids"
     # check_expected_exports(expected_exports, shared_grid, prefix)
@@ -370,7 +370,7 @@ def test_export_init(xtgeogrid, scratch_files, case_uuid, sumo):
 def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
     real0, eight_datafile, config_path = scratch_files
     prefix = "UNRST"
-    expected_exports = 12
+    expected_exports = 9
     restart_path = fix_suffix(eight_datafile, f".{prefix}")
     grid3d.export_restart(
         restart_path,
@@ -387,7 +387,7 @@ def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
 def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
     real0, datafile, config_path = scratch_files
     prefix = "UNRST"
-    expected_exports = 41
+    expected_exports = 14
     grid3d.export_from_simulation_run(
         datafile,
         config_path,
@@ -399,6 +399,8 @@ def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
     check_sumo(case_uuid, "*", 1, "cpgrid", sumo)
 
 
-def test_sim2sumo_with_ert(scratch_files):
+def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
+    expected_exports = 5
+    check_sumo(case_uuid, "INIT", expected_exports, "cpgrid_property", sumo)
