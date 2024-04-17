@@ -145,7 +145,6 @@ def export_from_simulation_run(datafile, config, env="prod"):
     grid_exp_path = export_object(
         datafile, "grid", config, xtgeoegrid, "depth"
     )
-    config_file = config["file_path"]
     upload(Path(grid_exp_path).parent, [".roff"], "*grid", env)
     time_steps = get_timesteps(restart_path, egrid)
 
