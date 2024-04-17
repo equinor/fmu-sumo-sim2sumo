@@ -1,12 +1,14 @@
 import os
-import pytest
-import yaml
-from fmu.sumo.uploader import SumoConnection, CaseOnDisk
-from sumo.wrapper import SumoClient
+import shutil
 from datetime import datetime
 from pathlib import Path
-import shutil
+
+import pytest
+import yaml
 from fmu.config.utilities import yaml_load
+from fmu.sumo.uploader import CaseOnDisk, SumoConnection
+from sumo.wrapper import SumoClient
+
 from fmu.sumo.sim2sumo import grid3d
 
 REEK_ROOT = Path(__file__).parent / "data/reek"

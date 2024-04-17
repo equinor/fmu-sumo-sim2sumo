@@ -1,27 +1,22 @@
 """Test utility ecl2csv"""
 
-import sys
-import os
-from time import sleep
-from datetime import datetime
-from subprocess import Popen, PIPE
 import logging
-import yaml
+import os
 from pathlib import Path
-import shutil
+from subprocess import PIPE, Popen
+from time import sleep
+
 import pandas as pd
 import pyarrow as pa
 import pytest
-from sumo.wrapper import SumoClient
-from fmu.sumo.sim2sumo.common import fix_suffix
-from fmu.sumo.sim2sumo import tables
-from fmu.sumo.sim2sumo import grid3d
+from xtgeo import Grid
+
+from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
 )
-from xtgeo import Grid
-
+from fmu.sumo.sim2sumo.common import fix_suffix
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"

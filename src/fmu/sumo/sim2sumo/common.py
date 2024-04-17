@@ -3,6 +3,7 @@
 import logging
 import re
 from pathlib import Path
+
 import yaml
 from fmu.dataio import ExportData
 from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main

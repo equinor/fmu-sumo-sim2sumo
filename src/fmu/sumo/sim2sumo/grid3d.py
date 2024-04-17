@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 """Export grid data from eclipse with metadata"""
+import argparse
 import logging
 import re
-from pathlib import Path
-import argparse
-import numpy as np
 from datetime import datetime
-from fmu.dataio import ExportData
+from pathlib import Path
+
+import numpy as np
 from fmu.config.utilities import yaml_load
-from resdata.resfile import ResdataRestartFile
+from fmu.dataio import ExportData
 from resdata.grid import Grid
-from xtgeo import grid_from_file, gridproperty_from_file
+from resdata.resfile import ResdataRestartFile
+from xtgeo import GridProperty, grid_from_file, gridproperty_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
-from xtgeo import GridProperty
-from .common import fix_suffix, export_object, upload
+
+from .common import export_object, fix_suffix, upload
 
 
 def parse_args():

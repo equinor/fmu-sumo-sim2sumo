@@ -16,8 +16,7 @@ import pyarrow as pa
 import res2df
 
 from ._special_treatments import SUBMOD_DICT, SUBMODULES, convert_options, tidy
-
-from .common import yaml_load, fix_suffix, export_object, upload
+from .common import export_object, fix_suffix, upload, yaml_load
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
