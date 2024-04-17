@@ -170,3 +170,38 @@ def tidy(frame):
 
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
+
+
+def give_help(submod, only_general=False):
+    """Give descriptions of variables available for submodule
+
+    Args:
+        submod (str): submodule
+
+    Returns:
+        str: description of submodule input
+    """
+    general_info = """
+    This utility uses the library ecl2csv, but uploads directly to sumo. Required options are:
+    A config file in yaml format, where you specifiy the variables to extract. What is required
+    is a keyword in the config called "sim2simo". under there you have three optional arguments:
+    * datafile: this can be a string, a list, or it can be absent altogether
+    * datatypes: this needs to be a list, or non existent
+    * options: The options are listed below in the original documentation from ecl2csv. The eclfiles
+               option is replaced with what is under datafile
+
+    """
+    if submod is None:
+        only_general = True
+    if only_general:
+        text_to_return = general_info
+    else:
+        try:
+            text_to_return = general_info + SUBMOD_DICT[submod]["doc"]
+        except KeyError:
+            text_to_return = (
+                f"subtype {submod} does not exist!!, existing options:\n"
+                + "\n".join(SUBMODULES)
+            )
+
+    return text_to_return

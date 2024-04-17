@@ -1,6 +1,10 @@
 #!/usr/bin/env python
-"""Export grid data from eclipse with metadata"""
-import argparse
+"""Upload grid3d data from reservoir simulators to Sumo
+   Does three things:
+   1. Extracts data from simulator to roff files
+   2. Adds the required metadata while exporting to disc
+   3. Uploads to Sumo
+"""
 import logging
 import re
 from datetime import datetime
@@ -16,25 +20,6 @@ from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
 from .common import export_object, fix_suffix, upload
-
-
-def parse_args():
-    """Parse arguments for script
-
-    Returns:
-        argparse.NameSpace: The arguments parsed
-    """
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description=("Export grid data from "),
-    )
-    parser.add_argument("datafile", help="Path to eclipse datafile", type=str)
-    parser.add_argument(
-        "config_path", help="Path to fmu config path", type=str
-    )
-    parser.add_argument("grdecl_grid", help="path to grdecl grid", type=str)
-    args = parser.parse_args()
-    return args
 
 
 def get_xtgeo_egrid(datafile):
@@ -61,6 +46,7 @@ def export_grdecl_grid(grid_path, exporter):
     Returns:
         xtgeo.grid: grid read from file
     """
+    logger = logging.getLogger(__name__ + ".export_grdecl_grid")
     grid = grid_from_file(grid_path)
     logger.debug(grid.name)
     # logger.info(
@@ -78,12 +64,13 @@ def readname(filename):
     Returns:
         str: keyword name
     """
+    logger = logging.getLogger(__name__ + ".readname")
     name = ""
     linenr = 0
     with open(filename, "r", encoding="utf-8") as file_handle:
         for line in file_handle:
             linenr += 1
-            logger.debug(f"{linenr}: {line}")
+            logger.debug("%s %s", linenr, line)
             if "ECHO" in line:
                 continue
             match = re.match(r"^([a-zA-Z].*)", line)
@@ -121,6 +108,7 @@ def export_grdecl_props(include_path, grid, exporter):
         include_path (Pathlib.Path): path where all grdecls are stored
         grid (xtgeo.Grid): grid to connect to properties
     """
+    logger = logging.getLogger(__name__ + ".export_grdecl_props")
     includes = include_path
     grdecls = list(includes.glob("**/*.grdecl"))
     for grdecl in grdecls:
@@ -142,7 +130,7 @@ def export_grdecl_props(include_path, grid, exporter):
     # logger.debug(grdecls)
 
 
-def export_from_simulation_run(datafile, config_file, env="prod"):
+def export_from_simulation_run(datafile, config, env="prod"):
     """Export 3d grid properties from simulation run
 
     Args:
@@ -155,15 +143,15 @@ def export_from_simulation_run(datafile, config_file, env="prod"):
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     grid_exp_path = export_object(
-        datafile, "grid", config_file, xtgeoegrid, "depth"
+        datafile, "grid", config, xtgeoegrid, "depth"
     )
-
+    config_file = config["file_path"]
     upload(Path(grid_exp_path).parent, [".roff"], "*grid", env)
     time_steps = get_timesteps(restart_path, egrid)
 
-    count = export_init(init_path, xtgeoegrid, config_file, env)
+    count = export_init(init_path, xtgeoegrid, config, env)
     count += export_restart(
-        restart_path, xtgeoegrid, time_steps, config_file, env=env
+        restart_path, xtgeoegrid, time_steps, config, env=env
     )
     logger.info("Exported %s properties", count)
 
@@ -172,7 +160,7 @@ def export_restart(
     restart_path,
     xtgeoegrid,
     time_steps,
-    config_file,
+    config,
     prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
     env="prod",
 ):
@@ -205,7 +193,7 @@ def export_restart(
                 export_path = export_object(
                     restart_path,
                     "UNRST-" + xtgeo_prop.name,
-                    config_file,
+                    config,
                     xtgeo_prop,
                     "property",
                 )
@@ -213,13 +201,14 @@ def export_restart(
 
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
+    config_file = config["file_path"]
     upload(
         export_folder, [".roff"], "*unrst", env=env, config_path=config_file
     )
     return count
 
 
-def export_init(init_path, xtgeoegrid, config_file, env="prod"):
+def export_init(init_path, xtgeoegrid, config, env="prod"):
     """Export properties from init file
 
     Args:
@@ -231,7 +220,6 @@ def export_init(init_path, xtgeoegrid, config_file, env="prod"):
     """
     logger = logging.getLogger(__name__ + ".export_init")
     logger.debug("File to load init from %s", init_path)
-    logger.debug("Config file to marry with data %s", config_file)
     unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
     init_props = list(
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
@@ -249,7 +237,7 @@ def export_init(init_path, xtgeoegrid, config_file, env="prod"):
             export_path = export_object(
                 init_path,
                 "INIT-" + xtgeo_prop.name,
-                config_file,
+                config,
                 xtgeo_prop,
                 "property",
             )
@@ -257,6 +245,7 @@ def export_init(init_path, xtgeoegrid, config_file, env="prod"):
 
     logger.info("%s properties", count)
     export_folder = Path(export_path).parent
+    config_file = config["file_path"]
     upload(export_folder, [".roff"], "*init", env=env, config_path=config_file)
     return count
 
@@ -315,18 +304,3 @@ def init_exporter(config_path):
     """
     exp = ExportData(config=yaml_load(config_path))
     return exp
-
-
-def main():
-    """Run script"""
-    args = parse_args()
-    exporter = init_exporter(args.config_path)
-    inc_path = Path(args.datafile).parent.parent
-    egrid = export_egrid(args.datafile, exporter)
-    export_from_simulation_run(args.datafile)
-    # grid = export_grdecl_grid(args.grdecl_grid, exporter)
-    # export_grdecl_props(inc_path, grid, exporter)
-
-
-if __name__ == "__main__":
-    main()

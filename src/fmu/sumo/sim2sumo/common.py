@@ -68,13 +68,13 @@ def fix_suffix(datafile_path: str, suffix=".DATA"):
     return datafile_path
 
 
-def export_object(datafile_path, tagname, config_file, obj, content):
+def export_object(datafile_path, tagname, config, obj, content):
     """Export object with fmu.dataio
 
     Args:
         datafile_path (str): path to datafile
         tagname (str): tagname to use
-        config_file (str): config file with metadata
+        config (dict): config with metadata
         obj (object): object fit for dataio
         contents (str): content to set for dataio
 
@@ -84,10 +84,9 @@ def export_object(datafile_path, tagname, config_file, obj, content):
     logger = logging.getLogger(__file__ + ".export_object")
     name = give_name(datafile_path)
     if obj is not None:
-        logger.debug("Reading global variables from %s", config_file)
-        cfg = yaml_load(config_file)
+        logger.debug("Reading global variables from %s", config)
         exp = ExportData(
-            config=cfg,
+            config=config,
             name=name,
             tagname=tagname,
             content=content,
@@ -125,6 +124,8 @@ def upload(
     """
     logger = logging.getLogger(__file__ + ".upload")
     logger.debug("Sending in path %s", str(upload_folder))
+    logger.debug("Config file to marry with data %s", config_path)
+
     case_path = Path(re.sub(rf"\/{start_del}.*", "", str(upload_folder)))
     logger.info("Case to upload from %s", case_path)
     case_meta_path = case_path / "share/metadata/fmu_case.yml"

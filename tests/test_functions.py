@@ -9,12 +9,15 @@ from time import sleep
 import pandas as pd
 import pyarrow as pa
 import pytest
+
 from xtgeo import Grid
 
-from fmu.sumo.sim2sumo import grid3d, tables
+from fmu.sumo.sim2sumo.common import yaml_load
+from fmu.sumo.sim2sumo import grid3d, main, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
+    SUBMODULES,
 )
 from fmu.sumo.sim2sumo.common import fix_suffix
 
@@ -143,7 +146,7 @@ def test_fix_suffix():
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
-    datafiles = tables.find_datafiles(None, {})
+    datafiles = main.find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
@@ -185,19 +188,19 @@ def test_submodules_dict():
 
 @pytest.mark.parametrize(
     "submod",
-    (name for name in tables.SUBMODULES if name != "wellcompletiondata"),
+    (name for name in SUBMODULES if name != "wellcompletiondata"),
 )
 # Skipping wellcompletion data, since this needs zonemap, which none of the others do
-def test_get_results(submod):
+def test_get_table(submod):
     """Test fetching of dataframe"""
     extras = {}
     if submod == "wellcompletiondata":
         extras["zonemap"] = "data/reek/zones.lyr"
-    frame = tables.get_results(REEK_DATA_FILE, submod)
+    frame = tables.get_table(REEK_DATA_FILE, submod)
     assert isinstance(
         frame, pa.Table
     ), f"Call for get_dataframe should produce dataframe, but produces {type(frame)}"
-    frame = tables.get_results(REEK_DATA_FILE, submod, arrow=True)
+    frame = tables.get_table(REEK_DATA_FILE, submod, arrow=True)
     assert isinstance(
         frame, pa.Table
     ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
@@ -209,19 +212,19 @@ def test_get_results(submod):
 
 @pytest.mark.parametrize(
     "submod",
-    (name for name in tables.SUBMODULES if name != "wellcompletiondata"),
+    (name for name in SUBMODULES if name != "wellcompletiondata"),
 )
-def test_export_results(tmp_path, submod):
+def test_export_table(tmp_path, submod):
     """Test writing of csv file"""
     os.chdir(tmp_path)
     export_path = (
         tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
     )
     meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = tables.export_results(
+    actual_path = tables.export_table(
         REEK_DATA_FILE,
         submod,
-        CONFIG_PATH,
+        yaml_load(CONFIG_PATH),
     )
     LOGGER.info(actual_path)
     assert isinstance(
@@ -232,7 +235,7 @@ def test_export_results(tmp_path, submod):
     assert meta_path.exists(), f"No export of metadata to {meta_path}"
 
 
-def test_export_results_w_options(tmp_path, submod="summary"):
+def test_export_table_w_options(tmp_path, submod="summary"):
     """Test writing of csv file"""
     os.chdir(tmp_path)
     export_path = (
@@ -245,8 +248,8 @@ def test_export_results_w_options(tmp_path, submod="summary"):
     }
 
     meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = tables.export_results(
-        REEK_DATA_FILE, submod, CONFIG_PATH, **key_args
+    actual_path = tables.export_table(
+        REEK_DATA_FILE, submod, yaml_load(CONFIG_PATH), **key_args
     )
     LOGGER.info(actual_path)
     assert isinstance(
@@ -288,26 +291,29 @@ def test_read_config(config_path):
     """Test reading of config file via read_config function"""
     os.chdir(REEK_REAL0)
     LOGGER.info(config_path)
-    config = tables.yaml_load(config_path)
+    config = yaml_load(config_path)
     assert isinstance(config, (dict, bool))
-    dfiles, submods, opts = tables.read_config(config)
+    sim2sumoconfig = main.read_config(config)
+    dfiles = sim2sumoconfig["datafiles"]
+    submods = sim2sumoconfig["submods"]
+    options = sim2sumoconfig["options"]
     name = config_path.name
     checks = CHECK_DICT[name]
-    LOGGER.info(config)
-    LOGGER.info(dfiles)
-    LOGGER.info(submods)
-    LOGGER.info(opts)
+    LOGGER.info("Config keys: %s\n", config.keys())
+    LOGGER.info("Datafiles: %s\n", dfiles)
+    LOGGER.info("Submods: %s\n", submods)
+    LOGGER.info("Options: %s\n", options)
     _assert_right_len(checks, "nrdatafile", dfiles, name)
     _assert_right_len(checks, "nrsubmods", submods, name)
-    _assert_right_len(checks, "nroptions", opts, name)
+    _assert_right_len(checks, "nroptions", options, name)
 
     assert (
-        opts["arrow"] == checks["arrow"]
+        options["arrow"] == checks["arrow"]
     ), f"Wrong choice for arrow for {name}"
 
 
 @pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
-def test_export_w_config(tmp_path, config_path):
+def test_export_tables(tmp_path, config_path):
     """Test function export with config"""
     # Make exec path, needs to be at real..-0/iter-0
     exec_path = tmp_path / REAL_PATH
@@ -329,7 +335,9 @@ def test_export_w_config(tmp_path, config_path):
     conf_path.mkdir(parents=True)
     (conf_path / config_path.name).symlink_to(config_path)
     # THE TEST
-    tables.export_with_config(config_path)
+    config = yaml_load(config_path)
+    sim2sumoconfig = main.read_config(config)
+    tables.export_tables(sim2sumoconfig, config)
 
 
 def test_convert_to_arrow():
@@ -356,7 +364,9 @@ def test_export_init(xtgeogrid, scratch_files, case_uuid, sumo):
     prefix = "INIT"
     init_path = fix_suffix(eight_datafile, f".{prefix}")
     expected_exports = 5
-    grid3d.export_init(init_path, xtgeogrid, config_path, "dev")
+    config = yaml_load(config_path)
+    config["file_path"] = config_path
+    grid3d.export_init(init_path, xtgeogrid, config, "dev")
     shared_grid = real0 / "share/results/grids"
     # check_expected_exports(expected_exports, shared_grid, prefix)
     check_sumo(case_uuid, "INIT", expected_exports, "cpgrid_property", sumo)
@@ -366,12 +376,14 @@ def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
     real0, eight_datafile, config_path = scratch_files
     prefix = "UNRST"
     expected_exports = 9
+    config = yaml_load(config_path)
+    config["file_path"] = config_path
     restart_path = fix_suffix(eight_datafile, f".{prefix}")
     grid3d.export_restart(
         restart_path,
         xtgeogrid,
         grid3d.get_timesteps(restart_path, xtgeogrid),
-        config_path,
+        config,
         env="dev",
     )
     shared_grid = real0 / "share/results/grids"
@@ -383,9 +395,11 @@ def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
     real0, datafile, config_path = scratch_files
     prefix = "UNRST"
     expected_exports = 14
+    config = yaml_load(config_path)
+    config["file_path"] = config_path
     grid3d.export_from_simulation_run(
         datafile,
-        config_path,
+        config,
         "dev",
     )
     shared_grid = real0 / "share/results/grids"
