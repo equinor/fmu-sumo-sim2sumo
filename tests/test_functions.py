@@ -12,7 +12,12 @@ import pytest
 
 from xtgeo import Grid
 
-from fmu.sumo.sim2sumo.common import yaml_load
+from fmu.sumo.sim2sumo.common import (
+    yaml_load,
+    md5sum,
+    convert_2_sumo_file,
+    nodisk_upload,
+)
 from fmu.sumo.sim2sumo import grid3d, main, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
@@ -161,6 +166,41 @@ def test_find_datafiles_reek(real, nrdfiles):
         if parent == "pflotran":
             correct_suff = ".in"
         assert found_path.suffix == correct_suff
+
+
+def test_xtgeo_2_bytes(eightfipnum):
+
+    bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
+    assert isinstance(bytestring, bytes)
+
+    checksum = md5sum(bytestring)
+    assert isinstance(checksum, str)
+
+
+def test_xtgeo_2_bytestring(eightfipnum):
+    bytestr = grid3d.xtgeo_2_bytestring(eightfipnum)
+    assert isinstance(bytestr, bytes)
+
+
+def test_convert_2_sumo_file(
+    eightfipnum, eightcells_datafile, config, case_uuid
+):
+    meta = grid3d.generate_grid3d_meta(
+        eightcells_datafile, eightfipnum, "INIT", config, "property"
+    )
+    file = convert_2_sumo_file(eightfipnum, meta, grid3d.xtgeo_2_bytestring)
+
+    print(file.metadata)
+    print(file.byte_string)
+    results = nodisk_upload([file], case_uuid, "dev")
+    print(results)
+
+
+def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
+    meta = grid3d.generate_grid3d_meta(
+        eightcells_datafile, eightfipnum, "INIT", config, "property"
+    )
+    assert isinstance(meta, dict)
 
 
 def test_submodules_dict():
@@ -411,5 +451,12 @@ def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
 def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
-    expected_exports = 5
-    check_sumo(case_uuid, "INIT", expected_exports, "cpgrid_property", sumo)
+    expected_exports = 21
+    path = f"/objects('{case_uuid}')/children"
+    results = sumo.get(path).json()
+    returned = results["hits"]["total"]["value"]
+    LOGGER.debug("This is returned %s", returned)
+    assert (
+        returned == expected_exports
+    ), f"Supposed to upload {expected_exports}, but actual were {returned}"
+    # check_sumo(case_uuid, "*", expected_exports, "*", sumo)

@@ -9,6 +9,7 @@ from fmu.config.utilities import yaml_load
 from fmu.sumo.uploader import CaseOnDisk, SumoConnection
 from sumo.wrapper import SumoClient
 
+from xtgeo import gridproperty_from_file
 from fmu.sumo.sim2sumo import grid3d
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -36,6 +37,18 @@ def set_up_tmp(path):
 @pytest.fixture(scope="session", name="eightcells_datafile")
 def _fix_eight():
     return EIGHTCELLS_DATAFILE
+
+
+@pytest.fixture(scope="session", name="eightfipnum")
+def _fix_fipnum():
+    return gridproperty_from_file(
+        Path(__file__).parent / "data/eightcells--init-fipnum.roff"
+    )
+
+
+@pytest.fixture(scope="session", name="config")
+def _fix_config():
+    return yaml_load(CONFIG_PATH)
 
 
 @pytest.fixture(scope="session", name="sumo")
