@@ -10,16 +10,52 @@ import re
 from datetime import datetime
 from pathlib import Path
 
+from io import BytesIO
 import numpy as np
-from fmu.config.utilities import yaml_load
-from fmu.dataio import ExportData
 from resdata.grid import Grid
 from resdata.resfile import ResdataRestartFile
 from xtgeo import GridProperty, grid_from_file, gridproperty_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
-from .common import export_object, fix_suffix, upload
+from .common import (
+    export_object,
+    generate_meta,
+    convert_to_bytestring,
+    fix_suffix,
+    upload,
+)
+
+
+def xtgeo_2_bytes(obj):
+    """Convert xtgeo object to bytesring
+
+    Args:
+        obj (xtgeo.Obj): the object to convert
+
+    Returns:
+        bytes: bytestring
+    """
+    logger = logging.getLogger(__name__ + ".xtgeo_2_bytes")
+    sink = BytesIO()
+    obj.to_file(sink)
+    sink.seek(0)
+    bytestring = sink.getbuffer().tobytes()
+    logger.debug("Returning bytestring with size %s", len(bytestring))
+    return bytestring
+
+
+def xtgeo_2_bytestring(obj):
+    """Convert xtgeo object to bytestring
+
+    Args:
+        obj (xtgeo object): the object to convert
+
+    Returns:
+        bytestring: bytes
+    """
+    bytestring = convert_to_bytestring(xtgeo_2_bytes, obj)
+    return bytestring
 
 
 def get_xtgeo_egrid(datafile):
@@ -309,11 +345,10 @@ def make_xtgeo_prop(
     return xtgeo_prop
 
 
-def init_exporter(config_path):
-    """Initialize ExportData class
-
-    Args:
-        config_path (str): path to fmu config file
-    """
-    exp = ExportData(config=yaml_load(config_path))
-    return exp
+def generate_grid3d_meta(datafile, obj, prefix, config, content):
+    logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
+    metadata = generate_meta(
+        config, datafile, f"{prefix}-{obj.name}", obj, content
+    )
+    logger.debug("Generated meta are %s", metadata)
+    return metadata
