@@ -407,7 +407,7 @@ def upload_restart(
     time_steps,
     config,
     parentid,
-    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
+    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS"),
     env="prod",
 ):
     """Export properties from restart file
@@ -430,8 +430,10 @@ def upload_restart(
             restart_prop = eclrun.import_gridprop_from_restart(
                 FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
             )
-            xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
-
+            try:
+                xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
+            except ValueError:
+                logger.warning("Cannot find %s", prop_name)
             if xtgeo_prop is not None:
                 # TODO: refactor this if statement together with identical
                 # code in export_init
