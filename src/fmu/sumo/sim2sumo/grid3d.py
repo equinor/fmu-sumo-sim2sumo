@@ -454,6 +454,11 @@ def upload_restart(
     return count
 
 
+def upload_simulation_runs(datafiles, config, env="prod"):
+    for datafile in datafiles:
+        upload_simulation_run(datafile, config, env)
+
+
 def upload_simulation_run(datafile, config, env="prod"):
     """Export 3d grid properties from simulation run
 

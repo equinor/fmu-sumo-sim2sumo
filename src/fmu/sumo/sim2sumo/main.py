@@ -4,7 +4,7 @@ import argparse
 import logging
 from pathlib import Path, PosixPath
 
-from .grid3d import export_from_simulation_runs
+from .grid3d import upload_simulation_runs
 from .tables import upload_tables
 from .common import yaml_load
 from ._special_treatments import give_help, SUBMODULES
@@ -182,13 +182,14 @@ def main():
         config["file_path"] = args.config_path
         logger.debug("Added file_path, and config keys are %s", config.keys())
         sim2sumoconfig = read_config(config, args.datafile, args.datatype)
-        logger.debug("Extracting tables")
-        upload_tables(sim2sumoconfig, config, args.env)
         if "grid3d" in sim2sumoconfig:
             logger.debug("Extracting 3dgrid(s) with properties")
-            export_from_simulation_runs(
+            upload_simulation_runs(
                 sim2sumoconfig["datafiles"], config, args.env
             )
+
+        logger.debug("Extracting tables")
+        upload_tables(sim2sumoconfig, config, args.env)
 
 
 if __name__ == "__main__":
