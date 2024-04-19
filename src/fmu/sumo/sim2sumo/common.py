@@ -102,7 +102,7 @@ class Dispatcher:
             self._mem_limit = (
                 psutil.virtual_memory().available * self._limit_percent
             )
-            if self._mem_count > self._mem_limit:
+            if self._mem_count > self._mem_limit or self._count > 100:
                 self._upload()
                 self._files = []
                 self._mem_count = 0
@@ -110,7 +110,7 @@ class Dispatcher:
             self._logger.debug("File is None, not adding")
 
     def _upload(self):
-        nodisk_upload(self._files, self._parentid, self._conn)
+        nodisk_upload(self._files, self._parentid, connection=self._conn)
 
     def __del__(self):
         self._upload()
