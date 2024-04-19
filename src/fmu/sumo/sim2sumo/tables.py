@@ -300,7 +300,7 @@ def export_tables(sim2sumoconfig, config):
     return export_folder, suffixes
 
 
-def upload_tables(sim2sumoconfig, config, env):
+def export_and_upload_tables(sim2sumoconfig, config, env):
     """Upload simulator results to sumo
 
     Args:
