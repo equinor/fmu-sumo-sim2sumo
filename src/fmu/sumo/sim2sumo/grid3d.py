@@ -460,6 +460,13 @@ def upload_restart(
 
 
 def upload_simulation_runs(datafiles, config, env="prod"):
+    """Upload 3d grid and parameters for set of simulation runs
+
+    Args:
+        datafiles (list): the datafiles defining the rums
+        config (dict): the fmu config file with metadata
+        env (str, optional): which Sumo environment that contains the case. Defaults to "prod".
+    """
     for datafile in datafiles:
         upload_simulation_run(datafile, config, env)
 

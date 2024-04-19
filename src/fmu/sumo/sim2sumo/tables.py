@@ -208,6 +208,13 @@ def export_table(
 
 
 def upload_tables(sim2sumoconfig, config, env):
+    """Upload tables to sumo
+
+    Args:
+        sim2sumoconfig (dict): the sim2sumo configuration
+        config (dict): the fmu config file with metadata
+        env (str): what environment to upload to
+    """
     logger = logging.getLogger(__file__ + ".upload_tables")
     parentid = get_case_uuid(sim2sumoconfig["datafiles"][0])
     logger.info("Sumo case uuid: %s", parentid)
@@ -226,6 +233,16 @@ def upload_tables(sim2sumoconfig, config, env):
 def upload_tables_from_simulation_run(
     datafile, submods, options, config, parentid, env
 ):
+    """Upload tables from one simulator run to Sumo
+
+    Args:
+        datafile (str): the datafile defining the simulation run
+        submods (list): the datatypes to extract
+        options (dict): the options to pass inn
+        config (dict): the fmu config with metadata
+        parentid (str): id for case to upload to
+        env (str): which Sumo environment that contains the case
+    """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     logger.info("Extracting tables from %s", datafile)
     tosumo = []
