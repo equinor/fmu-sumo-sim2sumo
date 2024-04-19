@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 import hashlib
+import psutil
 import yaml
 
 
@@ -69,6 +70,50 @@ def md5sum(bytes_string: bytes) -> str:
     logger.debug("Checksum %s", checksum)
 
     return checksum
+
+
+class Dispatcher:
+    """Controls upload to sumo"""
+
+    def __init__(self, parentid, env):
+        self._logger = logging.getLogger(__name__ + ".Dispatcher")
+        self._limit_percent = 0.5
+        self._parentid = parentid
+        self._files = []
+        self._conn = SumoConnection(env=env)
+        self._env = env
+        self._mem_limit = (
+            psutil.virtual_memory().available * self._limit_percent
+        )
+        self._mem_count = 0
+        self._count = 0
+        self._objects = []
+
+    def add(self, file):
+        """Add file
+
+        Args:
+            file (SumoFile): file to add
+        """
+        if file is not None:
+            self._mem_count += file.size
+            self._objects.append(file)
+            self._count += 1
+            self._mem_limit = (
+                psutil.virtual_memory().available * self._limit_percent
+            )
+            if self._mem_count > self._mem_limit:
+                self._upload()
+                self._files = []
+                self._mem_count = 0
+        else:
+            self._logger.debug("File is None, not adding")
+
+    def _upload(self):
+        nodisk_upload(self._files, self._parentid, self._conn)
+
+    def __del__(self):
+        self._upload()
 
 
 def generate_meta(config, datafile_path, tagname, obj, content):

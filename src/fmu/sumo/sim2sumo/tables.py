@@ -10,12 +10,22 @@ import sys
 from pathlib import Path
 from typing import Union
 
-import pandas as pd
 import pyarrow as pa
+import pyarrow.parquet as pq
+import pandas as pd
 import res2df
 
 from ._special_treatments import SUBMOD_DICT, convert_options, tidy
-from .common import export_object, fix_suffix, upload
+from .common import (
+    export_object,
+    fix_suffix,
+    upload,
+    generate_meta,
+    get_case_uuid,
+    convert_to_bytestring,
+    convert_2_sumo_file,
+    nodisk_upload,
+)
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -27,6 +37,79 @@ SUBMOD_CONTENT = {
 SUBMOD_CONTENT.update(
     {name: name for name in ["rft", "pvt", "transmissibilities"]}
 )
+
+
+def table_to_bytes(table: pa.Table):
+    """Return table as bytestring
+
+    Args:
+        table (pa.Table): the table to be converted
+
+    Returns:
+        bytes: table as bytestring
+    """
+    logger = logging.getLogger(__name__ + ".table_to_bytes")
+    sink = pa.BufferOutputStream()
+    pq.write_table(table, sink)
+    byte_string = sink.getvalue().to_pybytes()
+    logger.debug("Returning bytestring with size %s", len(byte_string))
+    return byte_string
+
+
+def table_2_bytestring(table):
+    """Convert pa.table to bytestring
+
+    Args:
+        table (pa.table): the table to convert
+
+    Returns:
+        bytest: the bytes string
+    """
+    bytestring = convert_to_bytestring(table_to_bytes, table)
+    return bytestring
+
+
+def generate_table_meta(datafile, obj, tagname, config):
+    """Generate metadata for xtgeo object
+
+    Args:
+        datafile (str): path to datafile
+        obj (xtgeo object): the object to generate metadata on
+        prefix (str): prefix to include
+        config (dict): the fmu config file
+        content (str): content for data
+
+    Returns:
+        dict: the metadata for obj
+    """
+    logger = logging.getLogger(__name__ + ".generate_table_meta")
+
+    metadata = generate_meta(
+        config, datafile, tagname, obj, SUBMOD_CONTENT.get(tagname, "property")
+    )
+    logger.debug("Generated meta are %s", metadata)
+
+    return metadata
+
+
+def convert_table_sumo_file(datafile, obj, tagname, config):
+    logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
+    logger.debug("Datafile %s", datafile)
+    logger.debug("Obj of type: %s", type(obj))
+    logger.debug("tagname: %s", tagname)
+    logger.debug("Config: %s", config)
+
+    meta_args = (datafile, obj, tagname, config)
+    logger.debug(
+        "sending in %s",
+        dict(
+            zip(("datafile", "obj", "tagname", "config", "content"), meta_args)
+        ),
+    )
+    sumo_file = convert_2_sumo_file(
+        obj, table_2_bytestring, generate_table_meta, meta_args
+    )
+    return sumo_file
 
 
 def get_table(
@@ -122,6 +205,42 @@ def export_table(
         SUBMOD_CONTENT.get(submod, "property"),
     )
     return exp_path
+
+
+def upload_tables(sim2sumoconfig, config, env):
+    logger = logging.getLogger(__file__ + ".upload_tables")
+    parentid = get_case_uuid(sim2sumoconfig["datafiles"][0])
+    logger.info("Sumo case uuid: %s", parentid)
+    for datafile in sim2sumoconfig["datafiles"]:
+
+        upload_tables_from_simulation_run(
+            datafile,
+            sim2sumoconfig["submods"],
+            sim2sumoconfig["options"],
+            config,
+            parentid,
+            env,
+        )
+
+
+def upload_tables_from_simulation_run(
+    datafile, submods, options, config, parentid, env
+):
+    logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
+    logger.info("Extracting tables from %s", datafile)
+    tosumo = []
+    count = 0
+    for submod in submods:
+        table = get_table(datafile, submod, options)
+        sumo_file = convert_table_sumo_file(datafile, table, submod, config)
+        tosumo.append(sumo_file)
+        if len(tosumo) > 50:
+            nodisk_upload(tosumo, parentid, env)
+            tosumo = []
+        count += 1
+    if len(tosumo) > 0:
+        nodisk_upload(tosumo, parentid, env)
+    logger.info("%s properties", count)
 
 
 def export_tables(sim2sumoconfig, config):
