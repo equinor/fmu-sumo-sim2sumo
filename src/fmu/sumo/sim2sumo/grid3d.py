@@ -429,13 +429,16 @@ def upload_restart(
     tosumo = []
     for prop_name in prop_names:
         for time_step in time_steps:
-            restart_prop = eclrun.import_gridprop_from_restart(
-                FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
-            )
+
             try:
-                xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
+                restart_prop = eclrun.import_gridprop_from_restart(
+                    FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
+                )
             except ValueError:
                 logger.warning("Cannot find %s", prop_name)
+                continue
+
+            xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
                 # TODO: refactor this if statement together with identical
                 # code in export_init
