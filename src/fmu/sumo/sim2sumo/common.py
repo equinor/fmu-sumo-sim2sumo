@@ -34,23 +34,26 @@ def yaml_load(file_name):
     return config
 
 
-def split_list(list_to_split: list, size: int) -> list:
-    """Split list into segments
+def get_case_uuid(file_path, parent_level=4):
+    """Get case uuid from case metadata file
 
     Args:
-        list_to_split (list): the list to split
-        size (int): the size of each sublist
+        file_path (str): path to file in ensemble
+        parent_level (int, optional): nr of levels to move down to root. Defaults to 4.
 
     Returns:
-        list: the list of lists
+        str: the case uuid
     """
-    list_list = []
-    while len(list_to_split) > size:
-        piece = list_to_split[:size]
-        list_list.append(piece)
-        list_to_split = list_to_split[size:]
-    list_list.append(list_to_split)
-    return list_list
+    logger = logging.getLogger(__name__ + ".get_case_uuid")
+    logger.debug("Asked for parent %s for %s", parent_level, file_path)
+    case_meta_path = (
+        Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
+    )
+    logger.debug("Case meta path: %s", case_meta_path)
+    case_meta = yaml_load(case_meta_path)
+    uuid = case_meta["fmu"]["case"]["uuid"]
+    logger.info("Case uuid: %s", uuid)
+    return uuid
 
 
 def md5sum(bytes_string: bytes) -> str:
@@ -80,6 +83,12 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     Returns:
         dict: the metadata to export
     """
+    logger = logging.getLogger(__name__ + ".generate_meta")
+    logger.debug("Config: %s", config)
+    logger.debug("datafile_path: %s", datafile_path)
+    logger.debug("tagname: %s", tagname)
+    logger.debug("Obj of type: %s", type(obj))
+    logger.debug("Content: %s", content)
     name = give_name(datafile_path)
     exd = ExportData(
         config=config,
@@ -88,8 +97,11 @@ def generate_meta(config, datafile_path, tagname, obj, content):
         content=content,
     )
     metadata = exd.generate_metadata(obj)
+    relative_parent = str(Path(datafile_path).parents[2]).replace(
+        str(Path(datafile_path).parents[4]), ""
+    )
     metadata["file"] = {
-        "relative_path": f"{str(datafile_path.parents[2])}/{name}--{tagname}"
+        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
     }
     return metadata
 
@@ -107,33 +119,51 @@ def convert_to_bytestring(converter, obj):
     return converter(obj)
 
 
-def convert_2_sumo_file(obj, metadata, converter):
+def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     """Convert object to sumo file
 
     Args:
         obj (object): the object
-        metadata (dict): the metadata
         converter (func): function to convert to bytestring
+        metacreator (func): the function that creates the metadata
+        meta_args (iterable): arguments for generating metadata
 
     Returns:
         SumoFile: file containing obj
     """
-    sumo_file = FileOnJob(convert_to_bytestring(converter, obj), metadata)
+    logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
+    logger.debug("Obj: %s", obj)
+    logger.debug("Convert function %s", converter)
+    logger.debug("Meta function %s", metacreator)
+    logger.debug("Arguments for creating metadata %s", meta_args)
+    bytestring = convert_to_bytestring(converter, obj)
+    metadata = metacreator(*meta_args)
+    logger.debug("Metadata created")
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
+    assert isinstance(
+        bytestring, bytes
+    ), f"bytestring should be bytes, but is {type(bytestring)}"
+    sumo_file = FileOnJob(bytestring, metadata)
+    logger.debug("Init of sumo file")
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
     sumo_file.size = len(sumo_file.byte_string)
+    logger.debug("Returning from func")
     return sumo_file
 
 
-def nodisk_upload(files, parent_id, env):
+def nodisk_upload(files, parent_id, env="prod", connection=None):
     """Upload files to sumo
 
     Args:
         files (list): should contain only SumoFile objects
         parent_id (str): uuid of parent object
-        env (str): what environment to upload to
+        connection (str): client to upload with
     """
-    connection = SumoConnection(env=env)
+    if connection is None:
+        connection = SumoConnection(env=env)
     upload_files(files, parent_id, connection)
 
 

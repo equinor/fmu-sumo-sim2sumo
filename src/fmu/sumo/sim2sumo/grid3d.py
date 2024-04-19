@@ -21,7 +21,10 @@ from xtgeo.io._file import FileWrapper
 from .common import (
     export_object,
     generate_meta,
+    get_case_uuid,
     convert_to_bytestring,
+    convert_2_sumo_file,
+    nodisk_upload,
     fix_suffix,
     upload,
 )
@@ -37,6 +40,9 @@ def xtgeo_2_bytes(obj):
         bytes: bytestring
     """
     logger = logging.getLogger(__name__ + ".xtgeo_2_bytes")
+    if obj is None:
+        return obj
+    logger.debug("Converting %s", obj.name)
     sink = BytesIO()
     obj.to_file(sink)
     sink.seek(0)
@@ -54,8 +60,62 @@ def xtgeo_2_bytestring(obj):
     Returns:
         bytestring: bytes
     """
+    if obj is None:
+        return obj
     bytestring = convert_to_bytestring(xtgeo_2_bytes, obj)
+
     return bytestring
+
+
+def generate_grid3d_meta(datafile, obj, prefix, config, content):
+    """Generate metadata for xtgeo object
+
+    Args:
+        datafile (str): path to datafile
+        obj (xtgeo object): the object to generate metadata on
+        prefix (str): prefix to include
+        config (dict): the fmu config file
+        content (str): content for data
+
+    Returns:
+        dict: the metadata for obj
+    """
+    logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
+    if obj is None:
+        return obj
+    # generate_meta(config, datafile_path, tagname, obj, content)
+    metadata = generate_meta(
+        config, datafile, f"{prefix}-{obj.name}", obj, content
+    )
+    logger.debug("Generated meta are %s", metadata)
+
+    return metadata
+
+
+def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
+    logger = logging.getLogger(__name__ + ".convert_xtgeo_2_sumo_file")
+    logger.debug("Datafile %s", datafile)
+    logger.debug("Obj of type: %s", type(obj))
+    logger.debug("prefix: %s", prefix)
+    logger.debug("Config: %s", config)
+    if obj is None:
+        return obj
+    if isinstance(obj, Grid):
+        content = "depth"
+    else:
+        content = "property"
+
+    meta_args = (datafile, obj, prefix, config, content)
+    logger.debug(
+        "sending in %s",
+        dict(
+            zip(("datafile", "obj", "prefix", "config", "content"), meta_args)
+        ),
+    )
+    sumo_file = convert_2_sumo_file(
+        obj, xtgeo_2_bytestring, generate_grid3d_meta, meta_args
+    )
+    return sumo_file
 
 
 def get_xtgeo_egrid(datafile):
@@ -299,6 +359,124 @@ def export_init(init_path, xtgeoegrid, config, env="prod"):
     return count
 
 
+def upload_init(init_path, xtgeoegrid, config, parentid, env="prod"):
+    """Upload properties from init file
+
+    Args:
+        init_path (str): path to init file
+        xtgeoegrid (xtgeo.Grid): The grid to upack the properties to
+
+    Returns:
+        int: number of objects to export
+    """
+    logger = logging.getLogger(__name__ + ".upload_init")
+    logger.debug("File to load init from %s", init_path)
+    unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
+    init_props = list(
+        eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
+    )
+    count = 0
+    logger.debug("%s properties found in init", len(init_props))
+    tosumo = []
+    for init_prop in init_props:
+        if init_prop["name"] in unwanted:
+            logger.warning("%s will not be exported", init_prop["name"])
+            continue
+        xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
+        if xtgeo_prop is None:
+            logger.warning("%s will not be uploaded", init_prop["name"])
+            continue
+        sumo_file = convert_xtgeo_2_sumo_file(
+            init_path, xtgeo_prop, "INIT", config
+        )
+        if sumo_file is not None:
+            tosumo.append(sumo_file)
+            count += 1
+        if len(tosumo) > 50:
+            nodisk_upload(tosumo, parentid, env)
+            tosumo = []
+
+    if len(tosumo) > 0:
+        nodisk_upload(tosumo, parentid, env)
+    return count
+
+
+def upload_restart(
+    restart_path,
+    xtgeoegrid,
+    time_steps,
+    config,
+    parentid,
+    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
+    env="prod",
+):
+    """Export properties from restart file
+
+    Args:
+        restart_path (str): path to restart file
+        xtgeoegrid (xtge.Grid): the grid to unpack the properties to
+        time_steps (list): the timesteps to use
+        prop_names (iterable, optional): the properties to export. Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
+
+    Returns:
+        int: number of objects to export
+    """
+    logger = logging.getLogger(__name__ + ".upload_restart")
+    logger.debug("File to load restart from %s", restart_path)
+    count = 0
+    tosumo = []
+    for prop_name in prop_names:
+        for time_step in time_steps:
+            restart_prop = eclrun.import_gridprop_from_restart(
+                FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
+            )
+            xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
+
+            if xtgeo_prop is not None:
+                # TODO: refactor this if statement together with identical
+                # code in export_init
+                # These are identical, and should be treated as such
+                logger.debug("Exporting %s", xtgeo_prop.name)
+                sumo_file = convert_xtgeo_2_sumo_file(
+                    restart_path, xtgeo_prop, "UNRST", config
+                )
+                tosumo.append(sumo_file)
+                count += 1
+            if len(tosumo) > 50:
+                nodisk_upload(tosumo, parentid, env)
+                tosumo = []
+        if len(tosumo) > 0:
+            nodisk_upload(tosumo, parentid, env)
+    logger.info("%s properties", count)
+
+    return count
+
+
+def upload_simulation_run(datafile, config, env="prod"):
+    """Export 3d grid properties from simulation run
+
+    Args:
+        datafile (str): path to datafile
+    """
+    logger = logging.getLogger(__name__ + ".upload_simulation_run")
+    init_path = fix_suffix(datafile, ".INIT")
+    restart_path = fix_suffix(datafile, ".UNRST")
+    grid_path = fix_suffix(datafile, ".EGRID")
+    egrid = Grid(grid_path)
+    xtgeoegrid = grid_from_file(grid_path)
+    # grid_exp_path = export_object(
+    #     datafile, "grid", config, xtgeoegrid, "depth"
+    # )
+    parentid = get_case_uuid(datafile)
+    time_steps = get_timesteps(restart_path, egrid)
+
+    count = upload_init(init_path, xtgeoegrid, config, parentid, env)
+    count += upload_restart(
+        restart_path, xtgeoegrid, time_steps, config, parentid, env=env
+    )
+    logger.info("Exported %s properties", count)
+
+
 def get_timesteps(restart_path, egrid):
     """Get all available timesteps in restart file
 
@@ -343,12 +521,3 @@ def make_xtgeo_prop(
             xtgeo_prop.describe()
 
     return xtgeo_prop
-
-
-def generate_grid3d_meta(datafile, obj, prefix, config, content):
-    logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
-    metadata = generate_meta(
-        config, datafile, f"{prefix}-{obj.name}", obj, content
-    )
-    logger.debug("Generated meta are %s", metadata)
-    return metadata
