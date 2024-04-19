@@ -83,10 +83,12 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
     logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
     if obj is None:
         return obj
-    # generate_meta(config, datafile_path, tagname, obj, content)
-    metadata = generate_meta(
-        config, datafile, f"{prefix}-{obj.name}", obj, content
-    )
+
+    if prefix == "grid":
+        tagname = prefix
+    else:
+        tagname = f"{prefix}-{obj.name}"
+    metadata = generate_meta(config, datafile, tagname, obj, content)
     logger.debug("Generated meta are %s", metadata)
 
     return metadata
@@ -475,6 +477,10 @@ def upload_simulation_run(datafile, config, env="prod"):
     #     datafile, "grid", config, xtgeoegrid, "depth"
     # )
     parentid = get_case_uuid(datafile)
+    sumo_file = convert_xtgeo_2_sumo_file(
+        restart_path, xtgeoegrid, "grid", config
+    )
+    nodisk_upload([sumo_file], parentid, env)
     time_steps = get_timesteps(restart_path, egrid)
 
     count = upload_init(init_path, xtgeoegrid, config, parentid, env)
