@@ -1,5 +1,6 @@
 import os
 import shutil
+import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
@@ -44,6 +45,11 @@ def _fix_fipnum():
     return gridproperty_from_file(
         Path(__file__).parent / "data/eightcells--init-fipnum.roff"
     )
+
+
+@pytest.fixture(scope="session", name="reekrft")
+def _fix_rft():
+    return pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
 
 
 @pytest.fixture(scope="session", name="config")
