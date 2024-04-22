@@ -17,6 +17,7 @@ from fmu.sumo.sim2sumo.common import (
     md5sum,
     convert_2_sumo_file,
     nodisk_upload,
+    Dispatcher,
 )
 from fmu.sumo.sim2sumo import grid3d, main, tables
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -24,7 +25,8 @@ from fmu.sumo.sim2sumo._special_treatments import (
     convert_to_arrow,
     SUBMODULES,
 )
-from fmu.sumo.sim2sumo.common import fix_suffix
+from fmu.sumo.sim2sumo.common import fix_suffix, get_case_uuid
+from fmu.sumo.uploader import SumoConnection
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"
@@ -54,24 +56,37 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
         search_pattern = tag_prefix
     else:
         search_pattern = tag_prefix + "*"
-    query = f'fmu.case.uuid:{case_uuid} AND class:{class_type} AND data.tagname:"{search_pattern}"'
 
+    path = f"/objects('{case_uuid}')/children"
+    query = f"$filter=data.tagname:{search_pattern}"
+
+    if class_type != "*":
+        query += f" AND class:{class_type}"
+        check_nr = correct
+    else:
+        # The plus one is because we are always uploading the parameters.txt automatically
+        check_nr = correct + 1
     print(query)
-    results = sumo.get(
-        "/search",
-        {
-            "$query": query,
-            "$size": 0,
-        },
-    ).json()
+
+    results = sumo.get(path, query).json()
+
     LOGGER.debug(results["hits"])
     returned = results["hits"]["total"]["value"]
     LOGGER.debug("This is returned %s", returned)
     assert (
-        returned == correct
+        returned == check_nr
     ), f"Supposed to upload {correct}, but actual were {returned}"
 
-    # delete_objects(case_uuid, sumo, tag_prefix)
+    print(f"**************\nFound {correct} {class_type} objects")
+
+    sleep(1)
+    sumo.delete(
+        path,
+        "$filter=*",
+    )
+    sleep(SLEEP_TIME)
+
+    sumo.delete(path, query)
 
 
 def write_ert_config_and_run(runpath):
@@ -97,15 +112,6 @@ def write_ert_config_and_run(runpath):
     assert Path(
         runpath / "OK"
     ).is_file(), f"running {ert_full_config_path}, ended with errors"
-
-
-def delete_objects(case_uuid, sumo, tag_prefix):
-
-    sumo.delete(
-        "/objects('{objectid}')/children",
-        {"objectid": case_uuid, "$filter": f'data.tagname":"{tag_prefix}*"'},
-    )
-    sleep(SLEEP_TIME)
 
 
 def _assert_right_len(checks, key, to_messure, name):
@@ -168,6 +174,22 @@ def test_find_datafiles_reek(real, nrdfiles):
         assert found_path.suffix == correct_suff
 
 
+def test_get_case_uuid(case_uuid):
+    uuid = get_case_uuid(REEK_DATA_FILE)
+    assert uuid == case_uuid
+
+    uuid = get_case_uuid(REEK_REAL0, parent_level=1)
+
+    assert uuid == case_uuid
+
+
+def test_Dispatcher(case_uuid):
+    disp = Dispatcher(REEK_DATA_FILE, "dev")
+    assert disp._parentid == case_uuid
+    assert disp._env == "dev"
+    assert isinstance(disp._conn, SumoConnection)
+
+
 def test_xtgeo_2_bytes(eightfipnum):
 
     bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
@@ -182,18 +204,32 @@ def test_xtgeo_2_bytestring(eightfipnum):
     assert isinstance(bytestr, bytes)
 
 
-def test_convert_2_sumo_file(
+def test_convert_xtgeo_2_sumo_file(
     eightfipnum, eightcells_datafile, config, case_uuid
 ):
-    meta = grid3d.generate_grid3d_meta(
-        eightcells_datafile, eightfipnum, "INIT", config, "property"
+
+    file = grid3d.convert_xtgeo_2_sumo_file(
+        eightcells_datafile, eightfipnum, "INIT", config
     )
-    file = convert_2_sumo_file(eightfipnum, meta, grid3d.xtgeo_2_bytestring)
 
     print(file.metadata)
     print(file.byte_string)
-    results = nodisk_upload([file], case_uuid, "dev")
-    print(results)
+    nodisk_upload([file], case_uuid, "dev")
+
+
+def test_convert_table_2_sumo_file(
+    reekrft, eightcells_datafile, config, case_uuid, sumo
+):
+
+    file = tables.convert_table_2_sumo_file(
+        eightcells_datafile, reekrft, "rft", config
+    )
+
+    print(file.metadata)
+    print(file.byte_string)
+    nodisk_upload([file], case_uuid, "dev")
+
+    check_sumo(case_uuid, "rft", 1, "table", sumo)
 
 
 def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
@@ -201,6 +237,53 @@ def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
         eightcells_datafile, eightfipnum, "INIT", config, "property"
     )
     assert isinstance(meta, dict)
+
+
+def test_upload_init(eightcells_datafile, xtgeogrid, config, case_uuid, sumo):
+    expected_results = 5
+    grid3d.upload_init(
+        str(eightcells_datafile).replace(".DATA", ".INIT"),
+        xtgeogrid,
+        config,
+        case_uuid,
+        "dev",
+    )
+    check_sumo(case_uuid, "INIT", expected_results, "cpgrid_property", sumo)
+
+
+def test_upload_restart(
+    eightcells_datafile, xtgeogrid, config, case_uuid, sumo
+):
+    expected_results = 9
+    restart_path = str(eightcells_datafile).replace(".DATA", ".UNRST")
+    grid3d.upload_restart(
+        restart_path,
+        xtgeogrid,
+        grid3d.get_timesteps(restart_path, xtgeogrid),
+        config,
+        case_uuid,
+        env="dev",
+    )
+    check_sumo(case_uuid, "UNRST", expected_results, "cpgrid_property", sumo)
+
+
+def test_upload_tables_from_simulation_run(config, case_uuid, sumo):
+    expected_results = 2
+    tables.upload_tables_from_simulation_run(
+        REEK_DATA_FILE, ["summary", "rft"], [], config, case_uuid, "dev"
+    )
+    check_sumo(case_uuid, "*", expected_results, "table", sumo)
+
+
+def test_upload_simulation_run(eightcells_datafile, config, case_uuid, sumo):
+    expected_results = 15
+    restart_path = str(eightcells_datafile).replace(".DATA", ".UNRST")
+    grid3d.upload_simulation_run(
+        restart_path,
+        config,
+        env="dev",
+    )
+    check_sumo(case_uuid, "*", expected_results, "cpgrid*", sumo)
 
 
 def test_submodules_dict():
@@ -426,15 +509,12 @@ def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
         config,
         env="dev",
     )
-    shared_grid = real0 / "share/results/grids"
-    # check_expected_exports(expected_exports, shared_grid, prefix)
     check_sumo(case_uuid, "UNRST", expected_exports, "cpgrid_property", sumo)
 
 
 def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
     real0, datafile, config_path = scratch_files
-    prefix = "UNRST"
-    expected_exports = 14
+    expected_exports = 15
     config = yaml_load(config_path)
     config["file_path"] = config_path
     grid3d.export_from_simulation_run(
@@ -442,16 +522,13 @@ def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
         config,
         "dev",
     )
-    shared_grid = real0 / "share/results/grids"
-    # check_expected_exports(expected_exports, shared_grid, prefix)
-    check_sumo(case_uuid, "*", expected_exports, "cpgrid_property", sumo)
-    check_sumo(case_uuid, "*", 1, "cpgrid", sumo)
+    check_sumo(case_uuid, "*", expected_exports, "cpgrid*", sumo)
 
 
 def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
-    expected_exports = 21
+    expected_exports = 88
     path = f"/objects('{case_uuid}')/children"
     results = sumo.get(path).json()
     returned = results["hits"]["total"]["value"]
@@ -459,4 +536,3 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
     assert (
         returned == expected_exports
     ), f"Supposed to upload {expected_exports}, but actual were {returned}"
-    # check_sumo(case_uuid, "*", expected_exports, "*", sumo)
