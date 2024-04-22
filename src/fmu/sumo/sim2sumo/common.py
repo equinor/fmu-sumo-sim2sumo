@@ -219,10 +219,12 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         parent_id (str): uuid of parent object
         connection (str): client to upload with
     """
+    logger = logging.getLogger(__name__ + ".nodisk_upload")
+    logger.debug("%s files to upload", len(files))
     if connection is None:
         connection = SumoConnection(env=env)
     status = upload_files(files, parent_id, connection)
-    print("Status after upload: ", sep="--------------\n")
+    print("Status after upload: ", end="\n--------------\n")
     for state, obj_status in status.items():
         print(f"{state}: {len(obj_status)}")
 
