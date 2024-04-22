@@ -40,7 +40,7 @@ CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
 
 
 logging.basicConfig(
-    level=logging.info, format=" %(name)s :: %(levelname)s :: %(message)s"
+    level=logging.INFO, format=" %(name)s :: %(levelname)s :: %(message)s"
 )
 LOGGER = logging.getLogger(__file__)
 SLEEP_TIME = 3
