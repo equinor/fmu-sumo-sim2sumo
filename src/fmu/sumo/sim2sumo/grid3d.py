@@ -361,7 +361,7 @@ def export_init(init_path, xtgeoegrid, config, env="prod"):
     return count
 
 
-def upload_init(init_path, xtgeoegrid, config, parentid, env="prod"):
+def upload_init(init_path, xtgeoegrid, config, dispatcher):
     """Upload properties from init file
 
     Args:
@@ -391,15 +391,7 @@ def upload_init(init_path, xtgeoegrid, config, parentid, env="prod"):
         sumo_file = convert_xtgeo_2_sumo_file(
             init_path, xtgeo_prop, "INIT", config
         )
-        if sumo_file is not None:
-            tosumo.append(sumo_file)
-            count += 1
-        if len(tosumo) > 50:
-            nodisk_upload(tosumo, parentid, env)
-            tosumo = []
-
-    if len(tosumo) > 0:
-        nodisk_upload(tosumo, parentid, env)
+        dispatcher.add(sumo_file)
     return count
 
 
@@ -408,9 +400,8 @@ def upload_restart(
     xtgeoegrid,
     time_steps,
     config,
-    parentid,
+    dispatcher,
     prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS"),
-    env="prod",
 ):
     """Export properties from restart file
 
@@ -426,7 +417,6 @@ def upload_restart(
     logger = logging.getLogger(__name__ + ".upload_restart")
     logger.debug("File to load restart from %s", restart_path)
     count = 0
-    tosumo = []
     for prop_name in prop_names:
         for time_step in time_steps:
 
@@ -447,31 +437,25 @@ def upload_restart(
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
                 )
-                tosumo.append(sumo_file)
-                count += 1
-            if len(tosumo) > 50:
-                nodisk_upload(tosumo, parentid, env)
-                tosumo = []
-        if len(tosumo) > 0:
-            nodisk_upload(tosumo, parentid, env)
+                dispatcher.add(sumo_file)
     logger.info("%s properties", count)
 
     return count
 
 
-def upload_simulation_runs(datafiles, config, env="prod"):
+def upload_simulation_runs(datafiles, config, dispatcher):
     """Upload 3d grid and parameters for set of simulation runs
 
     Args:
         datafiles (list): the datafiles defining the rums
         config (dict): the fmu config file with metadata
-        env (str, optional): which Sumo environment that contains the case. Defaults to "prod".
+        dispatcher (sim2sumo.common.Dispatcher)
     """
     for datafile in datafiles:
-        upload_simulation_run(datafile, config, env)
+        upload_simulation_run(datafile, config, dispatcher)
 
 
-def upload_simulation_run(datafile, config, env="prod"):
+def upload_simulation_run(datafile, config, dispatcher):
     """Export 3d grid properties from simulation run
 
     Args:
@@ -486,16 +470,15 @@ def upload_simulation_run(datafile, config, env="prod"):
     # grid_exp_path = export_object(
     #     datafile, "grid", config, xtgeoegrid, "depth"
     # )
-    parentid = get_case_uuid(datafile)
     sumo_file = convert_xtgeo_2_sumo_file(
         restart_path, xtgeoegrid, "grid", config
     )
-    nodisk_upload([sumo_file], parentid, env)
+    dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    count = upload_init(init_path, xtgeoegrid, config, parentid, env)
+    count = upload_init(init_path, xtgeoegrid, config, dispatcher)
     count += upload_restart(
-        restart_path, xtgeoegrid, time_steps, config, parentid, env=env
+        restart_path, xtgeoegrid, time_steps, config, dispatcher
     )
     logger.info("Exported %s properties", count)
 

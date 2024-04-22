@@ -12,6 +12,7 @@ from sumo.wrapper import SumoClient
 
 from xtgeo import gridproperty_from_file
 from fmu.sumo.sim2sumo import grid3d
+from fmu.sumo.sim2sumo.common import Dispatcher
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 
 REEK_ROOT = Path(__file__).parent / "data/reek"

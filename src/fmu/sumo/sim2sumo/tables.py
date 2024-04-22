@@ -228,7 +228,7 @@ def export_table(
     return exp_path
 
 
-def upload_tables(sim2sumoconfig, config, env):
+def upload_tables(sim2sumoconfig, config, dispatcher):
     """Upload tables to sumo
 
     Args:
@@ -246,13 +246,12 @@ def upload_tables(sim2sumoconfig, config, env):
             sim2sumoconfig["submods"],
             sim2sumoconfig["options"],
             config,
-            parentid,
-            env,
+            dispatcher,
         )
 
 
 def upload_tables_from_simulation_run(
-    datafile, submods, options, config, parentid, env
+    datafile, submods, options, config, dispatcher
 ):
     """Upload tables from one simulator run to Sumo
 
@@ -261,24 +260,17 @@ def upload_tables_from_simulation_run(
         submods (list): the datatypes to extract
         options (dict): the options to pass inn
         config (dict): the fmu config with metadata
-        parentid (str): id for case to upload to
-        env (str): which Sumo environment that contains the case
+        dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     logger.info("Extracting tables from %s", datafile)
-    tosumo = []
     count = 0
     for submod in submods:
         table = get_table(datafile, submod, options)
         logger.debug("Sending %s onto file creation", table)
         sumo_file = convert_table_2_sumo_file(datafile, table, submod, config)
-        tosumo.append(sumo_file)
-        if len(tosumo) > 50:
-            nodisk_upload(tosumo, parentid, env)
-            tosumo = []
-        count += 1
-    if len(tosumo) > 0:
-        nodisk_upload(tosumo, parentid, env)
+        dispatcher.add(sumo_file)
+
     logger.info("%s properties", count)
 
 
