@@ -98,7 +98,7 @@ def generate_table_meta(datafile, obj, tagname, config):
     return metadata
 
 
-def convert_table_sumo_file(datafile, obj, tagname, config):
+def convert_table_2_sumo_file(datafile, obj, tagname, config):
     logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
     logger.debug("Datafile %s", datafile)
     logger.debug("Obj of type: %s", type(obj))
