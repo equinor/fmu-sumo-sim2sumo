@@ -12,6 +12,7 @@ from sumo.wrapper import SumoClient
 
 from xtgeo import gridproperty_from_file
 from fmu.sumo.sim2sumo import grid3d
+from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REAL_PATH = "realization-0/iter-0/"
@@ -49,7 +50,9 @@ def _fix_fipnum():
 
 @pytest.fixture(scope="session", name="reekrft")
 def _fix_rft():
-    return pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
+    return convert_to_arrow(
+        pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
+    )
 
 
 @pytest.fixture(scope="session", name="config")
