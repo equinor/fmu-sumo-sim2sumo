@@ -209,7 +209,10 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
     """
     if connection is None:
         connection = SumoConnection(env=env)
-    upload_files(files, parent_id, connection)
+    status = upload_files(files, parent_id, connection)
+    print("Status after upload: ", sep="--------------\n")
+    for state, obj_status in status.items():
+        print(f"{state}: {len(obj_status)}")
 
 
 def give_name(datafile_path: str) -> str:
