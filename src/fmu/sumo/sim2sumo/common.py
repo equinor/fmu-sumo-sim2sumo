@@ -79,7 +79,6 @@ class Dispatcher:
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile)
-        self._files = []
         self._conn = SumoConnection(env=env)
         self._env = env
         self._mem_limit = (
@@ -88,6 +87,12 @@ class Dispatcher:
         self._mem_count = 0
         self._count = 0
         self._objects = []
+        print("Init, parent is %s, and env is %s", self._parentid, self._env)
+
+    @property
+    def parentid(self):
+        """Return parentid"""
+        return self._parentid
 
     def add(self, file):
         """Add file
@@ -102,17 +107,24 @@ class Dispatcher:
             self._mem_limit = (
                 psutil.virtual_memory().available * self._limit_percent
             )
-            if self._mem_count > self._mem_limit or self._count > 100:
+            self._logger.debug(
+                "Count is %s, and mem frac is %f1.1",
+                self._count,
+                self._mem_count / self._mem_limit,
+            )
+            if (self._mem_count > self._mem_limit) or (self._count > 100):
                 self._upload()
-                self._files = []
+                self._objects = []
                 self._mem_count = 0
         else:
-            self._logger.debug("File is None, not adding")
+            print("File is None, not adding")
 
     def _upload(self):
-        nodisk_upload(self._files, self._parentid, connection=self._conn)
+        self._logger.debug("%s files to upload", len(self._objects))
+        nodisk_upload(self._objects, self._parentid, connection=self._conn)
 
     def __del__(self):
+        self._logger.debug("Final stretch")
         self._upload()
 
 
