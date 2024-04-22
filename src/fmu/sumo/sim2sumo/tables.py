@@ -32,7 +32,7 @@ from .common import (
     nodisk_upload,
 )
 
-logging.getLogger(__name__).setLevel(logging.DEBUG)
+# logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 SUBMOD_CONTENT = {
     "summary": "timeseries",
@@ -55,6 +55,7 @@ def table_to_bytes(table: pa.Table):
     """
     logger = logging.getLogger(__name__ + ".table_to_bytes")
     sink = pa.BufferOutputStream()
+    logger.debug("Writing %s to sink", table)
     pq.write_table(table, sink)
     byte_string = sink.getvalue().to_pybytes()
     logger.debug("Returning bytestring with size %s", len(byte_string))
@@ -136,8 +137,11 @@ def get_table(
     datafile_path = fix_suffix(datafile_path)
     output = None
     trace = None
+    print_help = False
     if print_help:
+        print("------------------")
         print(SUBMOD_DICT[submod]["doc"])
+        print("------------------")
     else:
         logger.debug("Checking these passed options %s", kwargs)
         right_kwargs = {
@@ -148,7 +152,7 @@ def get_table(
         logger.debug("Exporting with arguments %s", right_kwargs)
         try:
             logger.info(
-                "Extracting data from %s with %s",
+                "Extracting data from %s with func %s",
                 datafile_path,
                 extract_df.__name__,
             )
@@ -191,7 +195,7 @@ def get_table(
                 "Trace: %s, \nNo results produced ",
                 trace,
             )
-
+    logger.debug("Returning %s", output)
     return output
 
 
@@ -266,7 +270,8 @@ def upload_tables_from_simulation_run(
     count = 0
     for submod in submods:
         table = get_table(datafile, submod, options)
-        sumo_file = convert_table_sumo_file(datafile, table, submod, config)
+        logger.debug("Sending %s onto file creation", table)
+        sumo_file = convert_table_2_sumo_file(datafile, table, submod, config)
         tosumo.append(sumo_file)
         if len(tosumo) > 50:
             nodisk_upload(tosumo, parentid, env)
