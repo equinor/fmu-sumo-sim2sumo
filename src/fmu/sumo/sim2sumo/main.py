@@ -177,19 +177,21 @@ def main():
     if args.help_on != "No help":
         print(give_help(args.help_on))
     else:
+        # dispatcher = Dispatcher()
         logger.info("Will be extracting results")
         config = yaml_load(args.config_path)
         config["file_path"] = args.config_path
         logger.debug("Added file_path, and config keys are %s", config.keys())
         sim2sumoconfig = read_config(config, args.datafile, args.datatype)
+
+        logger.debug("Extracting tables")
+        upload_tables(sim2sumoconfig, config, args.env)
+
         if "grid3d" in sim2sumoconfig:
             logger.debug("Extracting 3dgrid(s) with properties")
             upload_simulation_runs(
                 sim2sumoconfig["datafiles"], config, args.env
             )
-
-        logger.debug("Extracting tables")
-        upload_tables(sim2sumoconfig, config, args.env)
 
 
 if __name__ == "__main__":
