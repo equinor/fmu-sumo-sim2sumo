@@ -75,10 +75,10 @@ def md5sum(bytes_string: bytes) -> str:
 class Dispatcher:
     """Controls upload to sumo"""
 
-    def __init__(self, parentid, env):
+    def __init__(self, datafile, env):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
-        self._parentid = parentid
+        self._parentid = get_case_uuid(datafile)
         self._files = []
         self._conn = SumoConnection(env=env)
         self._env = env
