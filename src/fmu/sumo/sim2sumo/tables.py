@@ -15,7 +15,12 @@ import pyarrow.parquet as pq
 import pandas as pd
 import res2df
 
-from ._special_treatments import SUBMOD_DICT, convert_options, tidy
+from ._special_treatments import (
+    SUBMOD_DICT,
+    convert_options,
+    tidy,
+    convert_to_arrow,
+)
 from .common import (
     export_object,
     fix_suffix,
@@ -155,11 +160,23 @@ def get_table(
                 output = tidy(output)
             if arrow:
                 try:
-                    output = SUBMOD_DICT[submod]["arrow_convertor"](output)
+                    convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
+                    logger.debug(
+                        "Using function %s to convert to arrow",
+                        convert_func.__name__,
+                    )
+                    output = convert_func(output)
                 except pa.lib.ArrowInvalid:
                     logger.warning(
-                        "Arrow invalid, cannot convert to arrow, keeping pandas format"
+                        "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
+                        sys.exc_info()[1],
                     )
+                    logger.debug(
+                        "Falling back to converting with %s",
+                        convert_to_arrow.__name__,
+                    )
+                    output = convert_to_arrow(output)
+
                 except TypeError:
                     logger.warning("Type error, cannot convert to arrow")
 
