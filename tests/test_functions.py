@@ -185,6 +185,7 @@ def test_Dispatcher(case_uuid):
     assert disp._parentid == case_uuid
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
+    disp.finish()
 
 
 def test_xtgeo_2_bytes(eightfipnum):
@@ -236,21 +237,23 @@ def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
     assert isinstance(meta, dict)
 
 
-def test_upload_init(eightcells_datafile, xtgeogrid, config, case_uuid, sumo):
+def test_upload_init(eightcells_datafile, xtgeogrid, config, sumo):
+    disp = Dispatcher(eightcells_datafile, "dev")
     expected_results = 5
     grid3d.upload_init(
         str(eightcells_datafile).replace(".DATA", ".INIT"),
         xtgeogrid,
         config,
-        case_uuid,
-        "dev",
+        disp,
     )
-    check_sumo(case_uuid, "INIT", expected_results, "cpgrid_property", sumo)
+    uuid = disp.parentid
+    disp.finish()
+    check_sumo(uuid, "INIT", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_restart(
-    eightcells_datafile, xtgeogrid, config, case_uuid, sumo
-):
+def test_upload_restart(eightcells_datafile, xtgeogrid, config, sumo):
+    disp = Dispatcher(eightcells_datafile, "dev")
+
     expected_results = 9
     restart_path = str(eightcells_datafile).replace(".DATA", ".UNRST")
     grid3d.upload_restart(
@@ -258,29 +261,32 @@ def test_upload_restart(
         xtgeogrid,
         grid3d.get_timesteps(restart_path, xtgeogrid),
         config,
-        case_uuid,
-        env="dev",
+        disp,
     )
-    check_sumo(case_uuid, "UNRST", expected_results, "cpgrid_property", sumo)
+    uuid = disp.parentid
+    disp.finish()
+    check_sumo(uuid, "UNRST", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_tables_from_simulation_run(config, case_uuid, sumo):
+def test_upload_tables_from_simulation_run(eightcells_datafile, config, sumo):
+    disp = Dispatcher(eightcells_datafile, "dev")
     expected_results = 2
     tables.upload_tables_from_simulation_run(
-        REEK_DATA_FILE, ["summary", "rft"], [], config, case_uuid, "dev"
+        REEK_DATA_FILE, ["summary", "rft"], [], config, disp
     )
-    check_sumo(case_uuid, "*", expected_results, "table", sumo)
+    uuid = disp.parentid
+    disp.finish()
+    check_sumo(uuid, "*", expected_results, "table", sumo)
 
 
-def test_upload_simulation_run(eightcells_datafile, config, case_uuid, sumo):
+def test_upload_simulation_run(eightcells_datafile, config, disp, sumo):
+    disp = Dispatcher(eightcells_datafile, "dev")
+
     expected_results = 15
-    restart_path = str(eightcells_datafile).replace(".DATA", ".UNRST")
-    grid3d.upload_simulation_run(
-        restart_path,
-        config,
-        env="dev",
-    )
-    check_sumo(case_uuid, "*", expected_results, "cpgrid*", sumo)
+    grid3d.upload_simulation_run(eightcells_datafile, config, disp)
+    uuid = disp.parentid
+    disp.finish()
+    check_sumo(uuid, "*", expected_results, "cpgrid*", sumo)
 
 
 def test_submodules_dict():
