@@ -3,14 +3,16 @@
 import logging
 import os
 from pathlib import Path
+from numpy.ma import allclose, allequal
 from subprocess import PIPE, Popen
 from time import sleep
-
+from io import BytesIO
 import pandas as pd
 import pyarrow as pa
+import pyarrow.parquet as pq
 import pytest
 
-from xtgeo import Grid
+from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
     yaml_load,
@@ -203,7 +205,7 @@ def test_xtgeo_2_bytestring(eightfipnum):
 
 
 def test_convert_xtgeo_2_sumo_file(
-    eightfipnum, eightcells_datafile, config, case_uuid
+    eightfipnum, eightcells_datafile, config, case_uuid, sumo
 ):
 
     file = grid3d.convert_xtgeo_2_sumo_file(
@@ -213,10 +215,21 @@ def test_convert_xtgeo_2_sumo_file(
     print(file.metadata)
     print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
+    obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
+    prop = gridproperty_from_file(obj)
+    assert isinstance(
+        prop, GridProperty
+    ), f"obj should be xtgeo.GridProperty but is {type(prop)}"
+    assert allclose(prop.values, eightfipnum.values)
+    assert allequal(prop.values, eightfipnum.values)
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, eightcells_datafile, config, case_uuid, sumo
+    reekrft,
+    eightcells_datafile,
+    config,
+    case_uuid,
+    sumo,
 ):
 
     file = tables.convert_table_2_sumo_file(
@@ -226,8 +239,25 @@ def test_convert_table_2_sumo_file(
     print(file.metadata)
     print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
-
+    obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
+    table = pq.read_table(obj)
+    assert isinstance(
+        table, pa.Table
+    ), f"obj should be pa.Table but is {type(table)}"
+    assert table == reekrft
     check_sumo(case_uuid, "rft", 1, "table", sumo)
+
+
+def get_sumo_object(sumo, case_uuid, name, tagname):
+    path = f"/objects('{case_uuid}')/search"
+    results = sumo.get(
+        path, f"$query=data.name:{name} AND data.tagname:{tagname}"
+    ).json()
+    print(results)
+    obj_id = results["hits"]["hits"][0]["_id"]
+    obj = BytesIO(sumo.get(f"/objects('{obj_id}')/blob").content)
+    print(type(obj))
+    return obj
 
 
 def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
