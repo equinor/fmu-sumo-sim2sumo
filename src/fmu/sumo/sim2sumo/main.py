@@ -192,6 +192,7 @@ def main():
             upload_simulation_runs(
                 sim2sumoconfig["datafiles"], config, dispatcher
             )
+        dispatcher.finish()
 
 
 if __name__ == "__main__":
