@@ -39,9 +39,6 @@ CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
 CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
 
 
-logging.basicConfig(
-    level=logging.INFO, format=" %(name)s :: %(levelname)s :: %(message)s"
-)
 LOGGER = logging.getLogger(__file__)
 SLEEP_TIME = 3
 
