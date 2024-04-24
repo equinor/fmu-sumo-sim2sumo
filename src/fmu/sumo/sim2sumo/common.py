@@ -84,6 +84,7 @@ class Dispatcher:
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
+
         self._mem_count = 0
         self._count = 0
         self._objects = []
@@ -93,6 +94,15 @@ class Dispatcher:
     def parentid(self):
         """Return parentid"""
         return self._parentid
+
+    @property
+    def mem_frac(self):
+        """Calculate fraction of memory
+
+        Returns:
+            float: fraction of available memory
+        """
+        return self._mem_count / self._mem_limit
 
     def add(self, file):
         """Add file
@@ -107,23 +117,30 @@ class Dispatcher:
             self._mem_limit = (
                 psutil.virtual_memory().available * self._limit_percent
             )
+
             self._logger.debug(
                 "Count is %s, and mem frac is %f1.1",
                 self._count,
-                self._mem_count / self._mem_limit,
+                self.mem_frac,
             )
-            if (self._mem_count > self._mem_limit) or (self._count > 100):
+            if (self.mem_frac > 1) or (self._count > 100):
+                self._logger.info(
+                    "Time to upload (mem frac %s, and count is %s)",
+                    self.mem_frac,
+                    self._count,
+                )
                 self._upload()
-                self._objects = []
-                self._mem_count = 0
         else:
             print("File is None, not adding")
 
     def _upload(self):
         self._logger.debug("%s files to upload", len(self._objects))
         nodisk_upload(self._objects, self._parentid, connection=self._conn)
+        self._objects = []
+        self._mem_count = 0
 
-    def __del__(self):
+    def finish(self):
+        """Cleanup"""
         self._logger.debug("Final stretch")
         self._upload()
 
