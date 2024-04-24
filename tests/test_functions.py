@@ -311,7 +311,7 @@ def test_upload_tables_from_simulation_run(eightcells_datafile, config, sumo):
     check_sumo(uuid, "*", expected_results, "table", sumo)
 
 
-def test_upload_simulation_run(eightcells_datafile, config, disp, sumo):
+def test_upload_simulation_run(eightcells_datafile, config, sumo):
     disp = Dispatcher(eightcells_datafile, "dev")
 
     expected_results = 15
