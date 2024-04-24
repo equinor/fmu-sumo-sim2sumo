@@ -215,6 +215,7 @@ def test_convert_xtgeo_2_sumo_file(
     print(file.metadata)
     print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
+    sleep(2)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
     assert isinstance(
@@ -239,6 +240,7 @@ def test_convert_table_2_sumo_file(
     print(file.metadata)
     print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
+    sleep(2)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
     assert isinstance(
