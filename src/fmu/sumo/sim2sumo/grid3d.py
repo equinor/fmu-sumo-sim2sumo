@@ -521,7 +521,7 @@ def make_xtgeo_prop(
         logger.info("%s has only one value", prop_name)
     if single_value and not return_single:
         xtgeo_prop = None
-        logging.debug("Will not return single value property")
+        logger.debug("Will not return single value property")
     else:
         xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
         xtgeo_prop.values = values
