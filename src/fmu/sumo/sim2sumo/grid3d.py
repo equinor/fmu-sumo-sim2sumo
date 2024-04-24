@@ -379,7 +379,6 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
     )
     count = 0
     logger.debug("%s properties found in init", len(init_props))
-    tosumo = []
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
             logger.warning("%s will not be exported", init_prop["name"])
@@ -392,6 +391,8 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
             init_path, xtgeo_prop, "INIT", config
         )
         dispatcher.add(sumo_file)
+        count += 1
+    logger.info("%s properties sendt on", count)
     return count
 
 
@@ -438,7 +439,8 @@ def upload_restart(
                     restart_path, xtgeo_prop, "UNRST", config
                 )
                 dispatcher.add(sumo_file)
-    logger.info("%s properties", count)
+                count += 1
+    logger.info("%s properties sendt on", count)
 
     return count
 
