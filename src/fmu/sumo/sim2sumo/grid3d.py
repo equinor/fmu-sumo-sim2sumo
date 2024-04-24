@@ -8,7 +8,6 @@
 import logging
 import re
 from datetime import datetime
-from pathlib import Path
 
 from io import BytesIO
 import numpy as np
@@ -19,14 +18,10 @@ from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
 from .common import (
-    export_object,
     generate_meta,
-    get_case_uuid,
     convert_to_bytestring,
     convert_2_sumo_file,
-    nodisk_upload,
     fix_suffix,
-    upload,
 )
 
 
@@ -226,139 +221,6 @@ def export_grdecl_props(include_path, grid, exporter):
         except ValueError:
             logger.warning("Something wrong with reading of file")
     # logger.debug(grdecls)
-
-
-def export_from_simulation_runs(datafiles, config, env="prod"):
-    """Export 3d grid properties from simulation runs
-
-    Args:
-        datafiles (list): path to datafiles
-        config (dict): config with metadata
-        env (str): environment to upload to
-    """
-    logger = logging.getLogger(__name__ + ".export_from_simulation_runs")
-    logger.debug("These datafiles are used to extract results %s", datafiles)
-    for datafile in datafiles:
-        export_from_simulation_run(datafile, config, env)
-
-
-def export_from_simulation_run(datafile, config, env="prod"):
-    """Export 3d grid properties from simulation run
-
-    Args:
-        datafile (str): path to datafile
-    """
-    logger = logging.getLogger(__name__ + ".export_from_simulation_run")
-    init_path = fix_suffix(datafile, ".INIT")
-    restart_path = fix_suffix(datafile, ".UNRST")
-    grid_path = fix_suffix(datafile, ".EGRID")
-    egrid = Grid(grid_path)
-    xtgeoegrid = grid_from_file(grid_path)
-    grid_exp_path = export_object(
-        datafile, "grid", config, xtgeoegrid, "depth"
-    )
-    upload(Path(grid_exp_path).parent, [".roff"], "*grid", env)
-    time_steps = get_timesteps(restart_path, egrid)
-
-    count = export_init(init_path, xtgeoegrid, config, env)
-    count += export_restart(
-        restart_path, xtgeoegrid, time_steps, config, env=env
-    )
-    logger.info("Exported %s properties", count)
-
-
-def export_restart(
-    restart_path,
-    xtgeoegrid,
-    time_steps,
-    config,
-    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE"),
-    env="prod",
-):
-    """Export properties from restart file
-
-    Args:
-        restart_path (str): path to restart file
-        xtgeoegrid (xtge.Grid): the grid to unpack the properties to
-        time_steps (list): the timesteps to use
-        prop_names (iterable, optional): the properties to export. Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
-
-    Returns:
-        int: number of objects to export
-    """
-    logger = logging.getLogger(__name__ + ".export_init")
-    logger.debug("File to load init from %s", restart_path)
-    count = 0
-    for base_name in prop_names:
-        for time_step in time_steps:
-            restart_prop = eclrun.import_gridprop_from_restart(
-                FileWrapper(restart_path), base_name, xtgeoegrid, time_step
-            )
-            xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
-
-            if xtgeo_prop is not None:
-                # TODO: refactor this if statement together with identical
-                # code in export_init
-                # These are identical, and should be treated as such
-                logger.debug("Exporting %s", xtgeo_prop.name)
-                export_path = export_object(
-                    restart_path,
-                    "UNRST-" + xtgeo_prop.name,
-                    config,
-                    xtgeo_prop,
-                    "property",
-                )
-                count += 1
-
-    logger.info("%s properties", count)
-    export_folder = Path(export_path).parent
-    config_file = config["file_path"]
-    upload(
-        export_folder, [".roff"], "*unrst", env=env, config_path=config_file
-    )
-    return count
-
-
-def export_init(init_path, xtgeoegrid, config, env="prod"):
-    """Export properties from init file
-
-    Args:
-        init_path (str): path to init file
-        xtgeoegrid (xtgeo.Grid): The grid to upack the properties to
-
-    Returns:
-        int: number of objects to export
-    """
-    logger = logging.getLogger(__name__ + ".export_init")
-    logger.debug("File to load init from %s", init_path)
-    unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
-    init_props = list(
-        eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
-    )
-    count = 0
-    export_path = None
-    logger.debug("%s properties found in init", len(init_props))
-    for init_prop in init_props:
-        if init_prop["name"] in unwanted:
-            logger.warning("%s will not be exported", init_prop["name"])
-            continue
-        xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
-        if xtgeo_prop is not None:
-            logger.debug("Exporting %s", xtgeo_prop.name)
-            export_path = export_object(
-                init_path,
-                "INIT-" + xtgeo_prop.name,
-                config,
-                xtgeo_prop,
-                "property",
-            )
-            count += 1
-
-    logger.info("%s properties", count)
-    export_folder = Path(export_path).parent
-    config_file = config["file_path"]
-    upload(export_folder, [".roff"], "*init", env=env, config_path=config_file)
-    return count
 
 
 def upload_init(init_path, xtgeoegrid, config, dispatcher):

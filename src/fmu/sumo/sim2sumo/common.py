@@ -4,14 +4,12 @@ import logging
 import re
 from pathlib import Path
 
-import hashlib
 import psutil
 import yaml
 
 
 from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
-from fmu.sumo.uploader.scripts.sumo_upload import sumo_upload_main
 from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
 
@@ -55,21 +53,6 @@ def get_case_uuid(file_path, parent_level=4):
     uuid = case_meta["fmu"]["case"]["uuid"]
     logger.info("Case uuid: %s", uuid)
     return uuid
-
-
-def md5sum(bytes_string: bytes) -> str:
-    """Make checksum from bytestring
-    args:
-    bytes_string (bytes): byte string
-    returns (str): checksum
-    """
-    logger = logging.getLogger(__name__ + ".md5sum")
-    hash_md5 = hashlib.md5()
-    hash_md5.update(bytes_string)
-    checksum = hash_md5.hexdigest()
-    logger.debug("Checksum %s", checksum)
-
-    return checksum
 
 
 class Dispatcher:
@@ -284,84 +267,3 @@ def fix_suffix(datafile_path: str, suffix=".DATA"):
         logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
         datafile_path = corrected_path
     return datafile_path
-
-
-def export_object(datafile_path, tagname, config, obj, content):
-    """Export object with fmu.dataio
-
-    Args:
-        datafile_path (str): path to datafile
-        tagname (str): tagname to use
-        config (dict): config with metadata
-        obj (object): object fit for dataio
-        contents (str): content to set for dataio
-
-    Returns:
-        str: path for exported path
-    """
-    logger = logging.getLogger(__file__ + ".export_object")
-    name = give_name(datafile_path)
-    if obj is not None:
-        logger.debug("Reading global variables from %s", config)
-        exp = ExportData(
-            config=config,
-            name=name,
-            tagname=tagname,
-            content=content,
-        )
-        exp_path = exp.export(obj)
-        logger.info("Exported %s to path %s", type(obj), exp_path)
-    else:
-        exp_path = "Nothing produced"
-        logger.warning(
-            "Something went wrong, so no export happened for %s, %s",
-            name,
-            tagname,
-        )
-
-    return exp_path
-
-
-def upload(
-    upload_folder,
-    suffixes,
-    search_element,
-    env="prod",
-    threads=5,
-    start_del="real",
-    config_path="fmuconfig/output/global_variables.yml",
-):
-    """Upload to sumo
-
-    Args:
-        upload_folder (str): folder to upload from
-        suffixes (set, list, tuple): suffixes to include in upload
-        search_element(str): string to be part of search string
-        env (str, optional): sumo environment to upload to. Defaults to "prod".
-        threads (int, optional): Threads to use in upload. Defaults to 5.
-    """
-    logger = logging.getLogger(__file__ + ".upload")
-    logger.debug("Sending in path %s", str(upload_folder))
-    logger.debug("Config file to marry with data %s", config_path)
-
-    case_path = Path(re.sub(rf"\/{start_del}.*", "", str(upload_folder)))
-    logger.info("Case to upload from %s", case_path)
-    case_meta_path = case_path / "share/metadata/fmu_case.yml"
-    logger.info("Case meta object %s", case_meta_path)
-
-    try:
-        for suffix in suffixes:
-            logger.info(suffix)
-            upload_search = f"{upload_folder}/{search_element}*{suffix}"
-            logger.info("Upload folder %s", upload_search)
-            sumo_upload_main(
-                case_path,
-                upload_search,
-                env,
-                case_meta_path,
-                threads,
-                config_path,
-            )
-            logger.debug("Uploaded")
-    except TypeError:
-        logger.warning("Nothing to export..")

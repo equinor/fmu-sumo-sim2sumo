@@ -7,7 +7,6 @@
 
 import logging
 import sys
-from pathlib import Path
 from typing import Union
 
 import pyarrow as pa
@@ -22,17 +21,13 @@ from ._special_treatments import (
     convert_to_arrow,
 )
 from .common import (
-    export_object,
     fix_suffix,
-    upload,
     generate_meta,
     get_case_uuid,
     convert_to_bytestring,
     convert_2_sumo_file,
-    nodisk_upload,
 )
 
-# logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 SUBMOD_CONTENT = {
     "summary": "timeseries",
@@ -199,35 +194,6 @@ def get_table(
     return output
 
 
-def export_table(
-    datafile_path: str,
-    submod: str,
-    config,
-    **kwargs,
-) -> str:
-    """Export csv file with specified datatype
-
-    Args:
-        datafile_path (str): the path to the simulator datafile
-        submod (str): the name of the submodule to extract with
-
-    Returns:
-        str: path of export
-    """
-    logger = logging.getLogger(__file__ + ".export_table")
-    logger.debug("Export will be using these options: %s", kwargs)
-    frame = get_table(datafile_path, submod, **kwargs)
-
-    exp_path = export_object(
-        datafile_path,
-        submod,
-        config,
-        frame,
-        SUBMOD_CONTENT.get(submod, "property"),
-    )
-    return exp_path
-
-
 def upload_tables(sim2sumoconfig, config, dispatcher):
     """Upload tables to sumo
 
@@ -272,67 +238,3 @@ def upload_tables_from_simulation_run(
         dispatcher.add(sumo_file)
 
     logger.info("%s properties", count)
-
-
-def export_tables(sim2sumoconfig, config):
-    """Export from all datafiles and all submods selected
-
-    Args:
-        datafiles (iterable): the datafiles to extract from
-        submods (iterable): the subtypes to extract
-        options (dict): the options to use
-        config (dict): the metadata
-
-    Returns:
-        tuple: path to where things have been exported, suffixes of exported files
-    """
-    logger = logging.getLogger(__file__ + ".export_tables")
-    suffixes = set()
-    export_folder = None
-    export_path = None
-
-    count = 0
-
-    for datafile in sim2sumoconfig["datafiles"]:
-        for submod in sim2sumoconfig["submods"]:
-            logger.info("Exporting %s", submod)
-            export_path = export_table(
-                datafile,
-                submod,
-                config,
-                **sim2sumoconfig["options"],
-            )
-            count += 1
-            export_path = Path(export_path)
-            suffixes.add(export_path.suffix)
-    try:
-        export_folder = str(export_path.parent)
-        logger.info("Exported %i files to %s", count, export_folder)
-    except AttributeError:
-        logger.warning("No results exported ")
-
-    return export_folder, suffixes
-
-
-def export_and_upload_tables(sim2sumoconfig, config, env):
-    """Upload simulator results to sumo
-
-    Args:
-        config_path (str): Path to config file
-        env (str, optional): The sumo environment. Defaults to "prod".
-        extras (dict): extra arguments
-    """
-    logger = logging.getLogger(__file__ + ".upload_with_config")
-    logger.debug("Executing with:")
-    logger.debug("config keys: %s: ", config.keys())
-    logger.debug("Settings for export_tables %s", sim2sumoconfig)
-    logger.debug("Sumo env: %s: ", env)
-    config_path = config["file_path"]
-    upload_folder, suffixes = export_tables(sim2sumoconfig, config)
-    upload(
-        upload_folder,
-        suffixes,
-        "*",
-        env,
-        config_path=config_path,
-    )

@@ -16,8 +16,6 @@ from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
     yaml_load,
-    md5sum,
-    convert_2_sumo_file,
     nodisk_upload,
     Dispatcher,
 )
@@ -195,9 +193,6 @@ def test_xtgeo_2_bytes(eightfipnum):
     bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
     assert isinstance(bytestring, bytes)
 
-    checksum = md5sum(bytestring)
-    assert isinstance(checksum, str)
-
 
 def test_xtgeo_2_bytestring(eightfipnum):
     bytestr = grid3d.xtgeo_2_bytestring(eightfipnum)
@@ -368,59 +363,6 @@ def test_get_table(submod):
         ), "Metdata not carried across for summary"
 
 
-@pytest.mark.parametrize(
-    "submod",
-    (name for name in SUBMODULES if name != "wellcompletiondata"),
-)
-def test_export_table(tmp_path, submod):
-    """Test writing of csv file"""
-    os.chdir(tmp_path)
-    export_path = (
-        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
-    )
-    meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = tables.export_table(
-        REEK_DATA_FILE,
-        submod,
-        yaml_load(CONFIG_PATH),
-    )
-    LOGGER.info(actual_path)
-    assert isinstance(
-        actual_path,
-        str,
-    ), "No string returned for path"
-    assert export_path.exists(), f"No export of data to {export_path}"
-    assert meta_path.exists(), f"No export of metadata to {meta_path}"
-
-
-def test_export_table_w_options(tmp_path, submod="summary"):
-    """Test writing of csv file"""
-    os.chdir(tmp_path)
-    export_path = (
-        tmp_path / f"share/results/tables/{REEK_BASE}--{submod}.arrow".lower()
-    )
-    key_args = {
-        "time_index": "daily",
-        "start_date": "2002-01-02",
-        "end_date": "2003-01-02",
-    }
-
-    meta_path = export_path.parent / f".{export_path.name}.yml"
-    actual_path = tables.export_table(
-        REEK_DATA_FILE, submod, yaml_load(CONFIG_PATH), **key_args
-    )
-    LOGGER.info(actual_path)
-    assert isinstance(
-        actual_path,
-        str,
-    ), "No string returned for path"
-    assert export_path.exists(), f"No export of data to {export_path}"
-    assert "arrow" in str(
-        export_path
-    ), f"No arrow in path, should be, path is {export_path}"
-    assert meta_path.exists(), f"No export of metadata to {meta_path}"
-
-
 # Extra checks to be used with parametrize below
 CHECK_DICT = {
     "global_variables_w_eclpath.yml": {
@@ -470,34 +412,6 @@ def test_read_config(config_path):
     ), f"Wrong choice for arrow for {name}"
 
 
-@pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
-def test_export_tables(tmp_path, config_path):
-    """Test function export with config"""
-    # Make exec path, needs to be at real..-0/iter-0
-    exec_path = tmp_path / REAL_PATH
-    exec_path.mkdir(parents=True)
-    # Symlink in case meta at root of run
-    case_share_meta = "share/metadata/"
-    (tmp_path / case_share_meta).mkdir(parents=True)
-    case_meta_path = "share/metadata/fmu_case.yml"
-    (tmp_path / case_meta_path).symlink_to(REEK_ROOT / case_meta_path)
-    # Run tests from exec path to get metadata in ship shape
-    os.chdir(exec_path)
-    # The lines below is needed for test to work when definition of datafile
-    #  not in config symlink to model folder, code autodetects
-    sim_path = tmp_path / REAL_PATH / "eclipse"
-    sim_path.mkdir(parents=True)
-    (sim_path / "model").symlink_to(REEK_ECL_MODEL)
-    # Symlink in config, this is also autodetected
-    conf_path = tmp_path / REAL_PATH / "fmuconfig/output/"
-    conf_path.mkdir(parents=True)
-    (conf_path / config_path.name).symlink_to(config_path)
-    # THE TEST
-    config = yaml_load(config_path)
-    sim2sumoconfig = main.read_config(config)
-    tables.export_tables(sim2sumoconfig, config)
-
-
 def test_convert_to_arrow():
     """Test function convert_to_arrow"""
     dframe = pd.DataFrame(
@@ -515,49 +429,6 @@ def test_convert_to_arrow():
 def test_get_xtgeo_egrid(eightcells_datafile):
     egrid = grid3d.get_xtgeo_egrid(eightcells_datafile)
     assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
-
-
-def test_export_init(xtgeogrid, scratch_files, case_uuid, sumo):
-    real0, eight_datafile, config_path = scratch_files
-    prefix = "INIT"
-    init_path = fix_suffix(eight_datafile, f".{prefix}")
-    expected_exports = 5
-    config = yaml_load(config_path)
-    config["file_path"] = config_path
-    grid3d.export_init(init_path, xtgeogrid, config, "dev")
-    shared_grid = real0 / "share/results/grids"
-    # check_expected_exports(expected_exports, shared_grid, prefix)
-    check_sumo(case_uuid, "INIT", expected_exports, "cpgrid_property", sumo)
-
-
-def test_export_restart(xtgeogrid, scratch_files, case_uuid, sumo):
-    real0, eight_datafile, config_path = scratch_files
-    prefix = "UNRST"
-    expected_exports = 9
-    config = yaml_load(config_path)
-    config["file_path"] = config_path
-    restart_path = fix_suffix(eight_datafile, f".{prefix}")
-    grid3d.export_restart(
-        restart_path,
-        xtgeogrid,
-        grid3d.get_timesteps(restart_path, xtgeogrid),
-        config,
-        env="dev",
-    )
-    check_sumo(case_uuid, "UNRST", expected_exports, "cpgrid_property", sumo)
-
-
-def test_export_from_simulation_run(scratch_files, case_uuid, sumo):
-    real0, datafile, config_path = scratch_files
-    expected_exports = 15
-    config = yaml_load(config_path)
-    config["file_path"] = config_path
-    grid3d.export_from_simulation_run(
-        datafile,
-        config,
-        "dev",
-    )
-    check_sumo(case_uuid, "*", expected_exports, "cpgrid*", sumo)
 
 
 def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
