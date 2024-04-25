@@ -1,0 +1,49 @@
+$schema: https://main-fmu-schemas-dev.radix.equinor.com/schemas/0.8.0/fmu_results.json
+version: 0.8.0
+source: fmu
+class: case
+fmu:
+  case:
+    name: ROWH TestCase from fmu.sumo
+    uuid: 11111111-2222-1111-1111-111111111111
+    user:
+      id: testuser
+    description:
+    - yet other detailed description
+    - optional
+    restart_from: 00000000-0000-0000-0000-000000000000
+  model:
+    name: ff
+    revision: 21.0.0.dev
+    description:
+    - detailed description
+    - optional
+access:
+  asset:
+    name: Drogon
+masterdata:
+  smda:
+    country:
+    - identifier: Norway
+      uuid: ad214d85-8a1d-19da-e053-c918a4889309
+    discovery:
+    - short_identifier: DROGON
+      uuid: ad214d85-8a1d-19da-e053-c918a4889309
+    field:
+    - identifier: DROGON
+      uuid: 00000000-0000-0000-0000-000000000000
+    coordinate_system:
+      identifier: ST_WGS84_UTM37N_P32637
+      uuid: ad214d85-dac7-19da-e053-c918a4889309
+    stratigraphic_column:
+      identifier: DROGON_2020
+      uuid: 12345678-1234-1234-1234-123456789012
+tracklog:
+- datetime: 2024-04-26 14:28:02Z
+  user:
+    id: testuser
+  event: created
+- datetime: 2024-04-26 14:28:02Z
+  user:
+    id: testuser
+  event: updated
