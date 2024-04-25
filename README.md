@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/fmu-sumo-sim2sumo/badge/?version=latest)](https://fmu-sumo-sim2sumo.readthedocs.io/en/latest/?badge=latest)
+
 # fmu-sumo-sim2sumo
 Makes reservoir simulator (Eclipse, [OPM](https://opm-project.org/)) results available through Sumo.
 
