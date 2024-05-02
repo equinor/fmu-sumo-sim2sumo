@@ -180,8 +180,8 @@ def test_get_case_uuid(case_uuid):
     assert uuid == case_uuid
 
 
-def test_Dispatcher(case_uuid):
-    disp = Dispatcher(REEK_DATA_FILE, "dev")
+def test_Dispatcher(case_uuid, token):
+    disp = Dispatcher(REEK_DATA_FILE, "dev", token=token)
     assert disp._parentid == case_uuid
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
@@ -264,8 +264,8 @@ def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
     assert isinstance(meta, dict)
 
 
-def test_upload_init(eightcells_datafile, xtgeogrid, config, sumo):
-    disp = Dispatcher(eightcells_datafile, "dev")
+def test_upload_init(eightcells_datafile, xtgeogrid, config, sumo, token):
+    disp = Dispatcher(eightcells_datafile, "dev", token=token)
     expected_results = 5
     grid3d.upload_init(
         str(eightcells_datafile).replace(".DATA", ".INIT"),
@@ -278,8 +278,8 @@ def test_upload_init(eightcells_datafile, xtgeogrid, config, sumo):
     check_sumo(uuid, "INIT", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_restart(eightcells_datafile, xtgeogrid, config, sumo):
-    disp = Dispatcher(eightcells_datafile, "dev")
+def test_upload_restart(eightcells_datafile, xtgeogrid, config, sumo, token):
+    disp = Dispatcher(eightcells_datafile, "dev", token=token)
 
     expected_results = 9
     restart_path = str(eightcells_datafile).replace(".DATA", ".UNRST")
@@ -306,8 +306,8 @@ def test_upload_tables_from_simulation_run(eightcells_datafile, config, sumo):
     check_sumo(uuid, "*", expected_results, "table", sumo)
 
 
-def test_upload_simulation_run(eightcells_datafile, config, sumo):
-    disp = Dispatcher(eightcells_datafile, "dev")
+def test_upload_simulation_run(eightcells_datafile, config, sumo, token):
+    disp = Dispatcher(eightcells_datafile, "dev", token=token)
 
     expected_results = 15
     grid3d.upload_simulation_run(eightcells_datafile, config, disp)

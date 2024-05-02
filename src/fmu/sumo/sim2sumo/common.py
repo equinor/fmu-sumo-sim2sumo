@@ -58,11 +58,11 @@ def get_case_uuid(file_path, parent_level=4):
 class Dispatcher:
     """Controls upload to sumo"""
 
-    def __init__(self, datafile, env):
+    def __init__(self, datafile, env, token=None):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile)
-        self._conn = SumoConnection(env=env)
+        self._conn = SumoConnection(env=env, token=token)
         self._env = env
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
