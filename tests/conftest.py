@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
+import os
 import pytest
 import yaml
 from fmu.config.utilities import yaml_load
@@ -35,6 +36,10 @@ def set_up_tmp(path):
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
     return real0, eight_datafile, config_path
 
+@pytest.fixture(scope="session", name="token"):
+def _fix_token():
+    token = os.environ.get("ACCESS_TOKEN")
+    return token if token and len(token) else None
 
 @pytest.fixture(scope="session", name="eightcells_datafile")
 def _fix_eight():
@@ -61,8 +66,8 @@ def _fix_config():
 
 
 @pytest.fixture(scope="session", name="sumo")
-def _fix_sumo():
-    return SumoClient(env="dev")
+def _fix_sumo(token):
+    return SumoClient(env="dev", token=token)
 
 
 @pytest.fixture(scope="session", name="scratch_files")
@@ -72,7 +77,7 @@ def _fix_scratch_files(tmp_path_factory):
 
 
 @pytest.fixture(autouse=True, scope="session", name="case_uuid")
-def _fix_register(scratch_files):
+def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]
     case_metadata_path = root / "share/metadata/fmu_case.yml"
@@ -86,7 +91,7 @@ def _fix_register(scratch_files):
     }
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
-    sumo_conn = SumoConnection(env="dev")
+    sumo_conn = SumoConnection(env="dev", token=token)
     case = CaseOnDisk(
         case_metadata_path=case_metadata_path,
         sumo_connection=sumo_conn,
