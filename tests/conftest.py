@@ -36,10 +36,12 @@ def set_up_tmp(path):
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
     return real0, eight_datafile, config_path
 
-@pytest.fixture(scope="session", name="token"):
+
+@pytest.fixture(scope="session", name="token")
 def _fix_token():
     token = os.environ.get("ACCESS_TOKEN")
     return token if token and len(token) else None
+
 
 @pytest.fixture(scope="session", name="eightcells_datafile")
 def _fix_eight():
