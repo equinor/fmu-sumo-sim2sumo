@@ -89,7 +89,7 @@ def read_config(config, datafile=None, datatype=None):
 
     options = simconfig.get("options", {"arrow": True})
 
-    grid3d = simconfig.get("grid3d", True)
+    grid3d = simconfig.get("grid3d", False)
     logger.info(
         "Running with: datafile(s): \n%s \n Types: \n %s \noptions:\n %s",
         datafiles,
@@ -187,11 +187,13 @@ def main():
         logger.debug("Extracting tables")
         upload_tables(sim2sumoconfig, config, dispatcher)
 
-        if "grid3d" in sim2sumoconfig:
+        if sim2sumoconfig["grid3d"]:
             logger.debug("Extracting 3dgrid(s) with properties")
             upload_simulation_runs(
                 sim2sumoconfig["datafiles"], config, dispatcher
             )
+        else:
+            logger.info("No grid3d extraction")
         dispatcher.finish()
 
 
