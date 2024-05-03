@@ -71,7 +71,9 @@ class Dispatcher:
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        print("Init, parent is %s, and env is %s", self._parentid, self._env)
+        self._logger(
+            "Init, parent is %s, and env is %s", self._parentid, self._env
+        )
 
     @property
     def parentid(self):
@@ -114,7 +116,7 @@ class Dispatcher:
                 )
                 self._upload()
         else:
-            print("File is None, not adding")
+            self._logger.warning("File is None, not adding")
 
     def _upload(self):
         self._logger.debug("%s files to upload", len(self._objects))
