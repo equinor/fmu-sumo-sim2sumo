@@ -71,14 +71,19 @@ class Dispatcher:
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        self._logger(
-            "Init, parent is %s, and env is %s", self._parentid, self._env
+        self._logger.info(
+            "Init, parent is %s, and env is %s", self.parentid, self.env
         )
 
     @property
     def parentid(self):
         """Return parentid"""
         return self._parentid
+
+    @property
+    def env(self):
+        """Return env"""
+        return self._env
 
     @property
     def mem_frac(self):
@@ -223,12 +228,15 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
     logger.debug("%s files to upload", len(files))
-    if connection is None:
-        connection = SumoConnection(env=env)
-    status = upload_files(files, parent_id, connection)
-    print("Status after upload: ", end="\n--------------\n")
-    for state, obj_status in status.items():
-        print(f"{state}: {len(obj_status)}")
+    if len(files) > 0:
+        if connection is None:
+            connection = SumoConnection(env=env)
+        status = upload_files(files, parent_id, connection)
+        print("Status after upload: ", end="\n--------------\n")
+        for state, obj_status in status.items():
+            print(f"{state}: {len(obj_status)}")
+    else:
+        logger.info("No passed files, nothing to do here")
 
 
 def give_name(datafile_path: str) -> str:
