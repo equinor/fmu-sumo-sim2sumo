@@ -78,6 +78,13 @@ def _fix_scratch_files(tmp_path_factory):
     return set_up_tmp(tmp_path_factory.mktemp("scratch"))
 
 
+@pytest.fixture(autouse=True, scope="function", name="set_ert_env")
+def _fix_ert_env(monkeypatch):
+    monkeypatch.setenv("_ERT_REALIZATION_NUMBER", "0")
+    monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
+    monkeypatch.setenv("_ERT_RUNPATH", "./")
+
+
 @pytest.fixture(autouse=True, scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
 
