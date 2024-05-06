@@ -196,7 +196,7 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
         SumoFile: file containing obj
     """
     logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
-    logger.debug("Obj: %s", obj)
+    logger.debug("Obj type: %s", type(obj))
     logger.debug("Convert function %s", converter)
     logger.debug("Meta function %s", metacreator)
     logger.debug("Arguments for creating metadata %s", meta_args)
