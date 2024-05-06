@@ -111,7 +111,7 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     if isinstance(obj, Grid):
         content = "depth"
     else:
-        content = {"property": {"is_discrete": obj.isdiscrete}}
+        content = "property"
 
     meta_args = (datafile, obj, prefix, config, content)
     logger.debug(
