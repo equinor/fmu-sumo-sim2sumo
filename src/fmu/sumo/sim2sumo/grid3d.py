@@ -90,6 +90,17 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
 
 
 def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
+    """Convert xtgeo object to SumoFile ready for shipping to Sumo
+
+    Args:
+        datafile (str|PosixPath): path to datafile connected to extracted object
+        obj (Xtgeo object): The object to prepare for upload
+        prefix (str): prefix to distinguish between init and restart
+        config (dict): dictionary with master metadata needed for Sumo
+
+    Returns:
+        SumoFile: Object containing xtgeo object as bytestring + metadata as dictionary
+    """
     logger = logging.getLogger(__name__ + ".convert_xtgeo_2_sumo_file")
     logger.debug("Datafile %s", datafile)
     logger.debug("Obj of type: %s", type(obj))
