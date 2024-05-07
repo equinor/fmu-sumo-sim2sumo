@@ -131,7 +131,7 @@ class Dispatcher:
 
     def finish(self):
         """Cleanup"""
-        self._logger.debug("Final stretch")
+        self._logger.info("Final stretch")
         self._upload()
 
 
@@ -148,11 +148,12 @@ def generate_meta(config, datafile_path, tagname, obj, content):
         dict: the metadata to export
     """
     logger = logging.getLogger(__name__ + ".generate_meta")
+    logger.info("Obj of type: %s", type(obj))
+    logger.info("Generating metadata")
+    logger.info("Content: %s", content)
     logger.debug("Config: %s", config)
     logger.debug("datafile_path: %s", datafile_path)
-    logger.debug("tagname: %s", tagname)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("Content: %s", content)
+    logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
     exd = ExportData(
         config=config,
@@ -227,7 +228,7 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         connection (str): client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    logger.debug("%s files to upload", len(files))
+    logger.info("%s files to upload", len(files))
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
@@ -249,14 +250,14 @@ def give_name(datafile_path: str) -> str:
         str: derived name
     """
     logger = logging.getLogger(__name__ + ".give_name")
-    logger.debug("Giving name from path %s", datafile_path)
+    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.debug("Returning name %s", base_name)
+    logger.info("Returning name %s", base_name)
     return base_name
 
 
