@@ -21,20 +21,7 @@ REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
 REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
 REEK_BASE = "2_R001_REEK"
 REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
-REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
-CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
-EIGHTCELLS_DATAFILE = REEK_ECL_MODEL / "EIGHTCELLS.DATA"
-
-
-def set_up_tmp(path):
-    reek_tmp = path / "reek_tmp"
-    shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
-    real0 = reek_tmp / "realization-0/iter-0"
-    config_path = real0 / "fmuconfig/output/global_variables.yml"
-    os.chdir(real0)
-    eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
-    return real0, eight_datafile, config_path
+CONFIG_PATH = REEK_REAL0 / "fmuconfig/output/" / "global_variables.yml"
 
 
 @pytest.fixture(scope="session", name="token")
@@ -45,7 +32,7 @@ def _fix_token():
 
 @pytest.fixture(scope="session", name="eightcells_datafile")
 def _fix_eight():
-    return EIGHTCELLS_DATAFILE
+    return REEK_ECL_MODEL / "EIGHTCELLS.DATA"
 
 
 @pytest.fixture(scope="session", name="eightfipnum")
@@ -75,7 +62,13 @@ def _fix_sumo(token):
 @pytest.fixture(scope="session", name="scratch_files")
 def _fix_scratch_files(tmp_path_factory):
 
-    return set_up_tmp(tmp_path_factory.mktemp("scratch"))
+    reek_tmp = tmp_path_factory.mktemp("scratch") / "reek_tmp"
+    shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
+    real0 = reek_tmp / "realization-0/iter-0"
+    config_path = real0 / "fmuconfig/output/global_variables.yml"
+    os.chdir(real0)
+    eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
+    return real0, eight_datafile, config_path
 
 
 @pytest.fixture(autouse=True, scope="function", name="set_ert_env")
