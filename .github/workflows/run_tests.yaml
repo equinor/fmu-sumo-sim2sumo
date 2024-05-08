@@ -11,9 +11,9 @@ jobs:
     name: PY ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      max-parallel: 1
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
-        max-parallel: 1
         os: [ubuntu-latest]
     permissions:
       contents: read
