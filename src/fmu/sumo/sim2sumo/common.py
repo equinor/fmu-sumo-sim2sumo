@@ -135,6 +135,23 @@ class Dispatcher:
         self._upload()
 
 
+def find_datefield(text_string):
+    """Extract possible date at end of string
+
+    Args:
+        text_string (str): string with possible date
+
+    Returns:
+        str| None: date as string or None
+    """
+    datesearch = re.search(".*_([0-9]{8})$", text_string)
+    if datesearch is not None:
+        date = datesearch.group(1)
+    else:
+        date = None
+    return date
+
+
 def generate_meta(config, datafile_path, tagname, obj, content):
     """Generate metadata for object
 
@@ -155,12 +172,18 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     logger.debug("datafile_path: %s", datafile_path)
     logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
-    exd = ExportData(
-        config=config,
-        name=name,
-        tagname=tagname,
-        content=content,
-    )
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": content,
+    }
+
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
+
+    exd = ExportData(**exp_args)
     metadata = exd.generate_metadata(obj)
     relative_parent = str(Path(datafile_path).parents[2]).replace(
         str(Path(datafile_path).parents[4]), ""
@@ -168,6 +191,7 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     metadata["file"] = {
         "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
     }
+    logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
 
 

@@ -18,6 +18,7 @@ from fmu.sumo.sim2sumo.common import (
     yaml_load,
     nodisk_upload,
     Dispatcher,
+    find_datefield,
 )
 from fmu.sumo.sim2sumo import grid3d, main, tables
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -141,6 +142,13 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     assert (
         nr_meta == expected_exports
     ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+
+
+@pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
+def test_find_datefield(datestring):
+
+    results = find_datefield(datestring)
+    print(results)
 
 
 def test_fix_suffix():
