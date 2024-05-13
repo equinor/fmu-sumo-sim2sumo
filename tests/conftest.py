@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import os
+import uuid
 import pytest
 import yaml
 from fmu.config.utilities import yaml_load
@@ -91,6 +92,7 @@ def _fix_register(scratch_files, token):
     root = scratch_files[0].parents[1]
     case_metadata_path = root / "share/metadata/fmu_case.yml"
     case_metadata = yaml_load(case_metadata_path)
+    case_metadata["fmu"]["case"]["uuid"] = str(uuid.uuid4())
     case_metadata["tracklog"][0] = {
         "datetime": datetime.now().isoformat(),
         "user": {
@@ -98,6 +100,7 @@ def _fix_register(scratch_files, token):
         },
         "event": "created",
     }
+    print(case_metadata)
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
     sumo_conn = SumoConnection(env="dev", token=token)
