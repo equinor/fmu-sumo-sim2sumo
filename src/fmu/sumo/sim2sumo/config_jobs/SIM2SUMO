@@ -14,7 +14,7 @@ STDOUT sim2sumo.stdout
 
 EXECUTABLE sim2sumo
 
-ARGLIST execute "--config_path" <S2S_CONF_PATH> "--env" <SUMO_ENV>
+ARGLIST "--config_path" <S2S_CONF_PATH> "--env" <SUMO_ENV>
 
 MIN_ARG 5
 MAX_ARG 5

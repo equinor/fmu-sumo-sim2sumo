@@ -35,3 +35,4 @@ sim2sumo:
     time_index: daily,
     start_date: 2002-01-02
     end_date: 2003-01-02
+  grid3d: false

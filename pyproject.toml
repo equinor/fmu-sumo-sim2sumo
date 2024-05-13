@@ -16,12 +16,14 @@ requires-python = ">=3.8"
 dynamic = ["version"]
 dependencies = [
     "sumo-wrapper-python>=1.0.3",
-    "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git@main",
+    # "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git@main",
     "fmu-dataio",
     "opm>=2020.10.2",
     "res2df",
+    "xtgeo",
     "pandas",
     "arrow",
+    "urllib3<=1.26.18"
 ]
 
 [project.optional-dependencies]
@@ -42,7 +44,7 @@ where = ["src"]
 
 
 [project.scripts]
-sim2sumo = "fmu.sumo.sim2sumo.sim2sumo:main"
+sim2sumo = "fmu.sumo.sim2sumo.main:main"
 
 [project.entry-points.ert]
 fmu_sumo_sim2sumo_jobs = "fmu.sumo.sim2sumo.hook_implementations.jobs"

@@ -24,4 +24,5 @@ access:
   ssdl:
     access_level: internal
     rep_include: true
-sim2sumo: true
+sim2sumo:
+  grid3d: true
