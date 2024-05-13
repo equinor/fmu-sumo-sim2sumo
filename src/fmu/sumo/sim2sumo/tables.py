@@ -94,6 +94,16 @@ def generate_table_meta(datafile, obj, tagname, config):
 
 
 def convert_table_2_sumo_file(datafile, obj, tagname, config):
+    """Convert table to Sumo File ready for shipping to sumo
+
+    Args:
+      datafile (str|PosixPath): path to datafile connected to extracted object
+        obj (pa.Table): The object to prepare for upload
+        tagname (str): what submodule the table is extracted from
+        config (dict): dictionary with master metadata needed for Sumo
+    Returns:
+         SumoFile: Object containing table object as bytestring + metadata as dictionary
+    """
     logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
     logger.debug("Datafile %s", datafile)
     logger.debug("Obj of type: %s", type(obj))
