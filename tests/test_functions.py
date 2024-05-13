@@ -150,26 +150,6 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
-def test_find_datafiles_reek(real, nrdfiles):
-    os.chdir(real)
-    datafiles = main.find_datafiles(None, {})
-    expected_tools = ["eclipse", "opm", "ix", "pflotran"]
-    assert (
-        len(datafiles) == nrdfiles
-    ), f"Haven't found correct nr of datafiles {nrdfiles} files but {len(datafiles)} ({datafiles})"
-    for datafile in datafiles:
-        found_path = datafile
-        parent = found_path.parent.parent.name
-        assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
-        correct_suff = ".DATA"
-        if parent == "ix":
-            correct_suff = ".afi"
-        if parent == "pflotran":
-            correct_suff = ".in"
-        assert found_path.suffix == correct_suff
-
-
 def test_get_case_uuid(case_uuid, scratch_files):
 
     real0 = scratch_files[0]
@@ -198,7 +178,6 @@ def test_xtgeo_2_bytestring(eightfipnum):
     assert isinstance(bytestr, bytes)
 
 
-@pytest.mark.skip("becase")
 def test_convert_xtgeo_2_sumo_file(
     eightfipnum, scratch_files, config, case_uuid, sumo
 ):
@@ -219,7 +198,6 @@ def test_convert_xtgeo_2_sumo_file(
     assert allequal(prop.values, eightfipnum.values)
 
 
-@pytest.mark.skip("becase")
 def test_convert_table_2_sumo_file(
     reekrft,
     scratch_files,
@@ -443,3 +421,24 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
     assert (
         returned == expected_exports
     ), f"Supposed to upload {expected_exports}, but actual were {returned}"
+
+
+@pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
+def test_find_datafiles_reek(real, nrdfiles):
+
+    os.chdir(real)
+    datafiles = main.find_datafiles(None, {})
+    expected_tools = ["eclipse", "opm", "ix", "pflotran"]
+    assert (
+        len(datafiles) == nrdfiles
+    ), f"Haven't found correct nr of datafiles {nrdfiles} files but {len(datafiles)} ({datafiles})"
+    for datafile in datafiles:
+        found_path = datafile
+        parent = found_path.parent.parent.name
+        assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
+        correct_suff = ".DATA"
+        if parent == "ix":
+            correct_suff = ".afi"
+        if parent == "pflotran":
+            correct_suff = ".in"
+        assert found_path.suffix == correct_suff
