@@ -26,7 +26,7 @@ from .common import (
 
 
 def xtgeo_2_bytes(obj):
-    """Convert xtgeo object to bytesring
+    """Convert xtgeo object to bytes
 
     Args:
         obj (xtgeo.Obj): the object to convert

@@ -196,7 +196,7 @@ def generate_meta(config, datafile_path, tagname, obj, content):
 
 
 def convert_to_bytestring(converter, obj):
-    """Convert what comes out of a function to byte stream
+    """Convert what comes out of a function to bytestring
 
     Args:
         converter (func): the function to convert to bytestring
