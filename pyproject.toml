@@ -16,14 +16,12 @@ requires-python = ">=3.8"
 dynamic = ["version"]
 dependencies = [
     "sumo-wrapper-python>=1.0.3",
-    # "fmu-sumo-uploader @ git+https://github.com/equinor/fmu-sumo-uploader.git@main",
     "fmu-dataio",
     "opm>=2020.10.2",
     "res2df",
     "xtgeo",
     "pandas",
     "arrow",
-    "urllib3<=1.26.18"
 ]
 
 [project.optional-dependencies]
