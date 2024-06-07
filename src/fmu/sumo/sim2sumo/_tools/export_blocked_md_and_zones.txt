@@ -1,0 +1,187 @@
+"""Export MD log estimates for cells penetrated by wells in 3d grid
+   if you have a large model and/or many wells this will take a long time
+"""
+
+import pandas as pd
+from pathlib import Path
+from xtgeo import blockedwell_from_roxar
+from xtgeo.common.exceptions import WellNotFoundError
+import roxar
+import roxar.jobs
+
+# Change this one to the grid that you want the calculation done on
+GRID_NAME = "Simgrid"
+REPORT_NAME = "../output/wells/blocked_md_and_zonelog.csv"
+# You can substitute this one with a list of the relevant wells
+WELL_NAMES = "all"
+
+###### Internal variable, you should not need to change this
+_BW_NAME = "Traj"
+######
+
+
+def zone_converters(grid_name: str) -> dict:
+    """Make dict with converters to zone nr and name
+
+    Args:
+        grid_name (str): the grid to extract from
+
+    Returns:
+        dict: the resulting dictionary
+    """
+    grid = project.grid_models[grid_name].get_grid()
+    indexer = grid.grid_indexer
+    zone_names = grid.zone_names
+    print(zone_names)
+    print(indexer.zonation)
+    converters = {"zone_nrs": {}, "zone_names": {}}
+    for zone_nr, lay_range in indexer.zonation.items():
+
+        for lay in lay_range[0]:
+            converters["zone_nrs"][float(lay)] = zone_nr
+            converters["zone_names"][float(lay)] = zone_names[zone_nr]
+
+    print(converters)
+    return converters
+
+
+def add_zone_info(frame: pd.DataFrame, grid_name: str) -> pd.DataFrame:
+    """Add zone info columns to dataframe
+
+    Args:
+        frame (pd.DataFrame): the dataframe to modify
+        grid_name (str): name of grid to extract info from
+
+    Returns:
+        pd.DataFrame: the modified frame
+    """
+    print("Prior to adding zone info frame is \n", frame)
+    converters = zone_converters(grid_name)
+    frame["zone_nr"] = frame["K_INDEX"].replace(converters["zone_nrs"])
+    frame["zone_name"] = frame["K_INDEX"].replace(converters["zone_names"])
+    return frame
+
+
+def count_duplicates(frame: pd.DataFrame, cols: list) -> pd.Series:
+    """Count duplicates over several columns in dataframe
+
+    Args:
+        frame (pd.DataFrame): the dataframe to interrogate
+        cols (list): the columns to count over
+
+    Returns:
+        pd.Series: series with count
+    """
+
+    combined = frame[cols].astype(str).sum(axis=1)
+
+    return combined.map(
+        {val: combined.loc[combined == val].shape[0] for val in combined.unique()}
+    )
+
+
+def create_blocked_wells(grid_name: str, well_name) -> bool:
+    """Block well with md logs
+
+    Args:
+        grid_name (str): name of grid to do blocking on
+        well_name (str): name of well to block
+
+    Returns:
+        bool: if success or not
+    """
+    bw_job = roxar.jobs.Job.create(
+        owner=["Grid models", grid_name, "Grid"],
+        type="Block Wells",
+        name="Block_md_values",
+    )
+    print(f"Blocking well {well_name}")
+    params = {
+        "BlockedWellsName": _BW_NAME,
+        "Blocked Wells Report": [
+            {"Name": "NUMBER_OF_WELLS", "ReportType": "REPORT_NWELLS"},
+            {"Name": "MD_ENTRY", "ReportType": "REPORT_MD_ENTRY"},
+            {"Name": "MD_EXIT", "ReportType": "REPORT_MD_EXIT"},
+        ],
+        "ExpandTruncatedGridCells": True,
+        "Wells": [["Wells", well_name]],
+    }
+
+    bw_job.set_arguments(params)
+    bw_job.save()
+
+    ok = bw_job.execute(0)
+    return ok[0]
+
+
+def calculate_md_average(grid_name: str, well_names) -> pd.DataFrame:
+    """Calculate md for all wells in project that intersect grid
+
+    Args:
+        grid_name (str): name of grid
+
+    Returns:
+        pd.DataFrame: the dataframe with results
+    """
+    all_mds = []
+    if well_names == "all":
+        well_names = project.wells.keys()
+
+    for well_name in well_names:
+        if create_blocked_wells(grid_name, well_name):
+            try:
+                blocked = blockedwell_from_roxar(
+                    project,
+                    grid_name,
+                    _BW_NAME,
+                    well_name,
+                    lognames=["MD_ENTRY", "MD_EXIT"],
+                )
+            except WellNotFoundError:
+                print(f"Well: {well_name} cannot be found in grid")
+                continue
+            results = blocked.get_dataframe()
+            results["both"] = ~results.MD_ENTRY.isna() & ~results.MD_EXIT.isna()
+            results["entry_only"] = ~results.MD_ENTRY.isna() & results.MD_EXIT.isna()
+            results["exit_only"] = results.MD_ENTRY.isna() & ~results.MD_EXIT.isna()
+            results["MD"] = (results.MD_ENTRY + results.MD_EXIT) / 2
+            results.loc[results.exit_only, "MD"] = results.loc[
+                results.exit_only, "MD_EXIT"
+            ]
+            results.loc[results.entry_only, "MD"] = results.loc[
+                results.entry_only, "MD_ENTRY"
+            ]
+            results["WELLNAME"] = well_name
+            all_mds.append(results)
+        else:
+            print(f"Skipping well {well_name}")
+
+    if len(all_mds) == 0:
+        print("No wells intersect grid, nothing to do")
+        quit()
+    all_mds = pd.concat(all_mds)
+    all_mds.drop(
+        ["MD_EXIT", "MD_ENTRY", "both", "entry_only", "exit_only"], axis=1, inplace=True
+    )
+    print(f"Columns before counting duplicates: {all_mds.columns}") 
+    all_mds["NR_OF_WELLS"] = count_duplicates(all_mds, ["I_INDEX", "J_INDEX", "K_INDEX"])
+    print("----")
+    print(all_mds)
+    return all_mds
+
+
+def main():
+    """Create and export the report"""
+    md_calculations = calculate_md_average(GRID_NAME, WELL_NAMES)
+    print(md_calculations)
+    md_and_zones = add_zone_info(md_calculations, GRID_NAME)
+    REPORT_PATH = Path(REPORT_NAME).resolve()
+    if not REPORT_PATH.parent.exists():
+        print(f"Created folder {str(REPORT_PATH.parent)}")
+        REPORT_PATH.parent.mkdir(parents=True)
+    print(f"Exported file {str(REPORT_PATH)}")
+    md_and_zones.to_csv(REPORT_PATH, index=False)
+
+
+if __name__ == "__main__":
+    main()
