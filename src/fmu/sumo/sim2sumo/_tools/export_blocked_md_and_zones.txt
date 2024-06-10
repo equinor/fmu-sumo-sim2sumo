@@ -1,4 +1,5 @@
-"""Export MD log estimates for cells penetrated by wells in 3d grid
+"""For use in rms:
+   Export MD log estimates for cells penetrated by wells in 3d grid
    if you have a large model and/or many wells this will take a long time
 """
 
@@ -163,7 +164,7 @@ def calculate_md_average(grid_name: str, well_names) -> pd.DataFrame:
     all_mds.drop(
         ["MD_EXIT", "MD_ENTRY", "both", "entry_only", "exit_only"], axis=1, inplace=True
     )
-    print(f"Columns before counting duplicates: {all_mds.columns}") 
+    print(f"Columns before counting duplicates: {all_mds.columns}")
     all_mds["NR_OF_WELLS"] = count_duplicates(all_mds, ["I_INDEX", "J_INDEX", "K_INDEX"])
     print("----")
     print(all_mds)

@@ -10,13 +10,14 @@ TOOLS_PATH = Path(__file__).parent / "_tools/"
 def fetch_top_docstring(text_string: str) -> str:
 
     logger = logging.getLogger(__file__ + ".fetch_top_string")
-    primary_docstring = re.compile(r'^"""(.+)"""', re.MULTILINE)
-    results = None
+    logger.debug("This is the string to extract from %s", text_string)
+    primary_docstring = re.compile(r'"""(.*?)"""')
+    new_line = re.compile(r"(\n|\r)")
     try:
-        results = primary_docstring.search(text_string).group(1)
+        return primary_docstring.search(new_line.sub("", text_string)).group(1)
     except AttributeError:
-        logger.warning("No docstring found")
-    return results
+
+        return None
 
 
 def list_tools():
@@ -31,7 +32,11 @@ def list_tools():
         for res in glob_res
     }
     logger.debug("Available tools are %s", tools)
-    return tools
+    tools_str = ""
+    for tool_name, description in tools.items():
+
+        tools_str += f"{tool_name:}\n" + description
+    return tools_str
 
 
 def fetch_tool(tool_name: str, location: str):
