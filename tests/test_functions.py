@@ -4,6 +4,7 @@ import logging
 import os
 from pathlib import Path
 from numpy.ma import allclose, allequal
+from shutil import copytree
 from subprocess import PIPE, Popen
 from time import sleep
 from io import BytesIO
@@ -15,12 +16,15 @@ import pytest
 from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
+    find_datafiles,
+    prepare_for_sendoff,
     yaml_load,
     nodisk_upload,
     Dispatcher,
     find_datefield,
+    find_datafiles_no_seedpoint,
 )
-from fmu.sumo.sim2sumo import grid3d, main, tables
+from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
@@ -167,6 +171,40 @@ def test_get_case_uuid(case_uuid, scratch_files):
     assert uuid == case_uuid
 
 
+@pytest.mark.parametrize(
+    "config,nrdatafiles,nrsubmodules",
+    [
+        ({}, 5, 4),
+        (
+            {
+                "datafile": {
+                    "3_R001_REEK": {"summary": {"column_keys": "F*P*"}}
+                }
+            },
+            1,
+            1,
+        ),
+        ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
+        ({"datafile": "3_R001_REEK"}, 1, 4),
+    ],
+)
+def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
+
+    sim2sumo_config = {"sim2sumo": config}
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+    os.chdir(real1)
+    inputs = prepare_for_sendoff(sim2sumo_config)
+    assert (
+        len(inputs) == nrdatafiles
+    ), f"{inputs.keys()} expected to have len {nrdatafiles}"
+    for _, subdict in inputs.items():
+
+        assert (
+            len(subdict) == nrsubmodules
+        ), f"{subdict} expected to have {nrsubmodules} members"
+
+
 def test_Dispatcher(case_uuid, token, scratch_files):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
     assert disp._parentid == case_uuid
@@ -286,7 +324,10 @@ def test_upload_tables_from_simulation_run(scratch_files, config, sumo):
     disp = Dispatcher(scratch_files[1], "dev")
     expected_results = 2
     tables.upload_tables_from_simulation_run(
-        REEK_DATA_FILE, ["summary", "rft"], [], config, disp
+        REEK_DATA_FILE,
+        {"summary": {"arrow": True}, "rft": {"arrow": True}}.items(),
+        config,
+        disp,
     )
     uuid = disp.parentid
     disp.finish()
@@ -373,32 +414,6 @@ CHECK_DICT = {
 }
 
 
-@pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
-def test_read_config(config_path):
-    """Test reading of config file via read_config function"""
-    os.chdir(REEK_REAL0)
-    LOGGER.info(config_path)
-    config = yaml_load(config_path)
-    assert isinstance(config, (dict, bool))
-    sim2sumoconfig = main.read_config(config)
-    dfiles = sim2sumoconfig["datafiles"]
-    submods = sim2sumoconfig["submods"]
-    options = sim2sumoconfig["options"]
-    name = config_path.name
-    checks = CHECK_DICT[name]
-    LOGGER.info("Config keys: %s\n", config.keys())
-    LOGGER.info("Datafiles: %s\n", dfiles)
-    LOGGER.info("Submods: %s\n", submods)
-    LOGGER.info("Options: %s\n", options)
-    _assert_right_len(checks, "nrdatafile", dfiles, name)
-    _assert_right_len(checks, "nrsubmods", submods, name)
-    _assert_right_len(checks, "nroptions", options, name)
-
-    assert (
-        options["arrow"] == checks["arrow"]
-    ), f"Wrong choice for arrow for {name}"
-
-
 def test_convert_to_arrow():
     """Test function convert_to_arrow"""
     dframe = pd.DataFrame(
@@ -435,7 +450,7 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
 def test_find_datafiles_reek(real, nrdfiles):
 
     os.chdir(real)
-    datafiles = main.find_datafiles(None, {})
+    datafiles = find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
@@ -450,3 +465,12 @@ def test_find_datafiles_reek(real, nrdfiles):
         if parent == "pflotran":
             correct_suff = ".in"
         assert found_path.suffix == correct_suff
+
+
+def test_find_datafiles_no_seedpoint(tmp_path):
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+    os.chdir(real1)
+    files = find_datafiles_no_seedpoint()
+    assert len(files) == 5
+    print({data_path.name: data_path for data_path in files})
