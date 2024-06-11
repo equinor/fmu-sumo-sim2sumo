@@ -488,7 +488,7 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
     logger.info("%s files to upload", len(files))
-    logger.debug("Uploading to parent %s", parent_id)
+    logger.info("Uploading to parent %s", parent_id)
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
