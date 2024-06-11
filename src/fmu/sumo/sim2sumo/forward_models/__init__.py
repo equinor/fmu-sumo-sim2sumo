@@ -1,30 +1,22 @@
 import subprocess
-from ert.config.forward_model_step import (
-    ForwardModelStep,
-    ForwardModelStepJSON,
-)
+from ert import ForwardModelStepJSON, ForwardModelStepPlugin
 
 
-class Sim2Sumo(ForwardModelStep):
+class Sim2Sumo(ForwardModelStepPlugin):
     def __init__(self):
         super().__init__(
             name="SIM2SUMO",
-            executable="sim2sumo",
-            arglist=[
-                '"--config_path"',
+            command=[
+                "sim2sumo",
+                "--config_path",
                 "<S2S_CONF_PATH>",
-                '"--env"',
-                "<SUMO_MODE>",
+                "--env",
+                "<SUMO_ENV>",
             ],
-            min_arg=5,
-            max_arg=5,
-            arg_types=[
-                "STRING",
-                "STRING",
-                "STRING",
-                "STRING",
-                "STRING",
-            ],
+            default_mapping={
+                "<S2S_CONF_PATH>": "fmuconfig/output/global_variables.yml",
+                "<SUMO_ENV>": "prod",
+            },
         )
 
     def validate_pre_realization_run(
@@ -32,15 +24,18 @@ class Sim2Sumo(ForwardModelStep):
     ) -> ForwardModelStepJSON:
         return fm_step_json
 
-    def validate_pre_experiment(self) -> None:
-        try:
-            env = self.private_args["<SUMO_ENV>"]
-        except KeyError:
-            env = "prod"
-
+    def validate_pre_experiment(
+        self, fm_step_json: ForwardModelStepJSON
+    ) -> None:
+        env = fm_step_json["argList"][3]
         command = f"sumo_login -e {env} -m silent"
         return_code = subprocess.call(command, shell=True)
 
-        assert (
-            return_code == 0
-        ), "Your config uses Sumo, run sumo_login to authenticate."
+        err_msg = (
+            "\n\nYour config uses Sumo"
+            ", please authenticate using:\n\n\t"
+            f"sumo_login{f' -e {env}' if env != 'prod' else ''}"
+            "\n\n"
+        )
+
+        assert return_code == 0, err_msg
