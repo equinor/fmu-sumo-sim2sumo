@@ -460,6 +460,9 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     logger.debug("Convert function %s", converter)
     logger.debug("Meta function %s", metacreator)
     logger.debug("Arguments for creating metadata %s", meta_args)
+    if obj is None:
+        logger.warning("Nothing to do with None object")
+        return obj
     bytestring = convert_to_bytestring(converter, obj)
     metadata = metacreator(*meta_args)
     logger.debug("Metadata created")
