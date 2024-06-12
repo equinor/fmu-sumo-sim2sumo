@@ -150,7 +150,6 @@ def get_table(
         ]  # This argument should not be passed to extract function
     except KeyError:
         logger.debug("No arrow key to delete")
-    datafile_path = datafile_path
     output = None
     trace = None
     print_help = False
