@@ -174,6 +174,8 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths):
 
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
+        if datafile_path is None:
+            continue
         outdict[datafile_path] = {}
         for submod in submods:
             outdict[datafile_path][submod] = filter_options(submod, options)
@@ -197,6 +199,8 @@ def prepare_dict_for_sendoff(datafiles, paths):
     outdict = {}
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
+        if datafile_path is None:
+            continue
         outdict[datafile_path] = {}
         if datafile_path is None:
             continue
