@@ -121,7 +121,8 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
 
     Args:
         config (dict): the settings for export of simulator results
-        kwargs (dict): overiding settings
+        datafile (str, None): overule with one datafile
+        datatype (str, None): overule with one datatype
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
@@ -159,7 +160,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths):
         datatype (str): datatype to overule input
         simconfig (dict): dictionary with input for submods and options
         datafiles (list): list of datafiles
-        paths (dict): list of paths for all relevant datafile paths
+        paths (dict): list of all relevant datafiles
 
     Returns:
         dict: results as one unified dictionary
@@ -186,10 +187,10 @@ def prepare_dict_for_sendoff(datafiles, paths):
 
     Args:
         datafiles (dict): the dictionary of datafiles
-        paths (dict): _description_
+        paths (dict): list of all relevant datafiles
 
     Returns:
-        _type_: _description_
+        dict: results as one unified dictionary
     """
     logger = logging.getLogger(__file__ + ".prepare_dict_for_sendoff")
 
