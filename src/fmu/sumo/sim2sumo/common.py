@@ -199,9 +199,15 @@ def prepare_dict_for_sendoff(datafiles, paths):
         outdict[datafile_path] = {}
         if datafile_path is None:
             continue
-        for submod, options in datafiles[datafile].items():
-            logger.debug("Submod %s:\noptions: %s", submod, options)
-            outdict[datafile_path][submod] = filter_options(submod, options)
+        try:
+            for submod, options in datafiles[datafile].items():
+                logger.debug("Submod %s:\noptions: %s", submod, options)
+                outdict[datafile_path][submod] = filter_options(
+                    submod, options
+                )
+        except AttributeError:
+            for submod in datafiles[datafile]:
+                outdict[datafile_path][submod] = {}
     logger.debug("Returning %s", outdict)
     return outdict
 
