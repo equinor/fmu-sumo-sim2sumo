@@ -296,7 +296,7 @@ def find_datafiles_no_seedpoint():
     logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
     cwd = Path().cwd()
     logger.info("Looking for files in %s", cwd)
-    datafiles = list(filter(is_datafile, cwd.glob("*/model/*.*")))
+    datafiles = list(filter(is_datafile, cwd.glob("*/*/*.*")))
     logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
