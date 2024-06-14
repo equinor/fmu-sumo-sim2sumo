@@ -116,6 +116,27 @@ def find_full_path(datafile, paths):
         return None
 
 
+def find_datafile_paths():
+    """Find all simulator paths
+
+    Returns:
+        dict: key is name to use in sumo, value full path to file
+    """
+    logger = logging.getLogger(__file__ + ".find_datafile_paths")
+    paths = {}
+    for data_path in find_datafiles_no_seedpoint():
+        name = give_name(data_path)
+
+        if name not in paths:
+            paths[name] = data_path
+        else:
+            logger.warning(
+                "Name %s from file %s allready used", name, data_path
+            )
+
+    return paths
+
+
 def prepare_for_sendoff(config, datafile=None, datatype=None):
     """Read config settings and make dictionary for use when exporting
 
@@ -138,10 +159,7 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     if isinstance(simconfig, bool):
         simconfig = {}
     datafiles = find_datafiles(datafile, simconfig)
-    paths = {
-        give_name(data_path): data_path
-        for data_path in find_datafiles_no_seedpoint()
-    }
+    paths = find_datafile_paths()
     logger.debug("Found datafiles %s", datafiles)
     if isinstance(datafiles, dict):
         outdict = prepare_dict_for_sendoff(datafiles, paths)
@@ -199,6 +217,8 @@ def prepare_dict_for_sendoff(datafiles, paths):
     outdict = {}
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
+        if datafile_path not in paths.values():
+            logger.warning("%s not contained in paths", datafile_path)
         if datafile_path is None:
             continue
         outdict[datafile_path] = {}
@@ -206,7 +226,12 @@ def prepare_dict_for_sendoff(datafiles, paths):
             continue
         try:
             for submod, options in datafiles[datafile].items():
-                logger.debug("Submod %s:\noptions: %s", submod, options)
+                logger.debug(
+                    "%s submod %s:\noptions: %s",
+                    datafile_path,
+                    submod,
+                    options,
+                )
                 outdict[datafile_path][submod] = filter_options(
                     submod, options
                 )

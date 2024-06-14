@@ -22,6 +22,7 @@ from fmu.sumo.sim2sumo.common import (
     nodisk_upload,
     Dispatcher,
     find_datefield,
+    find_datafile_paths,
     find_datafiles_no_seedpoint,
 )
 from fmu.sumo.sim2sumo import grid3d, tables
@@ -214,27 +215,20 @@ def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
         ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
 
 
+def test_find_datafile_paths(tmp_path):
+    _ = create_troll_case(tmp_path)
+    inputs = find_datafile_paths()
+    print(inputs)
+
+
 def test_prepare_for_sendoff_troll_case(tmp_path):
 
     expected_datafile_nr = 2
-    expected_troll_pred_input = {"pvt": {"keywords": ["PVTO", "PVDG"]}}
+    expected_troll_pred_input = {
+        "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True}
+    }
 
-    real1 = tmp_path / "realone"
-    copytree(REEK_REAL1, real1)
-
-    troll_pred_name = "TROLL_PRED_IX-1.afi"
-    ix_file = real1 / "ix/model" / troll_pred_name
-    mig_folder = real1 / "eclipse/migrator"
-    mig_folder.mkdir(parents=True)
-    inc_folder = real1 / "ix/include/"
-    inc_folder.mkdir(parents=True)
-    inc_file = inc_folder / "ENS_NETWORK.afi"
-    mig_file = mig_folder / troll_pred_name
-    mig_file.write_text("hei")
-    ix_file.write_text("hei")
-    inc_file.write_text("hei")
-
-    os.chdir(real1)
+    ix_file = create_troll_case(tmp_path)
     config = {
         "sim2sumo": {
             "datafile": {
@@ -252,11 +246,31 @@ def test_prepare_for_sendoff_troll_case(tmp_path):
         len(inputs) == expected_datafile_nr
     ), f"Expected to extract {expected_datafile_nr} datafiles"
 
-    troll_pred_input = inputs[mig_file]
+    troll_pred_input = inputs[ix_file]
 
     assert (
         troll_pred_input == expected_troll_pred_input
     ), f"Expected to extract {expected_troll_pred_input}, but found {troll_pred_input}"
+
+
+def create_troll_case(tmp_path):
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+
+    troll_pred_name = "TROLL_PRED_IX-1.afi"
+    ix_file = real1 / "ix/model" / troll_pred_name
+    mig_folder = real1 / "eclipse/migrator"
+    mig_folder.mkdir(parents=True)
+    inc_folder = real1 / "ix/include/"
+    inc_folder.mkdir(parents=True)
+    inc_file = inc_folder / "ENS_NETWORK.afi"
+    mig_file = mig_folder / "TROLL_PRED_IX-1.afi"
+    mig_file.write_text("hei")
+    ix_file.write_text("hei")
+    inc_file.write_text("hei")
+
+    os.chdir(real1)
+    return mig_file
 
 
 def test_Dispatcher(case_uuid, token, scratch_files):
