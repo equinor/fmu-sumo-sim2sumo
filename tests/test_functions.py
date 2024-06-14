@@ -50,7 +50,7 @@ SLEEP_TIME = 3
 
 def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     # There has been instances when this fails, probably because of
-    # some time delay, have introduced a little sleep to get it to be quicker
+    # some time delay, have introduced a little sleep to make it not fail
     sleep(SLEEP_TIME)
     if tag_prefix == "*":
         search_pattern = "*"
@@ -184,8 +184,17 @@ def test_get_case_uuid(case_uuid, scratch_files):
             1,
             1,
         ),
+        (
+            {"datafile": {"3_R001_REEK": ["summary", "rft"]}},
+            1,
+            2,
+        ),
         ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
         ({"datafile": "3_R001_REEK"}, 1, 4),
+        ({"datafile": "3_R001_REEK.DATA"}, 1, 4),
+        ({"datafile": "OOGRE_IX.afi"}, 1, 4),
+        ({"datafile": "opm/model/OOGRE_OPM.DATA"}, 1, 4),
+        ({"grid3d": True}, 5, 4),
     ],
 )
 def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
@@ -197,12 +206,57 @@ def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
     inputs = prepare_for_sendoff(sim2sumo_config)
     assert (
         len(inputs) == nrdatafiles
-    ), f"{inputs.keys()} expected to have len {nrdatafiles}"
-    for _, subdict in inputs.items():
+    ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
+    for submod, subdict in inputs.items():
 
         assert (
             len(subdict) == nrsubmodules
-        ), f"{subdict} expected to have {nrsubmodules} members"
+        ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
+
+
+def test_prepare_for_sendoff_troll_case(tmp_path):
+
+    expected_datafile_nr = 2
+    expected_troll_pred_input = {"pvt": {"keywords": ["PVTO", "PVDG"]}}
+
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+
+    troll_pred_name = "TROLL_PRED_IX-1.afi"
+    ix_file = real1 / "ix/model" / troll_pred_name
+    mig_folder = real1 / "eclipse/migrator"
+    mig_folder.mkdir(parents=True)
+    inc_folder = real1 / "ix/include/"
+    inc_folder.mkdir(parents=True)
+    inc_file = inc_folder / "ENS_NETWORK.afi"
+    mig_file = mig_folder / troll_pred_name
+    mig_file.write_text("hei")
+    ix_file.write_text("hei")
+    inc_file.write_text("hei")
+
+    os.chdir(real1)
+    config = {
+        "sim2sumo": {
+            "datafile": {
+                "ix/model/TROLL_PRED_IX-1": {"summary": {"column_keys": "*"}},
+                "eclipse/migrator/TROLL_PRED_IX-1": {
+                    "pvt": {"keywords": ["PVTO", "PVDG"]}
+                },
+                "ix/include/ENS_NETWORK": {"vfp": {"keyword": ["VFPPROD"]}},
+            }
+        }
+    }
+    inputs = prepare_for_sendoff(config)
+    print(inputs)
+    assert (
+        len(inputs) == expected_datafile_nr
+    ), f"Expected to extract {expected_datafile_nr} datafiles"
+
+    troll_pred_input = inputs[mig_file]
+
+    assert (
+        troll_pred_input == expected_troll_pred_input
+    ), f"Expected to extract {expected_troll_pred_input}, but found {troll_pred_input}"
 
 
 def test_Dispatcher(case_uuid, token, scratch_files):
@@ -225,7 +279,7 @@ def test_xtgeo_2_bytestring(eightfipnum):
 
 
 def test_convert_xtgeo_2_sumo_file(
-    eightfipnum, scratch_files, config, case_uuid, sumo
+    eightfipnum, scratch_files, config, case_uuid, sumo, set_ert_env
 ):
 
     file = grid3d.convert_xtgeo_2_sumo_file(
@@ -245,11 +299,7 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft,
-    scratch_files,
-    config,
-    case_uuid,
-    sumo,
+    reekrft, scratch_files, config, case_uuid, sumo, set_ert_env
 ):
 
     file = tables.convert_table_2_sumo_file(
@@ -325,7 +375,7 @@ def test_upload_tables_from_simulation_run(scratch_files, config, sumo):
     expected_results = 2
     tables.upload_tables_from_simulation_run(
         REEK_DATA_FILE,
-        {"summary": {"arrow": True}, "rft": {"arrow": True}}.items(),
+        {"summary": {"arrow": True}, "rft": {"arrow": True}},
         config,
         disp,
     )
