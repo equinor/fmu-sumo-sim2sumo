@@ -1,5 +1,9 @@
 import subprocess
-from ert import ForwardModelStepJSON, ForwardModelStepPlugin
+from ert import (
+    ForwardModelStepJSON,
+    ForwardModelStepPlugin,
+    ForwardModelStepValidationError,
+)
 
 
 class Sim2Sumo(ForwardModelStepPlugin):
@@ -32,10 +36,10 @@ class Sim2Sumo(ForwardModelStepPlugin):
         return_code = subprocess.call(command, shell=True)
 
         err_msg = (
-            "\n\nYour config uses Sumo"
-            ", please authenticate using:\n\n\t"
+            "Your config uses Sumo"
+            ", please authenticate using:"
             f"sumo_login{f' -e {env}' if env != 'prod' else ''}"
-            "\n\n"
         )
 
-        assert return_code == 0, err_msg
+        if return_code != 0:
+            raise ForwardModelStepValidationError(err_msg)
