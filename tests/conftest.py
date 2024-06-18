@@ -81,6 +81,7 @@ def _fix_scratch_files(tmp_path_factory):
 
 @pytest.fixture(autouse=True, scope="function", name="set_ert_env")
 def _fix_ert_env(monkeypatch):
+    print("MONKEY")
     monkeypatch.setenv("_ERT_REALIZATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_RUNPATH", "./")
