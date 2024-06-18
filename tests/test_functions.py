@@ -302,7 +302,7 @@ def test_convert_xtgeo_2_sumo_file(
     print(case_uuid)
     print(file.metadata)
     print(file.byte_string)
-    print(file)
+    print(os.environ)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
