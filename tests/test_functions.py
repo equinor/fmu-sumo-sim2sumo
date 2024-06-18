@@ -302,6 +302,9 @@ def test_convert_xtgeo_2_sumo_file(
     print(case_uuid)
     print(file.metadata)
     print(file.byte_string)
+    os.environ["_ERT_REALIZATION_NUMBER"] = "0"
+    os.environ["_ERT_ITERATION_NUMBER"] = "0"
+    os.environ["_ERT_RUNPATH"] = "./"
     print(os.environ)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
