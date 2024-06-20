@@ -33,7 +33,6 @@ def set_up_tmp(path):
     shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
     real0 = reek_tmp / "realization-0/iter-0"
     config_path = real0 / "fmuconfig/output/global_variables.yml"
-    os.chdir(real0)
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
     return real0, eight_datafile, config_path
 

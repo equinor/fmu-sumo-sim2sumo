@@ -163,9 +163,10 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-def test_get_case_uuid(case_uuid, scratch_files):
-
+def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     real0 = scratch_files[0]
+
+    monkeypatch.chdir(real0)
 
     uuid = get_case_uuid(real0, parent_level=1)
 
@@ -273,8 +274,9 @@ def create_troll_case(tmp_path):
     return mig_file
 
 
-def test_Dispatcher(case_uuid, token, scratch_files):
+def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
+    monkeypatch.chdir(scratch_files[0])
     assert disp._parentid == case_uuid
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
@@ -293,8 +295,15 @@ def test_xtgeo_2_bytestring(eightfipnum):
 
 
 def test_convert_xtgeo_2_sumo_file(
-    eightfipnum, scratch_files, config, case_uuid, sumo, set_ert_env
+    eightfipnum,
+    scratch_files,
+    config,
+    case_uuid,
+    sumo,
+    monkeypatch,
+    set_ert_env,
 ):
+    monkeypatch.chdir(scratch_files[0])
 
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
@@ -313,8 +322,10 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, scratch_files, config, case_uuid, sumo, set_ert_env
+    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, set_ert_env
 ):
+
+    monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
@@ -353,7 +364,10 @@ def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
     assert isinstance(meta, dict)
 
 
-def test_upload_init(scratch_files, xtgeogrid, config, sumo, token):
+def test_upload_init(
+    scratch_files, xtgeogrid, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
     expected_results = 5
     grid3d.upload_init(
@@ -367,7 +381,10 @@ def test_upload_init(scratch_files, xtgeogrid, config, sumo, token):
     check_sumo(uuid, "INIT", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_restart(scratch_files, xtgeogrid, config, sumo, token):
+def test_upload_restart(
+    scratch_files, xtgeogrid, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_results = 9
@@ -384,7 +401,11 @@ def test_upload_restart(scratch_files, xtgeogrid, config, sumo, token):
     check_sumo(uuid, "UNRST", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_tables_from_simulation_run(scratch_files, config, sumo):
+def test_upload_tables_from_simulation_run(
+    scratch_files, config, sumo, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
+
     disp = Dispatcher(scratch_files[1], "dev")
     expected_results = 2
     tables.upload_tables_from_simulation_run(
@@ -398,7 +419,10 @@ def test_upload_tables_from_simulation_run(scratch_files, config, sumo):
     check_sumo(uuid, "*", expected_results, "table", sumo)
 
 
-def test_upload_simulation_run(scratch_files, config, sumo, token):
+def test_upload_simulation_run(
+    scratch_files, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_results = 15
@@ -497,7 +521,8 @@ def test_get_xtgeo_egrid(eightcells_datafile):
     assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
 
 
-def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
+def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
     expected_exports = 88
