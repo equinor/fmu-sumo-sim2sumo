@@ -184,12 +184,12 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
                 }
             },
             1,
-            1,
+            2,
         ),
         (
             {"datafile": {"3_R001_REEK": ["summary", "rft"]}},
             1,
-            2,
+            3,
         ),
         ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
         ({"datafile": "3_R001_REEK"}, 1, 4),
@@ -226,7 +226,8 @@ def test_prepare_for_sendoff_troll_case(tmp_path):
 
     expected_datafile_nr = 2
     expected_troll_pred_input = {
-        "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True}
+        "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True},
+        "grid3d": False,
     }
 
     ix_file = create_troll_case(tmp_path)

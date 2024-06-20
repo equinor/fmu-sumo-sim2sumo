@@ -155,6 +155,7 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     simconfig = config.get("sim2sumo", {})
+    grid3d = simconfig.get("grid3d", False)
     logger.debug("config input is %s", simconfig)
     if isinstance(simconfig, bool):
         simconfig = {}
@@ -162,16 +163,16 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     paths = find_datafile_paths()
     logger.debug("Found datafiles %s", datafiles)
     if isinstance(datafiles, dict):
-        outdict = prepare_dict_for_sendoff(datafiles, paths)
+        outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
     else:
         outdict = prepare_list_for_sendoff(
-            datatype, simconfig, datafiles, paths
+            datatype, simconfig, datafiles, paths, grid3d
         )
     logger.debug("Returning %s", outdict)
     return outdict
 
 
-def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths):
+def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     """Prepare dictionary from list of datafiles and simconfig
 
     Args:
@@ -188,8 +189,6 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths):
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
 
-    grid3d = simconfig.get("grid3d", False)
-
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
         if datafile_path is None:
@@ -199,10 +198,11 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths):
             outdict[datafile_path][submod] = filter_options(submod, options)
 
         outdict[datafile_path]["grid3d"] = grid3d
+
     return outdict
 
 
-def prepare_dict_for_sendoff(datafiles, paths):
+def prepare_dict_for_sendoff(datafiles, paths, grid3d):
     """Prepare dictionary containing datafile information
 
     Args:
@@ -238,6 +238,7 @@ def prepare_dict_for_sendoff(datafiles, paths):
         except AttributeError:
             for submod in datafiles[datafile]:
                 outdict[datafile_path][submod] = {}
+        outdict[datafile_path]["grid3d"] = grid3d
     logger.debug("Returning %s", outdict)
     return outdict
 
