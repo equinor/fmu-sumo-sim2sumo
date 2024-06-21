@@ -263,6 +263,13 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         sumo_file = convert_xtgeo_2_sumo_file(
             init_path, xtgeo_prop, "INIT", config
         )
+        if sumo_file is None:
+            logger.warning(
+                "Property with name %s extracted from %s returned nothing",
+                init_prop["name"],
+                init_path,
+            )
+            continue
         dispatcher.add(sumo_file)
         count += 1
     logger.info("%s properties sendt on", count)
@@ -311,6 +318,13 @@ def upload_restart(
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
                 )
+                if sumo_file is None:
+                    logger.warning(
+                        "Property with name %s extracted from %s returned nothing",
+                        prop_name,
+                        restart_path,
+                    )
+                    continue
                 dispatcher.add(sumo_file)
                 count += 1
     logger.info("%s properties sendt on", count)
@@ -326,7 +340,11 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
+    logger = logging.getLogger(__name__ + ".upload_simulation_runs")
     for datafile in datafiles:
+        if not datafiles[datafile]["grid3d"]:
+            logger.info("Export of grid3d deactivated for %s", datafile)
+            continue
         upload_simulation_run(datafile, config, dispatcher)
 
 

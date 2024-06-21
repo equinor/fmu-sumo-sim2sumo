@@ -4,6 +4,7 @@ import logging
 import os
 from pathlib import Path
 from numpy.ma import allclose, allequal
+from shutil import copytree
 from subprocess import PIPE, Popen
 from time import sleep
 from io import BytesIO
@@ -15,12 +16,16 @@ import pytest
 from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
+    find_datafiles,
+    prepare_for_sendoff,
     yaml_load,
     nodisk_upload,
     Dispatcher,
     find_datefield,
+    find_datafile_paths,
+    find_datafiles_no_seedpoint,
 )
-from fmu.sumo.sim2sumo import grid3d, main, tables
+from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
@@ -46,7 +51,7 @@ SLEEP_TIME = 3
 
 def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     # There has been instances when this fails, probably because of
-    # some time delay, have introduced a little sleep to get it to be quicker
+    # some time delay, have introduced a little sleep to make it not fail
     sleep(SLEEP_TIME)
     if tag_prefix == "*":
         search_pattern = "*"
@@ -158,17 +163,121 @@ def test_fix_suffix():
     assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
-def test_get_case_uuid(case_uuid, scratch_files):
-
+def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     real0 = scratch_files[0]
+
+    monkeypatch.chdir(real0)
 
     uuid = get_case_uuid(real0, parent_level=1)
 
     assert uuid == case_uuid
 
 
-def test_Dispatcher(case_uuid, token, scratch_files):
+@pytest.mark.parametrize(
+    "config,nrdatafiles,nrsubmodules",
+    [
+        ({}, 5, 4),
+        (
+            {
+                "datafile": {
+                    "3_R001_REEK": {"summary": {"column_keys": "F*P*"}}
+                }
+            },
+            1,
+            2,
+        ),
+        (
+            {"datafile": {"3_R001_REEK": ["summary", "rft"]}},
+            1,
+            3,
+        ),
+        ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
+        ({"datafile": "3_R001_REEK"}, 1, 4),
+        ({"datafile": "3_R001_REEK.DATA"}, 1, 4),
+        ({"datafile": "OOGRE_IX.afi"}, 1, 4),
+        ({"datafile": "opm/model/OOGRE_OPM.DATA"}, 1, 4),
+        ({"grid3d": True}, 5, 4),
+    ],
+)
+def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
+
+    sim2sumo_config = {"sim2sumo": config}
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+    os.chdir(real1)
+    inputs = prepare_for_sendoff(sim2sumo_config)
+    assert (
+        len(inputs) == nrdatafiles
+    ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
+    for submod, subdict in inputs.items():
+
+        assert (
+            len(subdict) == nrsubmodules
+        ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
+
+
+def test_find_datafile_paths(tmp_path):
+    _ = create_troll_case(tmp_path)
+    inputs = find_datafile_paths()
+    print(inputs)
+
+
+def test_prepare_for_sendoff_troll_case(tmp_path):
+
+    expected_datafile_nr = 2
+    expected_troll_pred_input = {
+        "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True},
+        "grid3d": False,
+    }
+
+    ix_file = create_troll_case(tmp_path)
+    config = {
+        "sim2sumo": {
+            "datafile": {
+                "ix/model/TROLL_PRED_IX-1": {"summary": {"column_keys": "*"}},
+                "eclipse/migrator/TROLL_PRED_IX-1": {
+                    "pvt": {"keywords": ["PVTO", "PVDG"]}
+                },
+                "ix/include/ENS_NETWORK": {"vfp": {"keyword": ["VFPPROD"]}},
+            }
+        }
+    }
+    inputs = prepare_for_sendoff(config)
+    print(inputs)
+    assert (
+        len(inputs) == expected_datafile_nr
+    ), f"Expected to extract {expected_datafile_nr} datafiles"
+
+    troll_pred_input = inputs[ix_file]
+
+    assert (
+        troll_pred_input == expected_troll_pred_input
+    ), f"Expected to extract {expected_troll_pred_input}, but found {troll_pred_input}"
+
+
+def create_troll_case(tmp_path):
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+
+    troll_pred_name = "TROLL_PRED_IX-1.afi"
+    ix_file = real1 / "ix/model" / troll_pred_name
+    mig_folder = real1 / "eclipse/migrator"
+    mig_folder.mkdir(parents=True)
+    inc_folder = real1 / "ix/include/"
+    inc_folder.mkdir(parents=True)
+    inc_file = inc_folder / "ENS_NETWORK.afi"
+    mig_file = mig_folder / "TROLL_PRED_IX-1.afi"
+    mig_file.write_text("hei")
+    ix_file.write_text("hei")
+    inc_file.write_text("hei")
+
+    os.chdir(real1)
+    return mig_file
+
+
+def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
+    monkeypatch.chdir(scratch_files[0])
     assert disp._parentid == case_uuid
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
@@ -187,8 +296,15 @@ def test_xtgeo_2_bytestring(eightfipnum):
 
 
 def test_convert_xtgeo_2_sumo_file(
-    eightfipnum, scratch_files, config, case_uuid, sumo
+    eightfipnum,
+    scratch_files,
+    config,
+    case_uuid,
+    sumo,
+    monkeypatch,
+    set_ert_env,
 ):
+    monkeypatch.chdir(scratch_files[0])
 
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
@@ -207,12 +323,10 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft,
-    scratch_files,
-    config,
-    case_uuid,
-    sumo,
+    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, set_ert_env
 ):
+
+    monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
@@ -251,7 +365,10 @@ def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
     assert isinstance(meta, dict)
 
 
-def test_upload_init(scratch_files, xtgeogrid, config, sumo, token):
+def test_upload_init(
+    scratch_files, xtgeogrid, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
     expected_results = 5
     grid3d.upload_init(
@@ -265,7 +382,10 @@ def test_upload_init(scratch_files, xtgeogrid, config, sumo, token):
     check_sumo(uuid, "INIT", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_restart(scratch_files, xtgeogrid, config, sumo, token):
+def test_upload_restart(
+    scratch_files, xtgeogrid, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_results = 9
@@ -282,18 +402,28 @@ def test_upload_restart(scratch_files, xtgeogrid, config, sumo, token):
     check_sumo(uuid, "UNRST", expected_results, "cpgrid_property", sumo)
 
 
-def test_upload_tables_from_simulation_run(scratch_files, config, sumo):
+def test_upload_tables_from_simulation_run(
+    scratch_files, config, sumo, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
+
     disp = Dispatcher(scratch_files[1], "dev")
     expected_results = 2
     tables.upload_tables_from_simulation_run(
-        REEK_DATA_FILE, ["summary", "rft"], [], config, disp
+        REEK_DATA_FILE,
+        {"summary": {"arrow": True}, "rft": {"arrow": True}},
+        config,
+        disp,
     )
     uuid = disp.parentid
     disp.finish()
     check_sumo(uuid, "*", expected_results, "table", sumo)
 
 
-def test_upload_simulation_run(scratch_files, config, sumo, token):
+def test_upload_simulation_run(
+    scratch_files, config, sumo, token, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_results = 15
@@ -373,32 +503,6 @@ CHECK_DICT = {
 }
 
 
-@pytest.mark.parametrize("config_path", CONFIG_OUT_PATH.glob("*.yml"))
-def test_read_config(config_path):
-    """Test reading of config file via read_config function"""
-    os.chdir(REEK_REAL0)
-    LOGGER.info(config_path)
-    config = yaml_load(config_path)
-    assert isinstance(config, (dict, bool))
-    sim2sumoconfig = main.read_config(config)
-    dfiles = sim2sumoconfig["datafiles"]
-    submods = sim2sumoconfig["submods"]
-    options = sim2sumoconfig["options"]
-    name = config_path.name
-    checks = CHECK_DICT[name]
-    LOGGER.info("Config keys: %s\n", config.keys())
-    LOGGER.info("Datafiles: %s\n", dfiles)
-    LOGGER.info("Submods: %s\n", submods)
-    LOGGER.info("Options: %s\n", options)
-    _assert_right_len(checks, "nrdatafile", dfiles, name)
-    _assert_right_len(checks, "nrsubmods", submods, name)
-    _assert_right_len(checks, "nroptions", options, name)
-
-    assert (
-        options["arrow"] == checks["arrow"]
-    ), f"Wrong choice for arrow for {name}"
-
-
 def test_convert_to_arrow():
     """Test function convert_to_arrow"""
     dframe = pd.DataFrame(
@@ -418,7 +522,8 @@ def test_get_xtgeo_egrid(eightcells_datafile):
     assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
 
 
-def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
+def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
     expected_exports = 88
@@ -435,7 +540,7 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo):
 def test_find_datafiles_reek(real, nrdfiles):
 
     os.chdir(real)
-    datafiles = main.find_datafiles(None, {})
+    datafiles = find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
@@ -450,3 +555,12 @@ def test_find_datafiles_reek(real, nrdfiles):
         if parent == "pflotran":
             correct_suff = ".in"
         assert found_path.suffix == correct_suff
+
+
+def test_find_datafiles_no_seedpoint(tmp_path):
+    real1 = tmp_path / "realone"
+    copytree(REEK_REAL1, real1)
+    os.chdir(real1)
+    files = find_datafiles_no_seedpoint()
+    assert len(files) == 5
+    print({data_path.name: data_path for data_path in files})

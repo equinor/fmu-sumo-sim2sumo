@@ -16,16 +16,18 @@ import res2df
 
 from ._special_treatments import (
     SUBMOD_DICT,
-    convert_options,
     tidy,
     convert_to_arrow,
 )
 from .common import (
+    filter_options,
     fix_suffix,
     generate_meta,
     get_case_uuid,
+    give_name,
     convert_to_bytestring,
     convert_2_sumo_file,
+    find_datafiles_no_seedpoint,
 )
 
 
@@ -137,9 +139,17 @@ def get_table(
         pd.DataFrame: the extracted data
     """
     logger = logging.getLogger(__file__ + ".get_table")
+    logger.debug(
+        "Input arguments %s",
+    )
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
-    datafile_path = fix_suffix(datafile_path)
+    try:
+        del kwargs[
+            "arrow"
+        ]  # This argument should not be passed to extract function
+    except KeyError:
+        logger.debug("No arrow key to delete")
     output = None
     trace = None
     print_help = False
@@ -149,21 +159,16 @@ def get_table(
         print("------------------")
     else:
         logger.debug("Checking these passed options %s", kwargs)
-        right_kwargs = {
-            key: value
-            for key, value in kwargs.items()
-            if key in SUBMOD_DICT[submod]["options"]
-        }
-        logger.debug("Exporting with arguments %s", right_kwargs)
         try:
             logger.info(
-                "Extracting data from %s with func %s",
+                "Extracting data from %s with func %s for %s",
                 datafile_path,
                 extract_df.__name__,
+                submod,
             )
             output = extract_df(
                 res2df.ResdataFiles(datafile_path),
-                **convert_options(right_kwargs),
+                **kwargs,
             )
             if submod == "rft":
                 output = tidy(output)
@@ -213,38 +218,44 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         env (str): what environment to upload to
     """
     logger = logging.getLogger(__file__ + ".upload_tables")
-    parentid = get_case_uuid(sim2sumoconfig["datafiles"][0])
-    logger.info("Sumo case uuid: %s", parentid)
-    for datafile in sim2sumoconfig["datafiles"]:
-
+    logger.debug("Will upload with settings %s", sim2sumoconfig)
+    for datafile_path, submod_and_options in sim2sumoconfig.items():
+        logger.debug("datafile: %s", datafile_path)
         upload_tables_from_simulation_run(
-            datafile,
-            sim2sumoconfig["submods"],
-            sim2sumoconfig["options"],
+            datafile_path,
+            submod_and_options,
             config,
             dispatcher,
         )
 
 
 def upload_tables_from_simulation_run(
-    datafile, submods, options, config, dispatcher
+    datafile, submod_and_options, config, dispatcher
 ):
     """Upload tables from one simulator run to Sumo
 
     Args:
         datafile (str): the datafile defining the simulation run
-        submods (list): the datatypes to extract
-        options (dict): the options to pass inn
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     logger.info("Extracting tables from %s", datafile)
     count = 0
-    for submod in submods:
+    for submod, options in submod_and_options.items():
+        if submod == "grid3d":
+            logger.debug("No tables for grid3d, skipping")
+            continue
         table = get_table(datafile, submod, options)
         logger.debug("Sending %s onto file creation", table)
         sumo_file = convert_table_2_sumo_file(datafile, table, submod, config)
+        if sumo_file is None:
+            logger.warning(
+                "Table with datatype %s extracted from %s returned nothing",
+                submod,
+                datafile,
+            )
+            continue
         dispatcher.add(sumo_file)
 
     logger.info("%s properties", count)
