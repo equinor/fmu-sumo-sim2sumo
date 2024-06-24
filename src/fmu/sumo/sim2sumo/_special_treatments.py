@@ -172,6 +172,26 @@ def tidy(frame):
 SUBMODULES, SUBMOD_DICT = _define_submodules()
 
 
+def vfp_to_arrow_dict(datafile, options):
+    """Generate dictionary with vfp arrow tables
+
+    Args:
+        datafile (str): The datafile to extract from
+        options (dict): options for extraction
+
+    Returns:
+        dict: key, name, value: pyarrow.table
+    """
+    resdatafiles = res2df.ResdataFiles(datafile)
+
+    keyword = options.get("keyword", "VFPPROD")
+    vfpnumbers = options.get("vfpnumbers", None)
+
+    return res2df.vfp._vfp.pyarrow_tables(
+        resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
+    )
+
+
 def give_help(submod, only_general=False):
     """Give descriptions of variables available for submodule
 
