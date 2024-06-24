@@ -101,19 +101,26 @@ def write_ert_config_and_run(runpath):
         stream.write(
             f"DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
         )
-    process = Popen(
+    with Popen(
         ["ert", "test_run", str(ert_full_config_path)],
         stdout=PIPE,
         stderr=PIPE,
-    )
-    stdout, stderr = process.communicate()
+    ) as process:
+        stdout, stderr = process.communicate()
     if stdout:
-        print(stdout.decode(encoding))
+        print("stdout:", stdout.decode(encoding), sep="\n")
     if stderr:
-        print(stderr.decode(encoding))
+        print("stderr:", stderr.decode(encoding), sep="\n")
+    try:
+        error_content = Path(runpath / "ERROR").read_text(encoding=encoding)
+    except FileNotFoundError:
+        error_content = ""
+    assert (
+        not error_content
+    ), f"ERROR file found with content:\n{error_content}"
     assert Path(
         runpath / "OK"
-    ).is_file(), f"running {ert_full_config_path}, ended with errors"
+    ).is_file(), f"running {ert_full_config_path}, No OK file"
 
 
 def _assert_right_len(checks, key, to_messure, name):
