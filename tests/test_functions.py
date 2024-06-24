@@ -107,6 +107,8 @@ def write_ert_config_and_run(runpath):
         stderr=PIPE,
     ) as process:
         stdout, stderr = process.communicate()
+
+    print(f"After er run all these files where found at runpath {list(Path(runpath).glob("*"))}")
     if stdout:
         print("stdout:", stdout.decode(encoding), sep="\n")
     if stderr:
