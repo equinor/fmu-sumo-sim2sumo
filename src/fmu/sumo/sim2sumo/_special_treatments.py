@@ -187,7 +187,7 @@ def vfp_to_arrow_dict(datafile, options):
     keyword = options.get("keyword", "VFPPROD")
     vfpnumbers = options.get("vfpnumbers", None)
 
-    return res2df.vfp._vfp.pyarrow_tables(
+    return keyword, res2df.vfp._vfp.pyarrow_tables(
         resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
     )
 

@@ -18,6 +18,7 @@ from ._special_treatments import (
     SUBMOD_DICT,
     tidy,
     convert_to_arrow,
+    vfp_to_arrow_dict,
 )
 from .common import (
     filter_options,
@@ -87,9 +88,12 @@ def generate_table_meta(datafile, obj, tagname, config):
     """
     logger = logging.getLogger(__name__ + ".generate_table_meta")
 
-    metadata = generate_meta(
-        config, datafile, tagname, obj, SUBMOD_CONTENT.get(tagname, "property")
-    )
+    if "vfp" in tagname.lower():
+        content = "vfp"
+    else:
+        content = SUBMOD_CONTENT.get(tagname, "property")
+
+    metadata = generate_meta(config, datafile, tagname, obj, content)
     logger.debug("Generated meta are %s", metadata)
 
     return metadata
@@ -229,6 +233,34 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         )
 
 
+def upload_vfp_tables_from_simulation_run(
+    datafile, options, config, dispatcher
+):
+    """Upload vfp tables from one simulator run to Sumo
+
+    Args:
+        datafile (str): the datafile defining the simulation run
+        options (dict): the fmu config wit metadata
+        config (dict): the fmu config with metadata
+        dispatcher (sim2sumo.common.Dispatcher): job dispatcher
+    """
+    logger = logging.getLogger(
+        __name__ + ".upload_vfp_tables_from_simulation_run"
+    )
+    keyword, vfp_tables = vfp_to_arrow_dict(datafile, options)
+    for vfp_table in vfp_tables:
+        table_number = str(
+            vfp_table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
+        )
+        logger.debug(vfp_table)
+        tagname = f"{keyword}_{table_number}"
+        logger.debug("Generated tagname: %s", tagname)
+        sumo_file = convert_table_2_sumo_file(
+            datafile, vfp_table, tagname, config
+        )
+        dispatcher.add(sumo_file)
+
+
 def upload_tables_from_simulation_run(
     datafile, submod_and_options, config, dispatcher
 ):
@@ -246,16 +278,24 @@ def upload_tables_from_simulation_run(
         if submod == "grid3d":
             logger.debug("No tables for grid3d, skipping")
             continue
-        table = get_table(datafile, submod, options)
-        logger.debug("Sending %s onto file creation", table)
-        sumo_file = convert_table_2_sumo_file(datafile, table, submod, config)
-        if sumo_file is None:
-            logger.warning(
-                "Table with datatype %s extracted from %s returned nothing",
-                submod,
-                datafile,
+
+        if submod == "vfp":
+            upload_vfp_tables_from_simulation_run(
+                datafile, options, config, dispatcher
             )
-            continue
-        dispatcher.add(sumo_file)
+        else:
+            table = get_table(datafile, submod, options)
+            logger.debug("Sending %s onto file creation", table)
+            sumo_file = convert_table_2_sumo_file(
+                datafile, table, submod, config
+            )
+            if sumo_file is None:
+                logger.warning(
+                    "Table with datatype %s extracted from %s returned nothing",
+                    submod,
+                    datafile,
+                )
+                continue
+            dispatcher.add(sumo_file)
 
     logger.info("%s properties", count)
