@@ -180,7 +180,7 @@ def vfp_to_arrow_dict(datafile, options):
         options (dict): options for extraction
 
     Returns:
-        string, dict: key, name, value: pyarrow.table
+        tuple: vfp keyword, then dictionary with key: table_name, value: table
     """
     logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     resdatafiles = res2df.ResdataFiles(datafile)
