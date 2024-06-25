@@ -121,8 +121,8 @@ def _fix_xtgeogrid(eightcells_datafile):
 
 
 @pytest.fixture(name="teardown", autouse=True, scope="session")
-def fixture_teardown(case_uuid, sumo, request):
-    """Remove case when all tests are run
+def fixture_teardown(sumo, request):
+    """Remove all test case when all tests are run
 
     Args:
     case_uuid (str): uuid of test case
@@ -130,9 +130,19 @@ def fixture_teardown(case_uuid, sumo, request):
     """
 
     def kill():
-        print(f"Killing object {case_uuid}!")
-        path = f"/objects('{case_uuid}')"
+        query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
 
-        sumo.delete(path)
+        results = sumo.get("/search", query).json()
+
+        print(f'{results["hits"]["total"]["value"]} cases found')
+
+        hit_list = results["hits"]["hits"]
+        for hit in hit_list:
+            case_name = hit["_source"]["fmu"]["case"]["name"]
+            case_uuid = hit["_id"]
+            path = f"/objects('{case_uuid}')"
+
+            sumo.delete(path)
+            print(f"Killed case with id {case_uuid} (name: {case_name})")
 
     request.addfinalizer(kill)
