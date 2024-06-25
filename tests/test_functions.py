@@ -18,7 +18,6 @@ from xtgeo import Grid, GridProperty, gridproperty_from_file
 from fmu.sumo.sim2sumo.common import (
     find_datafiles,
     prepare_for_sendoff,
-    yaml_load,
     nodisk_upload,
     Dispatcher,
     find_datefield,

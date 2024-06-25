@@ -21,14 +21,9 @@ from ._special_treatments import (
     vfp_to_arrow_dict,
 )
 from .common import (
-    filter_options,
-    fix_suffix,
     generate_meta,
-    get_case_uuid,
-    give_name,
     convert_to_bytestring,
     convert_2_sumo_file,
-    find_datafiles_no_seedpoint,
 )
 
 
@@ -89,7 +84,7 @@ def generate_table_meta(datafile, obj, tagname, config):
     logger = logging.getLogger(__name__ + ".generate_table_meta")
 
     if "vfp" in tagname.lower():
-        content = "vfp"
+        content = "lift_curves"
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
@@ -240,7 +235,7 @@ def upload_vfp_tables_from_simulation_run(
 
     Args:
         datafile (str): the datafile defining the simulation run
-        options (dict): the fmu config wit metadata
+        options (dict): the options for vfp
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher): job dispatcher
     """
