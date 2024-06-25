@@ -4,7 +4,6 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
-import os
 import uuid
 import pytest
 import yaml
@@ -86,7 +85,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
 
-@pytest.fixture(autouse=True, scope="session", name="case_uuid")
+@pytest.fixture(autouse=True, scope="function", name="case_uuid")
 def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]

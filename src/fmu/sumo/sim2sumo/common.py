@@ -186,6 +186,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     """
     logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
     submods = find_datatypes(datatype, simconfig)
+    logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
 
