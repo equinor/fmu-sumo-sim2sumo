@@ -21,6 +21,8 @@ class Sim2Sumo(ForwardModelStepPlugin):
                 "<S2S_CONF_PATH>": "fmuconfig/output/global_variables.yml",
                 "<SUMO_ENV>": "prod",
             },
+            stderr_file="sim2sumo.stderr",
+            stdout_file="sim2sumo.stdout",
         )
 
     def validate_pre_realization_run(
