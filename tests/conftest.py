@@ -10,6 +10,7 @@ import pytest
 import yaml
 from fmu.config.utilities import yaml_load
 from fmu.sumo.uploader import CaseOnDisk, SumoConnection
+from httpx import HTTPStatusError
 from sumo.wrapper import SumoClient
 
 from xtgeo import gridproperty_from_file
@@ -141,8 +142,11 @@ def fixture_teardown(sumo, request):
             case_name = hit["_source"]["fmu"]["case"]["name"]
             case_uuid = hit["_id"]
             path = f"/objects('{case_uuid}')"
+            try:
 
-            sumo.delete(path)
+                sumo.delete(path)
+            except HTTPStatusError:
+                print(f"{case_uuid} Allready gone..")
             print(f"Killed case with id {case_uuid} (name: {case_name})")
 
     request.addfinalizer(kill)
