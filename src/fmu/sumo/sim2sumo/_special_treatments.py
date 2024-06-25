@@ -180,16 +180,17 @@ def vfp_to_arrow_dict(datafile, options):
         options (dict): options for extraction
 
     Returns:
-        dict: key, name, value: pyarrow.table
+        string, dict: key, name, value: pyarrow.table
     """
+    logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     resdatafiles = res2df.ResdataFiles(datafile)
-
     keyword = options.get("keyword", "VFPPROD")
     vfpnumbers = options.get("vfpnumbers", None)
-
-    return keyword, res2df.vfp._vfp.pyarrow_tables(
+    arrow_tables = res2df.vfp._vfp.pyarrow_tables(
         resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
     )
+    logger.debug("Extracted %s vfp tables", len(arrow_tables))
+    return keyword, arrow_tables
 
 
 def give_help(submod, only_general=False):
