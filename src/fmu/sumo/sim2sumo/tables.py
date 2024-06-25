@@ -242,17 +242,15 @@ def upload_vfp_tables_from_simulation_run(
     logger = logging.getLogger(
         __name__ + ".upload_vfp_tables_from_simulation_run"
     )
-    keyword, vfp_tables = vfp_to_arrow_dict(datafile, options)
-    for vfp_table in vfp_tables:
+    keyword, tables = vfp_to_arrow_dict(datafile, options)
+    for table in tables:
         table_number = str(
-            vfp_table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
+            table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
         )
-        logger.debug(vfp_table)
+        logger.debug(table)
         tagname = f"{keyword}_{table_number}"
         logger.debug("Generated tagname: %s", tagname)
-        sumo_file = convert_table_2_sumo_file(
-            datafile, vfp_table, tagname, config
-        )
+        sumo_file = convert_table_2_sumo_file(datafile, table, tagname, config)
         dispatcher.add(sumo_file)
 
 
