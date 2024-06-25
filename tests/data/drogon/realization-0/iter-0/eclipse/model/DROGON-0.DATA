@@ -1,0 +1,18 @@
+-- =============================================================================
+SCHEDULE
+-- =============================================================================
+
+INCLUDE
+'../include/schedule/vfp/A-1.inc'/                                           -- 1
+INCLUDE
+'../include/schedule/vfp/A-2.inc'/                                           -- 2
+INCLUDE
+'../include/schedule/vfp/A-3.inc'/                                           -- 3
+INCLUDE
+'../include/schedule/vfp/A-4.inc'/                                           -- 4
+INCLUDE
+'../include/schedule/vfp/K-1H_inj.Ecl'/                                      -- 13
+
+
+INCLUDE
+ '../include/schedule/drogon_hist.sch' / -- exported by rms
