@@ -1,14 +1,16 @@
 from pathlib import Path
-from fmu.sumo.sim2sumo._special_treatments import vfp_to_arrow_dict
+from fmu.sumo.sim2sumo._special_treatments import (
+    vfp_to_arrow_dict,
+    add_md_to_rft,
+)
 from fmu.sumo.sim2sumo.tables import upload_vfp_tables_from_simulation_run
 from fmu.sumo.sim2sumo.common import Dispatcher
 from test_functions import check_sumo
 import pytest
 
-DROGON_DATAFILE = (
-    Path(__file__).parent
-    / "data/drogon/realization-0/iter-0/eclipse/model/DROGON-0.DATA"
-)
+DROGON = Path(__file__).parent / "data/drogon/"
+DROGON_REAL = DROGON / "realization-0/iter-0/"
+DROGON_DATAFILE = DROGON / "eclipse/model/DROGON-0.DATA"
 
 
 @pytest.mark.parametrize(
@@ -42,3 +44,16 @@ def test_vfp_tables_from_simulation_run(
     upload_vfp_tables_from_simulation_run(DROGON_DATAFILE, {}, config, disp)
     disp.finish()
     check_sumo(case_uuid, "vfp", 4, "table", sumo)
+
+
+def test_add_md_to_rft(drogonrft):
+    add_md_to_rft(
+        drogonrft, DROGON_REAL / "rms/output/wells/blocked_md_and_zonelog.csv"
+    )
+
+
+# def test_rft_with_md(
+#     scratch_files, config, set_ert_env, sumo, case_uuid, monkeypath
+# ):
+#     monkeypath.chdir(scratch_files[0])
+#     disp = Dispatcher(scratch_files[2], "dev")
