@@ -56,10 +56,15 @@ def _fix_fipnum():
 
 
 @pytest.fixture(scope="session", name="reekrft")
-def _fix_rft():
+def _fix_rft_reek():
     return convert_to_arrow(
         pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
     )
+
+
+@pytest.fixture(scope="session", name="drogonrft")
+def _fix_rft_drogon():
+    return pd.read_csv(Path(__file__).parent / "data/drogon/rft.csv")
 
 
 @pytest.fixture(scope="session", name="config")
@@ -85,7 +90,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
 
-@pytest.fixture(autouse=True, scope="function", name="case_uuid")
+@pytest.fixture(scope="function", name="case_uuid")
 def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]
