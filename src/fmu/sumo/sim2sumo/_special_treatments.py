@@ -245,9 +245,8 @@ def add_md_to_rft(rft_table, md_file_path):
 
     xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
     rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
-    md_table[
-        xtgeo_index_names
-    ] += 1  # for grid indeces xtgeo starts from 0, res2df from 1
+     # for grid indeces xtgeo starts from 0, res2df from 1
+    md_table[xtgeo_index_names] += 1 
     md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
     xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
     logger.debug(
