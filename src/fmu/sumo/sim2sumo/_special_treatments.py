@@ -193,6 +193,44 @@ def vfp_to_arrow_dict(datafile, options):
     return keyword, arrow_tables
 
 
+def add_md_to_rft(rft_table, md_file_path):
+    """Merge md data with rft table
+
+    Args:
+        rft_table (pd.DataFrame): the rft dataframe
+        md_file_path (str): path to file with md data
+
+    Raises:
+        FileNotFoundError: if md_file_path does not point to existing file
+
+    Returns:
+        pd.Dataframe: the merged results
+    """
+    logger = logging.getLogger(__file__ + ".add_md_to_rft")
+
+    try:
+        md_table = pd.read_csv(md_file_path)
+    except FileNotFoundError as fnfe:
+        raise FileNotFoundError(
+            f"There is no md file called {md_file_path}"
+        ) from fnfe
+
+    xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
+    rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
+    md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
+    xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
+    logger.debug(
+        "Datatypes, md_log: %s, rft_table: %s",
+        md_table[xtgeo_index_names].dtypes,
+        rft_table[rft_index_names].dtypes,
+    )
+    md_table.rename(xtgeo_to_rft_names, axis=1, inplace=True)
+    logger.debug("Header of md table after rename %s", md_table)
+    rft_table = pd.merge(rft_table, md_table, on=rft_index_names, how="left")
+    logger.debug("Merged table to return %s", rft_table)
+    return rft_table
+
+
 def give_help(submod, only_general=False):
     """Give descriptions of variables available for submodule
 
