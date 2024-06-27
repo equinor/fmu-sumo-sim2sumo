@@ -90,7 +90,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
 
-@pytest.fixture(autouse=True, scope="function", name="case_uuid")
+@pytest.fixture(scope="function", name="case_uuid")
 def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]
