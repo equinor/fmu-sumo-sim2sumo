@@ -5,12 +5,13 @@ from fmu.sumo.sim2sumo._special_treatments import (
 )
 from fmu.sumo.sim2sumo.tables import upload_vfp_tables_from_simulation_run
 from fmu.sumo.sim2sumo.common import Dispatcher
+from fmu.sumo.sim2sumo.tables import get_table
 from test_functions import check_sumo
 import pytest
 
 DROGON = Path(__file__).parent / "data/drogon/"
 DROGON_REAL = DROGON / "realization-0/iter-0/"
-DROGON_DATAFILE = DROGON / "eclipse/model/DROGON-0.DATA"
+DROGON_DATAFILE = DROGON_REAL / "eclipse/model/DROGON-0.DATA"
 
 
 @pytest.mark.parametrize(
@@ -47,13 +48,16 @@ def test_vfp_tables_from_simulation_run(
 
 
 def test_add_md_to_rft(drogonrft):
-    add_md_to_rft(
+    merged_rft = add_md_to_rft(
         drogonrft, DROGON_REAL / "rms/output/wells/blocked_md_and_zonelog.csv"
     )
 
+    assert merged_rft.dropna().shape[0] > 0, "No rows left after merge"
 
-# def test_rft_with_md(
-#     scratch_files, config, set_ert_env, sumo, case_uuid, monkeypath
-# ):
-#     monkeypath.chdir(scratch_files[0])
-#     disp = Dispatcher(scratch_files[2], "dev")
+
+def test_get_rft_table_w_md_log():
+    MD_LOG_FILE = DROGON_REAL / "rms/output/wells/blocked_md_and_zonelog.csv"
+    table = get_table(DROGON_DATAFILE, "rft", md_log_file=MD_LOG_FILE)
+    assert (
+        table.shape[1] == 21
+    ), "Don't have 21 columns as expected when merging with md log"
