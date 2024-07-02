@@ -56,10 +56,15 @@ def _fix_fipnum():
 
 
 @pytest.fixture(scope="session", name="reekrft")
-def _fix_rft():
+def _fix_rft_reek():
     return convert_to_arrow(
         pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
     )
+
+
+@pytest.fixture(scope="session", name="drogonrft")
+def _fix_rft_drogon():
+    return pd.read_csv(Path(__file__).parent / "data/drogon/rft.csv")
 
 
 @pytest.fixture(scope="session", name="config")
@@ -85,7 +90,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
 
-@pytest.fixture(autouse=True, scope="function", name="case_uuid")
+@pytest.fixture(scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]
@@ -129,6 +134,10 @@ def fixture_teardown(sumo, request):
     sumo (SumoClient): Client to given sumo environment
     """
 
+    # TODO: THIS will interfer with other tests
+    #       This says: "take all sim2sumo test cases and delete them"
+    #       This means it will also delete cases for parallel test runs
+    #       ==> Each tests should be aware of its own case(s) and delete them specifically
     def kill():
         query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
 
@@ -145,7 +154,7 @@ def fixture_teardown(sumo, request):
 
                 sumo.delete(path)
             except HTTPStatusError:
-                print(f"{case_uuid} Allready gone..")
+                print(f"{case_uuid} Already gone..")
             print(f"Killed case with id {case_uuid} (name: {case_name})")
 
     request.addfinalizer(kill)

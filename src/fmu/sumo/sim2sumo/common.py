@@ -77,12 +77,12 @@ def filter_options(submod, kwargs):
     filtered = {
         key: value
         for key, value in kwargs.items()
-        if (key in submod_options) or key == "arrow"
+        if (key in submod_options) or key in ["arrow", "md_log_file"]
     }
-    filtered["arrow"] = kwargs.get("arrow", True)
+    filtered["arrow"] = kwargs.get(
+        "arrow", True
+    )  # defaulting of arrow happens here
     logger.debug("After filtering options for %s: %s", submod, filtered)
-    # Arrow is not an argument to df functions utilized, therefore
-    # it needs to be re added here
     non_opions = [key for key in kwargs if key not in filtered]
     if len(non_opions) > 0:
         logger.warning(

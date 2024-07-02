@@ -23,6 +23,7 @@ from fmu.sumo.sim2sumo.common import (
     find_datefield,
     find_datafile_paths,
     find_datafiles_no_seedpoint,
+    filter_options,
 )
 from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -68,7 +69,7 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     else:
         # The plus one is because we are always uploading the parameters.txt automatically
         check_nr = correct + 1
-    print(query)
+    # print(query)
 
     results = sumo.get(path, query).json()
 
@@ -157,6 +158,22 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     assert (
         nr_meta == expected_exports
     ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+
+
+@pytest.mark.parametrize(
+    "submod,options",
+    [
+        ("summary", {"arrow": True}),
+        ("rft", {"md_log_file": "badabing"}),
+        ("vfp", {}),
+    ],
+)
+def test_non_standard_filter_options(submod, options):
+
+    returned_options = filter_options(submod, options)
+    assert (
+        len(returned_options) > 0
+    ), f"No options left for {submod}, should still be {options}"
 
 
 @pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
@@ -319,9 +336,9 @@ def test_convert_xtgeo_2_sumo_file(
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
     )
-    print(case_uuid)
-    print(file.metadata)
-    print(file.byte_string)
+    # print(case_uuid)
+    # print(file.metadata)
+    # print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
@@ -342,8 +359,8 @@ def test_convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
     )
 
-    print(file.metadata)
-    print(file.byte_string)
+    # print(file.metadata)
+    # print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
@@ -361,10 +378,10 @@ def get_sumo_object(sumo, case_uuid, name, tagname):
     results = sumo.get(
         path, f"$query=data.name:{name} AND data.tagname:{tagname}"
     ).json()
-    print(results)
+    # print(results)
     obj_id = results["hits"]["hits"][0]["_id"]
     obj = BytesIO(sumo.get(f"/objects('{obj_id}')/blob").content)
-    print(type(obj))
+    # print(type(obj))
     return obj
 
 
@@ -573,4 +590,4 @@ def test_find_datafiles_no_seedpoint(tmp_path):
     os.chdir(real1)
     files = find_datafiles_no_seedpoint()
     assert len(files) == 5
-    print({data_path.name: data_path for data_path in files})
+    # print({data_path.name: data_path for data_path in files})
