@@ -251,13 +251,6 @@ def is_datafile(results: Path) -> bool:
     return results.suffix in valid
 
 
-def subtract_from_datafiles_dict(datafiles_dict):
-    """Extract information when datafiles field is supplied as dict"""
-    logger = logging.getLogger(__file__ + ".subtract_from_datafiles_dict")
-    logger.debug("Datafiles dict %s", datafiles_dict)
-    return datafiles_dict
-
-
 def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
