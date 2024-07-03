@@ -45,12 +45,9 @@ def table_to_bytes(table: pa.Table):
     Returns:
         bytes: table as bytestring
     """
-    logger = logging.getLogger(__name__ + ".table_to_bytes")
     sink = pa.BufferOutputStream()
-    logger.debug("Writing %s to sink", table)
     pq.write_table(table, sink)
     byte_string = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(byte_string))
     return byte_string
 
 
@@ -80,15 +77,12 @@ def generate_table_meta(datafile, obj, tagname, config):
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_table_meta")
-
     if "vfp" in tagname.lower():
         content = "lift_curves"
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
     metadata = generate_meta(config, datafile, tagname, obj, content)
-    logger.debug("Generated meta are %s", metadata)
 
     return metadata
 
@@ -126,9 +120,6 @@ def get_table(
         pd.DataFrame: the extracted data
     """
     logger = logging.getLogger(__file__ + ".get_table")
-    logger.debug(
-        "Input arguments %s",
-    )
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
     try:
@@ -145,14 +136,7 @@ def get_table(
         print(SUBMOD_DICT[submod]["doc"])
         print("------------------")
     else:
-        logger.debug("Checking these passed options %s", kwargs)
         try:
-            logger.info(
-                "Extracting data from %s with func %s for %s",
-                datafile_path,
-                extract_df.__name__,
-                submod,
-            )
             output = extract_df(
                 res2df.ResdataFiles(datafile_path),
                 **kwargs,
@@ -162,19 +146,11 @@ def get_table(
             if arrow:
                 try:
                     convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                    logger.debug(
-                        "Using function %s to convert to arrow",
-                        convert_func.__name__,
-                    )
                     output = convert_func(output)
                 except pa.lib.ArrowInvalid:
                     logger.warning(
                         "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
                         sys.exc_info()[1],
-                    )
-                    logger.debug(
-                        "Falling back to converting with %s",
-                        convert_to_arrow.__name__,
                     )
                     output = convert_to_arrow(output)
 
@@ -192,7 +168,6 @@ def get_table(
                 "Trace: %s, \nNo results produced ",
                 trace,
             )
-    logger.debug("Returning %s", output)
     return output
 
 
@@ -260,9 +235,7 @@ def upload_tables_from_simulation_run(
             )
             if sumo_file is None:
                 logger.warning(
-                    "Table with datatype %s extracted from %s returned nothing",
-                    submod,
-                    datafile,
+                    f"Table with datatype {submod} extracted from {datafile} returned nothing"
                 )
                 continue
             dispatcher.add(sumo_file)

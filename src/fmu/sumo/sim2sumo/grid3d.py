@@ -129,13 +129,11 @@ def readname(filename):
     Returns:
         str: keyword name
     """
-    logger = logging.getLogger(__name__ + ".readname")
     name = ""
     linenr = 0
     with open(filename, "r", encoding="utf-8") as file_handle:
         for line in file_handle:
             linenr += 1
-            logger.debug("%s %s", linenr, line)
             if "ECHO" in line:
                 continue
             match = re.match(r"^([a-zA-Z].*)", line)
@@ -145,7 +143,6 @@ def readname(filename):
                 break
             if linenr > 20:
                 break
-    logger.debug("Property %s", name)
 
     return name
 
@@ -177,13 +174,11 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_init")
-    logger.debug("File to load init from %s", init_path)
     unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
     init_props = list(
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
     )
     count = 0
-    logger.debug("%s properties found in init", len(init_props))
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
             logger.warning("%s will not be exported", init_prop["name"])
@@ -204,7 +199,6 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
             continue
         dispatcher.add(sumo_file)
         count += 1
-    logger.info("%s properties sendt on", count)
     return count
 
 
@@ -228,7 +222,6 @@ def upload_restart(
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
-    logger.debug("File to load restart from %s", restart_path)
     count = 0
     for prop_name in prop_names:
         for time_step in time_steps:
@@ -246,7 +239,6 @@ def upload_restart(
                 # TODO: refactor this if statement together with identical
                 # code in export_init
                 # These are identical, and should be treated as such
-                logger.debug("Exporting %s", xtgeo_prop.name)
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
                 )
@@ -259,7 +251,6 @@ def upload_restart(
                     continue
                 dispatcher.add(sumo_file)
                 count += 1
-    logger.info("%s properties sendt on", count)
 
     return count
 
@@ -272,10 +263,8 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    logger = logging.getLogger(__name__ + ".upload_simulation_runs")
     for datafile in datafiles:
         if not datafiles[datafile]["grid3d"]:
-            logger.info("Export of grid3d deactivated for %s", datafile)
             continue
         upload_simulation_run(datafile, config, dispatcher)
 
@@ -286,7 +275,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     Args:
         datafile (str): path to datafile
     """
-    logger = logging.getLogger(__name__ + ".upload_simulation_run")
     init_path = fix_suffix(datafile, ".INIT")
     restart_path = fix_suffix(datafile, ".UNRST")
     grid_path = fix_suffix(datafile, ".EGRID")
@@ -305,7 +293,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     count += upload_restart(
         restart_path, xtgeoegrid, time_steps, config, dispatcher
     )
-    logger.info("Exported %s properties", count)
 
 
 def get_timesteps(restart_path, egrid):
