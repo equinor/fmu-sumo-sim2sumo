@@ -19,7 +19,6 @@ from xtgeo.io._file import FileWrapper
 
 from .common import (
     generate_meta,
-    convert_to_bytestring,
     convert_2_sumo_file,
     fix_suffix,
 )
@@ -57,7 +56,7 @@ def xtgeo_2_bytestring(obj):
     """
     if obj is None:
         return obj
-    bytestring = convert_to_bytestring(xtgeo_2_bytes, obj)
+    bytestring = xtgeo_2_bytes(obj)
 
     return bytestring
 

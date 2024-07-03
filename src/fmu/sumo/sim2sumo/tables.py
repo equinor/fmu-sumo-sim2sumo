@@ -22,7 +22,6 @@ from ._special_treatments import (
 )
 from .common import (
     generate_meta,
-    convert_to_bytestring,
     convert_2_sumo_file,
 )
 
@@ -64,7 +63,7 @@ def table_2_bytestring(table):
     Returns:
         bytest: the bytes string
     """
-    bytestring = convert_to_bytestring(table_to_bytes, table)
+    bytestring = table_to_bytes(table)
     return bytestring
 
 
