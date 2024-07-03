@@ -126,7 +126,7 @@ def _fix_xtgeogrid(eightcells_datafile):
 
 
 @pytest.fixture(name="teardown", autouse=True, scope="session")
-def fixture_teardown(sumo, request):
+def fixture_teardown(sumo, case_uuid, request):
     """Remove all test case when all tests are run
 
     Args:
@@ -139,22 +139,27 @@ def fixture_teardown(sumo, request):
     #       This means it will also delete cases for parallel test runs
     #       ==> Each tests should be aware of its own case(s) and delete them specifically
     def kill():
-        query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
+        try:
+            sumo.delete(f"/objects('{case_uuid}')")
+        except HTTPStatusError:
+            print(f"{case_uuid} Already gone..")
 
-        results = sumo.get("/search", query).json()
+        # query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
 
-        print(f'{results["hits"]["total"]["value"]} cases found')
+        # results = sumo.get("/search", query).json()
 
-        hit_list = results["hits"]["hits"]
-        for hit in hit_list:
-            case_name = hit["_source"]["fmu"]["case"]["name"]
-            case_uuid = hit["_id"]
-            path = f"/objects('{case_uuid}')"
-            try:
+        # print(f'{results["hits"]["total"]["value"]} cases found')
 
-                sumo.delete(path)
-            except HTTPStatusError:
-                print(f"{case_uuid} Already gone..")
-            print(f"Killed case with id {case_uuid} (name: {case_name})")
+        # hit_list = results["hits"]["hits"]
+        # for hit in hit_list:
+        #     case_name = hit["_source"]["fmu"]["case"]["name"]
+        #     case_uuid = hit["_id"]
+        #     path = f"/objects('{case_uuid}')"
+        #     try:
+
+        #         sumo.delete(path)
+        #     except HTTPStatusError:
+        #         print(f"{case_uuid} Already gone..")
+        #     print(f"Killed case with id {case_uuid} (name: {case_name})")
 
     request.addfinalizer(kill)
