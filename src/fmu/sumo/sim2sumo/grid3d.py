@@ -13,7 +13,7 @@ from io import BytesIO
 import numpy as np
 from resdata.grid import Grid
 from resdata.resfile import ResdataRestartFile
-from xtgeo import GridProperty, grid_from_file, gridproperty_from_file
+from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
@@ -120,24 +120,6 @@ def get_xtgeo_egrid(datafile):
     return egrid
 
 
-def export_grdecl_grid(grid_path, exporter):
-    """Export the grdecl grid
-
-    Args:
-        grid_path (str): path to grid
-
-    Returns:
-        xtgeo.grid: grid read from file
-    """
-    logger = logging.getLogger(__name__ + ".export_grdecl_grid")
-    grid = grid_from_file(grid_path)
-    logger.debug(grid.name)
-    # logger.info(
-    #     "Exported to %s", exporter.export(grid, name=grid.name, tagname="grdecl_grid")
-    # )
-    return grid
-
-
 def readname(filename):
     """Read keyword from grdecl file
 
@@ -182,35 +164,6 @@ def make_dates_from_timelist(time_list):
         date_str = datetime.strftime(date[1], "%Y-%m-%d")
         dates.append(date_str)
     return dates
-
-
-def export_grdecl_props(include_path, grid, exporter):
-    """Export grid properties
-
-    Args:
-        include_path (Pathlib.Path): path where all grdecls are stored
-        grid (xtgeo.Grid): grid to connect to properties
-    """
-    logger = logging.getLogger(__name__ + ".export_grdecl_props")
-    includes = include_path
-    grdecls = list(includes.glob("**/*.grdecl"))
-    for grdecl in grdecls:
-        logger.debug(grdecl)
-        name = readname(grdecl)
-        if name == "":
-            logger.warning("Found no name, file is probably empty")
-            continue
-        try:
-            prop = gridproperty_from_file(grdecl, name=name, grid=grid)
-            logger.info(
-                "Exported to %s",
-                exporter.export(
-                    prop, name=name, tagname=grid.name + "_grdecl_grid"
-                ),
-            )
-        except ValueError:
-            logger.warning("Something wrong with reading of file")
-    # logger.debug(grdecls)
 
 
 def upload_init(init_path, xtgeoegrid, config, dispatcher):
