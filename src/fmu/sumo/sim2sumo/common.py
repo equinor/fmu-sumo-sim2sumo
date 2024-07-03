@@ -48,15 +48,11 @@ def get_case_uuid(file_path, parent_level=4):
     Returns:
         str: the case uuid
     """
-    logger = logging.getLogger(__name__ + ".get_case_uuid")
-    logger.debug("Asked for parent %s for %s", parent_level, file_path)
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
-    logger.info("Case uuid: %s", uuid)
     return uuid
 
 
@@ -72,15 +68,12 @@ def filter_options(submod, kwargs):
     """
     logger = logging.getLogger(__file__ + ".filter_options")
     submod_options = SUBMOD_DICT[submod]["options"]
-    logger.debug("Available options for %s are %s", submod, submod_options)
-    logger.debug("Input: %s", kwargs)
     filtered = {
         key: value
         for key, value in kwargs.items()
         if (key in submod_options) or key == "arrow"
     }
     filtered["arrow"] = kwargs.get("arrow", True)
-    logger.debug("After filtering options for %s: %s", submod, filtered)
     # Arrow is not an argument to df functions utilized, therefore
     # it needs to be re added here
     non_opions = [key for key in kwargs if key not in filtered]
@@ -108,11 +101,9 @@ def find_full_path(datafile, paths):
     try:
         return paths[data_name]
     except KeyError:
-        mess = (
-            "Datafile %s, with derived name %s, not found in %s,"
-            " have to skip"
+        logger.warning(
+            f"Datafile {datafile} with name {data_name} not found in {paths}"
         )
-        logger.warning(mess, datafile, data_name, paths)
         return None
 
 
@@ -130,9 +121,7 @@ def find_datafile_paths():
         if name not in paths:
             paths[name] = data_path
         else:
-            logger.warning(
-                "Name %s from file %s allready used", name, data_path
-            )
+            logger.warning(f"Name {name} from file {data_path} already used")
 
     return paths
 
@@ -150,25 +139,18 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
               submodule and option
     """
     # datafile can be read as list, or string which can be either folder or filepath
-    logger = logging.getLogger(__file__ + ".read_config")
-    logger.debug("Using extras %s", [datafile, datatype])
-    logger.debug("Input config keys are %s", config.keys())
-
     simconfig = config.get("sim2sumo", {})
     grid3d = simconfig.get("grid3d", False)
-    logger.debug("config input is %s", simconfig)
     if isinstance(simconfig, bool):
         simconfig = {}
     datafiles = find_datafiles(datafile, simconfig)
     paths = find_datafile_paths()
-    logger.debug("Found datafiles %s", datafiles)
     if isinstance(datafiles, dict):
         outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
     else:
         outdict = prepare_list_for_sendoff(
             datatype, simconfig, datafiles, paths, grid3d
         )
-    logger.debug("Returning %s", outdict)
     return outdict
 
 
@@ -184,9 +166,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     Returns:
         dict: results as one unified dictionary
     """
-    logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
     submods = find_datatypes(datatype, simconfig)
-    logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
 
@@ -219,7 +199,7 @@ def prepare_dict_for_sendoff(datafiles, paths, grid3d):
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
         if datafile_path not in paths.values():
-            logger.warning("%s not contained in paths", datafile_path)
+            logger.warning(f"{datafile_path} not contained in paths")
         if datafile_path is None:
             continue
         outdict[datafile_path] = {}
@@ -227,12 +207,6 @@ def prepare_dict_for_sendoff(datafiles, paths, grid3d):
             continue
         try:
             for submod, options in datafiles[datafile].items():
-                logger.debug(
-                    "%s submod %s:\noptions: %s",
-                    datafile_path,
-                    submod,
-                    options,
-                )
                 outdict[datafile_path][submod] = filter_options(
                     submod, options
                 )
@@ -240,7 +214,6 @@ def prepare_dict_for_sendoff(datafiles, paths, grid3d):
             for submod in datafiles[datafile]:
                 outdict[datafile_path][submod] = {}
         outdict[datafile_path]["grid3d"] = grid3d
-    logger.debug("Returning %s", outdict)
     return outdict
 
 
@@ -437,13 +410,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     Returns:
         dict: the metadata to export
     """
-    logger = logging.getLogger(__name__ + ".generate_meta")
-    logger.info("Obj of type: %s", type(obj))
-    logger.info("Generating metadata")
-    logger.info("Content: %s", content)
-    logger.debug("Config: %s", config)
-    logger.debug("datafile_path: %s", datafile_path)
-    logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
     exp_args = {
         "config": config,
@@ -464,9 +430,7 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     metadata["file"] = {
         "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
     }
-    logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
-
 
 
 def convert_2_sumo_file(obj, converter, metacreator, meta_args):
@@ -482,16 +446,11 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
         SumoFile: file containing obj
     """
     logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
-    logger.debug("Obj type: %s", type(obj))
-    logger.debug("Convert function %s", converter)
-    logger.debug("Meta function %s", metacreator)
-    logger.debug("Arguments for creating metadata %s", meta_args)
     if obj is None:
         logger.warning("Nothing to do with None object")
         return obj
     bytestring = converter(obj)
     metadata = metacreator(*meta_args)
-    logger.debug("Metadata created")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -499,11 +458,9 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
         bytestring, bytes
     ), f"bytestring should be bytes, but is {type(bytestring)}"
     sumo_file = FileOnJob(bytestring, metadata)
-    logger.debug("Init of sumo file")
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
     sumo_file.size = len(sumo_file.byte_string)
-    logger.debug("Returning from func")
     return sumo_file
 
 
@@ -516,15 +473,13 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         connection (str): client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    logger.info("%s files to upload", len(files))
-    logger.info("Uploading to parent %s", parent_id)
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
         status = upload_files(files, parent_id, connection)
-        print("Status after upload: ", end="\n--------------\n")
+        logger.info("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
-            print(f"{state}: {len(obj_status)}")
+            logger.info(f"{state}: {len(obj_status)}")
     else:
         logger.info("No passed files, nothing to do here")
 
@@ -538,15 +493,12 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
 
 
@@ -560,13 +512,11 @@ def fix_suffix(datafile_path: str, suffix=".DATA"):
     Returns:
         str: the corrected path
     """
-    logger = logging.getLogger(__file__ + ".fix_suffix")
     string_datafile_path = str(datafile_path)
     assert "." in suffix, f"suffix: needs to start with . (is {suffix})"
     if "." not in string_datafile_path:
         string_datafile_path += suffix
     if not string_datafile_path.endswith(suffix):
         corrected_path = re.sub(r"\..*", suffix, string_datafile_path)
-        logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
         datafile_path = corrected_path
     return datafile_path
