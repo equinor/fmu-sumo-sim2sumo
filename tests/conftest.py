@@ -89,7 +89,6 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
-
 @pytest.fixture(scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
 
@@ -134,32 +133,10 @@ def fixture_teardown(sumo, case_uuid, request):
     sumo (SumoClient): Client to given sumo environment
     """
 
-    # TODO: THIS will interfer with other tests
-    #       This says: "take all sim2sumo test cases and delete them"
-    #       This means it will also delete cases for parallel test runs
-    #       ==> Each tests should be aware of its own case(s) and delete them specifically
     def kill():
         try:
             sumo.delete(f"/objects('{case_uuid}')")
         except HTTPStatusError:
             print(f"{case_uuid} Already gone..")
-
-        # query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
-
-        # results = sumo.get("/search", query).json()
-
-        # print(f'{results["hits"]["total"]["value"]} cases found')
-
-        # hit_list = results["hits"]["hits"]
-        # for hit in hit_list:
-        #     case_name = hit["_source"]["fmu"]["case"]["name"]
-        #     case_uuid = hit["_id"]
-        #     path = f"/objects('{case_uuid}')"
-        #     try:
-
-        #         sumo.delete(path)
-        #     except HTTPStatusError:
-        #         print(f"{case_uuid} Already gone..")
-        #     print(f"Killed case with id {case_uuid} (name: {case_name})")
 
     request.addfinalizer(kill)
