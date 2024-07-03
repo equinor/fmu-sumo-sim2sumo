@@ -22,7 +22,7 @@ DROGON_DATAFILE = DROGON_REAL / "eclipse/model/DROGON-0.DATA"
         ({"vfpnumbers": "1,2,4"}, "VFPPROD", 3),
     ],
 )
-def test_vfp_to_arrow(options, keyword, nrtables):  # case_uuid, set_ert_env):
+def test_vfp_to_arrow(options, keyword, nrtables):
 
     returned_keyword, arrow_dict = vfp_to_arrow_dict(DROGON_DATAFILE, options)
     dict_length = len(arrow_dict)
@@ -37,7 +37,7 @@ def test_vfp_to_arrow(options, keyword, nrtables):  # case_uuid, set_ert_env):
 
 
 def test_vfp_tables_from_simulation_run(
-    scratch_files, config, set_ert_env, sumo, case_uuid, monkeypatch
+    scratch_files, config, sumo, case_uuid, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[2], "dev")
