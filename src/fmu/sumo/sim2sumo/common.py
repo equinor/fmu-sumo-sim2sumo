@@ -445,7 +445,7 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(files, parent_id, connection)
+        return upload_files(files, parent_id, connection)
     else:
         logger.info("No passed files, nothing to do here")
 
