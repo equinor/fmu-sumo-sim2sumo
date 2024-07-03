@@ -105,19 +105,8 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     Returns:
          SumoFile: Object containing table object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("tagname: %s", tagname)
-    logger.debug("Config: %s", config)
-
     meta_args = (datafile, obj, tagname, config)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "tagname", "config", "content"), meta_args)
-        ),
-    )
+
     sumo_file = convert_2_sumo_file(
         obj, table_2_bytestring, generate_table_meta, meta_args
     )
@@ -216,10 +205,7 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
-        logger.debug("datafile: %s", datafile_path)
         upload_tables_from_simulation_run(
             datafile_path,
             submod_and_options,
@@ -239,17 +225,12 @@ def upload_vfp_tables_from_simulation_run(
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher): job dispatcher
     """
-    logger = logging.getLogger(
-        __name__ + ".upload_vfp_tables_from_simulation_run"
-    )
     keyword, tables = vfp_to_arrow_dict(datafile, options)
     for table in tables:
         table_number = str(
             table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
         )
-        logger.debug(table)
         tagname = f"{keyword}_{table_number}"
-        logger.debug("Generated tagname: %s", tagname)
         sumo_file = convert_table_2_sumo_file(datafile, table, tagname, config)
         dispatcher.add(sumo_file)
 
@@ -265,11 +246,8 @@ def upload_tables_from_simulation_run(
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
-    logger.info("Extracting tables from %s", datafile)
-    count = 0
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
-            logger.debug("No tables for grid3d, skipping")
             continue
 
         if submod == "vfp":
@@ -278,7 +256,6 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, options)
-            logger.debug("Sending %s onto file creation", table)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, submod, config
             )
@@ -290,5 +267,3 @@ def upload_tables_from_simulation_run(
                 )
                 continue
             dispatcher.add(sumo_file)
-
-    logger.info("%s properties", count)

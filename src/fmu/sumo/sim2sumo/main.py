@@ -15,7 +15,6 @@ def parse_args():
     Returns:
         argparse.NameSpace: the arguments parsed
     """
-    logger = logging.getLogger(__file__ + ".parse_args")
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Parsing input to control export of simulator data",
@@ -52,7 +51,7 @@ def parse_args():
             "Use this to get documentation of one of the datatypes to upload\n"
             + f"valid options are \n{', '.join(SUBMODULES)}"
         ),
-        default="No help",
+        default=False,
     )
     parser.add_argument("--d", help="Activate debug mode", action="store_true")
     args = parser.parse_args()
@@ -60,22 +59,17 @@ def parse_args():
         logging.basicConfig(
             level="DEBUG", format="%(name)s - %(levelname)s - %(message)s"
         )
-    logger.debug("Returning args %s", vars(args))
     return args
 
 
 def main():
     """Main function to be called"""
-    logger = logging.getLogger(__file__ + ".main")
     args = parse_args()
-    logger.debug("Running with arguments %s", args)
-    if args.help_on != "No help":
+    if args.help_on:
         print(give_help(args.help_on))
     else:
-        logger.info("Will be extracting results")
         config = yaml_load(args.config_path)
         config["file_path"] = args.config_path
-        logger.debug("Added file_path, and config keys are %s", config.keys())
         sim2sumoconfig = prepare_for_sendoff(
             config, args.datafile, args.datatype
         )
@@ -83,10 +77,8 @@ def main():
         one_datafile = list(sim2sumoconfig.keys())[0]
         dispatcher = Dispatcher(one_datafile, args.env)
 
-        logger.debug("Extracting tables")
         upload_tables(sim2sumoconfig, config, dispatcher)
 
-        logger.debug("Extracting 3dgrid(s) with properties")
         upload_simulation_runs(sim2sumoconfig, config, dispatcher)
 
         dispatcher.finish()
