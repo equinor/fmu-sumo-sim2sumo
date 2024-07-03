@@ -261,22 +261,17 @@ def find_datafiles(seedpoint, simconfig):
     Returns:
         list: list of datafiles to interrogate
     """
-
-    logger = logging.getLogger(__file__ + ".find_datafiles")
     datafiles = []
     seedpoint = simconfig.get("datafile", seedpoint)
     if seedpoint is None:
         datafiles = find_datafiles_no_seedpoint()
 
     elif isinstance(seedpoint, (str, Path)):
-        logger.debug("Using this string %s to find datafile(s)", seedpoint)
         datafiles.append(seedpoint)
     elif isinstance(seedpoint, list):
-        logger.debug("%s is list", seedpoint)
         datafiles.extend(seedpoint)
     else:
         datafiles = seedpoint
-    logger.debug("Datafile(s) to use %s", datafiles)
     return datafiles
 
 
@@ -286,11 +281,8 @@ def find_datafiles_no_seedpoint():
     Returns:
         list: The datafiles found
     """
-    logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
     cwd = Path().cwd()
-    logger.info("Looking for files in %s", cwd)
     datafiles = list(filter(is_datafile, cwd.glob("*/*/*.*")))
-    logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
 
@@ -298,7 +290,6 @@ class Dispatcher:
     """Controls upload to sumo"""
 
     def __init__(self, datafile, env, token=None):
-        self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile)
         self._conn = SumoConnection(env=env, token=token)
@@ -310,9 +301,6 @@ class Dispatcher:
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        self._logger.info(
-            "Init, parent is %s, and env is %s", self.parentid, self.env
-        )
 
     @property
     def parentid(self):
@@ -346,31 +334,19 @@ class Dispatcher:
             self._mem_limit = (
                 psutil.virtual_memory().available * self._limit_percent
             )
-
-            self._logger.debug(
-                "Count is %s, and mem frac is %f1.1",
-                self._count,
-                self.mem_frac,
-            )
             if (self.mem_frac > 1) or (self._count > 100):
-                self._logger.info(
-                    "Time to upload (mem frac %s, and count is %s)",
-                    self.mem_frac,
-                    self._count,
-                )
                 self._upload()
         else:
-            self._logger.warning("File is None, not adding")
+            logger = logging.getLogger(__name__ + ".Dispatcher")
+            logger.warning("File is None, not adding")
 
     def _upload(self):
-        self._logger.debug("%s files to upload", len(self._objects))
         nodisk_upload(self._objects, self._parentid, connection=self._conn)
         self._objects = []
         self._mem_count = 0
 
     def finish(self):
         """Cleanup"""
-        self._logger.info("Final stretch")
         self._upload()
 
 
@@ -470,9 +446,6 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         if connection is None:
             connection = SumoConnection(env=env)
         status = upload_files(files, parent_id, connection)
-        logger.info("Status after upload: ", end="\n--------------\n")
-        for state, obj_status in status.items():
-            logger.info(f"{state}: {len(obj_status)}")
     else:
         logger.info("No passed files, nothing to do here")
 

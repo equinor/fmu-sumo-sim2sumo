@@ -22,8 +22,6 @@ def convert_to_arrow(frame):
     Returns:
         pa.Table: the converted dataframe
     """
-    logger = logging.getLogger(__file__ + ".convert_to_arrow")
-    logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
         frame["DATE"] = pd.to_datetime(
@@ -37,7 +35,6 @@ def convert_to_arrow(frame):
             scheme.append(
                 (column_name, standard.get(column_name, pa.float32()))
             )
-    logger.debug(scheme)
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
 
@@ -51,14 +48,9 @@ def find_arrow_convertor(path):
     Returns:
         function: function for converting to arrow
     """
-    logger = logging.getLogger(__file__ + ".find_arrow_convertor")
     try:
         func = importlib.import_module(path)._df2pyarrow
     except AttributeError:
-        logger.info(
-            "No premade function for converting to arrow in %s",
-            path,
-        )
         func = convert_to_arrow
 
     return func
@@ -73,11 +65,8 @@ def find_functions_and_docstring(submod):
     Returns:
         dictionary: includes functions and doc string
     """
-    logger = logging.getLogger(__file__ + ".find_func_and_info")
-
     import_path = "res2df." + submod
     func = importlib.import_module(import_path).df
-    logger.debug("Assigning %s to %s", func.__name__, submod)
     returns = {
         "extract": func,
         "options": tuple(
@@ -115,16 +104,8 @@ def _define_submodules():
             submod = "vfp"
         try:
             submodules[submod] = find_functions_and_docstring(submod_string)
-            logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
             logger.debug("No df function in %s", submod_path)
-
-    logger.debug(
-        "Returning the submodule names as a list: %s ", submodules.keys()
-    )
-    logger.debug(
-        "Returning the submodules extra args as a dictionary: %s ", submodules
-    )
 
     return tuple(submodules.keys()), submodules
 
@@ -152,16 +133,11 @@ def tidy(frame):
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
     """
     # res2df creates three files for rft data, see unwanted list below
-    logger = logging.getLogger(__file__ + ".tidy")
     unwanteds = ["seg.csv", "con.csv", "icd.csv"]
     cwd = Path().cwd()
     for unwanted in unwanteds:
         unwanted_posix = cwd / unwanted
         if unwanted_posix.is_file():
-            logger.info(
-                "Deleting unwanted file from rft export %s",
-                str(unwanted_posix),
-            )
             unwanted_posix.unlink()
     if "WELLETC" in frame.columns:
         frame.drop(["WELLETC"], axis=1, inplace=True)

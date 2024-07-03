@@ -33,15 +33,12 @@ def xtgeo_2_bytes(obj):
     Returns:
         bytes: bytestring
     """
-    logger = logging.getLogger(__name__ + ".xtgeo_2_bytes")
     if obj is None:
         return obj
-    logger.debug("Converting %s", obj.name)
     sink = BytesIO()
     obj.to_file(sink)
     sink.seek(0)
     bytestring = sink.getbuffer().tobytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
     return bytestring
 
 
@@ -74,7 +71,6 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
     if obj is None:
         return obj
 
@@ -83,7 +79,6 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
     else:
         tagname = f"{prefix}-{obj.name}"
     metadata = generate_meta(config, datafile, tagname, obj, content)
-    logger.debug("Generated meta are %s", metadata)
 
     return metadata
 
@@ -100,11 +95,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     Returns:
         SumoFile: Object containing xtgeo object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_xtgeo_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("prefix: %s", prefix)
-    logger.debug("Config: %s", config)
     if obj is None:
         return obj
     if isinstance(obj, Grid):
@@ -113,12 +103,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
         content = "property"
 
     meta_args = (datafile, obj, prefix, config, content)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "prefix", "config", "content"), meta_args)
-        ),
-    )
     sumo_file = convert_2_sumo_file(
         obj, xtgeo_2_bytestring, generate_grid3d_meta, meta_args
     )
@@ -131,12 +115,8 @@ def get_xtgeo_egrid(datafile):
     Args:
         datafile (str): path to datafile
     """
-    logger = logging.getLogger(__name__ + ".get_xtgeo_egrid")
-    logger.debug("Fetching %s", datafile)
     egrid_path = str(datafile).replace(".DATA", ".EGRID")
     egrid = grid_from_file(egrid_path)
-
-    logger.info("Fetched %s", egrid.name)
     return egrid
 
 
