@@ -173,7 +173,14 @@ def create_config_dict_from_list(
     Returns:
         dict: results as one unified dictionary
     """
-    submods = find_datatypes(datatype, simconfig)
+    if datatype is None:
+        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+
+        if submods == "all":
+            submods = SUBMODULES
+    else:
+        submods = [datatype]
+
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
 
@@ -222,27 +229,6 @@ def create_config_dict_from_dict(datafiles, paths, grid3d):
                 outdict[datafile_path][submod] = {}
         outdict[datafile_path]["grid3d"] = grid3d
     return outdict
-
-
-def find_datatypes(datatype, simconfig):
-    """Find datatypes to extract
-
-    Args:
-        datatype (str or None): datatype to extract
-        simconfig (dict): the config file settings
-
-    Returns:
-        list or dict: data types to extract
-    """
-
-    if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
-    else:
-        submods = [datatype]
-    return submods
 
 
 def is_datafile(results: Path) -> bool:
