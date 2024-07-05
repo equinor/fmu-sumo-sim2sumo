@@ -200,7 +200,6 @@ def test_find_datafile_paths(tmp_path):
 
 
 def test_prepare_for_sendoff_troll_case(tmp_path):
-
     expected_datafile_nr = 2
     expected_troll_pred_input = {
         "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True},
@@ -252,7 +251,7 @@ def create_troll_case(tmp_path):
     return mig_file
 
 
-def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
+def test_dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
     monkeypatch.chdir(scratch_files[0])
     assert disp._parentid == case_uuid
