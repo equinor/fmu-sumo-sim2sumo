@@ -427,13 +427,10 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         parent_id (str): uuid of parent object
         connection (str): client to upload with
     """
-    logger = logging.getLogger(__name__ + ".nodisk_upload")
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
         return upload_files(files, parent_id, connection)
-    else:
-        logger.info("No passed files, nothing to do here")
 
 
 def give_name(datafile_path: str) -> str:
