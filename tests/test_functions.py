@@ -52,15 +52,11 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     # There has been instances when this fails, probably because of
     # some time delay, have introduced a little sleep to make it not fail
     sleep(SLEEP_TIME)
-    if tag_prefix == "*":
-        search_pattern = "*"
-    elif tag_prefix.endswith("*"):
-        search_pattern = tag_prefix
-    else:
-        search_pattern = tag_prefix + "*"
+    if not tag_prefix.endswith("*"):
+        tag_prefix = tag_prefix + "*"
 
     path = f"/objects('{case_uuid}')/children"
-    query = f"$filter=data.tagname:{search_pattern}"
+    query = f"$filter=data.tagname:{tag_prefix}"
 
     if class_type != "*":
         query += f" AND class:{class_type}"
