@@ -461,11 +461,13 @@ def fix_suffix(datafile_path: str, suffix=".DATA"):
     Returns:
         str: the corrected path
     """
+    assert suffix.startswith("."), f"suffix needs to start with . ({suffix})"
+
     string_datafile_path = str(datafile_path)
-    assert "." in suffix, f"suffix: needs to start with . (is {suffix})"
+    if string_datafile_path.endswith(suffix):
+        return string_datafile_path
     if "." not in string_datafile_path:
-        string_datafile_path += suffix
+        return string_datafile_path + suffix
     if not string_datafile_path.endswith(suffix):
         corrected_path = re.sub(r"\..*", suffix, string_datafile_path)
-        datafile_path = corrected_path
-    return datafile_path
+        return corrected_path
