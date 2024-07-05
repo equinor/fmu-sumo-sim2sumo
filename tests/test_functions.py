@@ -44,7 +44,6 @@ CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
 CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
 
 
-LOGGER = logging.getLogger(__file__)
 SLEEP_TIME = 3
 
 
@@ -59,15 +58,12 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     query = f"$filter=data.tagname:{tag_prefix}"
 
     query += f" AND class:{class_type}"
-    check_nr = correct
 
     results = sumo.get(path, query).json()
 
-    LOGGER.debug(results["hits"])
     returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
     assert (
-        returned == check_nr
+        returned == correct
     ), f"Supposed to upload {correct}, but actual were {returned}"
 
     sumo.delete(
@@ -418,12 +414,9 @@ def test_upload_simulation_run(
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
-    LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
     for submod_name, submod_dict in submods.items():
-        LOGGER.info(submod_name)
-        LOGGER.info(submod_dict)
         assert isinstance(submod_name, str)
         assert (
             "/" not in submod_name
@@ -512,7 +505,6 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
     path = f"/objects('{case_uuid}')/children"
     results = sumo.get(path).json()
     returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
     assert (
         returned == expected_exports
     ), f"Supposed to upload {expected_exports}, but actual were {returned}"
