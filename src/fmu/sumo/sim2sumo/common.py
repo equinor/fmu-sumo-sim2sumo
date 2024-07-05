@@ -231,19 +231,6 @@ def create_config_dict_from_dict(datafiles, paths, grid3d):
     return outdict
 
 
-def is_datafile(results: Path) -> bool:
-    """Filter results based on suffix
-
-    Args:
-        results (Path): path to file
-
-    Returns:
-        bool: true if correct suffix
-    """
-    valid = [".afi", ".DATA", ".in"]
-    return results.suffix in valid
-
-
 def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
@@ -275,7 +262,13 @@ def find_datafiles_no_seedpoint():
         list: The datafiles found
     """
     cwd = Path().cwd()
-    datafiles = list(filter(is_datafile, cwd.glob("*/*/*.*")))
+
+    valid_filetypes = [".afi", ".DATA", ".in"]
+
+    # Filter files on valid filetypes
+    datafiles = list(
+        filter(lambda file: file in valid_filetypes, cwd.glob("*/*/*.*"))
+    )
     return datafiles
 
 
