@@ -68,7 +68,6 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     else:
         # The plus one is because we are always uploading the parameters.txt automatically
         check_nr = correct + 1
-    print(query)
 
     results = sumo.get(path, query).json()
 
@@ -78,8 +77,6 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     assert (
         returned == check_nr
     ), f"Supposed to upload {correct}, but actual were {returned}"
-
-    print(f"**************\nFound {correct} {class_type} objects")
 
     sumo.delete(
         path,
@@ -124,23 +121,6 @@ def write_ert_config_and_run(runpath):
     assert Path(
         runpath / "OK"
     ).is_file(), f"running {ert_full_config_path}, No OK file"
-
-
-def _assert_right_len(checks, key, to_messure, name):
-    """Assert length when reading config
-
-    Args:
-        checks (dict): the answers
-        key (str): the answer to check
-        to_messure (list): the generated answer
-        name (str): name of the file to check against
-    """
-    # Helper for test_read_config
-    right_len = checks[key]
-    actual_len = len(to_messure)
-    assert (
-        actual_len == right_len
-    ), f"For {name}-{key} actual length is {actual_len}, but should be {right_len}"
 
 
 def check_expected_exports(expected_exports, shared_grid, prefix):
