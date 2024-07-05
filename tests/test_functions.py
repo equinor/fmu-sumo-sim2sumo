@@ -16,7 +16,7 @@ from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
     find_datafiles,
-    prepare_for_sendoff,
+    create_config_dict,
     nodisk_upload,
     Dispatcher,
     find_datefield,
@@ -175,13 +175,13 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
         ({"grid3d": True}, 5, 4),
     ],
 )
-def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
+def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
 
     sim2sumo_config = {"sim2sumo": config}
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
     os.chdir(real1)
-    inputs = prepare_for_sendoff(sim2sumo_config)
+    inputs = create_config_dict(sim2sumo_config)
     assert (
         len(inputs) == nrdatafiles
     ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
@@ -198,7 +198,7 @@ def test_find_datafile_paths(tmp_path):
     assert len(inputs) > 0
 
 
-def test_prepare_for_sendoff_troll_case(tmp_path):
+def test_create_config_dict_troll_case(tmp_path):
     expected_troll_pred_input = {
         "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True},
         "grid3d": False,
@@ -216,7 +216,7 @@ def test_prepare_for_sendoff_troll_case(tmp_path):
             }
         }
     }
-    inputs = prepare_for_sendoff(config)
+    inputs = create_config_dict(config)
     assert len(inputs) == len(
         expected_troll_pred_input
     ), f"Expected to extract {len(expected_troll_pred_input)} datafiles"
