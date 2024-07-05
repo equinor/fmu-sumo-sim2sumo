@@ -112,9 +112,7 @@ def write_ert_config_and_run(runpath):
 
 
 def check_expected_exports(expected_exports, shared_grid, prefix):
-    print("Looking in ", shared_grid)
     parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
-    print(parameters)
     meta = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff.yml"))
     nr_parameter = len(parameters)
     nr_meta = len(meta)
@@ -127,11 +125,12 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
 
 
-@pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
-def test_find_datefield(datestring):
-
-    results = find_datefield(datestring)
-    print(results)
+@pytest.mark.parametrize(
+    "datestring,expected_result",
+    [("bababdbbdd_20240508", "20240508"), ("nodatestring", None)],
+)
+def test_find_datefield(datestring, expected_result):
+    assert find_datefield(datestring) == expected_result
 
 
 def test_fix_suffix():
