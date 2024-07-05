@@ -435,29 +435,6 @@ def test_get_table(submod):
         ), "Metdata not carried across for summary"
 
 
-# Extra checks to be used with parametrize below
-CHECK_DICT = {
-    "global_variables_w_eclpath.yml": {
-        "nrdatafile": 1,
-        "nrsubmods": 3,
-        "nroptions": 1,
-        "arrow": True,
-    },
-    "global_variables_w_eclpath_and_extras.yml": {
-        "nrdatafile": 1,
-        "nrsubmods": 3,
-        "nroptions": 4,
-        "arrow": False,
-    },
-    "global_variables.yml": {
-        "nrdatafile": 2,
-        "nrsubmods": 3,
-        "nroptions": 1,
-        "arrow": True,
-    },
-}
-
-
 def test_convert_to_arrow():
     """Test function convert_to_arrow"""
     dframe = pd.DataFrame(
