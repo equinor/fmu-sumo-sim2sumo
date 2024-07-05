@@ -199,7 +199,6 @@ def test_find_datafile_paths(tmp_path):
 
 
 def test_prepare_for_sendoff_troll_case(tmp_path):
-    expected_datafile_nr = 2
     expected_troll_pred_input = {
         "pvt": {"keywords": ["PVTO", "PVDG"], "arrow": True},
         "grid3d": False,
@@ -218,10 +217,9 @@ def test_prepare_for_sendoff_troll_case(tmp_path):
         }
     }
     inputs = prepare_for_sendoff(config)
-    print(inputs)
-    assert (
-        len(inputs) == expected_datafile_nr
-    ), f"Expected to extract {expected_datafile_nr} datafiles"
+    assert len(inputs) == len(
+        expected_troll_pred_input
+    ), f"Expected to extract {len(expected_troll_pred_input)} datafiles"
 
     troll_pred_input = inputs[ix_file]
 
