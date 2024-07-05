@@ -469,7 +469,6 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
 
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
-
     os.chdir(real)
     datafiles = find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
@@ -494,4 +493,3 @@ def test_find_datafiles_no_seedpoint(tmp_path):
     os.chdir(real1)
     files = find_datafiles_no_seedpoint()
     assert len(files) == 5
-    print({data_path.name: data_path for data_path in files})
