@@ -24,8 +24,8 @@ from .common import (
 )
 
 
-def xtgeo_2_bytes(obj):
-    """Convert xtgeo object to bytes
+def xtgeo_2_bytestring(obj):
+    """Convert xtgeo object to byte string
 
     Args:
         obj (xtgeo.Obj): the object to convert
@@ -39,22 +39,6 @@ def xtgeo_2_bytes(obj):
     obj.to_file(sink)
     sink.seek(0)
     bytestring = sink.getbuffer().tobytes()
-    return bytestring
-
-
-def xtgeo_2_bytestring(obj):
-    """Convert xtgeo object to bytestring
-
-    Args:
-        obj (xtgeo object): the object to convert
-
-    Returns:
-        bytestring: bytes
-    """
-    if obj is None:
-        return obj
-    bytestring = xtgeo_2_bytes(obj)
-
     return bytestring
 
 

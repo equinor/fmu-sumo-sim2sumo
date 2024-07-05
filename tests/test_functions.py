@@ -1,6 +1,5 @@
 """Test utility ecl2csv"""
 
-import logging
 import os
 from pathlib import Path
 from numpy.ma import allclose, allequal
@@ -258,12 +257,6 @@ def test_dispatcher(case_uuid, token, scratch_files, monkeypatch):
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
     disp.finish()
-
-
-def test_xtgeo_2_bytes(eightfipnum):
-
-    bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
-    assert isinstance(bytestring, bytes)
 
 
 def test_xtgeo_2_bytestring(eightfipnum):
