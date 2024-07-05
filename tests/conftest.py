@@ -74,7 +74,6 @@ def _fix_sumo(token):
 
 @pytest.fixture(scope="session", name="scratch_files")
 def _fix_scratch_files(tmp_path_factory):
-
     return set_up_tmp(tmp_path_factory.mktemp("scratch"))
 
 
@@ -116,7 +115,6 @@ def _fix_register(scratch_files, token):
 
 @pytest.fixture(scope="session", name="xtgeogrid")
 def _fix_xtgeogrid(eightcells_datafile):
-
     return grid3d.get_xtgeo_egrid(eightcells_datafile)
 
 

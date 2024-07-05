@@ -276,9 +276,6 @@ def test_convert_xtgeo_2_sumo_file(
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
     )
-    print(case_uuid)
-    print(file.metadata)
-    print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
@@ -292,15 +289,12 @@ def test_convert_xtgeo_2_sumo_file(
 def test_convert_table_2_sumo_file(
     reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, set_ert_env
 ):
-
     monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
     )
 
-    print(file.metadata)
-    print(file.byte_string)
     nodisk_upload([file], case_uuid, "dev")
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
@@ -312,16 +306,13 @@ def test_convert_table_2_sumo_file(
 
 
 def get_sumo_object(sumo, case_uuid, name, tagname):
-    print("Fetching object with name, and tag", name, tagname)
     sleep(SLEEP_TIME)
     path = f"/objects('{case_uuid}')/search"
     results = sumo.get(
         path, f"$query=data.name:{name} AND data.tagname:{tagname}"
     ).json()
-    print(results)
     obj_id = results["hits"]["hits"][0]["_id"]
     obj = BytesIO(sumo.get(f"/objects('{obj_id}')/blob").content)
-    print(type(obj))
     return obj
 
 

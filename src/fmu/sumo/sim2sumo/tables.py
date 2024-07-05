@@ -216,6 +216,7 @@ def upload_tables_from_simulation_run(
 
     Args:
         datafile (str): the datafile defining the simulation run
+        submod_and_options (dict):
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
