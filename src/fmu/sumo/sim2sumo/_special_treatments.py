@@ -8,7 +8,6 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import res2df
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -108,22 +107,6 @@ def _define_submodules():
             logger.debug("No df function in %s", submod_path)
 
     return tuple(submodules.keys()), submodules
-
-
-def convert_options(options):
-    """Convert dictionary options further
-
-    Args:
-        options (dict): the input options
-
-    Returns:
-        dict: options after special treatment
-    """
-    if "zonemap" in options:
-        options["zonemap"] = convert_lyrlist_to_zonemap(
-            parse_lyrfile(options["zonemap"])
-        )
-    return options
 
 
 def tidy(frame):

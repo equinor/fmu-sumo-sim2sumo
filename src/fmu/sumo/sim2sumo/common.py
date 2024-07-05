@@ -7,16 +7,15 @@ from pathlib import Path
 import psutil
 import yaml
 
-
 from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
-    convert_options,
     SUBMOD_DICT,
     SUBMODULES,
 )
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 
 def yaml_load(file_name):
@@ -76,14 +75,20 @@ def filter_options(submod, kwargs):
     filtered["arrow"] = kwargs.get("arrow", True)
     # Arrow is not an argument to df functions utilized, therefore
     # it needs to be re added here
-    non_opions = [key for key in kwargs if key not in filtered]
-    if len(non_opions) > 0:
+    non_options = [key for key in kwargs if key not in filtered]
+    if len(non_options) > 0:
         logger.warning(
             "Filtered out options %s for %s, these are not valid",
-            non_opions,
+            non_options,
             submod,
         )
-    return convert_options(filtered)
+
+    if "zonemap" in filtered:
+        filtered["zonemap"] = convert_lyrlist_to_zonemap(
+            parse_lyrfile(filtered["zonemap"])
+        )
+
+    return filtered
 
 
 def find_full_path(datafile, paths):
