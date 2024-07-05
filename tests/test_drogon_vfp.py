@@ -19,18 +19,16 @@ DROGON_DATAFILE = (
         ({"vfpnumbers": "1,2,4"}, "VFPPROD", 3),
     ],
 )
-def test_vfp_to_arrow(options, keyword, nrtables):  # case_uuid, set_ert_env):
-
+def test_vfp_to_arrow(options, keyword, nrtables):
     returned_keyword, arrow_dict = vfp_to_arrow_dict(DROGON_DATAFILE, options)
     dict_length = len(arrow_dict)
 
-    print(dict_length)
     assert (
         returned_keyword == keyword
     ), f"Returned keyword {returned_keyword}, should be {keyword}"
     assert (
         dict_length == nrtables
-    ), f"Returned {dict_length} tables, but should be {nrtables}"
+    ), f"Returned {dict_length} tables, should be {nrtables}"
 
 
 def test_vfp_tables_from_simulation_run(
