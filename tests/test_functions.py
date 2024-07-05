@@ -195,7 +195,7 @@ def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
 def test_find_datafile_paths(tmp_path):
     _ = create_troll_case(tmp_path)
     inputs = find_datafile_paths()
-    print(inputs)
+    assert len(inputs) > 0
 
 
 def test_prepare_for_sendoff_troll_case(tmp_path):
