@@ -58,12 +58,8 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     path = f"/objects('{case_uuid}')/children"
     query = f"$filter=data.tagname:{tag_prefix}"
 
-    if class_type != "*":
-        query += f" AND class:{class_type}"
-        check_nr = correct
-    else:
-        # The plus one is because we are always uploading the parameters.txt automatically
-        check_nr = correct + 1
+    query += f" AND class:{class_type}"
+    check_nr = correct
 
     results = sumo.get(path, query).json()
 
