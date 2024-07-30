@@ -329,7 +329,6 @@ def test_convert_xtgeo_2_sumo_file(
     case_uuid,
     sumo,
     monkeypatch,
-    set_ert_env,
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -350,7 +349,7 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, set_ert_env
+    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch
 ):
 
     monkeypatch.chdir(scratch_files[0])
