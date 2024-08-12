@@ -56,10 +56,15 @@ def _fix_fipnum():
 
 
 @pytest.fixture(scope="session", name="reekrft")
-def _fix_rft():
+def _fix_rft_reek():
     return convert_to_arrow(
         pd.read_csv(Path(__file__).parent / "data/2_r001_reek--rft.csv")
     )
+
+
+@pytest.fixture(scope="session", name="drogonrft")
+def _fix_rft_drogon():
+    return pd.read_csv(Path(__file__).parent / "data/drogon/rft.csv")
 
 
 @pytest.fixture(scope="session", name="config")
@@ -84,8 +89,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
-
-@pytest.fixture(autouse=True, scope="function", name="case_uuid")
+@pytest.fixture(scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
 
     root = scratch_files[0].parents[1]
@@ -121,7 +125,7 @@ def _fix_xtgeogrid(eightcells_datafile):
 
 
 @pytest.fixture(name="teardown", autouse=True, scope="session")
-def fixture_teardown(sumo, request):
+def fixture_teardown(sumo, case_uuid, request):
     """Remove all test case when all tests are run
 
     Args:
@@ -130,22 +134,9 @@ def fixture_teardown(sumo, request):
     """
 
     def kill():
-        query = '$query=fmu.case.name:"test-sim2sumo" AND class:case&$size=100'
-
-        results = sumo.get("/search", query).json()
-
-        print(f'{results["hits"]["total"]["value"]} cases found')
-
-        hit_list = results["hits"]["hits"]
-        for hit in hit_list:
-            case_name = hit["_source"]["fmu"]["case"]["name"]
-            case_uuid = hit["_id"]
-            path = f"/objects('{case_uuid}')"
-            try:
-
-                sumo.delete(path)
-            except HTTPStatusError:
-                print(f"{case_uuid} Allready gone..")
-            print(f"Killed case with id {case_uuid} (name: {case_name})")
+        try:
+            sumo.delete(f"/objects('{case_uuid}')")
+        except HTTPStatusError:
+            print(f"{case_uuid} Already gone..")
 
     request.addfinalizer(kill)

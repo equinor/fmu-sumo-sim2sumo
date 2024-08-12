@@ -16,9 +16,10 @@ import res2df
 
 from ._special_treatments import (
     SUBMOD_DICT,
-    tidy,
+    complete_rft,
     convert_to_arrow,
     vfp_to_arrow_dict,
+    find_md_log,
 )
 from .common import (
     generate_meta,
@@ -156,7 +157,10 @@ def get_table(
         print("------------------")
         print(SUBMOD_DICT[submod]["doc"])
         print("------------------")
+        # TODO: see if there is a cleaner way with rft, see functions
+        # find_md_log, and complete_rft, but needs really to be fixed in res2df
     else:
+        md_log_file = find_md_log(submod, kwargs)
         logger.debug("Checking these passed options %s", kwargs)
         try:
             logger.info(
@@ -170,7 +174,8 @@ def get_table(
                 **kwargs,
             )
             if submod == "rft":
-                output = tidy(output)
+
+                output = complete_rft(output, md_log_file)
             if arrow:
                 try:
                     convert_func = SUBMOD_DICT[submod]["arrow_convertor"]

@@ -23,6 +23,7 @@ from fmu.sumo.sim2sumo.common import (
     find_datefield,
     find_datafile_paths,
     find_datafiles_no_seedpoint,
+    filter_options,
 )
 from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -157,6 +158,22 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     assert (
         nr_meta == expected_exports
     ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+
+
+@pytest.mark.parametrize(
+    "submod,options",
+    [
+        ("summary", {"arrow": True}),
+        ("rft", {"md_log_file": "badabing"}),
+        ("vfp", {}),
+    ],
+)
+def test_non_standard_filter_options(submod, options):
+
+    returned_options = filter_options(submod, options)
+    assert (
+        len(returned_options) > 0
+    ), f"No options left for {submod}, should still be {options}"
 
 
 @pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
@@ -312,7 +329,6 @@ def test_convert_xtgeo_2_sumo_file(
     case_uuid,
     sumo,
     monkeypatch,
-    set_ert_env,
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -333,7 +349,7 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, set_ert_env
+    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch
 ):
 
     monkeypatch.chdir(scratch_files[0])

@@ -145,11 +145,35 @@ def convert_options(options):
     return options
 
 
-def tidy(frame):
+def find_md_log(submod, options):
+    """Search options for md_log_file
+
+    Args:
+        submod (str): submodule
+        options (dict): the dictionary to check
+
+    Returns:
+        str|None: whatever contained in md_log_file
+    """
+    logger = logging.getLogger(__file__ + ".find_md_log")
+    if submod != "rft":
+        return None
+    # Special treatment of argument md_log_file
+    md_log_file = options.get("md_log_file", None)
+    try:
+        del options["md_log_file"]
+    except KeyError:
+        logger.debug("No md log provided")
+
+    return md_log_file
+
+
+def complete_rft(frame, md_log_file):
     """Utility function to tidy up mess from res2df for rft
 
     Args:
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
+        md_log_file (str): file with md log file
     """
     # res2df creates three files for rft data, see unwanted list below
     logger = logging.getLogger(__file__ + ".tidy")
@@ -165,6 +189,9 @@ def tidy(frame):
             unwanted_posix.unlink()
     if "WELLETC" in frame.columns:
         frame.drop(["WELLETC"], axis=1, inplace=True)
+
+    if md_log_file is not None:
+        frame = add_md_to_rft(frame, md_log_file)
 
     return frame
 
@@ -191,6 +218,53 @@ def vfp_to_arrow_dict(datafile, options):
     )
     logger.debug("Extracted %s vfp tables", len(arrow_tables))
     return keyword, arrow_tables
+
+
+def add_md_to_rft(rft_table, md_file_path):
+    """Merge md data with rft table
+
+    Args:
+        rft_table (pd.DataFrame): the rft dataframe
+        md_file_path (str): path to file with md data
+
+    Raises:
+        FileNotFoundError: if md_file_path does not point to existing file
+
+    Returns:
+        pd.Dataframe: the merged results
+    """
+    logger = logging.getLogger(__file__ + ".add_md_to_rft")
+    logger.debug("Head of rft table prior to merge:\n %s", rft_table.head())
+
+    try:
+        md_table = pd.read_csv(md_file_path)
+    except FileNotFoundError as fnfe:
+        raise FileNotFoundError(
+            f"There is no md file called {md_file_path}"
+        ) from fnfe
+
+    xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
+    rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
+     # for grid indeces xtgeo starts from 0, res2df from 1
+    md_table[xtgeo_index_names] += 1 
+    md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
+    xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
+    logger.debug(
+        "Datatypes, md_table: %s, rft_table: %s",
+        md_table[xtgeo_index_names].dtypes,
+        rft_table[rft_index_names].dtypes,
+    )
+    logger.debug(
+        "Shapes before merge rft: %s, md: %s", rft_table.shape, md_table.shape
+    )
+    md_table.rename(xtgeo_to_rft_names, axis=1, inplace=True)
+    logger.debug("Header of md table after rename %s", md_table.head())
+    rft_table = pd.merge(rft_table, md_table, on=rft_index_names, how="left")
+    logger.debug("Shape after merge %s", rft_table.shape)
+    logger.debug("Shape with no nans %s", rft_table.dropna().shape)
+    logger.debug("Head of merged table to return:\n %s", rft_table.head())
+
+    return rft_table
 
 
 def give_help(submod, only_general=False):
