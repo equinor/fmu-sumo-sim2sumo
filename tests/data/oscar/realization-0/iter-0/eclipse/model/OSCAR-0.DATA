@@ -1,0 +1,487 @@
+-------------------------------------------------------------------------------
+-- NB! Eclipse template DATA file for ERT,
+--     it will not run in the project catalogue
+-------------------------------------------------------------------------------
+
+-- *************************** RUNSPEC SECTION ********************************
+--
+-- Title, problem dimensions, switches, phases present, components etc
+--
+-- ============================================================================
+
+RUNSPEC
+
+TITLE
+WISTING FMU MODEL
+
+START
+  1 DEC 2031 /
+
+--NOSIM
+
+INCLUDE
+ '../include/grid/grid_dimens.inc' /
+
+OIL
+WATER
+GAS
+DISGAS
+
+METRIC
+
+CPR
+/
+
+TABDIMS
+-- NTSFUN  NTPVT  NSSFUN  NPPVT  NTFIP  NRPVT  DEFAULT(6 entries) NTROCC
+     10      2       110     50     41     20          6*            2 /
+
+REGDIMS
+-- fipnum  fip.sets  indep.reg  flux.reg  ntrack ncoal NOPERNUM NWORKARR
+    41       4           0        1*        1*    1*    14        3 /
+
+WELLDIMS
+-- NWMAX  NCWMAX  NGMAX  NWGMAX
+    70      95     95     20       5*   85  /
+
+WSEGDIMS
+-- NSWLMX  NSEGMX  NLBRMX  NCRDMX
+    45      150     150      1*   /
+
+VFPPDIMS
+-- MXMFLO  MXMTHP  MXMWFR  MXMGFR  MXMALQ NMMVFT
+     50      12      10      20      1      12 /
+
+VFPIDIMS
+-- MXMFLO  MXMTHP   MXNOVFPI
+     20      10      2 /
+
+--Increased due to sensitivities in Nx and Ny
+FAULTDIM
+ 24000 /
+
+-- AQUDIMS
+-- Currently no aquifers defined
+
+EQLDIMS
+  13 /
+
+UDADIMS
+  10000 1* 10000   /
+
+UDQDIMS
+  100 60 30 500 20 20 100 50 /
+
+ACTDIMS
+  20000 100 128 10 /
+
+--Use saturation table end-point scaling
+ENDSCALE
+ NODIR  REVERS   /
+
+EQLOPTS
+ THPRES IRREVER /
+
+GRIDOPTS
+--Options to process grid data
+--MULTXYZ-  NRMULT
+    YES       26 /
+
+MESSAGES
+-- ------------ Print limits --------------    ------------- Stop limit ------------------
+-- Mess   Comm   Warn     Probl  Error  Bug    Mess    Comm    Warn    Probl    Error  Bug
+    3*                    1000    4*                           100000  10000      2*     /
+
+
+PARALLEL
+  2 /
+
+UNIFIN
+UNIFOUT
+
+NSTACK
+  25 /
+
+NETWORK
+  100 100 /
+
+-- ==========================================================================
+--
+-- *************************** GRID SECTION ******************************
+--
+-- Specification of geometry of computational grid, and of rock
+-- properties in each grid block.
+--
+-- ==========================================================================
+
+GRID
+
+GRIDUNIT
+ METRES /
+
+GRIDFILE
+  0 1 /
+
+INIT
+
+RPTGRID
+'ALLNNC' /
+
+MINPV
+  100 /
+
+PINCH
+  4* ALL /
+
+NOECHO
+
+INCLUDE
+ '../include/grid/mothergrid.grdecl' /
+
+INCLUDE
+ '../include/grid/nnc.grdecl' /
+
+INCLUDE
+ '../include/grid/mothergrid_faults.grdecl' /
+
+INCLUDE
+ '../include/grid/actnum.grdecl' /
+
+INCLUDE
+ '../include/grid/poro.grdecl' /
+
+INCLUDE
+ '../include/grid/ntg.grdecl' /
+
+INCLUDE
+ '../include/grid/perm.grdecl' /    -- PERMX
+
+INCLUDE
+ '../include/grid/permz.grdecl' /   -- PERMZ
+
+COPY
+ PERMX PERMY /
+/
+
+INCLUDE
+ '../include/grid/multnum.grdecl' /
+
+INCLUDE
+ '../include/grid/opernum.grdecl' /
+
+INCLUDE
+ '../include/grid/multregt.inc' /
+
+INCLUDE
+ '../include/grid/multflt.inc' /
+
+ECHO
+
+-- ==========================================================================
+--
+-- *************************** EDIT SECTION ******************************
+--
+-- Modifications to calculated pore volumes, grid block centre depths and
+-- transmissibilities.
+--
+-- ==========================================================================
+
+EDIT
+
+MULTIREG
+ PORV  1  21  M  / -- Stoe, Central
+ PORV  1  22  M  / -- Nordmela, Central
+ PORV  1  24  M  / -- Stoe, Hanssen
+ PORV  1  25  M  / -- Nordmela, Hanssen
+/
+
+MULTIREG
+ PORV  1  21  M  / -- Stoe, Central
+ PORV  1  22  M  / -- Nordmela, Central
+ PORV  1   23  M  / -- Fruholmen, Central
+ PORV  1  24  M  / -- Stoe, Hanssen
+ PORV  1  25  M  / -- Nordmela, Hanssen
+ PORV  1   26  M  / -- Fruholmen, Hanssen
+/
+
+INCLUDE
+ '../include/edit/fault_trans.inc' /
+
+INCLUDE
+ '../include/edit/multpv.grdecl' /
+-- ==========================================================================
+--
+-- *************************** PROPS SECTION ******************************
+-- Tables of properties of reservoir rock and fluids as functions of
+-- fluid pressures, saturations and compositions (density, viscosity,
+-- relative permeability, capillary pressure etc.). Contains the equation
+-- of state description in compositional runs.
+-- ==========================================================================
+
+PROPS
+
+ROCK
+    69.0          5.0E-06 / --For PVTNUM 1
+    69.0          5.0E-06 / --For PVTNUM 2
+
+INCLUDE
+ '../include/props/PVT_update_20200623.INC' /
+
+TOLCRIT
+ 1.E-12  /
+
+-- 3-point scaling
+SCALECRS
+ YES  /
+
+-- Setup for sensitivities for oil-water and gas-oil relperm
+INCLUDE
+ '../include/props/SGOF_SEP_21_BASE.INC' /
+INCLUDE
+ '../include/props/SWOF_CP_SEP_21_BASE.INC' /
+
+-- Transition zone included oil-water
+INCLUDE
+ '../include/props/swatinit.grdecl' /
+
+INCLUDE
+ '../include/props/swl.grdecl' /
+
+MAXVALUE
+ 'SWL' 0.78 /
+/
+
+PPCWMAX
+  9.0   NO  /
+  9.0   NO  /
+ 20.0   NO  /
+ 20.0   NO  /
+ 20.0   NO  /
+  9.0   NO  /
+  9.0   NO  /
+ 20.0   NO  /
+ 20.0   NO  /
+ 20.0   NO  /
+
+COPY
+ SWL SWCR /
+/
+
+ADD
+ SWCR 0.01 /
+/
+
+EQUALS
+ SWU   1.00     /  --Maximum water saturation
+ SGL   0.00     /  --Lowest gas saturation
+ SGCR  0.03   /  --Critical gas saturation as uncertainty parameter
+ SOGCR 0.09   /  --Critical oil saturation on gas-oil curves
+/
+
+--SGU = 1-SWL
+COPY
+ SWL SGU /
+/
+ADD
+ SGU -1.0 /
+/
+MULTIPLY
+ SGU -1.0 /
+/
+
+--FILLEPS
+
+-- ==========================================================================
+--
+-- *************************** REGIONS SECTION ******************************
+-- Splits computational grid into regions for calculation of
+-- PVT properties (Fluid densities and viscosities)
+-- Saturation properties (Relative permeabilities and capillary pressures)
+-- Initial conditions (Equilibrium pressures and saturations)
+-- Fluids in place (Fluid in place and inter-region flows)
+-- EOS regions (For compositional runs)
+-- If this section is omitted, all grid blocks are put in region 1.
+-- ==========================================================================
+
+REGIONS
+
+NOECHO
+
+INCLUDE
+ '../include/regions/pvtnum.grdecl' /
+
+-- 2 ROCKNUMs for ROCKTAB: One for Central and one for Hanssen
+COPY
+ PVTNUM ROCKNUM /
+/
+
+-- 13 EQLNUMs: 12 for Central and one for Hanssen
+INCLUDE
+ '../include/regions/eqlnum.grdecl' /
+
+INCLUDE
+ '../include/regions/satnum.grdecl' /
+
+-- Region parameter FIPZON
+INCLUDE
+ '../include/regions/fipzone.grdecl' /
+
+-- 10 FIPNUMs = OPERNUMs
+INCLUDE
+ '../include/regions/fipnum.grdecl' /
+
+INCLUDE
+ '../include/regions/fipreg.grdecl' /
+
+INCLUDE
+ '../include/regions/fipstr.grdecl' /
+
+ECHO
+
+-- ==========================================================================
+--
+-- *************************** SOLUTION SECTION ******************************
+-- Specification of initial conditions in reservoir - may be Calculated
+-- using specified fluid contact depths to give potential equilibrium
+-- Read from a restart file set up by an earlier run
+-- Specified by the user for every grid block (Not recommended for general use)
+-- ==========================================================================
+
+SOLUTION
+
+
+--GOCs: only 3 are varied in Central, plus the one in Hanssen
+--OWCs: are simplified to 691 and 698 in the Central part, and 697 in Hanssen
+--Contacts as uncertainty parameters
+EQUIL
+--  Datum    Pdatum   OWC    Pcow  GOC    Pcog  Rs  Rv  N
+     690      73.01  691  0  615   0     1   0  0 / --EQLNUM no.1
+     690      73.01  691  0  625   0     2   0  0 / --EQLNUM no.2
+     690      73.01  698  0  645   0     3   0  0 / --EQLNUM no.3
+     690      73.01  698  0  500       0     4   0  0 / --EQLNUM no.4
+     690      73.01  698  0  675       0     5   0  0 / --EQLNUM no.5
+     690      73.01  698  0  630       0     6   0  0 / --EQLNUM no.6
+     690      73.01  698  0  630       0     7   0  0 / --EQLNUM no.7
+     690      73.01  698  0  500       0     8   0  0 / --EQLNUM no.8
+     690      73.01  698  0  500       0     9   0  0 / --EQLNUM no.9
+     690      73.01  698  0  500       0    10   0  0 / --EQLNUM no.10
+     690      73.01  698  0  500       0    11   0  0 / --EQLNUM no.11
+     690      73.01  698  0  665       0    12   0  0 / --EQLNUM no.12
+     690      72.73  697  0  645  0    13   0  0 / --EQLNUM no.13
+
+RSVD                                   -- Generated : Petrel
+--      Depth           Rs
+         500.         45.16
+        1000.         45.16 / --1
+
+         500.         45.16
+        1000.         45.16 / --2
+
+         500.         45.16
+        1000.         45.16 / --3
+
+         500.         45.16
+        1000.         45.16 / --4
+
+         500.         45.16
+        1000.         45.16 / --5
+
+         500.         45.16
+        1000.         45.16 / --6
+
+         500.         45.16
+        1000.         45.16 / --7
+
+         500.         45.16
+        1000.         45.16 / --8
+
+         500.         45.16
+        1000.         45.16 / --9
+
+         500.         45.16
+        1000.         45.16 / --10
+
+         500.         45.16
+        1000.         45.16 / --11
+
+         500.         45.16
+        1000.         45.16 / --12
+
+         500.         34.04
+        1000.         34.04 / --13
+
+RPTSOL
+  RESTART=2 FIP=3  THPRES /
+
+RPTRST
+  BASIC=4 FREQ=6 FLOWS KRO KRW KRG SGTRAP RK CONV PORV RPORV BG BO BW SFIP PBPD PCOW /
+
+-- All values defaulted, IRREVERSIBLE threshold pressures
+INCLUDE
+ '../include/solution/THPRES.INC' /
+
+-- ==========================================================================
+--
+-- *************************** SUMMARY SECTION ******************************
+-- Specification of data to be written to the Summary file after each time
+-- step.
+--**********************************************************************
+
+SUMMARY
+
+INCLUDE
+ '../include/summary/summary.inc' /
+
+-- ==========================================================================
+--
+-- *************************** SCHEDULE SECTION ******************************
+-- Specifies the operations to be simulated (production and injection controls
+-- and constraints) and the times at which output reports are required.
+-- Vertical flow performance curves and simulator tuning parameters may
+-- also be specified in the SCHEDULE section.
+--**********************************************************************
+
+SCHEDULE
+
+--DRSDT
+-- Maximum rate of increase of solution GOR,
+-- default is infinite, i.e. instant resolution
+-- 0.0001 /
+
+TUNING
+-- TSINIT     TSMAXZ  7*    TMAXWC
+    1.0       30.     7*    1     /
+/
+/
+
+NOECHO
+
+INCLUDE
+ '../include/schedule/vfp/vfpprod.inc' /
+
+INCLUDE
+ '../include/schedule/vfp/vfpinj.inc' /
+
+INCLUDE
+'./../include/schedule/vfp/900m_horisontal.Ecl' /   -- Nr 4
+INCLUDE
+'./../include/schedule/vfp/1600m_horisontal.Ecl' /   -- Nr 5
+INCLUDE
+'./../include/schedule/vfp/2500m_horisontal.Ecl' /   -- Nr 6
+INCLUDE
+'./../include/schedule/vfp/3900m_horisontal.Ecl' /   -- Nr 7
+INCLUDE
+'./../include/schedule/vfp/3700m_horisontal_Hanssen.Ecl' /   -- Nr8
+INCLUDE
+'./../include/schedule/vfp/3983m_horisontal_10inch.Ecl' /   -- Nr 9
+INCLUDE
+'./../include/schedule/vfp/14inch_riser.Ecl' /   -- Nr10
+INCLUDE
+'./../include/schedule/vfp/MPP_VFP.Ecl' /   -- Nr11
+
+ECHO
+
+INCLUDE
+ '../include/schedule/wisting.sch' /
+
+END

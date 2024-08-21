@@ -1,0 +1,59290 @@
+
+---WELL W1_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW11IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W11 1/
+FUMMRW11 < FUMFRW11 AND /
+WUDEPL 'W1_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW11 (WUIBP 'W1_1') + ((WWIR 'W1_1')/((WPI4 'W1_1') + 0.001)) + (-5) /
+ASSIGN FUW11IF 1 /
+/
+
+WCONINJE
+  'W1_1' WATER  OPEN   BHP  FUMFRW11  1* FUBHPW11   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW11 10000 15 /
+FUW11IF = 1 AND /
+FUFPMW11 <= -15 /
+/
+
+WELOPEN
+W1_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW11 10000 15 /
+FUW11IF = 1 AND /
+FUFPMW11 > 5  /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -15    AND /
+FUFPMW11 <= -14    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -14    AND /
+FUFPMW11 <= -13    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -13    AND /
+FUFPMW11 <= -12    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -12    AND /
+FUFPMW11 <= -11    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -11    AND /
+FUFPMW11 <= -10    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -10    AND /
+FUFPMW11 <= -9    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -9    AND /
+FUFPMW11 <= -8    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -8    AND /
+FUFPMW11 <= -7    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -7    AND /
+FUFPMW11 <= -6    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -6    AND /
+FUFPMW11 <= -5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -5    AND /
+FUFPMW11 <= -4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -4    AND /
+FUFPMW11 <= -3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -3    AND /
+FUFPMW11 <= -2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -2    AND /
+FUFPMW11 <= -1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > -1    AND /
+FUFPMW11 <= 0    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > 0    AND /
+FUFPMW11 <= 1    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > 1    AND /
+FUFPMW11 <= 2    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > 2    AND /
+FUFPMW11 <= 3    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > 3    AND /
+FUFPMW11 <= 4    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W11 10000 15 /
+FUW11IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW11 > 4    AND /
+FUFPMW11 <= 5    AND /
+/
+
+WELOPEN
+W1_1 'OPEN' /
+/
+
+WEFAC
+W1_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W1_2------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW12IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W12 1/
+FUMMRW12 < FUMFRW12 AND /
+WUDEPL 'W1_2' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW12 (WUIBP 'W1_2') + ((WWIR 'W1_2')/((WPI4 'W1_2') + 0.001)) + (-5) /
+ASSIGN FUW12IF 1 /
+/
+
+WCONINJE
+  'W1_2' WATER  OPEN   BHP  FUMFRW12  1* FUBHPW12   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW12 10000 15 /
+FUW12IF = 1 AND /
+FUFPMW12 <= -15 /
+/
+
+WELOPEN
+W1_2 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW12 10000 15 /
+FUW12IF = 1 AND /
+FUFPMW12 > 5  /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -15    AND /
+FUFPMW12 <= -14    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -14    AND /
+FUFPMW12 <= -13    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -13    AND /
+FUFPMW12 <= -12    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -12    AND /
+FUFPMW12 <= -11    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -11    AND /
+FUFPMW12 <= -10    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -10    AND /
+FUFPMW12 <= -9    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -9    AND /
+FUFPMW12 <= -8    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -8    AND /
+FUFPMW12 <= -7    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -7    AND /
+FUFPMW12 <= -6    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -6    AND /
+FUFPMW12 <= -5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -5    AND /
+FUFPMW12 <= -4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -4    AND /
+FUFPMW12 <= -3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -3    AND /
+FUFPMW12 <= -2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -2    AND /
+FUFPMW12 <= -1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > -1    AND /
+FUFPMW12 <= 0    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > 0    AND /
+FUFPMW12 <= 1    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > 1    AND /
+FUFPMW12 <= 2    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > 2    AND /
+FUFPMW12 <= 3    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > 3    AND /
+FUFPMW12 <= 4    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W12 10000 15 /
+FUW12IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW12 > 4    AND /
+FUFPMW12 <= 5    AND /
+/
+
+WELOPEN
+W1_2 'OPEN' /
+/
+
+WEFAC
+W1_2 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W2_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW21IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W21 1/
+FUMMRW21 < FUMFRW21 AND /
+WUDEPL 'W2_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW21 (WUIBP 'W2_1') + ((WWIR 'W2_1')/((WPI4 'W2_1') + 0.001)) + (-5) /
+ASSIGN FUW21IF 1 /
+/
+
+WCONINJE
+  'W2_1' WATER  OPEN   BHP  FUMFRW21  1* FUBHPW21   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW21 10000 15 /
+FUW21IF = 1 AND /
+FUFPMW21 <= -15 /
+/
+
+WELOPEN
+W2_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW21 10000 15 /
+FUW21IF = 1 AND /
+FUFPMW21 > 5  /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -15    AND /
+FUFPMW21 <= -14    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -14    AND /
+FUFPMW21 <= -13    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -13    AND /
+FUFPMW21 <= -12    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -12    AND /
+FUFPMW21 <= -11    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -11    AND /
+FUFPMW21 <= -10    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -10    AND /
+FUFPMW21 <= -9    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -9    AND /
+FUFPMW21 <= -8    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -8    AND /
+FUFPMW21 <= -7    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -7    AND /
+FUFPMW21 <= -6    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -6    AND /
+FUFPMW21 <= -5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -5    AND /
+FUFPMW21 <= -4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -4    AND /
+FUFPMW21 <= -3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -3    AND /
+FUFPMW21 <= -2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -2    AND /
+FUFPMW21 <= -1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > -1    AND /
+FUFPMW21 <= 0    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > 0    AND /
+FUFPMW21 <= 1    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > 1    AND /
+FUFPMW21 <= 2    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > 2    AND /
+FUFPMW21 <= 3    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > 3    AND /
+FUFPMW21 <= 4    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W21 10000 15 /
+FUW21IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW21 > 4    AND /
+FUFPMW21 <= 5    AND /
+/
+
+WELOPEN
+W2_1 'OPEN' /
+/
+
+WEFAC
+W2_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W3_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW31IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W31 1/
+FUMMRW31 < FUMFRW31 AND /
+WUDEPL 'W3_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW31 (WUIBP 'W3_1') + ((WWIR 'W3_1')/((WPI4 'W3_1') + 0.001)) + (-5) /
+ASSIGN FUW31IF 1 /
+/
+
+WCONINJE
+  'W3_1' WATER  OPEN   BHP  FUMFRW31  1* FUBHPW31   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW31 10000 15 /
+FUW31IF = 1 AND /
+FUFPMW31 <= -15 /
+/
+
+WELOPEN
+W3_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW31 10000 15 /
+FUW31IF = 1 AND /
+FUFPMW31 > 5  /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -15    AND /
+FUFPMW31 <= -14    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -14    AND /
+FUFPMW31 <= -13    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -13    AND /
+FUFPMW31 <= -12    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -12    AND /
+FUFPMW31 <= -11    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -11    AND /
+FUFPMW31 <= -10    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -10    AND /
+FUFPMW31 <= -9    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -9    AND /
+FUFPMW31 <= -8    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -8    AND /
+FUFPMW31 <= -7    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -7    AND /
+FUFPMW31 <= -6    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -6    AND /
+FUFPMW31 <= -5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -5    AND /
+FUFPMW31 <= -4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -4    AND /
+FUFPMW31 <= -3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -3    AND /
+FUFPMW31 <= -2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -2    AND /
+FUFPMW31 <= -1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > -1    AND /
+FUFPMW31 <= 0    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > 0    AND /
+FUFPMW31 <= 1    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > 1    AND /
+FUFPMW31 <= 2    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > 2    AND /
+FUFPMW31 <= 3    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > 3    AND /
+FUFPMW31 <= 4    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W31 10000 15 /
+FUW31IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW31 > 4    AND /
+FUFPMW31 <= 5    AND /
+/
+
+WELOPEN
+W3_1 'OPEN' /
+/
+
+WEFAC
+W3_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W4_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW41IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W41 1/
+FUMMRW41 < FUMFRW41 AND /
+WUDEPL 'W4_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW41 (WUIBP 'W4_1') + ((WWIR 'W4_1')/((WPI4 'W4_1') + 0.001)) + (-5) /
+ASSIGN FUW41IF 1 /
+/
+
+WCONINJE
+  'W4_1' WATER  OPEN   BHP  FUMFRW41  1* FUBHPW41   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW41 10000 15 /
+FUW41IF = 1 AND /
+FUFPMW41 <= -15 /
+/
+
+WELOPEN
+W4_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW41 10000 15 /
+FUW41IF = 1 AND /
+FUFPMW41 > 5  /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -15    AND /
+FUFPMW41 <= -14    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -14    AND /
+FUFPMW41 <= -13    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -13    AND /
+FUFPMW41 <= -12    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -12    AND /
+FUFPMW41 <= -11    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -11    AND /
+FUFPMW41 <= -10    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -10    AND /
+FUFPMW41 <= -9    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -9    AND /
+FUFPMW41 <= -8    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -8    AND /
+FUFPMW41 <= -7    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -7    AND /
+FUFPMW41 <= -6    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -6    AND /
+FUFPMW41 <= -5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -5    AND /
+FUFPMW41 <= -4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -4    AND /
+FUFPMW41 <= -3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -3    AND /
+FUFPMW41 <= -2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -2    AND /
+FUFPMW41 <= -1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > -1    AND /
+FUFPMW41 <= 0    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > 0    AND /
+FUFPMW41 <= 1    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > 1    AND /
+FUFPMW41 <= 2    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > 2    AND /
+FUFPMW41 <= 3    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > 3    AND /
+FUFPMW41 <= 4    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W41 10000 15 /
+FUW41IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW41 > 4    AND /
+FUFPMW41 <= 5    AND /
+/
+
+WELOPEN
+W4_1 'OPEN' /
+/
+
+WEFAC
+W4_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W5_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW51IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W51 1/
+FUMMRW51 < FUMFRW51 AND /
+WUDEPL 'W5_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW51 (WUIBP 'W5_1') + ((WWIR 'W5_1')/((WPI4 'W5_1') + 0.001)) + (-5) /
+ASSIGN FUW51IF 1 /
+/
+
+WCONINJE
+  'W5_1' WATER  OPEN   BHP  FUMFRW51  1* FUBHPW51   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW51 10000 15 /
+FUW51IF = 1 AND /
+FUFPMW51 <= -15 /
+/
+
+WELOPEN
+W5_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW51 10000 15 /
+FUW51IF = 1 AND /
+FUFPMW51 > 5  /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -15    AND /
+FUFPMW51 <= -14    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -14    AND /
+FUFPMW51 <= -13    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -13    AND /
+FUFPMW51 <= -12    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -12    AND /
+FUFPMW51 <= -11    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -11    AND /
+FUFPMW51 <= -10    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -10    AND /
+FUFPMW51 <= -9    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -9    AND /
+FUFPMW51 <= -8    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -8    AND /
+FUFPMW51 <= -7    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -7    AND /
+FUFPMW51 <= -6    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -6    AND /
+FUFPMW51 <= -5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -5    AND /
+FUFPMW51 <= -4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -4    AND /
+FUFPMW51 <= -3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -3    AND /
+FUFPMW51 <= -2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -2    AND /
+FUFPMW51 <= -1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > -1    AND /
+FUFPMW51 <= 0    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > 0    AND /
+FUFPMW51 <= 1    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > 1    AND /
+FUFPMW51 <= 2    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > 2    AND /
+FUFPMW51 <= 3    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > 3    AND /
+FUFPMW51 <= 4    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W51 10000 15 /
+FUW51IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW51 > 4    AND /
+FUFPMW51 <= 5    AND /
+/
+
+WELOPEN
+W5_1 'OPEN' /
+/
+
+WEFAC
+W5_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W6_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW61IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W61 1/
+FUMMRW61 < FUMFRW61 AND /
+WUDEPL 'W6_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW61 (WUIBP 'W6_1') + ((WWIR 'W6_1')/((WPI4 'W6_1') + 0.001)) + (-5) /
+ASSIGN FUW61IF 1 /
+/
+
+WCONINJE
+  'W6_1' WATER  OPEN   BHP  FUMFRW61  1* FUBHPW61   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW61 10000 15 /
+FUW61IF = 1 AND /
+FUFPMW61 <= -15 /
+/
+
+WELOPEN
+W6_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW61 10000 15 /
+FUW61IF = 1 AND /
+FUFPMW61 > 5  /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -15    AND /
+FUFPMW61 <= -14    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -14    AND /
+FUFPMW61 <= -13    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -13    AND /
+FUFPMW61 <= -12    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -12    AND /
+FUFPMW61 <= -11    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -11    AND /
+FUFPMW61 <= -10    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -10    AND /
+FUFPMW61 <= -9    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -9    AND /
+FUFPMW61 <= -8    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -8    AND /
+FUFPMW61 <= -7    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -7    AND /
+FUFPMW61 <= -6    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -6    AND /
+FUFPMW61 <= -5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -5    AND /
+FUFPMW61 <= -4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -4    AND /
+FUFPMW61 <= -3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -3    AND /
+FUFPMW61 <= -2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -2    AND /
+FUFPMW61 <= -1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > -1    AND /
+FUFPMW61 <= 0    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > 0    AND /
+FUFPMW61 <= 1    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > 1    AND /
+FUFPMW61 <= 2    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > 2    AND /
+FUFPMW61 <= 3    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > 3    AND /
+FUFPMW61 <= 4    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W61 10000 15 /
+FUW61IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW61 > 4    AND /
+FUFPMW61 <= 5    AND /
+/
+
+WELOPEN
+W6_1 'OPEN' /
+/
+
+WEFAC
+W6_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W6_2------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW62IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W62 1/
+FUMMRW62 < FUMFRW62 AND /
+WUDEPL 'W6_2' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW62 (WUIBP 'W6_2') + ((WWIR 'W6_2')/((WPI4 'W6_2') + 0.001)) + (-5) /
+ASSIGN FUW62IF 1 /
+/
+
+WCONINJE
+  'W6_2' WATER  OPEN   BHP  FUMFRW62  1* FUBHPW62   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW62 10000 15 /
+FUW62IF = 1 AND /
+FUFPMW62 <= -15 /
+/
+
+WELOPEN
+W6_2 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW62 10000 15 /
+FUW62IF = 1 AND /
+FUFPMW62 > 5  /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -15    AND /
+FUFPMW62 <= -14    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -14    AND /
+FUFPMW62 <= -13    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -13    AND /
+FUFPMW62 <= -12    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -12    AND /
+FUFPMW62 <= -11    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -11    AND /
+FUFPMW62 <= -10    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -10    AND /
+FUFPMW62 <= -9    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -9    AND /
+FUFPMW62 <= -8    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -8    AND /
+FUFPMW62 <= -7    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -7    AND /
+FUFPMW62 <= -6    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -6    AND /
+FUFPMW62 <= -5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -5    AND /
+FUFPMW62 <= -4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -4    AND /
+FUFPMW62 <= -3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -3    AND /
+FUFPMW62 <= -2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -2    AND /
+FUFPMW62 <= -1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > -1    AND /
+FUFPMW62 <= 0    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > 0    AND /
+FUFPMW62 <= 1    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > 1    AND /
+FUFPMW62 <= 2    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > 2    AND /
+FUFPMW62 <= 3    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > 3    AND /
+FUFPMW62 <= 4    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W62 10000 15 /
+FUW62IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW62 > 4    AND /
+FUFPMW62 <= 5    AND /
+/
+
+WELOPEN
+W6_2 'OPEN' /
+/
+
+WEFAC
+W6_2 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W7_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW71IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W71 1/
+FUMMRW71 < FUMFRW71 AND /
+WUDEPL 'W7_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW71 (WUIBP 'W7_1') + ((WWIR 'W7_1')/((WPI4 'W7_1') + 0.001)) + (-5) /
+ASSIGN FUW71IF 1 /
+/
+
+WCONINJE
+  'W7_1' WATER  OPEN   BHP  FUMFRW71  1* FUBHPW71   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW71 10000 15 /
+FUW71IF = 1 AND /
+FUFPMW71 <= -15 /
+/
+
+WELOPEN
+W7_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW71 10000 15 /
+FUW71IF = 1 AND /
+FUFPMW71 > 5  /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -15    AND /
+FUFPMW71 <= -14    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -14    AND /
+FUFPMW71 <= -13    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -13    AND /
+FUFPMW71 <= -12    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -12    AND /
+FUFPMW71 <= -11    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -11    AND /
+FUFPMW71 <= -10    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -10    AND /
+FUFPMW71 <= -9    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -9    AND /
+FUFPMW71 <= -8    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -8    AND /
+FUFPMW71 <= -7    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -7    AND /
+FUFPMW71 <= -6    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -6    AND /
+FUFPMW71 <= -5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -5    AND /
+FUFPMW71 <= -4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -4    AND /
+FUFPMW71 <= -3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -3    AND /
+FUFPMW71 <= -2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -2    AND /
+FUFPMW71 <= -1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > -1    AND /
+FUFPMW71 <= 0    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > 0    AND /
+FUFPMW71 <= 1    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > 1    AND /
+FUFPMW71 <= 2    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > 2    AND /
+FUFPMW71 <= 3    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > 3    AND /
+FUFPMW71 <= 4    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W71 10000 15 /
+FUW71IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW71 > 4    AND /
+FUFPMW71 <= 5    AND /
+/
+
+WELOPEN
+W7_1 'OPEN' /
+/
+
+WEFAC
+W7_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W8_2------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW82IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W82 1/
+FUMMRW82 < FUMFRW82 AND /
+WUDEPL 'W8_2' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW82 (WUIBP 'W8_2') + ((WWIR 'W8_2')/((WPI4 'W8_2') + 0.001)) + (-5) /
+ASSIGN FUW82IF 1 /
+/
+
+WCONINJE
+  'W8_2' WATER  OPEN   BHP  FUMFRW82  1* FUBHPW82   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW82 10000 15 /
+FUW82IF = 1 AND /
+FUFPMW82 <= -15 /
+/
+
+WELOPEN
+W8_2 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW82 10000 15 /
+FUW82IF = 1 AND /
+FUFPMW82 > 5  /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -15    AND /
+FUFPMW82 <= -14    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -14    AND /
+FUFPMW82 <= -13    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -13    AND /
+FUFPMW82 <= -12    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -12    AND /
+FUFPMW82 <= -11    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -11    AND /
+FUFPMW82 <= -10    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -10    AND /
+FUFPMW82 <= -9    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -9    AND /
+FUFPMW82 <= -8    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -8    AND /
+FUFPMW82 <= -7    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -7    AND /
+FUFPMW82 <= -6    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -6    AND /
+FUFPMW82 <= -5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -5    AND /
+FUFPMW82 <= -4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -4    AND /
+FUFPMW82 <= -3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -3    AND /
+FUFPMW82 <= -2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -2    AND /
+FUFPMW82 <= -1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > -1    AND /
+FUFPMW82 <= 0    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > 0    AND /
+FUFPMW82 <= 1    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > 1    AND /
+FUFPMW82 <= 2    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > 2    AND /
+FUFPMW82 <= 3    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > 3    AND /
+FUFPMW82 <= 4    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W82 10000 15 /
+FUW82IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW82 > 4    AND /
+FUFPMW82 <= 5    AND /
+/
+
+WELOPEN
+W8_2 'OPEN' /
+/
+
+WEFAC
+W8_2 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W8_3------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW83IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W83 1/
+FUMMRW83 < FUMFRW83 AND /
+WUDEPL 'W8_3' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW83 (WUIBP 'W8_3') + ((WWIR 'W8_3')/((WPI4 'W8_3') + 0.001)) + (-5) /
+ASSIGN FUW83IF 1 /
+/
+
+WCONINJE
+  'W8_3' WATER  OPEN   BHP  FUMFRW83  1* FUBHPW83   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW83 10000 15 /
+FUW83IF = 1 AND /
+FUFPMW83 <= -15 /
+/
+
+WELOPEN
+W8_3 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW83 10000 15 /
+FUW83IF = 1 AND /
+FUFPMW83 > 5  /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -15    AND /
+FUFPMW83 <= -14    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -14    AND /
+FUFPMW83 <= -13    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -13    AND /
+FUFPMW83 <= -12    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -12    AND /
+FUFPMW83 <= -11    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -11    AND /
+FUFPMW83 <= -10    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -10    AND /
+FUFPMW83 <= -9    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -9    AND /
+FUFPMW83 <= -8    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -8    AND /
+FUFPMW83 <= -7    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -7    AND /
+FUFPMW83 <= -6    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -6    AND /
+FUFPMW83 <= -5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -5    AND /
+FUFPMW83 <= -4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -4    AND /
+FUFPMW83 <= -3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -3    AND /
+FUFPMW83 <= -2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -2    AND /
+FUFPMW83 <= -1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > -1    AND /
+FUFPMW83 <= 0    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > 0    AND /
+FUFPMW83 <= 1    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > 1    AND /
+FUFPMW83 <= 2    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > 2    AND /
+FUFPMW83 <= 3    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > 3    AND /
+FUFPMW83 <= 4    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W83 10000 15 /
+FUW83IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW83 > 4    AND /
+FUFPMW83 <= 5    AND /
+/
+
+WELOPEN
+W8_3 'OPEN' /
+/
+
+WEFAC
+W8_3 0.9886 /
+/
+
+ENDACTIO
+
+---WELL W9_2------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUW92IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_W92 1/
+FUMMRW92 < FUMFRW92 AND /
+WUDEPL 'W9_2' < -5 /
+/
+
+UDQ
+DEFINE FUBHPW92 (WUIBP 'W9_2') + ((WWIR 'W9_2')/((WPI4 'W9_2') + 0.001)) + (-5) /
+ASSIGN FUW92IF 1 /
+/
+
+WCONINJE
+  'W9_2' WATER  OPEN   BHP  FUMFRW92  1* FUBHPW92   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLW92 10000 15 /
+FUW92IF = 1 AND /
+FUFPMW92 <= -15 /
+/
+
+WELOPEN
+W9_2 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRW92 10000 15 /
+FUW92IF = 1 AND /
+FUFPMW92 > 5  /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -15    AND /
+FUFPMW92 <= -14    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -14    AND /
+FUFPMW92 <= -13    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -13    AND /
+FUFPMW92 <= -12    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -12    AND /
+FUFPMW92 <= -11    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -11    AND /
+FUFPMW92 <= -10    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -10    AND /
+FUFPMW92 <= -9    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -9    AND /
+FUFPMW92 <= -8    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -8    AND /
+FUFPMW92 <= -7    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -7    AND /
+FUFPMW92 <= -6    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -6    AND /
+FUFPMW92 <= -5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -5    AND /
+FUFPMW92 <= -4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -4    AND /
+FUFPMW92 <= -3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -3    AND /
+FUFPMW92 <= -2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -2    AND /
+FUFPMW92 <= -1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > -1    AND /
+FUFPMW92 <= 0    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > 0    AND /
+FUFPMW92 <= 1    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > 1    AND /
+FUFPMW92 <= 2    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > 2    AND /
+FUFPMW92 <= 3    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > 3    AND /
+FUFPMW92 <= 4    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220W92 10000 15 /
+FUW92IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMW92 > 4    AND /
+FUFPMW92 <= 5    AND /
+/
+
+WELOPEN
+W9_2 'OPEN' /
+/
+
+WEFAC
+W9_2 0.9886 /
+/
+
+ENDACTIO
+
+---WELL WH_1------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUWH1IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_WH1 1/
+FUMMRWH1 < FUMFRWH1 AND /
+WUDEPL 'WH_1' < -5 /
+/
+
+UDQ
+DEFINE FUBHPWH1 (WUIBP 'WH_1') + ((WWIR 'WH_1')/((WPI4 'WH_1') + 0.001)) + (-5) /
+ASSIGN FUWH1IF 1 /
+/
+
+WCONINJE
+  'WH_1' WATER  OPEN   BHP  FUMFRWH1  1* FUBHPWH1   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLWH1 10000 15 /
+FUWH1IF = 1 AND /
+FUFPMWH1 <= -15 /
+/
+
+WELOPEN
+WH_1 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRWH1 10000 15 /
+FUWH1IF = 1 AND /
+FUFPMWH1 > 5  /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -15    AND /
+FUFPMWH1 <= -14    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -14    AND /
+FUFPMWH1 <= -13    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -13    AND /
+FUFPMWH1 <= -12    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -12    AND /
+FUFPMWH1 <= -11    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -11    AND /
+FUFPMWH1 <= -10    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -10    AND /
+FUFPMWH1 <= -9    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -9    AND /
+FUFPMWH1 <= -8    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -8    AND /
+FUFPMWH1 <= -7    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -7    AND /
+FUFPMWH1 <= -6    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -6    AND /
+FUFPMWH1 <= -5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -5    AND /
+FUFPMWH1 <= -4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -4    AND /
+FUFPMWH1 <= -3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -3    AND /
+FUFPMWH1 <= -2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -2    AND /
+FUFPMWH1 <= -1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > -1    AND /
+FUFPMWH1 <= 0    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > 0    AND /
+FUFPMWH1 <= 1    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > 1    AND /
+FUFPMWH1 <= 2    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > 2    AND /
+FUFPMWH1 <= 3    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > 3    AND /
+FUFPMWH1 <= 4    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220WH1 10000 15 /
+FUWH1IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH1 > 4    AND /
+FUFPMWH1 <= 5    AND /
+/
+
+WELOPEN
+WH_1 'OPEN' /
+/
+
+WEFAC
+WH_1 0.9886 /
+/
+
+ENDACTIO
+
+---WELL WH_3------------------------------------------------------------
+UDQ
+-- is in frack mode
+ASSIGN FUWH3IF 0 /
+/
+
+-- This ACTION defines when the well is going into fracture injection mode
+ACTIONX
+AFRC_WH3 1/
+FUMMRWH3 < FUMFRWH3 AND /
+WUDEPL 'WH_3' < -5 /
+/
+
+UDQ
+DEFINE FUBHPWH3 (WUIBP 'WH_3') + ((WWIR 'WH_3')/((WPI4 'WH_3') + 0.001)) + (-5) /
+ASSIGN FUWH3IF 1 /
+/
+
+WCONINJE
+  'WH_3' WATER  OPEN   BHP  FUMFRWH3  1* FUBHPWH3   1*    2   /
+/
+
+ENDACTIO
+
+-- If the fracture margin is below the minimum FPM value in the range, then the well is shut.
+ACTIONX
+AFRCLWH3 10000 15 /
+FUWH3IF = 1 AND /
+FUFPMWH3 <= -15 /
+/
+
+WELOPEN
+WH_3 'SHUT' /
+/
+
+ENDACTIO
+
+-- If the fracture margin is above the maximum FPM value in the range, then reg is 0.98 (Fracture Injection High Regularity)
+ACTIONX
+AFIHRWH3 10000 15 /
+FUWH3IF = 1 AND /
+FUFPMWH3 > 5  /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.98 /
+/
+
+ENDACTIO
+
+-- ACTIONs for different values of Cw and FPM
+ACTIONX
+AW1WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0252 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW2WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW3WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1259 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW4WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1763 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW5WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW6WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW7WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW8WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW9WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW10WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4784 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW11WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW12WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW13WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW14WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW15WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7303 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW16WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW17WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW18WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW19WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW20WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 0          AND /
+FU_CW <= 5          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9755 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW21WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0263 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW22WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW23WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1313 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW24WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW25WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW26WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW27WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3415 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW28WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.394 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW29WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4466 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW30WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW31WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW32WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW33WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6567 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW34WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW35WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7618 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW36WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8092 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW37WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8516 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW38WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.894 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW39WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9364 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW40WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 5          AND /
+FU_CW <= 6          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9788 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW41WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW42WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW43WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1332 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW44WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW45WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW46WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW47WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW48WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW49WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW50WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.506 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW51WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW52WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW53WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW54WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.719 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW55WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7723 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW56WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.819 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW57WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW58WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8995 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW59WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9397 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW60WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 6          AND /
+FU_CW <= 7          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9799 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW61WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.027 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW62WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.081 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW63WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.135 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW64WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1889 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW65WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW66WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2969 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW67WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3509 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW68WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW69WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4589 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW70WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW71WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW72WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW73WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6748 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW74WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW75WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7828 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW76WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW77WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8668 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW78WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW79WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW80WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 7          AND /
+FU_CW <= 8          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.981 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW81WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0274 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW82WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW83WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1368 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW84WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1915 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW85WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW86WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3009 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW87WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3556 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW88WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW89WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.465 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW90WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5197 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW91WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW92WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW93WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW94WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW95WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7933 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW96WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW97WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW98WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9103 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW99WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9462 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW100WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 8          AND /
+FU_CW <= 9          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW101WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0277 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW102WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW103WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1386 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW104WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.194 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW105WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW106WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW107WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3603 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW108WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW109WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4712 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW110WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW111WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW112WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW113WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6929 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW114WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW115WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8038 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW116WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8484 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW117WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8821 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW118WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9158 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW119WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9495 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW120WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 9          AND /
+FU_CW <= 10          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9832 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW121WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0281 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW122WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW123WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW124WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1966 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW125WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW126WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3089 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW127WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.365 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW128WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW129WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4774 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW130WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5335 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW131WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW132WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW133WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.702 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW134WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW135WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8143 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW136WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8582 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW137WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW138WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9212 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW139WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9527 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW140WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 10          AND /
+FU_CW <= 11          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9842 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW141WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0284 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW142WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW143WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1422 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW144WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1991 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW145WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.256 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW146WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3129 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW147WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3697 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW148WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW149WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4835 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW150WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5404 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW151WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW152WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW153WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7111 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW154WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW155WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW156WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8679 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW157WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW158WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9266 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW159WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.956 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW160WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 11          AND /
+FU_CW <= 12          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9853 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW161WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0288 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW162WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW163WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.144 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW164WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2016 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW165WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW166WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3168 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW167WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3745 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW168WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW169WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4897 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW170WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5473 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW171WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW172WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW173WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW174WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW175WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8353 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW176WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8777 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW177WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9049 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW178WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9321 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW179WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9592 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW180WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 12          AND /
+FU_CW <= 13          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9864 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW181WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW182WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW183WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW184WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2042 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW185WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW186WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3208 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW187WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW188WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW189WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4958 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW190WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5542 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW191WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW192WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6708 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW193WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7292 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW194WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW195WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8458 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW196WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW197WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9125 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW198WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9375 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW199WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9625 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW200WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 13          AND /
+FU_CW <= 14          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9875 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW201WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -15    AND /
+FUFPMWH3 <= -14    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0295 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW202WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -14    AND /
+FUFPMWH3 <= -13    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.0886 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW203WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -13    AND /
+FUFPMWH3 <= -12    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.1476 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW204WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -12    AND /
+FUFPMWH3 <= -11    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2067 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW205WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -11    AND /
+FUFPMWH3 <= -10    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.2658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW206WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -10    AND /
+FUFPMWH3 <= -9    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3248 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW207WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -9    AND /
+FUFPMWH3 <= -8    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.3839 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW208WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -8    AND /
+FUFPMWH3 <= -7    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.4429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW209WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -7    AND /
+FUFPMWH3 <= -6    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.502 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW210WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -6    AND /
+FUFPMWH3 <= -5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.5611 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW211WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -5    AND /
+FUFPMWH3 <= -4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW212WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -4    AND /
+FUFPMWH3 <= -3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.6792 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW213WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -3    AND /
+FUFPMWH3 <= -2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7382 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW214WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -2    AND /
+FUFPMWH3 <= -1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.7973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW215WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > -1    AND /
+FUFPMWH3 <= 0    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8563 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW216WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > 0    AND /
+FUFPMWH3 <= 1    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.8973 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW217WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > 1    AND /
+FUFPMWH3 <= 2    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9201 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW218WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > 2    AND /
+FUFPMWH3 <= 3    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9429 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW219WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > 3    AND /
+FUFPMWH3 <= 4    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9658 /
+/
+
+ENDACTIO
+
+ACTIONX
+AW220WH3 10000 15 /
+FUWH3IF = 1 AND /
+FU_CW > 14          AND /
+FU_CW <= 15          AND /
+FUFPMWH3 > 4    AND /
+FUFPMWH3 <= 5    AND /
+/
+
+WELOPEN
+WH_3 'OPEN' /
+/
+
+WEFAC
+WH_3 0.9886 /
+/
+
+ENDACTIO

@@ -1,0 +1,113 @@
+-------------------------------------------------------------------------------
+RMS Events QA
+Input event sets: 
+
+User: olind
+Time: 15.08.2024 08:29
+
+
+Event set information
+-------------------------------------------------------------------------------
+
+Total number of events:                                     0
+
+Total number of events by owner type:
+     Simulator:                                             0
+     Trajectory:                                            0
+     Well:                                                  0
+     Well group:                                            0
+
+Total number of events by event type:
+
+
+Time information
+-------------------------------------------------------------------------------
+
+
+
+
+Well information
+-------------------------------------------------------------------------------
+
+Number of wells:                                            0
+Number of branched wells:                                   0
+Number of multi-segment wells:                              0
+
+
+
+Wellbore information
+-------------------------------------------------------------------------------
+
+Number of wellbores:                                        0
+Number of multi-segment wellbores:                          0
+
+
+Min/max segment lengths among all wellbores:
+No segment events in selected sets
+
+
+Well group information
+-------------------------------------------------------------------------------
+
+No group events
+
+
+Verify measured depth intervals
+-------------------------------------------------------------------------------
+
+
+
+
+Definition of well type
+-------------------------------------------------------------------------------
+
+Wells lacking definition of well type (WTYPE):
+None
+
+
+Verify definition of wells in project
+-------------------------------------------------------------------------------
+
+List of wells/wellbores not defined in the RMS project:
+None
+
+
+Verify definition of wellbores in project
+-------------------------------------------------------------------------------
+
+List of wellbores defined in more than one well:
+None
+
+
+Verify definition of trajectories in project
+-------------------------------------------------------------------------------
+
+List of wellbores with more than one trajectory defined:
+None
+
+
+Verify definition of well groups
+-------------------------------------------------------------------------------
+
+Wells included in more than one group:
+None
+
+
+Verify definition of well segments
+-------------------------------------------------------------------------------
+
+Wells where well segments do not form a proper sequence:
+None
+
+
+Verify event attribute values
+-------------------------------------------------------------------------------
+
+Events lacking required attribute:
+None
+
+
+Verify definition of tubing events with segment model
+-------------------------------------------------------------------------------
+
+
