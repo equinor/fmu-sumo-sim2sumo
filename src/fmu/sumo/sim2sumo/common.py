@@ -155,13 +155,16 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     simconfig = config.get("sim2sumo", {})
+    if len(simconfig) == 0:
+        logger.info("No sim2sumo section in config file, running with defaults")
+    else:
+        logger.debug("Contents of sim2sumo section %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
-    logger.debug("config input is %s", simconfig)
     if isinstance(simconfig, bool):
         simconfig = {}
     datafiles = find_datafiles(datafile, simconfig)
     paths = find_datafile_paths()
-    logger.debug("Found datafiles %s", datafiles)
+    logger.debug("Datafiles %s", datafiles)
     if isinstance(datafiles, dict):
         outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
     else:
@@ -185,6 +188,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
         dict: results as one unified dictionary
     """
     logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
+    logger.debug("Simconfig input is: %s", simconfig)
     submods = find_datatypes(datatype, simconfig)
     logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
@@ -195,9 +199,12 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
         if datafile_path is None:
             continue
         outdict[datafile_path] = {}
+        try:
+            suboptions = submods.values()
+        except AttributeError:
+            suboptions = options
         for submod in submods:
-            outdict[datafile_path][submod] = filter_options(submod, options)
-
+            outdict[datafile_path][submod] = filter_options(submod, suboptions)
         outdict[datafile_path]["grid3d"] = grid3d
 
     return outdict
