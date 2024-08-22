@@ -153,20 +153,18 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     logger = logging.getLogger(__file__ + ".read_config")
     logger.debug("Using extras %s", [datafile, datatype])
     logger.debug("Input config keys are %s", config.keys())
-    logger.debug(config["sim2sumo"])
 
     simconfig = config.get("sim2sumo", {})
     if len(simconfig) == 0:
-        logger.warning("We are starting from scratch")
+        logger.info("No sim2sumo section in config file, running with defaults")
     else:
-        logger.debug("This is the starting point %s", simconfig)
+        logger.debug("Contents of sim2sumo section %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
-    logger.debug("config input is %s", simconfig)
     if isinstance(simconfig, bool):
         simconfig = {}
     datafiles = find_datafiles(datafile, simconfig)
     paths = find_datafile_paths()
-    logger.debug("Found datafiles %s", datafiles)
+    logger.debug("Datafiles %s", datafiles)
     if isinstance(datafiles, dict):
         outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
     else:
@@ -201,9 +199,12 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
         if datafile_path is None:
             continue
         outdict[datafile_path] = {}
-        for submod, suboptions in submods.items():
+        try:
+            suboptions = submods.values()
+        except AttributeError:
+            suboptions = options
+        for submod in submods:
             outdict[datafile_path][submod] = filter_options(submod, suboptions)
-
         outdict[datafile_path]["grid3d"] = grid3d
 
     return outdict
