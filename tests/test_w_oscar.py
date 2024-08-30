@@ -2,7 +2,7 @@ from pathlib import Path
 import pytest
 from fmu.sumo.sim2sumo._special_treatments import vfp_to_arrow_dict
 from fmu.sumo.sim2sumo.tables import upload_vfp_tables_from_simulation_run
-from fmu.sumo.sim2sumo.common import Dispatcher
+from fmu.sumo.sim2sumo.common import Dispatcher, prepare_for_sendoff
 import shutil
 from fmu.config.utilities import yaml_load
 from fmu.sumo.uploader import CaseOnDisk, SumoConnection
@@ -38,12 +38,10 @@ def test_vfp_to_arrow(options, keyword, nrtables):
     ), f"Returned {dict_length} tables, but should be {nrtables}"
 
 
-def test_vfp_tables_from_simulation_run(
-    tmp_path, token, config, monkeypatch
-):
+def test_vfp_tables_from_simulation_run(tmp_path, token, config, monkeypatch):
     oscar_tmp = tmp_path / "oscar_tmp"
     shutil.copytree(OSCAR, oscar_tmp, copy_function=shutil.copy)
-    
+
     case_metadata_path = OSCAR / "share/metadata/fmu_case.yml"
     case_metadata = yaml_load(case_metadata_path)
     case_metadata["fmu"]["case"]["uuid"] = str(uuid.uuid4())
@@ -69,11 +67,11 @@ def test_vfp_tables_from_simulation_run(
     real0 = oscar_tmp / "realization-0/iter-0"
     datafile = real0 / "eclipse/model/OSCAR-0.DATA"
     monkeypatch.chdir(real0)
-    
+
     config = yaml_load(real0 / "fmuconfig/output/global_variables.yml")
-    
+    simconfig = prepare_for_sendoff(config, datafile)
+
     disp = Dispatcher(datafile, "dev")
 
-    upload_vfp_tables_from_simulation_run(OSCAR_DATAFILE, {}, config, disp)
+    upload_vfp_tables_from_simulation_run(OSCAR_DATAFILE, {}, simconfig, disp)
     disp.finish()
-   
