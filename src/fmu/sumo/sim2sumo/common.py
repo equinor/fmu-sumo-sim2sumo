@@ -194,6 +194,8 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
+    if isinstance(submods, list):
+        submods = {sub: options for sub in submods}
 
     for datafile in datafiles:
         datafile_path = find_full_path(datafile, paths)
