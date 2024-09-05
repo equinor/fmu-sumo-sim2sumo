@@ -257,7 +257,7 @@ def upload_vfp_tables_from_simulation_run(
             tagname = f"{keyword}_{table_number}"
             logger.debug("Generated tagname: %s", tagname)
             sumo_file = convert_table_2_sumo_file(
-                datafile, table, tagname, config
+                datafile, table, tagname.lower(), config
             )
             dispatcher.add(sumo_file)
 
