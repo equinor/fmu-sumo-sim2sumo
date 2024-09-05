@@ -211,13 +211,28 @@ def vfp_to_arrow_dict(datafile, options):
     """
     logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     resdatafiles = res2df.ResdataFiles(datafile)
+    vfp_dict = {}
     keyword = options.get("keyword", "VFPPROD")
+    logger.debug("keyword is %s", keyword)
     vfpnumbers = options.get("vfpnumbers", None)
-    arrow_tables = res2df.vfp._vfp.pyarrow_tables(
-        resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
-    )
-    logger.debug("Extracted %s vfp tables", len(arrow_tables))
-    return keyword, arrow_tables
+    if isinstance(keyword, str):
+        keywords = [keyword]
+    else:
+        keywords = keyword
+
+    logger.debug("%s keywords to go through", len(keywords))
+
+    for keyword in keywords:
+        vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
+            resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
+        )
+
+        logger.debug(
+            "Keyword %s, extracted %s vfp tables",
+            keyword,
+            len(vfp_dict[keyword]),
+        )
+    return vfp_dict
 
 
 def add_md_to_rft(rft_table, md_file_path):
@@ -245,8 +260,8 @@ def add_md_to_rft(rft_table, md_file_path):
 
     xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
     rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
-     # for grid indeces xtgeo starts from 0, res2df from 1
-    md_table[xtgeo_index_names] += 1 
+    # for grid indeces xtgeo starts from 0, res2df from 1
+    md_table[xtgeo_index_names] += 1
     md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
     xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
     logger.debug(
