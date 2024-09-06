@@ -125,24 +125,6 @@ def get_xtgeo_egrid(datafile):
     return egrid
 
 
-def export_grdecl_grid(grid_path, exporter):
-    """Export the grdecl grid
-
-    Args:
-        grid_path (str): path to grid
-
-    Returns:
-        xtgeo.grid: grid read from file
-    """
-    logger = logging.getLogger(__name__ + ".export_grdecl_grid")
-    grid = grid_from_file(grid_path)
-    logger.debug(grid.name)
-    # logger.info(
-    #     "Exported to %s", exporter.export(grid, name=grid.name, tagname="grdecl_grid")
-    # )
-    return grid
-
-
 def readname(filename):
     """Read keyword from grdecl file
 
