@@ -268,13 +268,6 @@ def create_config_dict_from_dict(datafiles, paths, grid3d):
     return outdict
 
 
-def subtract_from_datafiles_dict(datafiles_dict):
-    """Extract information when datafiles field is supplied as dict"""
-    logger = logging.getLogger(__file__ + ".subtract_from_datafiles_dict")
-    logger.debug("Datafiles dict %s", datafiles_dict)
-    return datafiles_dict
-
-
 def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
