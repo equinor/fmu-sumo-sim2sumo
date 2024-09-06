@@ -198,7 +198,15 @@ def create_config_dict_from_list(
     """
     logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
     logger.debug("Simconfig input is: %s", simconfig)
-    submods = find_datatypes(datatype, simconfig)
+
+    if datatype is None:
+        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+
+        if submods == "all":
+            submods = SUBMODULES
+    else:
+        submods = [datatype]
+
     logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
@@ -258,27 +266,6 @@ def create_config_dict_from_dict(datafiles, paths, grid3d):
         outdict[datafile_path]["grid3d"] = grid3d
     logger.debug("Returning %s", outdict)
     return outdict
-
-
-def find_datatypes(datatype, simconfig):
-    """Find datatypes to extract
-
-    Args:
-        datatype (str or None): datatype to extract
-        simconfig (dict): the config file settings
-
-    Returns:
-        list or dict: data types to extract
-    """
-
-    if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
-    else:
-        submods = [datatype]
-    return submods
 
 
 def subtract_from_datafiles_dict(datafiles_dict):
