@@ -13,11 +13,11 @@ from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
-    convert_options,
     SUBMOD_DICT,
     SUBMODULES,
 )
 
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 def yaml_load(file_name):
     """Load yaml config file into dict
@@ -90,7 +90,12 @@ def filter_options(submod, kwargs):
             non_opions,
             submod,
         )
-    return convert_options(filtered)
+
+    if "zonemap" in filtered:
+        filtered["zonemap"] = convert_lyrlist_to_zonemap(
+            parse_lyrfile(filtered["zonemap"])
+        )
+    return filtered
 
 
 def find_full_path(datafile, paths):
