@@ -155,11 +155,12 @@ def test_non_standard_filter_options(submod, options):
     ), f"No options left for {submod}, should still be {options}"
 
 
-@pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
-def test_find_datefield(datestring):
-
-    results = find_datefield(datestring)
-    print(results)
+@pytest.mark.parametrize(
+    "datestring,expected_result",
+    [("bababdbbdd_20240508", "20240508"), ("nodatestring", None)],
+)
+def test_find_datefield(datestring, expected_result):
+    assert find_datefield(datestring) == expected_result
 
 
 def test_fix_suffix():
