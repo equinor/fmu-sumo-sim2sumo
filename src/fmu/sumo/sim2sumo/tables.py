@@ -272,7 +272,6 @@ def upload_tables_from_simulation_run(
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     logger.info("Extracting tables from %s", datafile)
-    count = 0
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
             logger.debug("No tables for grid3d, skipping")
@@ -296,5 +295,3 @@ def upload_tables_from_simulation_run(
                 )
                 continue
             dispatcher.add(sumo_file)
-
-    logger.info("%s properties", count)
