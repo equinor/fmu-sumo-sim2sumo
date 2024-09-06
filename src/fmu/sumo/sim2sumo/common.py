@@ -456,18 +456,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     return metadata
 
 
-def convert_to_bytestring(converter, obj):
-    """Convert what comes out of a function to bytestring
-
-    Args:
-        converter (func): the function to convert to bytestring
-       obj (object): the object to be converted
-
-    Returns:
-        bytestring: the converted bytes
-    """
-    return converter(obj)
-
 
 def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     """Convert object to sumo file
@@ -489,7 +477,7 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     if obj is None:
         logger.warning("Nothing to do with None object")
         return obj
-    bytestring = convert_to_bytestring(converter, obj)
+    bytestring = converter(obj)
     metadata = metacreator(*meta_args)
     logger.debug("Metadata created")
     assert isinstance(

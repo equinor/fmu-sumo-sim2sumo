@@ -252,12 +252,6 @@ def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp.finish()
 
 
-def test_xtgeo_2_bytes(eightfipnum):
-
-    bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
-    assert isinstance(bytestring, bytes)
-
-
 def test_xtgeo_2_bytestring(eightfipnum):
     bytestr = grid3d.xtgeo_2_bytestring(eightfipnum)
     assert isinstance(bytestr, bytes)

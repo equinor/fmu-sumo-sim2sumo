@@ -19,31 +19,9 @@ from xtgeo.io._file import FileWrapper
 
 from .common import (
     generate_meta,
-    convert_to_bytestring,
     convert_2_sumo_file,
     fix_suffix,
 )
-
-
-def xtgeo_2_bytes(obj):
-    """Convert xtgeo object to bytes
-
-    Args:
-        obj (xtgeo.Obj): the object to convert
-
-    Returns:
-        bytes: bytestring
-    """
-    logger = logging.getLogger(__name__ + ".xtgeo_2_bytes")
-    if obj is None:
-        return obj
-    logger.debug("Converting %s", obj.name)
-    sink = BytesIO()
-    obj.to_file(sink)
-    sink.seek(0)
-    bytestring = sink.getbuffer().tobytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
-    return bytestring
 
 
 def xtgeo_2_bytestring(obj):
@@ -55,9 +33,15 @@ def xtgeo_2_bytestring(obj):
     Returns:
         bytestring: bytes
     """
+    logger = logging.getLogger(__name__ + ".xtgeo_2_bytestring")
     if obj is None:
         return obj
-    bytestring = convert_to_bytestring(xtgeo_2_bytes, obj)
+    logger.debug("Converting %s", obj.name)
+    sink = BytesIO()
+    obj.to_file(sink)
+    sink.seek(0)
+    bytestring = sink.getbuffer().tobytes()
+    logger.debug("Returning bytestring with size %s", len(bytestring))
 
     return bytestring
 
