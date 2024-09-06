@@ -143,7 +143,7 @@ def find_datafile_paths():
     return paths
 
 
-def prepare_for_sendoff(config, datafile=None, datatype=None):
+def create_config_dict(config, datafile=None, datatype=None):
     """Read config settings and make dictionary for use when exporting
 
     Args:
@@ -173,16 +173,18 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     paths = find_datafile_paths()
     logger.debug("Datafiles %s", datafiles)
     if isinstance(datafiles, dict):
-        outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
+        outdict = create_config_dict_from_dict(datafiles, paths, grid3d)
     else:
-        outdict = prepare_list_for_sendoff(
+        outdict = create_config_dict_from_list(
             datatype, simconfig, datafiles, paths, grid3d
         )
     logger.debug("Returning %s", outdict)
     return outdict
 
 
-def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
+def create_config_dict_from_list(
+    datatype, simconfig, datafiles, paths, grid3d
+):
     """Prepare dictionary from list of datafiles and simconfig
 
     Args:
@@ -217,7 +219,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     return outdict
 
 
-def prepare_dict_for_sendoff(datafiles, paths, grid3d):
+def create_config_dict_from_dict(datafiles, paths, grid3d):
     """Prepare dictionary containing datafile information
 
     Args:

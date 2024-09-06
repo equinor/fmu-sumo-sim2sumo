@@ -5,7 +5,7 @@ import logging
 
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
-from .common import yaml_load, Dispatcher, prepare_for_sendoff
+from .common import yaml_load, Dispatcher, create_config_dict
 from ._special_treatments import give_help, SUBMODULES
 
 
@@ -76,7 +76,7 @@ def main():
         config = yaml_load(args.config_path)
         config["file_path"] = args.config_path
         logger.debug("Added file_path, and config keys are %s", config.keys())
-        sim2sumoconfig = prepare_for_sendoff(
+        sim2sumoconfig = create_config_dict(
             config, args.datafile, args.datatype
         )
         # Init of dispatcher needs one datafile to locate case uuid
