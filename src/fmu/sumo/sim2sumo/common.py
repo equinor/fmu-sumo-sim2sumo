@@ -19,6 +19,7 @@ from fmu.sumo.sim2sumo._special_treatments import (
 
 from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
+
 def yaml_load(file_name):
     """Load yaml config file into dict
 
@@ -61,7 +62,7 @@ def get_case_uuid(file_path, parent_level=4):
 
 
 def filter_options(submod, kwargs):
-    """Filter options sendt to res2df per given submodule
+    """Filter options sent to res2df per given submodule
 
     Args:
         submod (str): the submodule to call
@@ -83,11 +84,11 @@ def filter_options(submod, kwargs):
         "arrow", True
     )  # defaulting of arrow happens here
     logger.debug("After filtering options for %s: %s", submod, filtered)
-    non_opions = [key for key in kwargs if key not in filtered]
-    if len(non_opions) > 0:
+    non_options = [key for key in kwargs if key not in filtered]
+    if len(non_options) > 0:
         logger.warning(
             "Filtered out options %s for %s, these are not valid",
-            non_opions,
+            non_options,
             submod,
         )
 
