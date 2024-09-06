@@ -281,19 +281,6 @@ def find_datatypes(datatype, simconfig):
     return submods
 
 
-def is_datafile(results: Path) -> bool:
-    """Filter results based on suffix
-
-    Args:
-        results (Path): path to file
-
-    Returns:
-        bool: true if correct suffix
-    """
-    valid = [".afi", ".DATA", ".in"]
-    return results.suffix in valid
-
-
 def subtract_from_datafiles_dict(datafiles_dict):
     """Extract information when datafiles field is supplied as dict"""
     logger = logging.getLogger(__file__ + ".subtract_from_datafiles_dict")
@@ -339,7 +326,12 @@ def find_datafiles_no_seedpoint():
     logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
     cwd = Path().cwd()
     logger.info("Looking for files in %s", cwd)
-    datafiles = list(filter(is_datafile, cwd.glob("*/*/*.*")))
+    valid_filetypes = [".afi", ".DATA", ".in"]
+    datafiles = list(
+        filter(
+            lambda file: file.suffix in valid_filetypes, cwd.glob("*/*/*.*")
+        )
+    )
     logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
