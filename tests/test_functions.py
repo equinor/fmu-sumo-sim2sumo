@@ -123,23 +123,6 @@ def write_ert_config_and_run(runpath):
     ).is_file(), f"running {ert_full_config_path}, No OK file"
 
 
-def _assert_right_len(checks, key, to_messure, name):
-    """Assert length when reading config
-
-    Args:
-        checks (dict): the answers
-        key (str): the answer to check
-        to_messure (list): the generated answer
-        name (str): name of the file to check against
-    """
-    # Helper for test_read_config
-    right_len = checks[key]
-    actual_len = len(to_messure)
-    assert (
-        actual_len == right_len
-    ), f"For {name}-{key} actual length is {actual_len}, but should be {right_len}"
-
-
 def check_expected_exports(expected_exports, shared_grid, prefix):
     print("Looking in ", shared_grid)
     parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
