@@ -153,12 +153,13 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     logger = logging.getLogger(__file__ + ".read_config")
     logger.debug("Using extras %s", [datafile, datatype])
     logger.debug("Input config keys are %s", config.keys())
+    logger.debug(config["sim2sumo"])
 
     simconfig = config.get("sim2sumo", {})
     if len(simconfig) == 0:
-        logger.info("No sim2sumo section in config file, running with defaults")
+        logger.warning("We are starting from scratch")
     else:
-        logger.debug("Contents of sim2sumo section %s", simconfig)
+        logger.debug("This is the starting point %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
