@@ -21,7 +21,6 @@ from fmu.sumo.sim2sumo.common import (
     nodisk_upload,
     Dispatcher,
     find_datefield,
-    find_datafile_paths,
     find_datafiles_no_seedpoint,
     filter_options,
 )
