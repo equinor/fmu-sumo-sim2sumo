@@ -153,7 +153,6 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     logger = logging.getLogger(__file__ + ".read_config")
     logger.debug("Using extras %s", [datafile, datatype])
     logger.debug("Input config keys are %s", config.keys())
-    logger.debug(config["sim2sumo"])
 
     simconfig = config.get("sim2sumo", {})
     if len(simconfig) == 0:
