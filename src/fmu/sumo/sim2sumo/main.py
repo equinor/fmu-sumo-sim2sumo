@@ -81,7 +81,11 @@ def main():
         )
         # Init of dispatcher needs one datafile to locate case uuid
         one_datafile = list(sim2sumoconfig.keys())[0]
-        dispatcher = Dispatcher(one_datafile, args.env)
+        try:
+            dispatcher = Dispatcher(one_datafile, args.env)
+        except Exception as e:
+            logger.error("Failed to create dispatcher: %s", e)
+            return
 
         logger.debug("Extracting tables")
         upload_tables(sim2sumoconfig, config, dispatcher)
