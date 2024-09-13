@@ -21,7 +21,6 @@ from fmu.sumo.sim2sumo.common import (
     nodisk_upload,
     Dispatcher,
     find_datefield,
-    find_datafile_paths,
     find_datafiles_no_seedpoint,
     filter_options,
 )
@@ -31,7 +30,7 @@ from fmu.sumo.sim2sumo._special_treatments import (
     convert_to_arrow,
     SUBMODULES,
 )
-from fmu.sumo.sim2sumo.common import fix_suffix, get_case_uuid
+from fmu.sumo.sim2sumo.common import get_case_uuid
 from fmu.sumo.uploader import SumoConnection
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -181,13 +180,6 @@ def test_find_datefield(datestring):
 
     results = find_datefield(datestring)
     print(results)
-
-
-def test_fix_suffix():
-
-    test_path = "simulator.banana"
-    corrected_path = fix_suffix(test_path)
-    assert corrected_path.endswith(".DATA"), f"Didn't correct {corrected_path}"
 
 
 def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
