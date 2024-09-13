@@ -535,25 +535,3 @@ def give_name(datafile_path: str) -> str:
         base_name = base_name[:-1]
     logger.info("Returning name %s", base_name)
     return base_name
-
-
-def fix_suffix(datafile_path: str, suffix=".DATA"):
-    """Check if suffix is .DATA, if not change to
-
-    Args:
-        datafile_path (PosixPath): path to check
-        suffix (str): desired suffix
-
-    Returns:
-        str: the corrected path
-    """
-    logger = logging.getLogger(__file__ + ".fix_suffix")
-    string_datafile_path = str(datafile_path)
-    assert "." in suffix, f"suffix: needs to start with . (is {suffix})"
-    if "." not in string_datafile_path:
-        string_datafile_path += suffix
-    if not string_datafile_path.endswith(suffix):
-        corrected_path = re.sub(r"\..*", suffix, string_datafile_path)
-        logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
-        datafile_path = corrected_path
-    return datafile_path

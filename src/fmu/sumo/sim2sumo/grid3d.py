@@ -6,6 +6,7 @@
    3. Uploads to Sumo
 """
 import logging
+from pathlib import Path
 import re
 from datetime import datetime
 
@@ -20,7 +21,6 @@ from xtgeo.io._file import FileWrapper
 from .common import (
     generate_meta,
     convert_2_sumo_file,
-    fix_suffix,
 )
 
 
@@ -292,9 +292,10 @@ def upload_simulation_run(datafile, config, dispatcher):
         datafile (str): path to datafile
     """
     logger = logging.getLogger(__name__ + ".upload_simulation_run")
-    init_path = fix_suffix(datafile, ".INIT")
-    restart_path = fix_suffix(datafile, ".UNRST")
-    grid_path = fix_suffix(datafile, ".EGRID")
+    datafile_path = Path(datafile)
+    init_path = datafile_path.with_suffix(".INIT")
+    restart_path = datafile_path.with_suffix(".UNRST")
+    grid_path = datafile_path.with_suffix(".EGRID")
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     # grid_exp_path = export_object(
