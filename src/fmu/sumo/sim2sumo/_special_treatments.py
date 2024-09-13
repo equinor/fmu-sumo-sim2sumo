@@ -210,7 +210,8 @@ def vfp_to_arrow_dict(datafile, options):
         tuple: vfp keyword, then dictionary with key: table_name, value: table
     """
     logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
-    resdatafiles = res2df.ResdataFiles(datafile)
+    filepath_no_suffix = Path(datafile).with_suffix("")
+    resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
     vfp_dict = {}
     keyword = options.get("keyword", "VFPPROD")
     logger.debug("keyword is %s", keyword)

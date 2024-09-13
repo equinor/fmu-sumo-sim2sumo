@@ -6,6 +6,7 @@
 """
 
 import logging
+from pathlib import Path
 import sys
 from typing import Union
 
@@ -169,8 +170,9 @@ def get_table(
                 extract_df.__name__,
                 submod,
             )
+            datafile_path_no_suffix = Path(datafile_path).with_suffix("")
             output = extract_df(
-                res2df.ResdataFiles(datafile_path),
+                res2df.ResdataFiles(datafile_path_no_suffix),
                 **kwargs,
             )
             if submod == "rft":
