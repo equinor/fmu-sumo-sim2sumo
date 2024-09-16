@@ -293,9 +293,9 @@ def upload_simulation_run(datafile, config, dispatcher):
     """
     logger = logging.getLogger(__name__ + ".upload_simulation_run")
     datafile_path = Path(datafile)
-    init_path = datafile_path.with_suffix(".INIT")
-    restart_path = datafile_path.with_suffix(".UNRST")
-    grid_path = datafile_path.with_suffix(".EGRID")
+    init_path = str(datafile_path.with_suffix(".INIT"))
+    restart_path = str(datafile_path.with_suffix(".UNRST"))
+    grid_path = str(datafile_path.with_suffix(".EGRID"))
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     # grid_exp_path = export_object(
