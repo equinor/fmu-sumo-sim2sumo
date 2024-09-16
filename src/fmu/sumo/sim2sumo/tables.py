@@ -276,7 +276,7 @@ def upload_tables_from_simulation_run(
                 datafile, options, config, dispatcher
             )
         else:
-            table = get_table(datafile, submod, options)
+            table = get_table(datafile, submod, **options)
             logger.debug("Sending %s onto file creation", table)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, submod, config
