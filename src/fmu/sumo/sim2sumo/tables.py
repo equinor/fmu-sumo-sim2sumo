@@ -124,7 +124,7 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
 
 def get_table(
-    datafile_path: str, submod: str, options
+    datafile_path: str, submod: str, options={}
 ) -> Union[pa.Table, pd.DataFrame]:
     """Fetch arrow.table/pd.dataframe from simulator results
 
