@@ -124,7 +124,7 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
 
 def get_table(
-    datafile_path: str, submod: str, print_help=False, **kwargs
+    datafile_path: str, submod: str, **kwargs
 ) -> Union[pa.Table, pd.DataFrame]:
     """Fetch arrow.table/pd.dataframe from simulator results
 
@@ -150,63 +150,57 @@ def get_table(
         logger.debug("No arrow key to delete")
     output = None
     trace = None
-    print_help = False
-    if print_help:
-        print("------------------")
-        print(SUBMOD_DICT[submod]["doc"])
-        print("------------------")
-        # TODO: see if there is a cleaner way with rft, see functions
-        # find_md_log, and complete_rft, but needs really to be fixed in res2df
-    else:
-        md_log_file = find_md_log(submod, kwargs)
-        logger.debug("Checking these passed options %s", kwargs)
-        try:
-            logger.info(
-                "Extracting data from %s with func %s for %s",
-                datafile_path,
-                extract_df.__name__,
-                submod,
-            )
-            output = extract_df(
-                res2df.ResdataFiles(datafile_path),
-                **kwargs,
-            )
-            if submod == "rft":
+    # TODO: see if there is a cleaner way with rft, see functions
+    # find_md_log, and complete_rft, but needs really to be fixed in res2df
+    md_log_file = find_md_log(submod, kwargs)
+    logger.debug("Checking these passed options %s", kwargs)
+    try:
+        logger.info(
+            "Extracting data from %s with func %s for %s",
+            datafile_path,
+            extract_df.__name__,
+            submod,
+        )
+        output = extract_df(
+            res2df.ResdataFiles(datafile_path),
+            **kwargs,
+        )
+        if submod == "rft":
 
-                output = complete_rft(output, md_log_file)
-            if arrow:
-                try:
-                    convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                    logger.debug(
-                        "Using function %s to convert to arrow",
-                        convert_func.__name__,
-                    )
-                    output = convert_func(output)
-                except pa.lib.ArrowInvalid:
-                    logger.warning(
-                        "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
-                        sys.exc_info()[1],
-                    )
-                    logger.debug(
-                        "Falling back to converting with %s",
-                        convert_to_arrow.__name__,
-                    )
-                    output = convert_to_arrow(output)
+            output = complete_rft(output, md_log_file)
+        if arrow:
+            try:
+                convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
+                logger.debug(
+                    "Using function %s to convert to arrow",
+                    convert_func.__name__,
+                )
+                output = convert_func(output)
+            except pa.lib.ArrowInvalid:
+                logger.warning(
+                    "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
+                    sys.exc_info()[1],
+                )
+                logger.debug(
+                    "Falling back to converting with %s",
+                    convert_to_arrow.__name__,
+                )
+                output = convert_to_arrow(output)
 
-                except TypeError:
-                    logger.warning("Type error, cannot convert to arrow")
+            except TypeError:
+                logger.warning("Type error, cannot convert to arrow")
 
-        except TypeError:
-            trace = sys.exc_info()[1]
-        except FileNotFoundError:
-            trace = sys.exc_info()[1]
-        except ValueError:
-            trace = sys.exc_info()[1]
-        if trace is not None:
-            logger.warning(
-                "Trace: %s, \nNo results produced ",
-                trace,
-            )
+    except TypeError:
+        trace = sys.exc_info()[1]
+    except FileNotFoundError:
+        trace = sys.exc_info()[1]
+    except ValueError:
+        trace = sys.exc_info()[1]
+    if trace is not None:
+        logger.warning(
+            "Trace: %s, \nNo results produced ",
+            trace,
+        )
     logger.debug("Returning %s", output)
     return output
 
@@ -282,7 +276,7 @@ def upload_tables_from_simulation_run(
                 datafile, options, config, dispatcher
             )
         else:
-            table = get_table(datafile, submod, options)
+            table = get_table(datafile, submod, **options)
             logger.debug("Sending %s onto file creation", table)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, submod, config
