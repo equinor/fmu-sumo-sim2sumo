@@ -124,14 +124,14 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
 
 def get_table(
-    datafile_path: str, submod: str, options={}
+    datafile_path: str, submod: str, **kwargs
 ) -> Union[pa.Table, pd.DataFrame]:
     """Fetch arrow.table/pd.dataframe from simulator results
 
     Args:
         datafile_path (str): the path to the simulator datafile
         submod (str): the name of the submodule to extract with
-        options (dict): other options
+        kwargs (dict): other options
 
     Returns:
         pd.DataFrame: the extracted data
@@ -141,9 +141,9 @@ def get_table(
         "Input arguments %s",
     )
     extract_df = SUBMOD_DICT[submod]["extract"]
-    arrow = options.get("arrow", True)
+    arrow = kwargs.get("arrow", True)
     try:
-        del options[
+        del kwargs[
             "arrow"
         ]  # This argument should not be passed to extract function
     except KeyError:
@@ -152,8 +152,8 @@ def get_table(
     trace = None
     # TODO: see if there is a cleaner way with rft, see functions
     # find_md_log, and complete_rft, but needs really to be fixed in res2df
-    md_log_file = find_md_log(submod, options)
-    logger.debug("Checking these passed options %s", options)
+    md_log_file = find_md_log(submod, kwargs)
+    logger.debug("Checking these passed options %s", kwargs)
     try:
         logger.info(
             "Extracting data from %s with func %s for %s",
@@ -163,7 +163,7 @@ def get_table(
         )
         output = extract_df(
             res2df.ResdataFiles(datafile_path),
-            **options,
+            **kwargs,
         )
         if submod == "rft":
 
