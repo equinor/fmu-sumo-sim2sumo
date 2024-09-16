@@ -23,7 +23,6 @@ from ._special_treatments import (
 )
 from .common import (
     generate_meta,
-    convert_to_bytestring,
     convert_2_sumo_file,
 )
 
@@ -65,8 +64,7 @@ def table_2_bytestring(table):
     Returns:
         bytest: the bytes string
     """
-    bytestring = convert_to_bytestring(table_to_bytes, table)
-    return bytestring
+    return table_to_bytes(table)
 
 
 def generate_table_meta(datafile, obj, tagname, config):
@@ -274,7 +272,6 @@ def upload_tables_from_simulation_run(
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     logger.info("Extracting tables from %s", datafile)
-    count = 0
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
             logger.debug("No tables for grid3d, skipping")
@@ -298,5 +295,3 @@ def upload_tables_from_simulation_run(
                 )
                 continue
             dispatcher.add(sumo_file)
-
-    logger.info("%s properties", count)

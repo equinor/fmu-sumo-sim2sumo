@@ -17,7 +17,7 @@ from xtgeo import Grid, GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo.common import (
     find_datafiles,
-    prepare_for_sendoff,
+    create_config_dict,
     nodisk_upload,
     Dispatcher,
     find_datefield,
@@ -52,15 +52,11 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     # There has been instances when this fails, probably because of
     # some time delay, have introduced a little sleep to make it not fail
     sleep(SLEEP_TIME)
-    if tag_prefix == "*":
-        search_pattern = "*"
-    elif tag_prefix.endswith("*"):
-        search_pattern = tag_prefix
-    else:
-        search_pattern = tag_prefix + "*"
+    if not tag_prefix.endswith("*"):
+        tag_prefix = tag_prefix + "*"
 
     path = f"/objects('{case_uuid}')/children"
-    query = f"$filter=data.tagname:{search_pattern}"
+    query = f"$filter=data.tagname:{tag_prefix}"
 
     if class_type != "*":
         query += f" AND class:{class_type}"
@@ -126,23 +122,6 @@ def write_ert_config_and_run(runpath):
     ).is_file(), f"running {ert_full_config_path}, No OK file"
 
 
-def _assert_right_len(checks, key, to_messure, name):
-    """Assert length when reading config
-
-    Args:
-        checks (dict): the answers
-        key (str): the answer to check
-        to_messure (list): the generated answer
-        name (str): name of the file to check against
-    """
-    # Helper for test_read_config
-    right_len = checks[key]
-    actual_len = len(to_messure)
-    assert (
-        actual_len == right_len
-    ), f"For {name}-{key} actual length is {actual_len}, but should be {right_len}"
-
-
 def check_expected_exports(expected_exports, shared_grid, prefix):
     print("Looking in ", shared_grid)
     parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
@@ -175,11 +154,12 @@ def test_non_standard_filter_options(submod, options):
     ), f"No options left for {submod}, should still be {options}"
 
 
-@pytest.mark.parametrize("datestring", ["bababdbbdd_20240508", "nodatestring"])
-def test_find_datefield(datestring):
-
-    results = find_datefield(datestring)
-    print(results)
+@pytest.mark.parametrize(
+    "datestring,expected_result",
+    [("bababdbbdd_20240508", "20240508"), ("nodatestring", None)],
+)
+def test_find_datefield(datestring, expected_result):
+    assert find_datefield(datestring) == expected_result
 
 
 def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
@@ -218,13 +198,13 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
         ({"grid3d": True}, 5, 4),
     ],
 )
-def test_prepare_for_sendoff(config, nrdatafiles, nrsubmodules, tmp_path):
+def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
 
     sim2sumo_config = {"sim2sumo": config}
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
     os.chdir(real1)
-    inputs = prepare_for_sendoff(sim2sumo_config)
+    inputs = create_config_dict(sim2sumo_config)
     assert (
         len(inputs) == nrdatafiles
     ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
@@ -242,12 +222,6 @@ def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
     disp.finish()
-
-
-def test_xtgeo_2_bytes(eightfipnum):
-
-    bytestring = grid3d.xtgeo_2_bytes(eightfipnum)
-    assert isinstance(bytestring, bytes)
 
 
 def test_xtgeo_2_bytestring(eightfipnum):
@@ -437,29 +411,6 @@ def test_get_table(submod):
         assert (
             frame.schema.field("FOPT").metadata is not None
         ), "Metdata not carried across for summary"
-
-
-# Extra checks to be used with parametrize below
-CHECK_DICT = {
-    "global_variables_w_eclpath.yml": {
-        "nrdatafile": 1,
-        "nrsubmods": 3,
-        "nroptions": 1,
-        "arrow": True,
-    },
-    "global_variables_w_eclpath_and_extras.yml": {
-        "nrdatafile": 1,
-        "nrsubmods": 3,
-        "nroptions": 4,
-        "arrow": False,
-    },
-    "global_variables.yml": {
-        "nrdatafile": 2,
-        "nrsubmods": 3,
-        "nroptions": 1,
-        "arrow": True,
-    },
-}
 
 
 def test_convert_to_arrow():

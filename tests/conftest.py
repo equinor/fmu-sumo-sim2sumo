@@ -89,6 +89,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_RUNPATH", "./")
 
+
 @pytest.fixture(scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
 
