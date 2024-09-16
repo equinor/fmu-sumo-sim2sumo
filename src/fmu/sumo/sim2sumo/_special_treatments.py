@@ -195,7 +195,7 @@ def vfp_to_arrow_dict(datafile, options):
     logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     resdatafiles = res2df.ResdataFiles(datafile)
     vfp_dict = {}
-    keyword = options.get("keyword", "VFPPROD")
+    keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
     logger.debug("keyword is %s", keyword)
     vfpnumbers = options.get("vfpnumbers", None)
     if isinstance(keyword, str):

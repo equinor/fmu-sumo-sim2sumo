@@ -17,10 +17,10 @@ DROGON_DATAFILE = DROGON_REAL / "eclipse/model/DROGON-0.DATA"
 @pytest.mark.parametrize(
     "options,keycombo,nrkeys,nrtables",
     [
-        ({}, "VFPPROD", 1, 4),
+        ({}, "VFPPRODVFPINJ", 2, 5),
         ({"keyword": "VFPINJ"}, "VFPINJ", 1, 1),
         ({"keyword": ["VFPPROD", "VFPINJ"]}, "VFPPRODVFPINJ", 2, 5),
-        ({"vfpnumbers": "1,2,4"}, "VFPPROD", 1, 3),
+        ({"vfpnumbers": "1,2,4"}, "VFPPRODVFPINJ", 2, 3),
     ],
 )
 def test_vfp_to_arrow(options, keycombo, nrkeys, nrtables):
@@ -49,7 +49,7 @@ def test_vfp_tables_from_simulation_run(
 
     upload_vfp_tables_from_simulation_run(DROGON_DATAFILE, {}, config, disp)
     disp.finish()
-    check_sumo(case_uuid, "vfp", 4, "table", sumo)
+    check_sumo(case_uuid, "vfp", 5, "table", sumo)
 
 
 def test_add_md_to_rft(drogonrft):
