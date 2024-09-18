@@ -14,36 +14,14 @@ from io import BytesIO
 import numpy as np
 from resdata.grid import Grid
 from resdata.resfile import ResdataRestartFile
-from xtgeo import GridProperty, grid_from_file, gridproperty_from_file
+from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
 from .common import (
     generate_meta,
-    convert_to_bytestring,
     convert_2_sumo_file,
 )
-
-
-def xtgeo_2_bytes(obj):
-    """Convert xtgeo object to bytes
-
-    Args:
-        obj (xtgeo.Obj): the object to convert
-
-    Returns:
-        bytes: bytestring
-    """
-    logger = logging.getLogger(__name__ + ".xtgeo_2_bytes")
-    if obj is None:
-        return obj
-    logger.debug("Converting %s", obj.name)
-    sink = BytesIO()
-    obj.to_file(sink)
-    sink.seek(0)
-    bytestring = sink.getbuffer().tobytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
-    return bytestring
 
 
 def xtgeo_2_bytestring(obj):
@@ -55,9 +33,15 @@ def xtgeo_2_bytestring(obj):
     Returns:
         bytestring: bytes
     """
+    logger = logging.getLogger(__name__ + ".xtgeo_2_bytestring")
     if obj is None:
         return obj
-    bytestring = convert_to_bytestring(xtgeo_2_bytes, obj)
+    logger.debug("Converting %s", obj.name)
+    sink = BytesIO()
+    obj.to_file(sink)
+    sink.seek(0)
+    bytestring = sink.getbuffer().tobytes()
+    logger.debug("Returning bytestring with size %s", len(bytestring))
 
     return bytestring
 
@@ -141,24 +125,6 @@ def get_xtgeo_egrid(datafile):
     return egrid
 
 
-def export_grdecl_grid(grid_path, exporter):
-    """Export the grdecl grid
-
-    Args:
-        grid_path (str): path to grid
-
-    Returns:
-        xtgeo.grid: grid read from file
-    """
-    logger = logging.getLogger(__name__ + ".export_grdecl_grid")
-    grid = grid_from_file(grid_path)
-    logger.debug(grid.name)
-    # logger.info(
-    #     "Exported to %s", exporter.export(grid, name=grid.name, tagname="grdecl_grid")
-    # )
-    return grid
-
-
 def readname(filename):
     """Read keyword from grdecl file
 
@@ -203,35 +169,6 @@ def make_dates_from_timelist(time_list):
         date_str = datetime.strftime(date[1], "%Y-%m-%d")
         dates.append(date_str)
     return dates
-
-
-def export_grdecl_props(include_path, grid, exporter):
-    """Export grid properties
-
-    Args:
-        include_path (Pathlib.Path): path where all grdecls are stored
-        grid (xtgeo.Grid): grid to connect to properties
-    """
-    logger = logging.getLogger(__name__ + ".export_grdecl_props")
-    includes = include_path
-    grdecls = list(includes.glob("**/*.grdecl"))
-    for grdecl in grdecls:
-        logger.debug(grdecl)
-        name = readname(grdecl)
-        if name == "":
-            logger.warning("Found no name, file is probably empty")
-            continue
-        try:
-            prop = gridproperty_from_file(grdecl, name=name, grid=grid)
-            logger.info(
-                "Exported to %s",
-                exporter.export(
-                    prop, name=name, tagname=grid.name + "_grdecl_grid"
-                ),
-            )
-        except ValueError:
-            logger.warning("Something wrong with reading of file")
-    # logger.debug(grdecls)
 
 
 def upload_init(init_path, xtgeoegrid, config, dispatcher):
@@ -356,9 +293,9 @@ def upload_simulation_run(datafile, config, dispatcher):
     """
     logger = logging.getLogger(__name__ + ".upload_simulation_run")
     datafile_path = Path(datafile)
-    init_path = datafile_path.with_suffix(".INIT")
-    restart_path = datafile_path.with_suffix(".UNRST")
-    grid_path = datafile_path.with_suffix(".EGRID")
+    init_path = str(datafile_path.with_suffix(".INIT"))
+    restart_path = str(datafile_path.with_suffix(".UNRST"))
+    grid_path = str(datafile_path.with_suffix(".EGRID"))
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     # grid_exp_path = export_object(

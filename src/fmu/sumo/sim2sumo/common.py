@@ -13,10 +13,11 @@ from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
-    convert_options,
     SUBMOD_DICT,
     SUBMODULES,
 )
+
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 
 def yaml_load(file_name):
@@ -61,7 +62,7 @@ def get_case_uuid(file_path, parent_level=4):
 
 
 def filter_options(submod, kwargs):
-    """Filter options sendt to res2df per given submodule
+    """Filter options sent to res2df per given submodule
 
     Args:
         submod (str): the submodule to call
@@ -83,14 +84,19 @@ def filter_options(submod, kwargs):
         "arrow", True
     )  # defaulting of arrow happens here
     logger.debug("After filtering options for %s: %s", submod, filtered)
-    non_opions = [key for key in kwargs if key not in filtered]
-    if len(non_opions) > 0:
+    non_options = [key for key in kwargs if key not in filtered]
+    if len(non_options) > 0:
         logger.warning(
             "Filtered out options %s for %s, these are not valid",
-            non_opions,
+            non_options,
             submod,
         )
-    return convert_options(filtered)
+
+    if "zonemap" in filtered:
+        filtered["zonemap"] = convert_lyrlist_to_zonemap(
+            parse_lyrfile(filtered["zonemap"])
+        )
+    return filtered
 
 
 def find_full_path(datafile, paths):
@@ -137,7 +143,7 @@ def find_datafile_paths():
     return paths
 
 
-def prepare_for_sendoff(config, datafile=None, datatype=None):
+def create_config_dict(config, datafile=None, datatype=None):
     """Read config settings and make dictionary for use when exporting
 
     Args:
@@ -166,16 +172,18 @@ def prepare_for_sendoff(config, datafile=None, datatype=None):
     paths = find_datafile_paths()
     logger.debug("Datafiles %s", datafiles)
     if isinstance(datafiles, dict):
-        outdict = prepare_dict_for_sendoff(datafiles, paths, grid3d)
+        outdict = create_config_dict_from_dict(datafiles, paths, grid3d)
     else:
-        outdict = prepare_list_for_sendoff(
+        outdict = create_config_dict_from_list(
             datatype, simconfig, datafiles, paths, grid3d
         )
     logger.debug("Returning %s", outdict)
     return outdict
 
 
-def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
+def create_config_dict_from_list(
+    datatype, simconfig, datafiles, paths, grid3d
+):
     """Prepare dictionary from list of datafiles and simconfig
 
     Args:
@@ -189,7 +197,15 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     """
     logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
     logger.debug("Simconfig input is: %s", simconfig)
-    submods = find_datatypes(datatype, simconfig)
+
+    if datatype is None:
+        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+
+        if submods == "all":
+            submods = SUBMODULES
+    else:
+        submods = [datatype]
+
     logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
@@ -210,7 +226,7 @@ def prepare_list_for_sendoff(datatype, simconfig, datafiles, paths, grid3d):
     return outdict
 
 
-def prepare_dict_for_sendoff(datafiles, paths, grid3d):
+def create_config_dict_from_dict(datafiles, paths, grid3d):
     """Prepare dictionary containing datafile information
 
     Args:
@@ -251,47 +267,6 @@ def prepare_dict_for_sendoff(datafiles, paths, grid3d):
     return outdict
 
 
-def find_datatypes(datatype, simconfig):
-    """Find datatypes to extract
-
-    Args:
-        datatype (str or None): datatype to extract
-        simconfig (dict): the config file settings
-
-    Returns:
-        list or dict: data types to extract
-    """
-
-    if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
-    else:
-        submods = [datatype]
-    return submods
-
-
-def is_datafile(results: Path) -> bool:
-    """Filter results based on suffix
-
-    Args:
-        results (Path): path to file
-
-    Returns:
-        bool: true if correct suffix
-    """
-    valid = [".afi", ".DATA", ".in"]
-    return results.suffix in valid
-
-
-def subtract_from_datafiles_dict(datafiles_dict):
-    """Extract information when datafiles field is supplied as dict"""
-    logger = logging.getLogger(__file__ + ".subtract_from_datafiles_dict")
-    logger.debug("Datafiles dict %s", datafiles_dict)
-    return datafiles_dict
-
-
 def find_datafiles(seedpoint, simconfig):
     """Find all relevant paths that can be datafiles
 
@@ -330,7 +305,12 @@ def find_datafiles_no_seedpoint():
     logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
     cwd = Path().cwd()
     logger.info("Looking for files in %s", cwd)
-    datafiles = list(filter(is_datafile, cwd.glob("*/*/*.*")))
+    valid_filetypes = [".afi", ".DATA", ".in"]
+    datafiles = list(
+        filter(
+            lambda file: file.suffix in valid_filetypes, cwd.glob("*/*/*.*")
+        )
+    )
     logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
@@ -475,18 +455,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     return metadata
 
 
-def convert_to_bytestring(converter, obj):
-    """Convert what comes out of a function to bytestring
-
-    Args:
-        converter (func): the function to convert to bytestring
-       obj (object): the object to be converted
-
-    Returns:
-        bytestring: the converted bytes
-    """
-    return converter(obj)
-
 
 def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     """Convert object to sumo file
@@ -508,7 +476,7 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     if obj is None:
         logger.warning("Nothing to do with None object")
         return obj
-    bytestring = convert_to_bytestring(converter, obj)
+    bytestring = converter(obj)
     metadata = metacreator(*meta_args)
     logger.debug("Metadata created")
     assert isinstance(

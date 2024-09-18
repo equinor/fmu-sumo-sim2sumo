@@ -8,7 +8,6 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import res2df
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -129,22 +128,6 @@ def _define_submodules():
     return tuple(submodules.keys()), submodules
 
 
-def convert_options(options):
-    """Convert dictionary options further
-
-    Args:
-        options (dict): the input options
-
-    Returns:
-        dict: options after special treatment
-    """
-    if "zonemap" in options:
-        options["zonemap"] = convert_lyrlist_to_zonemap(
-            parse_lyrfile(options["zonemap"])
-        )
-    return options
-
-
 def find_md_log(submod, options):
     """Search options for md_log_file
 
@@ -213,7 +196,7 @@ def vfp_to_arrow_dict(datafile, options):
     filepath_no_suffix = Path(datafile).with_suffix("")
     resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
     vfp_dict = {}
-    keyword = options.get("keyword", "VFPPROD")
+    keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
     logger.debug("keyword is %s", keyword)
     vfpnumbers = options.get("vfpnumbers", None)
     if isinstance(keyword, str):
