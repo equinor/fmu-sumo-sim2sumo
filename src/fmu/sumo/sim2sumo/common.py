@@ -318,7 +318,13 @@ def find_datafiles_no_seedpoint():
 class Dispatcher:
     """Controls upload to sumo"""
 
-    def __init__(self, datafile, env, token=None):
+    def __init__(
+        self,
+        datafile,
+        env,
+        config_path="fmuconfig/output/global_variables.yml",
+        token=None,
+    ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile)
@@ -327,6 +333,7 @@ class Dispatcher:
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
+        self._config_path = config_path
 
         self._mem_count = 0
         self._count = 0
@@ -385,7 +392,12 @@ class Dispatcher:
 
     def _upload(self):
         self._logger.debug("%s files to upload", len(self._objects))
-        nodisk_upload(self._objects, self._parentid, connection=self._conn)
+        nodisk_upload(
+            self._objects,
+            self._parentid,
+            self._config_path,
+            connection=self._conn,
+        )
         self._objects = []
         self._mem_count = 0
 
@@ -455,7 +467,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     return metadata
 
 
-
 def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     """Convert object to sumo file
 
@@ -494,7 +505,7 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     return sumo_file
 
 
-def nodisk_upload(files, parent_id, env="prod", connection=None):
+def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     """Upload files to sumo
 
     Args:
@@ -508,7 +519,9 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(files, parent_id, connection)
+        status = upload_files(
+            files, parent_id, connection, config_path=config_path
+        )
         print("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
             print(f"{state}: {len(obj_status)}")
