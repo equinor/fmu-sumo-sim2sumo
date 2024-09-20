@@ -230,12 +230,7 @@ def test_xtgeo_2_bytestring(eightfipnum):
 
 
 def test_convert_xtgeo_2_sumo_file(
-    eightfipnum,
-    scratch_files,
-    config,
-    case_uuid,
-    sumo,
-    monkeypatch,
+    eightfipnum, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -245,7 +240,8 @@ def test_convert_xtgeo_2_sumo_file(
     print(case_uuid)
     print(file.metadata)
     print(file.byte_string)
-    nodisk_upload([file], case_uuid, "dev")
+    sumo_conn = SumoConnection(env="dev", token=token)
+    nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
     assert isinstance(
@@ -256,7 +252,7 @@ def test_convert_xtgeo_2_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch
+    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
 
     monkeypatch.chdir(scratch_files[0])
@@ -267,7 +263,8 @@ def test_convert_table_2_sumo_file(
 
     print(file.metadata)
     print(file.byte_string)
-    nodisk_upload([file], case_uuid, "dev")
+    sumo_conn = SumoConnection(env="dev", token=token)
+    nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
     assert isinstance(
