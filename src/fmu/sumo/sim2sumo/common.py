@@ -80,9 +80,7 @@ def filter_options(submod, kwargs):
         for key, value in kwargs.items()
         if (key in submod_options) or key in ["arrow", "md_log_file"]
     }
-    filtered["arrow"] = kwargs.get(
-        "arrow", True
-    )  # defaulting of arrow happens here
+    filtered["arrow"] = kwargs.get("arrow", True)  # defaulting of arrow happens here
     logger.debug("After filtering options for %s: %s", submod, filtered)
     non_options = [key for key in kwargs if key not in filtered]
     if len(non_options) > 0:
@@ -114,10 +112,7 @@ def find_full_path(datafile, paths):
     try:
         return paths[data_name]
     except KeyError:
-        mess = (
-            "Datafile %s, with derived name %s, not found in %s,"
-            " have to skip"
-        )
+        mess = "Datafile %s, with derived name %s, not found in %s," " have to skip"
         logger.warning(mess, datafile, data_name, paths)
         return None
 
@@ -136,9 +131,7 @@ def find_datafile_paths():
         if name not in paths:
             paths[name] = data_path
         else:
-            logger.warning(
-                "Name %s from file %s allready used", name, data_path
-            )
+            logger.warning("Name %s from file %s allready used", name, data_path)
 
     return paths
 
@@ -181,9 +174,7 @@ def create_config_dict(config, datafile=None, datatype=None):
     return outdict
 
 
-def create_config_dict_from_list(
-    datatype, simconfig, datafiles, paths, grid3d
-):
+def create_config_dict_from_list(datatype, simconfig, datafiles, paths, grid3d):
     """Prepare dictionary from list of datafiles and simconfig
 
     Args:
@@ -256,9 +247,7 @@ def create_config_dict_from_dict(datafiles, paths, grid3d):
                     submod,
                     options,
                 )
-                outdict[datafile_path][submod] = filter_options(
-                    submod, options
-                )
+                outdict[datafile_path][submod] = filter_options(submod, options)
         except AttributeError:
             for submod in datafiles[datafile]:
                 outdict[datafile_path][submod] = {}
@@ -308,11 +297,18 @@ def find_datafiles_no_seedpoint():
     valid_filetypes = [".DATA", ".afi", ".in"]
     datafiles = []
     for filetypes in valid_filetypes:
-        datafiles.extend(list(
-            filter(
-                lambda file: (file.suffix in valid_filetypes and file.with_suffix('').stem not in [datafile.with_suffix('').stem for datafile in datafiles]), cwd.glob(f"*/*/*{filetypes}")
+        datafiles.extend(
+            list(
+                filter(
+                    lambda file: (
+                        file.suffix in valid_filetypes
+                        and file.with_suffix("").stem
+                        not in [datafile.with_suffix("").stem for datafile in datafiles]
+                    ),
+                    cwd.glob(f"*/*/*{filetypes}"),
+                )
             )
-        ))
+        )
     logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
@@ -332,17 +328,13 @@ class Dispatcher:
         self._parentid = get_case_uuid(datafile)
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
-        self._mem_limit = (
-            psutil.virtual_memory().available * self._limit_percent
-        )
+        self._mem_limit = psutil.virtual_memory().available * self._limit_percent
         self._config_path = config_path
 
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        self._logger.info(
-            "Init, parent is %s, and env is %s", self.parentid, self.env
-        )
+        self._logger.info("Init, parent is %s, and env is %s", self.parentid, self.env)
 
     @property
     def parentid(self):
@@ -373,9 +365,7 @@ class Dispatcher:
             self._mem_count += file.size
             self._objects.append(file)
             self._count += 1
-            self._mem_limit = (
-                psutil.virtual_memory().available * self._limit_percent
-            )
+            self._mem_limit = psutil.virtual_memory().available * self._limit_percent
 
             self._logger.debug(
                 "Count is %s, and mem frac is %f1.1",
@@ -462,9 +452,7 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     relative_parent = str(Path(datafile_path).parents[2]).replace(
         str(Path(datafile_path).parents[4]), ""
     )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    }
+    metadata["file"] = {"relative_path": f"{relative_parent}/{name}--{tagname}".lower()}
     logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
 
@@ -492,9 +480,7 @@ def convert_2_sumo_file(obj, converter, metacreator, meta_args):
     bytestring = converter(obj)
     metadata = metacreator(*meta_args)
     logger.debug("Metadata created")
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
+    assert isinstance(metadata, dict), f"meta should be dict, but is {type(metadata)}"
     assert isinstance(
         bytestring, bytes
     ), f"bytestring should be bytes, but is {type(bytestring)}"
@@ -521,9 +507,7 @@ def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(
-            files, parent_id, connection, config_path=config_path
-        )
+        status = upload_files(files, parent_id, connection, config_path=config_path)
         print("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
             print(f"{state}: {len(obj_status)}")
@@ -543,9 +527,7 @@ def give_name(datafile_path: str) -> str:
     logger = logging.getLogger(__name__ + ".give_name")
     logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(
-        datafile_path_posix.suffix, ""
-    )
+    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     logger.info("Returning name %s", base_name)
