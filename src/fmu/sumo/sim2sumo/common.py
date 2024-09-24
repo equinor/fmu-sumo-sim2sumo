@@ -305,12 +305,14 @@ def find_datafiles_no_seedpoint():
     logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
     cwd = Path().cwd()
     logger.info("Looking for files in %s", cwd)
-    valid_filetypes = [".afi", ".DATA", ".in"]
-    datafiles = list(
-        filter(
-            lambda file: file.suffix in valid_filetypes, cwd.glob("*/*/*.*")
-        )
-    )
+    valid_filetypes = [".DATA", ".afi", ".in"]
+    datafiles = []
+    for filetypes in valid_filetypes:
+        datafiles.extend(list(
+            filter(
+                lambda file: (file.suffix in valid_filetypes and file.with_suffix('').stem not in [datafile.with_suffix('').stem for datafile in datafiles]), cwd.glob(f"*/*/*{filetypes}")
+            )
+        ))
     logger.debug("Found the following datafiles %s", datafiles)
     return datafiles
 
