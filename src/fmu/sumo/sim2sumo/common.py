@@ -161,10 +161,7 @@ def create_config_dict(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     simconfig = config.get("sim2sumo", {})
-    if len(simconfig) == 0:
-        logger.warning("We are starting from scratch")
-    else:
-        logger.debug("This is the starting point %s", simconfig)
+    logger.debug("sim2sumo config %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
