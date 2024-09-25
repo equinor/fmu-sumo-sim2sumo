@@ -434,8 +434,30 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
     real0 = scratch_files[0]
     write_ert_config_and_run(real0)
     expected_exports = 88
-    path = f"/objects('{case_uuid}')/children"
-    results = sumo.get(path).json()
+    path = f"/objects('{case_uuid}')/search"
+    results = sumo.post(
+        path,
+        json={
+            "query": {
+                "bool": {
+                    "must_not": [
+                        {
+                            "terms": {
+                                "class.keyword": [
+                                    "case",
+                                    "iteration",
+                                    "realization",
+                                ]
+                            }
+                        }
+                    ],
+                }
+            },
+            "size": 0,
+            "track_total_hits": True,
+        },
+    ).json()
+
     returned = results["hits"]["total"]["value"]
     LOGGER.debug("This is returned %s", returned)
     assert (
