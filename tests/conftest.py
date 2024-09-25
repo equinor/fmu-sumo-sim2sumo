@@ -109,8 +109,8 @@ def _fix_register(scratch_files, token):
         yaml.safe_dump(case_metadata, stream)
     sumo_conn = SumoConnection(env="dev", token=token)
     case = CaseOnDisk(
-        case_metadata_path=case_metadata_path,
-        sumo_connection=sumo_conn,
+        case_metadata_path,
+        sumo_conn,
         verbosity="DEBUG",
     )
     # Register the case in Sumo
