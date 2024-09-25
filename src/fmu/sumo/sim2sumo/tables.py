@@ -217,6 +217,7 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
     logger = logging.getLogger(__file__ + ".upload_tables")
     logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
+        datafile_path = datafile_path.resolve()
         logger.debug("datafile: %s", datafile_path)
         upload_tables_from_simulation_run(
             datafile_path,
