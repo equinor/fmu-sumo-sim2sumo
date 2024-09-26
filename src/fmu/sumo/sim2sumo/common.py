@@ -3,7 +3,6 @@
 import logging
 import re
 from pathlib import Path
-from collections.abc import Iterable
 
 import psutil
 import yaml
@@ -55,8 +54,6 @@ def get_case_uuid(file_path, parent_level=4):
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    #case_meta_path = (Path().cwd() / "../../share/metadata/fmu_case.yml" )
-    print(case_meta_path)
     logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
@@ -123,7 +120,9 @@ def find_datafiles(seedpoint=None):
 
     if seedpoint:
         for sp in seedpoint:
-            full_path = cwd / sp if not sp.is_absolute() else sp  # Make the path absolute
+            full_path = (
+                cwd / sp if not sp.is_absolute() else sp
+            )  # Make the path absolute
             if full_path.is_dir():
                 # Search for valid files within the directory
                 for filetype in valid_filetypes:
@@ -132,7 +131,9 @@ def find_datafiles(seedpoint=None):
                 # Add the file if it has a valid filetype
                 datafiles.append(full_path)
             else:
-                logger.warning(f"{full_path} is not a valid directory or datafile with accepted filetype")
+                logger.warning(
+                    f"{full_path} is not a valid directory or datafile with accepted filetype"
+                )
     else:
         # Search the current working directory if no seedpoint is provided
         for filetype in valid_filetypes:
@@ -146,8 +147,9 @@ def find_datafiles(seedpoint=None):
         if stem not in unique_stems:
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
-    print(f"Using datafiles: {str(unique_datafiles)} ")
+    logger.info(f"Using datafiles: {str(unique_datafiles)} ")
     return unique_datafiles
+
 
 def create_config_dict(config, datafile=None, datatype=None):
     """Read config settings and make dictionary for use when exporting.
@@ -169,6 +171,16 @@ def create_config_dict(config, datafile=None, datatype=None):
     datafile = datafile if datafile is not None else simconfig.get("datafile", {})
     datatype = datatype if datatype is not None else simconfig.get("datatypes", None)
 
+    if datatype is None:
+        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+
+        if submods == "all":
+            submods = SUBMODULES
+    else:
+        submods = [datatype]
+
+    logger.debug("Submodules to extract with: %s", submods)
+
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
 
@@ -183,6 +195,7 @@ def create_config_dict(config, datafile=None, datatype=None):
                 datafiles = find_datafiles(path)
             else:
                 # If the path is a file, use it directly
+                # Should probably check if it is a file, and of the correct filetype.
                 datafiles = [path]
 
             # Create config entries for each datafile
@@ -191,7 +204,9 @@ def create_config_dict(config, datafile=None, datatype=None):
                 for submod in submods:
                     # Use the global options or default to {"arrow": True}
                     options = simconfig.get("options", {"arrow": True})
-                    sim2sumoconfig[datafile_path][submod] = filter_options(submod, options)
+                    sim2sumoconfig[datafile_path][submod] = filter_options(
+                        submod, options
+                    )
                 sim2sumoconfig[datafile_path]["grid3d"] = grid3d
     else:
         # If datafile is not a dictionary, use the existing logic
@@ -205,6 +220,7 @@ def create_config_dict(config, datafile=None, datatype=None):
 
     return sim2sumoconfig
 
+
 class Dispatcher:
     """Controls upload to sumo"""
 
@@ -217,7 +233,7 @@ class Dispatcher:
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
-        self._parentid = get_case_uuid(Path.cwd(),parent_level=1)
+        self._parentid = get_case_uuid(Path.cwd(), parent_level=1)
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
         self._mem_limit = psutil.virtual_memory().available * self._limit_percent
