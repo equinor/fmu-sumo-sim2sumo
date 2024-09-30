@@ -123,17 +123,14 @@ def find_datafiles(seedpoint=None):
             full_path = (
                 cwd / sp if not sp.is_absolute() else sp
             )  # Make the path absolute
-            if full_path.is_dir():
-                # Search for valid files within the directory
-                for filetype in valid_filetypes:
-                    datafiles.extend(full_path.rglob(f"*{filetype}"))
-            elif full_path.is_file() and full_path.suffix in valid_filetypes:
+
+            if full_path.is_file() and full_path.suffix in valid_filetypes:
                 # Add the file if it has a valid filetype
                 datafiles.append(full_path)
             else:
-                logger.warning(
-                    f"{full_path} is not a valid directory or datafile with accepted filetype"
-                )
+                # Search for valid files within the directory or partly filename
+                for filetype in valid_filetypes:
+                    datafiles.extend(full_path.rglob(f"*{filetype}"))
     else:
         # Search the current working directory if no seedpoint is provided
         for filetype in valid_filetypes:
@@ -147,6 +144,11 @@ def find_datafiles(seedpoint=None):
         if stem not in unique_stems:
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
+        else:
+            logger.info(
+                f"Not using duplicate {str(stem)} from {str(datafile.resolve())}"
+            )
+
     logger.info(f"Using datafiles: {str(unique_datafiles)} ")
     return unique_datafiles
 
@@ -190,13 +192,12 @@ def create_config_dict(config, datafile=None, datatype=None):
             # Convert the filepath to a Path object
             path = Path(filepath)
 
-            # If the path is a directory, find all files within it
-            if path.is_dir():
-                datafiles = find_datafiles(path)
-            else:
-                # If the path is a file, use it directly
-                # Should probably check if it is a file, and of the correct filetype.
+            if path.is_file():
+                # If the path is a file, use it directly, not checking filetype
                 datafiles = [path]
+            # If the path is a directory or part of filename, find all matches
+            else:
+                datafiles = find_datafiles(path)
 
             # Create config entries for each datafile
             for datafile_path in datafiles:
