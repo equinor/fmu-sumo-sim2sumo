@@ -398,17 +398,14 @@ def test_submodules_dict():
 # Skipping wellcompletion data, since this needs zonemap, which none of the others do
 def test_get_table(submod):
     """Test fetching of dataframe"""
-    extras = {}
-    if submod == "wellcompletiondata":
-        extras["zonemap"] = "data/reek/zones.lyr"
-    frame = tables.get_table(REEK_DATA_FILE, submod)
+    frame = tables.get_table(REEK_DATA_FILE, submod, arrow=False)
     assert isinstance(
-        frame, pa.Table
-    ), f"Call for get_dataframe should produce dataframe, but produces {type(frame)}"
+        frame, pd.DataFrame
+    ), f"Call for get_table with arrow=False should produce dataframe, but produces {type(frame)}"
     frame = tables.get_table(REEK_DATA_FILE, submod, arrow=True)
     assert isinstance(
         frame, pa.Table
-    ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
+    ), f"Call for get_table with arrow=True should produce pa.Table, but produces {type(frame)}"
     if submod == "summary":
         assert (
             frame.schema.field("FOPT").metadata is not None
