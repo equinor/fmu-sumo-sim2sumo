@@ -3,9 +3,11 @@ from fmu.sumo.sim2sumo._special_treatments import (
     vfp_to_arrow_dict,
     add_md_to_rft,
 )
-from fmu.sumo.sim2sumo.tables import upload_vfp_tables_from_simulation_run
+from fmu.sumo.sim2sumo.tables import (
+    upload_vfp_tables_from_simulation_run,
+    get_table,
+)
 from fmu.sumo.sim2sumo.common import Dispatcher
-from fmu.sumo.sim2sumo.tables import get_table
 from test_functions import check_sumo
 import pytest
 

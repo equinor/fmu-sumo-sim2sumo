@@ -13,8 +13,9 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 
-from xtgeo import Grid, GridProperty, gridproperty_from_file
+from xtgeo import GridProperty, gridproperty_from_file
 
+from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo.common import (
     find_datafiles,
     create_config_dict,
@@ -23,14 +24,13 @@ from fmu.sumo.sim2sumo.common import (
     find_datefield,
     find_datafiles_no_seedpoint,
     filter_options,
+    get_case_uuid,
 )
-from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
     SUBMODULES,
 )
-from fmu.sumo.sim2sumo.common import get_case_uuid
 from fmu.sumo.uploader import SumoConnection
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
