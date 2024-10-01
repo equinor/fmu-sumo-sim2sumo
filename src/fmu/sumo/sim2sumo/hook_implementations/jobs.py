@@ -7,6 +7,8 @@ from pathlib import Path
 from ert.shared.plugins.plugin_manager import hook_implementation
 from ert.shared.plugins.plugin_response import plugin_response
 
+from fmu.sumo.sim2sumo.forward_models import Sim2Sumo
+
 DESCRIPTION = """
 Makes result simulator (Eclipse, OPM, IX) available in sumo.
 This is done by SIM2SUMO in a three step process:
@@ -98,3 +100,9 @@ def job_documentation(job_name):
         "examples": EXAMPLES,
         "category": "export",
     }
+
+
+@hook_implementation
+@plugin_response(plugin_name="fmu_sumo_uploader")
+def installable_forward_model_steps():
+    return [Sim2Sumo]
