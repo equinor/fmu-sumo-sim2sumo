@@ -66,15 +66,12 @@ def generate_table_meta(datafile, obj, tagname, config):
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_table_meta")
-
     if "vfp" in tagname.lower():
         content = "lift_curves"
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
     metadata = generate_meta(config, datafile, tagname, obj, content)
-    logger.debug("Generated meta are %s", metadata)
 
     return metadata
 
@@ -90,12 +87,6 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     Returns:
          SumoFile: Object containing table object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("tagname: %s", tagname)
-    logger.debug("Config: %s", config)
-
     if obj is None:
         return obj
 

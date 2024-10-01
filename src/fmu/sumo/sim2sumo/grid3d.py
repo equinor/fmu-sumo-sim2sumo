@@ -56,8 +56,6 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
-
     if isinstance(obj, Grid):
         content = "depth"
     else:
@@ -68,7 +66,6 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     else:
         tagname = f"{prefix}-{obj.name}"
     metadata = generate_meta(config, datafile, tagname, obj, content)
-    logger.debug("Generated meta are %s", metadata)
 
     return metadata
 
@@ -85,11 +82,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     Returns:
         SumoFile: Object containing xtgeo object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_xtgeo_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("prefix: %s", prefix)
-    logger.debug("Config: %s", config)
     if obj is None:
         return obj
 
