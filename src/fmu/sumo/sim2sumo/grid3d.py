@@ -140,22 +140,6 @@ def readname(filename):
     return name
 
 
-def make_dates_from_timelist(time_list):
-    """Convert time list format from resdata.RestartFile to strings
-
-    Args:
-        time_list (ResDataRestartFile.timelist): the input list of dates
-
-    Returns:
-        list: dates in string format
-    """
-    dates = []
-    for date in time_list:
-        date_str = datetime.strftime(date[1], "%Y-%m-%d")
-        dates.append(date_str)
-    return dates
-
-
 def upload_init(init_path, xtgeoegrid, config, dispatcher):
     """Upload properties from init file
 
@@ -310,8 +294,12 @@ def get_timesteps(restart_path, egrid):
         list: list of dates
     """
     restart = ResdataRestartFile(egrid, restart_path)
-    time_steps = make_dates_from_timelist(restart.time_list())
-    return time_steps
+
+    dates = []
+    for date in restart.time_list():
+        date_str = datetime.strftime(date[1], "%Y-%m-%d")
+        dates.append(date_str)
+    return dates
 
 
 def make_xtgeo_prop(
