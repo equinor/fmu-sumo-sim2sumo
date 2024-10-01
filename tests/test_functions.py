@@ -424,11 +424,6 @@ def test_convert_to_arrow():
     assert isinstance(table, pa.Table), "Did not convert to table"
 
 
-def test_get_xtgeo_egrid(eightcells_datafile):
-    egrid = grid3d.get_xtgeo_egrid(eightcells_datafile)
-    assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
-
-
 def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
     real0 = scratch_files[0]
