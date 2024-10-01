@@ -38,24 +38,6 @@ SUBMOD_CONTENT.update(
 )
 
 
-def table_to_bytes(table: pa.Table):
-    """Return table as bytestring
-
-    Args:
-        table (pa.Table): the table to be converted
-
-    Returns:
-        bytes: table as bytestring
-    """
-    logger = logging.getLogger(__name__ + ".table_to_bytes")
-    sink = pa.BufferOutputStream()
-    logger.debug("Writing %s to sink", table)
-    pq.write_table(table, sink)
-    byte_string = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(byte_string))
-    return byte_string
-
-
 def table_2_bytestring(table):
     """Convert pa.table to bytestring
 
@@ -63,9 +45,15 @@ def table_2_bytestring(table):
         table (pa.table): the table to convert
 
     Returns:
-        bytest: the bytes string
+        bytes: table as bytestring
     """
-    return table_to_bytes(table)
+    logger = logging.getLogger(__name__ + ".table_2_bytestring")
+    sink = pa.BufferOutputStream()
+    logger.debug("Writing %s to sink", table)
+    pq.write_table(table, sink)
+    byte_string = sink.getvalue().to_pybytes()
+    logger.debug("Returning bytestring with size %s", len(byte_string))
+    return byte_string
 
 
 def generate_table_meta(datafile, obj, tagname, config):
