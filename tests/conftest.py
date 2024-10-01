@@ -12,8 +12,7 @@ from fmu.sumo.uploader import CaseOnDisk, SumoConnection
 from httpx import HTTPStatusError
 from sumo.wrapper import SumoClient
 
-from xtgeo import gridproperty_from_file
-from fmu.sumo.sim2sumo import grid3d
+from xtgeo import grid_from_file, gridproperty_from_file
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
@@ -121,8 +120,15 @@ def _fix_register(scratch_files, token):
 
 @pytest.fixture(scope="session", name="xtgeogrid")
 def _fix_xtgeogrid(eightcells_datafile):
+    """Export egrid file to sumo
 
-    return grid3d.get_xtgeo_egrid(eightcells_datafile)
+    Args:
+        datafile (str): path to datafile
+    """
+    egrid_path = str(eightcells_datafile).replace(".DATA", ".EGRID")
+    egrid = grid_from_file(egrid_path)
+
+    return egrid
 
 
 @pytest.fixture(name="teardown", autouse=True, scope="session")

@@ -110,21 +110,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     return sumo_file
 
 
-def get_xtgeo_egrid(datafile):
-    """Export egrid file to sumo
-
-    Args:
-        datafile (str): path to datafile
-    """
-    logger = logging.getLogger(__name__ + ".get_xtgeo_egrid")
-    logger.debug("Fetching %s", datafile)
-    egrid_path = str(datafile).replace(".DATA", ".EGRID")
-    egrid = grid_from_file(egrid_path)
-
-    logger.info("Fetched %s", egrid.name)
-    return egrid
-
-
 def readname(filename):
     """Read keyword from grdecl file
 
