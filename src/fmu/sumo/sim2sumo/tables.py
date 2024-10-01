@@ -44,15 +44,9 @@ def table_2_bytestring(table):
     Returns:
         bytes: table as bytestring
     """
-    logger = logging.getLogger(__name__ + ".table_2_bytestring")
     sink = pa.BufferOutputStream()
-    logger.debug("Writing %s to sink", table)
     pq.write_table(table, sink)
     bytestring = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
     return bytestring
 
 

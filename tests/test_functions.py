@@ -229,6 +229,11 @@ def test_xtgeo_2_bytestring(eightfipnum):
     assert isinstance(bytestr, bytes)
 
 
+def test_table_2_bytestring(reekrft):
+    bytestr = tables.table_2_bytestring(reekrft)
+    assert isinstance(bytestr, bytes)
+
+
 def test_convert_xtgeo_2_sumo_file(
     eightfipnum, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):

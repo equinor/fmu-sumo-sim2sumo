@@ -31,19 +31,12 @@ def xtgeo_2_bytestring(obj):
     Returns:
         bytestring: bytes
     """
-    logger = logging.getLogger(__name__ + ".xtgeo_2_bytestring")
     if obj is None:
         return obj
-    logger.debug("Converting %s", obj.name)
     sink = BytesIO()
     obj.to_file(sink)
     sink.seek(0)
     bytestring = sink.getbuffer().tobytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
-
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
 
     return bytestring
 
