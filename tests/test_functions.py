@@ -290,7 +290,7 @@ def get_sumo_object(sumo, case_uuid, name, tagname):
 
 def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
     meta = grid3d.generate_grid3d_meta(
-        eightcells_datafile, eightfipnum, "INIT", config, "property"
+        eightcells_datafile, eightfipnum, "INIT", config
     )
     assert isinstance(meta, dict)
 

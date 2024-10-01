@@ -13,6 +13,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
 import res2df
+from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
     SUBMOD_DICT,
@@ -21,10 +22,7 @@ from ._special_treatments import (
     vfp_to_arrow_dict,
     find_md_log,
 )
-from .common import (
-    generate_meta,
-    convert_2_sumo_file,
-)
+from .common import generate_meta
 
 
 SUBMOD_CONTENT = {
@@ -98,16 +96,23 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     logger.debug("tagname: %s", tagname)
     logger.debug("Config: %s", config)
 
-    meta_args = (datafile, obj, tagname, config)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "tagname", "config", "content"), meta_args)
-        ),
-    )
-    sumo_file = convert_2_sumo_file(
-        obj, table_2_bytestring, generate_table_meta, meta_args
-    )
+    if obj is None:
+        return obj
+
+    bytestring = table_2_bytestring(obj)
+    metadata = generate_table_meta(datafile, obj, tagname, config)
+    assert isinstance(
+        bytestring, bytes
+    ), f"bytestring should be bytes, but is {type(bytestring)}"
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
+
+    sumo_file = FileOnJob(bytestring, metadata)
+    sumo_file.path = metadata["file"]["relative_path"]
+    sumo_file.metadata_path = ""
+    sumo_file.size = len(sumo_file.byte_string)
+
     return sumo_file
 
 

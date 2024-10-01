@@ -464,44 +464,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     return metadata
 
 
-def convert_2_sumo_file(obj, converter, metacreator, meta_args):
-    """Convert object to sumo file
-
-    Args:
-        obj (object): the object
-        converter (func): function to convert to bytestring
-        metacreator (func): the function that creates the metadata
-        meta_args (iterable): arguments for generating metadata
-
-    Returns:
-        SumoFile: file containing obj
-    """
-    logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
-    logger.debug("Obj type: %s", type(obj))
-    logger.debug("Convert function %s", converter)
-    logger.debug("Meta function %s", metacreator)
-    logger.debug("Arguments for creating metadata %s", meta_args)
-    if obj is None:
-        logger.warning("Nothing to do with None object")
-        return obj
-    bytestring = converter(obj)
-    metadata = metacreator(*meta_args)
-    logger.debug("Metadata created")
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
-    sumo_file = FileOnJob(bytestring, metadata)
-    logger.debug("Init of sumo file")
-    sumo_file.path = metadata["file"]["relative_path"]
-    sumo_file.metadata_path = ""
-    sumo_file.size = len(sumo_file.byte_string)
-    logger.debug("Returning from func")
-    return sumo_file
-
-
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     """Upload files to sumo
 

@@ -17,11 +17,9 @@ from resdata.resfile import ResdataRestartFile
 from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
+from fmu.sumo.uploader._fileonjob import FileOnJob
 
-from .common import (
-    generate_meta,
-    convert_2_sumo_file,
-)
+from .common import generate_meta
 
 
 def xtgeo_2_bytestring(obj):
@@ -46,7 +44,7 @@ def xtgeo_2_bytestring(obj):
     return bytestring
 
 
-def generate_grid3d_meta(datafile, obj, prefix, config, content):
+def generate_grid3d_meta(datafile, obj, prefix, config):
     """Generate metadata for xtgeo object
 
     Args:
@@ -54,14 +52,16 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
         obj (xtgeo object): the object to generate metadata on
         prefix (str): prefix to include
         config (dict): the fmu config file
-        content (str): content for data
 
     Returns:
         dict: the metadata for obj
     """
     logger = logging.getLogger(__name__ + ".generate_grid3d_meta")
-    if obj is None:
-        return obj
+
+    if isinstance(obj, Grid):
+        content = "depth"
+    else:
+        content = "property"
 
     if prefix == "grid":
         tagname = prefix
@@ -92,21 +92,21 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     logger.debug("Config: %s", config)
     if obj is None:
         return obj
-    if isinstance(obj, Grid):
-        content = "depth"
-    else:
-        content = "property"
 
-    meta_args = (datafile, obj, prefix, config, content)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "prefix", "config", "content"), meta_args)
-        ),
-    )
-    sumo_file = convert_2_sumo_file(
-        obj, xtgeo_2_bytestring, generate_grid3d_meta, meta_args
-    )
+    bytestring = xtgeo_2_bytestring(obj)
+    metadata = generate_grid3d_meta(datafile, obj, prefix, config)
+    assert isinstance(
+        bytestring, bytes
+    ), f"bytestring should be bytes, but is {type(bytestring)}"
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
+    sumo_file = FileOnJob(bytestring, metadata)
+
+    sumo_file.path = metadata["file"]["relative_path"]
+    sumo_file.metadata_path = ""
+    sumo_file.size = len(sumo_file.byte_string)
+
     return sumo_file
 
 
