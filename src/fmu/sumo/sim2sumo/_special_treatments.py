@@ -25,9 +25,7 @@ def convert_to_arrow(frame):
     logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(
-            frame["DATE"], infer_datetime_format=True
-        )
+        frame["DATE"] = pd.to_datetime(frame["DATE"])
     scheme = []
     for column_name in frame.columns:
         if pd.api.types.is_string_dtype(frame[column_name]):
