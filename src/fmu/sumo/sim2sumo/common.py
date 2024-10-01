@@ -178,6 +178,8 @@ def create_config_dict(config, datafile=None, datatype=None):
 
         if submods == "all":
             submods = SUBMODULES
+    elif isinstance(datatype,list):
+        submods = datatype
     else:
         submods = [datatype]
 
