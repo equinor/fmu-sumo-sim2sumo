@@ -7,7 +7,6 @@
 """
 import logging
 from pathlib import Path
-import re
 from datetime import datetime
 
 from io import BytesIO
@@ -95,36 +94,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     sumo_file.size = len(sumo_file.byte_string)
 
     return sumo_file
-
-
-def readname(filename):
-    """Read keyword from grdecl file
-
-    Args:
-        filename (str): name of file to read
-
-    Returns:
-        str: keyword name
-    """
-    logger = logging.getLogger(__name__ + ".readname")
-    name = ""
-    linenr = 0
-    with open(filename, "r", encoding="utf-8") as file_handle:
-        for line in file_handle:
-            linenr += 1
-            logger.debug("%s %s", linenr, line)
-            if "ECHO" in line:
-                continue
-            match = re.match(r"^([a-zA-Z].*)", line)
-            # match = re.match(r"$([a-zA-Z][0-9A-Za-z]+)\s+", line)
-            if match:
-                name = match.group(0)
-                break
-            if linenr > 20:
-                break
-    logger.debug("Property %s", name)
-
-    return name
 
 
 def upload_init(init_path, xtgeoegrid, config, dispatcher):
