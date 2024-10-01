@@ -48,9 +48,12 @@ def table_2_bytestring(table):
     sink = pa.BufferOutputStream()
     logger.debug("Writing %s to sink", table)
     pq.write_table(table, sink)
-    byte_string = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(byte_string))
-    return byte_string
+    bytestring = sink.getvalue().to_pybytes()
+    logger.debug("Returning bytestring with size %s", len(bytestring))
+    assert isinstance(
+        bytestring, bytes
+    ), f"bytestring should be bytes, but is {type(bytestring)}"
+    return bytestring
 
 
 def generate_table_meta(datafile, obj, tagname, config):
@@ -72,6 +75,9 @@ def generate_table_meta(datafile, obj, tagname, config):
         content = SUBMOD_CONTENT.get(tagname, "property")
 
     metadata = generate_meta(config, datafile, tagname, obj, content)
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
 
     return metadata
 
@@ -92,12 +98,6 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
     bytestring = table_2_bytestring(obj)
     metadata = generate_table_meta(datafile, obj, tagname, config)
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
 
     sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]

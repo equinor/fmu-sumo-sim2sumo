@@ -41,6 +41,10 @@ def xtgeo_2_bytestring(obj):
     bytestring = sink.getbuffer().tobytes()
     logger.debug("Returning bytestring with size %s", len(bytestring))
 
+    assert isinstance(
+        bytestring, bytes
+    ), f"bytestring should be bytes, but is {type(bytestring)}"
+
     return bytestring
 
 
@@ -67,6 +71,10 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
         tagname = f"{prefix}-{obj.name}"
     metadata = generate_meta(config, datafile, tagname, obj, content)
 
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
+
     return metadata
 
 
@@ -87,14 +95,8 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
 
     bytestring = xtgeo_2_bytestring(obj)
     metadata = generate_grid3d_meta(datafile, obj, prefix, config)
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
-    sumo_file = FileOnJob(bytestring, metadata)
 
+    sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
     sumo_file.size = len(sumo_file.byte_string)
