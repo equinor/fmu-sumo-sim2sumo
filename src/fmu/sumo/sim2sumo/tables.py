@@ -6,7 +6,6 @@
 """
 
 import logging
-from pathlib import Path
 import sys
 from typing import Union
 
