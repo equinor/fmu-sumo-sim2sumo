@@ -49,15 +49,11 @@ def get_case_uuid(file_path, parent_level=4):
     Returns:
         str: the case uuid
     """
-    logger = logging.getLogger(__name__ + ".get_case_uuid")
-    logger.debug("Asked for parent %s for %s", parent_level, file_path)
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
-    logger.info("Case uuid: %s", uuid)
     return uuid
 
 
@@ -424,13 +420,14 @@ def find_datefield(text_string):
     return date
 
 
-def generate_meta(config, datafile_path, tagname, obj, content):
+def generate_meta(config, datafile_path, tagname, name, obj, content):
     """Generate metadata for object
 
     Args:
         config (dict): the metadata required
         datafile_path (str): path to datafile or relative
         tagname (str): the tagname
+        name (str): the name
         obj (object): object eligible for dataio
 
     Returns:
@@ -443,7 +440,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     logger.debug("Config: %s", config)
     logger.debug("datafile_path: %s", datafile_path)
     logger.info("tagname: %s", tagname)
-    name = give_name(datafile_path)
     exp_args = {
         "config": config,
         "name": name,

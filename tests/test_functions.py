@@ -242,7 +242,7 @@ def test_convert_xtgeo_2_sumo_file(
     print(file.byte_string)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
-    obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
+    obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
     assert isinstance(
         prop, GridProperty
@@ -309,7 +309,7 @@ def test_upload_init(
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "INIT", expected_results, "cpgrid_property", sumo)
+    check_sumo(uuid, "EIGHTCELLS", expected_results, "cpgrid_property", sumo)
 
 
 def test_upload_restart(
@@ -329,7 +329,7 @@ def test_upload_restart(
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "UNRST", expected_results, "cpgrid_property", sumo)
+    check_sumo(uuid, "EIGHTCELLS", expected_results, "cpgrid_property", sumo)
 
 
 def test_upload_tables_from_simulation_run(

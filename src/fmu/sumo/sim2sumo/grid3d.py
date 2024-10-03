@@ -18,10 +18,7 @@ from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 
-from .common import (
-    generate_meta,
-    convert_2_sumo_file,
-)
+from .common import generate_meta, convert_2_sumo_file, give_name
 
 
 def xtgeo_2_bytestring(obj):
@@ -64,10 +61,11 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
         return obj
 
     if prefix == "grid":
-        tagname = prefix
+        name = prefix
     else:
-        tagname = f"{prefix}-{obj.name}"
-    metadata = generate_meta(config, datafile, tagname, obj, content)
+        name = f"{prefix}-{obj.name}"
+    tagname = give_name(datafile)
+    metadata = generate_meta(config, datafile, tagname, name, obj, content)
     logger.debug("Generated meta are %s", metadata)
 
     return metadata

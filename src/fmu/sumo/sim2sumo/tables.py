@@ -22,10 +22,7 @@ from ._special_treatments import (
     vfp_to_arrow_dict,
     find_md_log,
 )
-from .common import (
-    generate_meta,
-    convert_2_sumo_file,
-)
+from .common import generate_meta, convert_2_sumo_file, give_name
 
 
 SUBMOD_CONTENT = {
@@ -88,7 +85,8 @@ def generate_table_meta(datafile, obj, tagname, config):
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
-    metadata = generate_meta(config, datafile, tagname, obj, content)
+    name = give_name(datafile)
+    metadata = generate_meta(config, datafile, tagname, name, obj, content)
     logger.debug("Generated meta are %s", metadata)
 
     return metadata
