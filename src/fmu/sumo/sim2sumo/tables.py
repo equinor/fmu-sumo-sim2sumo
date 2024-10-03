@@ -22,7 +22,13 @@ from ._special_treatments import (
     vfp_to_arrow_dict,
     find_md_log,
 )
-from .common import generate_meta, convert_2_sumo_file, give_name
+
+from fmu.dataio import ExportData
+from .common import (
+    find_datefield,
+    convert_2_sumo_file,
+    give_name,
+)
 
 
 SUBMOD_CONTENT = {
@@ -65,6 +71,7 @@ def table_2_bytestring(table):
     return table_to_bytes(table)
 
 
+# Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
 def generate_table_meta(datafile, obj, tagname, config):
     """Generate metadata for xtgeo object
 
@@ -78,16 +85,32 @@ def generate_table_meta(datafile, obj, tagname, config):
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_table_meta")
-
     if "vfp" in tagname.lower():
         content = "lift_curves"
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
     name = give_name(datafile)
-    metadata = generate_meta(config, datafile, tagname, name, obj, content)
-    logger.debug("Generated meta are %s", metadata)
+
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": content,
+    }
+
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
+
+    exd = ExportData(**exp_args)
+    metadata = exd.generate_metadata(obj)
+    relative_parent = str(Path(datafile).parents[2]).replace(
+        str(Path(datafile).parents[4]), ""
+    )
+    metadata["file"] = {
+        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
+    }
 
     return metadata
 
