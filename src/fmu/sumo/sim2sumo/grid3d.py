@@ -162,7 +162,6 @@ def upload_restart(
     count = 0
     for prop_name in prop_names:
         for time_step in time_steps:
-
             try:
                 restart_prop = eclrun.import_gridprop_from_restart(
                     FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
@@ -173,9 +172,6 @@ def upload_restart(
 
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
-                # TODO: refactor this if statement together with identical
-                # code in export_init
-                # These are identical, and should be treated as such
                 logger.debug("Exporting %s", xtgeo_prop.name)
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
@@ -189,7 +185,7 @@ def upload_restart(
                     continue
                 dispatcher.add(sumo_file)
                 count += 1
-    logger.info("%s properties sendt on", count)
+    logger.info("%s properties uploaded", count)
 
     return count
 
@@ -221,9 +217,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     grid_path = str(datafile_path.with_suffix(".EGRID"))
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
-    # grid_exp_path = export_object(
-    #     datafile, "grid", config, xtgeoegrid, "depth"
-    # )
     sumo_file = convert_xtgeo_2_sumo_file(
         restart_path, xtgeoegrid, "grid", config
     )

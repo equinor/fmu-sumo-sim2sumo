@@ -56,9 +56,8 @@ def generate_table_meta(datafile, obj, tagname, config):
     Args:
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
-        prefix (str): prefix to include
+        tagname: tagname
         config (dict): the fmu config file
-        content (str): content for data
 
     Returns:
         dict: the metadata for obj
@@ -69,9 +68,6 @@ def generate_table_meta(datafile, obj, tagname, config):
         content = SUBMOD_CONTENT.get(tagname, "property")
 
     metadata = generate_meta(config, datafile, tagname, obj, content)
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
 
     return metadata
 

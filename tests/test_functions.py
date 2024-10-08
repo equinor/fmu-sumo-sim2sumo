@@ -33,15 +33,13 @@ from fmu.sumo.sim2sumo._special_treatments import (
 )
 from fmu.sumo.uploader import SumoConnection
 
-REEK_ROOT = Path(__file__).parent / "data/reek"
-REAL_PATH = "realization-0/iter-0/"
-REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
-REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
-REEK_BASE = "2_R001_REEK"
-REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
-REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
-CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
+
+from conftest import (
+    REEK_REAL0,
+    REEK_REAL1,
+    REEK_DATA_FILE,
+    EIGHTCELLS_DATAFILE,
+)
 
 
 LOGGER = logging.getLogger(__file__)
@@ -64,7 +62,6 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     else:
         # The plus one is because we are always uploading the parameters.txt automatically
         check_nr = correct + 1
-    print(query)
 
     results = sumo.get(path, query).json()
 
@@ -73,9 +70,7 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     LOGGER.debug("This is returned %s", returned)
     assert (
         returned == check_nr
-    ), f"Supposed to upload {correct}, but actual were {returned}"
-
-    print(f"**************\nFound {correct} {class_type} objects")
+    ), f"Supposed to upload {check_nr}, but actual were {returned}"
 
     sumo.delete(
         path,
@@ -123,9 +118,7 @@ def write_ert_config_and_run(runpath):
 
 
 def check_expected_exports(expected_exports, shared_grid, prefix):
-    print("Looking in ", shared_grid)
     parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
-    print(parameters)
     meta = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff.yml"))
     nr_parameter = len(parameters)
     nr_meta = len(meta)
@@ -199,7 +192,6 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     ],
 )
 def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
-
     sim2sumo_config = {"sim2sumo": config}
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
@@ -209,7 +201,6 @@ def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
         len(inputs) == nrdatafiles
     ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
     for submod, subdict in inputs.items():
-
         assert (
             len(subdict) == nrsubmodules
         ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
@@ -242,9 +233,6 @@ def test_convert_xtgeo_2_sumo_file(
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
     )
-    print(case_uuid)
-    print(file.metadata)
-    print(file.byte_string)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
@@ -259,15 +247,12 @@ def test_convert_xtgeo_2_sumo_file(
 def test_convert_table_2_sumo_file(
     reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
-
     monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
     )
 
-    print(file.metadata)
-    print(file.byte_string)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
@@ -280,22 +265,19 @@ def test_convert_table_2_sumo_file(
 
 
 def get_sumo_object(sumo, case_uuid, name, tagname):
-    print("Fetching object with name, and tag", name, tagname)
     sleep(SLEEP_TIME)
     path = f"/objects('{case_uuid}')/search"
     results = sumo.get(
         path, f"$query=data.name:{name} AND data.tagname:{tagname}"
     ).json()
-    print(results)
     obj_id = results["hits"]["hits"][0]["_id"]
     obj = BytesIO(sumo.get(f"/objects('{obj_id}')/blob").content)
-    print(type(obj))
     return obj
 
 
-def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
+def test_generate_grid3d_meta(eightfipnum, config):
     meta = grid3d.generate_grid3d_meta(
-        eightcells_datafile, eightfipnum, "INIT", config
+        EIGHTCELLS_DATAFILE, eightfipnum, "INIT", config
     )
     assert isinstance(meta, dict)
 
@@ -456,7 +438,6 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
     ).json()
 
     returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
     assert (
         returned == expected_exports
     ), f"Supposed to upload {expected_exports}, but actual were {returned}"
@@ -464,7 +445,6 @@ def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
 
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
-
     os.chdir(real)
     datafiles = find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
@@ -489,4 +469,3 @@ def test_find_datafiles_no_seedpoint(tmp_path):
     os.chdir(real1)
     files = find_datafiles_no_seedpoint()
     assert len(files) == 5
-    print({data_path.name: data_path for data_path in files})

@@ -16,14 +16,11 @@ from xtgeo import grid_from_file, gridproperty_from_file
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
-REAL_PATH = "realization-0/iter-0/"
 REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
 REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
-REEK_BASE = "2_R001_REEK"
 REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
-REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
-CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
+REEK_DATA_FILE = REEK_ECL_MODEL / "2_R001_REEK-0.DATA"
+CONFIG_PATH = REEK_REAL0 / "fmuconfig/output/global_variables.yml"
 EIGHTCELLS_DATAFILE = REEK_ECL_MODEL / "EIGHTCELLS.DATA"
 
 
@@ -40,11 +37,6 @@ def set_up_tmp(path):
 def _fix_token():
     token = os.environ.get("ACCESS_TOKEN")
     return token if token and len(token) else None
-
-
-@pytest.fixture(scope="session", name="eightcells_datafile")
-def _fix_eight():
-    return EIGHTCELLS_DATAFILE
 
 
 @pytest.fixture(scope="session", name="eightfipnum")
@@ -78,7 +70,6 @@ def _fix_sumo(token):
 
 @pytest.fixture(scope="session", name="scratch_files")
 def _fix_scratch_files(tmp_path_factory):
-
     return set_up_tmp(tmp_path_factory.mktemp("scratch"))
 
 
@@ -91,7 +82,6 @@ def _fix_ert_env(monkeypatch):
 
 @pytest.fixture(scope="session", name="case_uuid")
 def _fix_register(scratch_files, token):
-
     root = scratch_files[0].parents[1]
     case_metadata_path = root / "share/metadata/fmu_case.yml"
     case_metadata = yaml_load(case_metadata_path)
@@ -119,13 +109,13 @@ def _fix_register(scratch_files, token):
 
 
 @pytest.fixture(scope="session", name="xtgeogrid")
-def _fix_xtgeogrid(eightcells_datafile):
+def _fix_xtgeogrid():
     """Export egrid file to sumo
 
     Args:
         datafile (str): path to datafile
     """
-    egrid_path = str(eightcells_datafile).replace(".DATA", ".EGRID")
+    egrid_path = str(EIGHTCELLS_DATAFILE).replace(".DATA", ".EGRID")
     egrid = grid_from_file(egrid_path)
 
     return egrid

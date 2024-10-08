@@ -135,7 +135,7 @@ def find_datafile_paths():
             paths[name] = data_path
         else:
             logger.warning(
-                "Name %s from file %s allready used", name, data_path
+                "Name %s from file %s already used", name, data_path
             )
 
     return paths
@@ -398,7 +398,6 @@ class Dispatcher:
 
     def finish(self):
         """Cleanup"""
-        self._logger.info("Final stretch")
         self._upload()
 
 
