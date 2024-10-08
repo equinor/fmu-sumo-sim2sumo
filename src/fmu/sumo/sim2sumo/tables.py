@@ -111,9 +111,6 @@ def get_table(
         pd.DataFrame: the extracted data
     """
     logger = logging.getLogger(__file__ + ".get_table")
-    logger.debug(
-        "Input arguments %s",
-    )
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
     try:
@@ -123,7 +120,6 @@ def get_table(
     except KeyError:
         logger.debug("No arrow key to delete")
     output = None
-    trace = None
     # TODO: see if there is a cleaner way with rft, see functions
     # find_md_log, and complete_rft, but needs really to be fixed in res2df
     md_log_file = find_md_log(submod, kwargs)
@@ -164,18 +160,11 @@ def get_table(
             except TypeError:
                 logger.warning("Type error, cannot convert to arrow")
 
-    except TypeError:
-        trace = sys.exc_info()[1]
-    except FileNotFoundError:
-        trace = sys.exc_info()[1]
-    except ValueError:
-        trace = sys.exc_info()[1]
-    if trace is not None:
+    except (TypeError, FileNotFoundError, ValueError):
         logger.warning(
             "Trace: %s, \nNo results produced ",
-            trace,
+            sys.exc_info()[1],
         )
-    logger.debug("Returning %s", output)
     return output
 
 
@@ -187,10 +176,7 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
-        logger.debug("datafile: %s", datafile_path)
         upload_tables_from_simulation_run(
             datafile_path,
             submod_and_options,
@@ -234,10 +220,9 @@ def upload_tables_from_simulation_run(
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
-    logger.info("Extracting tables from %s", datafile)
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
-            logger.debug("No tables for grid3d, skipping")
+            # No tables for grid3d
             continue
 
         if submod == "vfp":
@@ -246,7 +231,6 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, **options)
-            logger.debug("Sending %s onto file creation", table)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, submod, config
             )

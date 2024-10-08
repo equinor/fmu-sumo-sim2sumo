@@ -1,6 +1,5 @@
 """Test utility ecl2csv"""
 
-import logging
 import os
 from pathlib import Path
 from numpy.ma import allclose, allequal
@@ -42,7 +41,6 @@ from conftest import (
 )
 
 
-LOGGER = logging.getLogger(__file__)
 SLEEP_TIME = 3
 
 
@@ -65,9 +63,7 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
 
     results = sumo.get(path, query).json()
 
-    LOGGER.debug(results["hits"])
     returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
     assert (
         returned == check_nr
     ), f"Supposed to upload {check_nr}, but actual were {returned}"
@@ -353,12 +349,9 @@ def test_upload_simulation_run(
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
-    LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
     for submod_name, submod_dict in submods.items():
-        LOGGER.info(submod_name)
-        LOGGER.info(submod_dict)
         assert isinstance(submod_name, str)
         assert (
             "/" not in submod_name
