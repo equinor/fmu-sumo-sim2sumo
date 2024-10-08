@@ -189,29 +189,19 @@ def vfp_to_arrow_dict(datafile, options):
     Returns:
         tuple: vfp keyword, then dictionary with key: table_name, value: table
     """
-    logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     filepath_no_suffix = Path(datafile).with_suffix("")
     resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
     vfp_dict = {}
     keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
-    logger.debug("keyword is %s", keyword)
     vfpnumbers = options.get("vfpnumbers", None)
     if isinstance(keyword, str):
         keywords = [keyword]
     else:
         keywords = keyword
 
-    logger.debug("%s keywords to go through", len(keywords))
-
     for keyword in keywords:
         vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
             resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
-        )
-
-        logger.debug(
-            "Keyword %s, extracted %s vfp tables",
-            keyword,
-            len(vfp_dict[keyword]),
         )
     return vfp_dict
 

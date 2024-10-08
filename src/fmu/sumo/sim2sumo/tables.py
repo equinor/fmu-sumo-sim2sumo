@@ -214,18 +214,13 @@ def upload_vfp_tables_from_simulation_run(
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher): job dispatcher
     """
-    logger = logging.getLogger(
-        __name__ + ".upload_vfp_tables_from_simulation_run"
-    )
     vfp_dict = vfp_to_arrow_dict(datafile, options)
     for keyword, tables in vfp_dict.items():
         for table in tables:
             table_number = str(
                 table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
             )
-            logger.debug(table)
             tagname = f"{keyword}_{table_number}"
-            logger.debug("Generated tagname: %s", tagname)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, tagname.lower(), config
             )

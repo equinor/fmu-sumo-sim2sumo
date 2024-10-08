@@ -202,10 +202,8 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    logger = logging.getLogger(__name__ + ".upload_simulation_runs")
     for datafile in datafiles:
         if not datafiles[datafile]["grid3d"]:
-            logger.info("Export of grid3d deactivated for %s", datafile)
             continue
         upload_simulation_run(datafile, config, dispatcher)
 
