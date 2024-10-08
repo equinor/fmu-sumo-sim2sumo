@@ -249,15 +249,12 @@ def get_timesteps(restart_path, egrid):
     return dates
 
 
-def make_xtgeo_prop(
-    xtgeoegrid, prop_dict, describe=False, return_single=False
-):
+def make_xtgeo_prop(xtgeoegrid, prop_dict):
     """Build an xtgeo property from xtgeo record
 
     Args:
         xtgeoegrid (xtgeo.Grid): the grid to connect property to
         prop_dict (dict): xtgeo record
-        describe (bool, optional): Print some statistics for property. Defaults to False.
 
     Returns:
         xtgeo.GridProperty: the extracted results
@@ -268,13 +265,10 @@ def make_xtgeo_prop(
     single_value = np.unique(values).size == 1
     if single_value:
         logger.info("%s has only one value", prop_name)
-    if single_value and not return_single:
         xtgeo_prop = None
         logger.debug("Will not return single value property")
     else:
         xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
         xtgeo_prop.values = values
-        if describe:
-            xtgeo_prop.describe()
 
     return xtgeo_prop
