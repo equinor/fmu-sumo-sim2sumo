@@ -29,10 +29,10 @@ SUBMOD_CONTENT = {
     "summary": "timeseries",
     "satfunc": "relperm",
     "vfp": "lift_curves",
+    "rft": "rft",
+    "pvt": "pvt",
+    "transmissibilities": "transmissibilities",
 }
-SUBMOD_CONTENT.update(
-    {name: name for name in ["rft", "pvt", "transmissibilities"]}
-)
 
 
 def table_2_bytestring(table):
