@@ -231,6 +231,7 @@ def test_convert_xtgeo_2_sumo_file(
     )
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "FIPNUM")
     prop = gridproperty_from_file(obj)
     assert isinstance(
@@ -251,6 +252,7 @@ def test_convert_table_2_sumo_file(
 
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
     assert isinstance(
@@ -261,7 +263,6 @@ def test_convert_table_2_sumo_file(
 
 
 def get_sumo_object(sumo, case_uuid, name, tagname):
-    sleep(SLEEP_TIME)
     path = f"/objects('{case_uuid}')/search"
     results = sumo.get(
         path, f"$query=data.name:{name} AND data.tagname:{tagname}"
