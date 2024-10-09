@@ -55,7 +55,7 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     if isinstance(obj, Grid):
         content = "depth"
     else:
-        content = "property"
+        content = {"property": {"is_discrete": False}}
 
     if prefix == "grid":
         tagname = prefix
