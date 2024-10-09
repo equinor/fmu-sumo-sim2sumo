@@ -19,28 +19,25 @@ DROGON_DATAFILE = DROGON_REAL / "eclipse/model/DROGON-0.DATA"
 @pytest.mark.parametrize(
     "options,keycombo,nrkeys,nrtables",
     [
-        ({}, "VFPPRODVFPINJ", 2, 5),
-        ({"keyword": "VFPINJ"}, "VFPINJ", 1, 1),
-        ({"keyword": ["VFPPROD", "VFPINJ"]}, "VFPPRODVFPINJ", 2, 5),
-        ({"vfpnumbers": "1,2,4"}, "VFPPRODVFPINJ", 2, 3),
+        ({}, ["VFPPROD", "VFPINJ"], 2, 5),
+        ({"keyword": "VFPINJ"}, ["VFPINJ"], 1, 1),
+        ({"keyword": ["VFPPROD", "VFPINJ"]}, ["VFPPROD", "VFPINJ"], 2, 5),
+        ({"vfpnumbers": "1,2,4"}, ["VFPPROD", "VFPINJ"], 2, 3),
     ],
 )
 def test_vfp_to_arrow(options, keycombo, nrkeys, nrtables):
-
     arrow_dict = vfp_to_arrow_dict(DROGON_DATAFILE, options)
     assert len(arrow_dict) == nrkeys
     nr_tables = 0
-    returned_keycombo = ""
-    for key, value in arrow_dict.items():
+    for value in arrow_dict.values():
         nr_tables += len(value)
-        returned_keycombo += key
 
     assert (
         nr_tables == nrtables
     ), f"Returned {nr_tables} tables, but should be {nrtables}"
-    assert (
-        returned_keycombo == keycombo
-    ), f"Returned keycombo {returned_keycombo}, should be {keycombo}"
+    assert set(arrow_dict.keys()) == set(
+        keycombo
+    ), f"Returned keys {arrow_dict.keys()}, should be {keycombo}"
 
 
 def test_vfp_tables_from_simulation_run(
