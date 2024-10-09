@@ -33,12 +33,7 @@ from fmu.sumo.sim2sumo._special_treatments import (
 from fmu.sumo.uploader import SumoConnection
 
 
-from conftest import (
-    REEK_REAL0,
-    REEK_REAL1,
-    REEK_DATA_FILE,
-    EIGHTCELLS_DATAFILE,
-)
+from conftest import REEK_REAL0, REEK_REAL1, REEK_DATA_FILE
 
 
 SLEEP_TIME = 3
@@ -272,9 +267,10 @@ def get_sumo_object(sumo, case_uuid, name, tagname):
     return obj
 
 
-def test_generate_grid3d_meta(eightfipnum, config):
+def test_generate_grid3d_meta(scratch_files, eightfipnum, config, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
     meta = grid3d.generate_grid3d_meta(
-        EIGHTCELLS_DATAFILE, eightfipnum, "INIT", config
+        scratch_files[1], eightfipnum, "INIT", config
     )
     assert isinstance(meta, dict)
 
