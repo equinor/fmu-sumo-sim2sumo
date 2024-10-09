@@ -90,7 +90,7 @@ def write_ert_config_and_run(runpath):
         stdout, stderr = process.communicate()
 
     print(
-        f"After er run all these files where found at runpath {list(Path(runpath).glob('*'))}"
+        f"After ert run all these files where found at runpath {[item.name for item in list(Path(runpath).glob('*'))]}"
     )
     if stdout:
         print("stdout:", stdout.decode(encoding), sep="\n")
