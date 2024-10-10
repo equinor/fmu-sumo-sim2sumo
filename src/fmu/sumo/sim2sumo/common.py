@@ -47,15 +47,11 @@ def get_case_uuid(file_path, parent_level=4):
     Returns:
         str: the case uuid
     """
-    logger = logging.getLogger(__name__ + ".get_case_uuid")
-    logger.debug("Asked for parent %s for %s", parent_level, file_path)
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
-    logger.info("Case uuid: %s", uuid)
     return uuid
 
 
