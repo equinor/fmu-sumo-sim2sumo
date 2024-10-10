@@ -264,11 +264,12 @@ def make_xtgeo_prop(xtgeoegrid, prop_dict):
     values = prop_dict["values"]
     single_value = np.unique(values).size == 1
     if single_value:
-        logger.info("%s has only one value", prop_name)
-        xtgeo_prop = None
-        logger.debug("Will not return single value property")
-    else:
-        xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
-        xtgeo_prop.values = values
+        logger.debug(
+            "%s has only one value. Will not return single value property.",
+            prop_name,
+        )
+        return None
 
+    xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
+    xtgeo_prop.values = values
     return xtgeo_prop
