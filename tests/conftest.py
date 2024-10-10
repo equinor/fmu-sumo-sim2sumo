@@ -33,6 +33,18 @@ def set_up_tmp(path):
     return real0, eight_datafile, config_path
 
 
+@pytest.fixture(scope="function", name="ert_run_scratch_files")
+def _fix_ert_run_scratch_files(tmp_path):
+    # tmp_path is a fixture provided by pytest
+    return set_up_tmp(tmp_path / "scratch")
+
+
+@pytest.fixture(scope="session", name="scratch_files")
+def _fix_scratch_files(tmp_path_factory):
+    # tmp_path_factory is a fixture provided by pytest
+    return set_up_tmp(tmp_path_factory.mktemp("scratch"))
+
+
 @pytest.fixture(scope="session", name="token")
 def _fix_token():
     token = os.environ.get("ACCESS_TOKEN")
@@ -68,11 +80,6 @@ def _fix_sumo(token):
     return SumoClient(env="dev", token=token)
 
 
-@pytest.fixture(scope="session", name="scratch_files")
-def _fix_scratch_files(tmp_path_factory):
-    return set_up_tmp(tmp_path_factory.mktemp("scratch"))
-
-
 @pytest.fixture(autouse=True, scope="function", name="set_ert_env")
 def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_REALIZATION_NUMBER", "0")
@@ -106,6 +113,38 @@ def _fix_register(scratch_files, token):
     sumo_uuid = case.register()
     print("Generated ", sumo_uuid)
     return sumo_uuid
+
+
+@pytest.fixture(scope="function", name="ert_run_case_uuid")
+def _fix_ert_run_case_uuid(ert_run_scratch_files, token):
+    root = ert_run_scratch_files[0].parents[1]
+    case_metadata_path = root / "share/metadata/fmu_case.yml"
+    case_metadata = yaml_load(case_metadata_path)
+    case_metadata["fmu"]["case"]["uuid"] = str(uuid.uuid4())
+    case_metadata["tracklog"][0] = {
+        "datetime": datetime.now().isoformat(),
+        "user": {
+            "id": "dbs",
+        },
+        "event": "created",
+    }
+    with open(case_metadata_path, "w", encoding="utf-8") as stream:
+        yaml.safe_dump(case_metadata, stream)
+    sumo_conn = SumoConnection(env="dev", token=token)
+    case = CaseOnDisk(
+        case_metadata_path,
+        sumo_conn,
+        verbosity="DEBUG",
+    )
+    # Register the case in Sumo
+    sumo_uuid = case.register()
+    yield sumo_uuid
+
+    # Teardown
+    try:
+        sumo_conn.delete(f"/objects('{sumo_uuid}')")
+    except HTTPStatusError:
+        print(f"{sumo_uuid} Already gone..")
 
 
 @pytest.fixture(scope="session", name="xtgeogrid")
