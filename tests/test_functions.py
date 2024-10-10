@@ -93,7 +93,6 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     ],
 )
 def test_non_standard_filter_options(submod, options):
-
     returned_options = filter_options(submod, options)
     assert (
         len(returned_options) > 0
@@ -110,11 +109,8 @@ def test_find_datefield(datestring, expected_result):
 
 def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     real0 = scratch_files[0]
-
     monkeypatch.chdir(real0)
-
     uuid = get_case_uuid(real0, parent_level=1)
-
     assert uuid == case_uuid
 
 
@@ -367,9 +363,8 @@ def test_find_datafiles_reek(real, nrdfiles):
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
-    ), f"Haven't found correct nr of datafiles {nrdfiles} files but {len(datafiles)} ({datafiles})"
-    for datafile in datafiles:
-        found_path = datafile
+    ), f"Incorrect number of datafiles found. Expected {nrdfiles} but found {len(datafiles)}"
+    for found_path in datafiles:
         parent = found_path.parent.parent.name
         assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
         correct_suff = ".DATA"
