@@ -112,11 +112,12 @@ def find_full_path(datafile, paths):
     try:
         return paths[data_name]
     except KeyError:
-        mess = (
-            "Datafile %s, with derived name %s, not found in %s,"
-            " have to skip"
+        logger.warning(
+            "Datafile %s, with derived name %s, not found in %s, have to skip",
+            datafile,
+            data_name,
+            paths,
         )
-        logger.warning(mess, datafile, data_name, paths)
         return None
 
 
