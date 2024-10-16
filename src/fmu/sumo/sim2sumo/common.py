@@ -7,10 +7,8 @@ from pathlib import Path
 import psutil
 import yaml
 
-
 from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
-from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
     SUBMOD_DICT,
@@ -49,15 +47,11 @@ def get_case_uuid(file_path, parent_level=4):
     Returns:
         str: the case uuid
     """
-    logger = logging.getLogger(__name__ + ".get_case_uuid")
-    logger.debug("Asked for parent %s for %s", parent_level, file_path)
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
-    logger.info("Case uuid: %s", uuid)
     return uuid
 
 
@@ -114,11 +108,12 @@ def find_full_path(datafile, paths):
     try:
         return paths[data_name]
     except KeyError:
-        mess = (
-            "Datafile %s, with derived name %s, not found in %s,"
-            " have to skip"
+        logger.warning(
+            "Datafile %s, with derived name %s, not found in %s, have to skip",
+            datafile,
+            data_name,
+            paths,
         )
-        logger.warning(mess, datafile, data_name, paths)
         return None
 
 
@@ -137,7 +132,7 @@ def find_datafile_paths():
             paths[name] = data_path
         else:
             logger.warning(
-                "Name %s from file %s allready used", name, data_path
+                "Name %s from file %s already used", name, data_path
             )
 
     return paths
@@ -161,10 +156,7 @@ def create_config_dict(config, datafile=None, datatype=None):
     logger.debug("Input config keys are %s", config.keys())
 
     simconfig = config.get("sim2sumo", {})
-    if len(simconfig) == 0:
-        logger.warning("We are starting from scratch")
-    else:
-        logger.debug("This is the starting point %s", simconfig)
+    logger.debug("sim2sumo config %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
@@ -403,7 +395,6 @@ class Dispatcher:
 
     def finish(self):
         """Cleanup"""
-        self._logger.info("Final stretch")
         self._upload()
 
 
@@ -465,44 +456,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     }
     logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
-
-
-def convert_2_sumo_file(obj, converter, metacreator, meta_args):
-    """Convert object to sumo file
-
-    Args:
-        obj (object): the object
-        converter (func): function to convert to bytestring
-        metacreator (func): the function that creates the metadata
-        meta_args (iterable): arguments for generating metadata
-
-    Returns:
-        SumoFile: file containing obj
-    """
-    logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
-    logger.debug("Obj type: %s", type(obj))
-    logger.debug("Convert function %s", converter)
-    logger.debug("Meta function %s", metacreator)
-    logger.debug("Arguments for creating metadata %s", meta_args)
-    if obj is None:
-        logger.warning("Nothing to do with None object")
-        return obj
-    bytestring = converter(obj)
-    metadata = metacreator(*meta_args)
-    logger.debug("Metadata created")
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
-    sumo_file = FileOnJob(bytestring, metadata)
-    logger.debug("Init of sumo file")
-    sumo_file.path = metadata["file"]["relative_path"]
-    sumo_file.metadata_path = ""
-    sumo_file.size = len(sumo_file.byte_string)
-    logger.debug("Returning from func")
-    return sumo_file
 
 
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
