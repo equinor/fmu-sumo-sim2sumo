@@ -151,41 +151,13 @@ def create_config_dict(config, datafile=None, datatype=None):
               submodule and option
     """
     # datafile can be read as list, or string which can be either folder or filepath
-    logger = logging.getLogger(__file__ + ".read_config")
-    logger.debug("Using extras %s", [datafile, datatype])
-    logger.debug("Input config keys are %s", config.keys())
 
     simconfig = config.get("sim2sumo", {})
-    logger.debug("sim2sumo config %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
     datafiles = find_datafiles(datafile, simconfig)
     paths = find_datafile_paths()
-    logger.debug("Datafiles %s", datafiles)
-    outdict = create_config_dict_from_list(
-        datatype, simconfig, datafiles, paths, grid3d
-    )
-    logger.debug("Returning %s", outdict)
-    return outdict
-
-
-def create_config_dict_from_list(
-    datatype, simconfig, datafiles, paths, grid3d
-):
-    """Prepare dictionary from list of datafiles and simconfig
-
-    Args:
-        datatype (str): datatype to overule input
-        simconfig (dict): dictionary with input for submods and options
-        datafiles (list): list of datafiles
-        paths (dict): list of all relevant datafiles
-
-    Returns:
-        dict: results as one unified dictionary
-    """
-    logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
-    logger.debug("Simconfig input is: %s", simconfig)
 
     if datatype is None:
         submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
@@ -195,7 +167,6 @@ def create_config_dict_from_list(
     else:
         submods = [datatype]
 
-    logger.debug("Submodules to extract with: %s", submods)
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
 
