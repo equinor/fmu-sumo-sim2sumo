@@ -163,12 +163,9 @@ def create_config_dict(config, datafile=None, datatype=None):
     datafiles = find_datafiles(datafile, simconfig)
     paths = find_datafile_paths()
     logger.debug("Datafiles %s", datafiles)
-    if isinstance(datafiles, dict):
-        outdict = create_config_dict_from_dict(datafiles, paths, grid3d)
-    else:
-        outdict = create_config_dict_from_list(
-            datatype, simconfig, datafiles, paths, grid3d
-        )
+    outdict = create_config_dict_from_list(
+        datatype, simconfig, datafiles, paths, grid3d
+    )
     logger.debug("Returning %s", outdict)
     return outdict
 
@@ -215,47 +212,6 @@ def create_config_dict_from_list(
             outdict[datafile_path][submod] = filter_options(submod, suboptions)
         outdict[datafile_path]["grid3d"] = grid3d
 
-    return outdict
-
-
-def create_config_dict_from_dict(datafiles, paths, grid3d):
-    """Prepare dictionary containing datafile information
-
-    Args:
-        datafiles (dict): the dictionary of datafiles
-        paths (dict): list of all relevant datafiles
-
-    Returns:
-        dict: results as one unified dictionary
-    """
-    logger = logging.getLogger(__file__ + ".prepare_dict_for_sendoff")
-
-    outdict = {}
-    for datafile in datafiles:
-        datafile_path = find_full_path(datafile, paths)
-        if datafile_path not in paths.values():
-            logger.warning("%s not contained in paths", datafile_path)
-        if datafile_path is None:
-            continue
-        outdict[datafile_path] = {}
-        if datafile_path is None:
-            continue
-        try:
-            for submod, options in datafiles[datafile].items():
-                logger.debug(
-                    "%s submod %s:\noptions: %s",
-                    datafile_path,
-                    submod,
-                    options,
-                )
-                outdict[datafile_path][submod] = filter_options(
-                    submod, options
-                )
-        except AttributeError:
-            for submod in datafiles[datafile]:
-                outdict[datafile_path][submod] = {}
-        outdict[datafile_path]["grid3d"] = grid3d
-    logger.debug("Returning %s", outdict)
     return outdict
 
 
