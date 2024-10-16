@@ -66,11 +66,11 @@ def main():
     missing = 0
     for envVar in REQUIRED_ENV_VARS:
         if environ.get(envVar) is None:
-            print(f"{envVar} is not set.")
+            print(f"Required environment variable {envVar} is not set.")
             missing += 1
 
     if missing > 0:
-        print("Missing required environment variables. Stopping.")
+        print("Required ERT environment variables not found. This can happen if sim2sumo was called outside the ERT context. Stopping.")
         exit()
 
     args = parse_args()
