@@ -119,9 +119,13 @@ def find_datafiles(seedpoint=None):
             full_path = (
                 cwd / sp if not sp.is_absolute() else sp
             )  # Make the path absolute
-            if full_path.is_file() and full_path.suffix in valid_filetypes:
-                # Add the file if it has a valid filetype
-                datafiles.append(full_path)
+            if full_path.suffix in valid_filetypes:
+                if full_path.is_file():
+                    # Add the file if it has a valid filetype
+                    datafiles.append(full_path)
+                else:
+                    for filetype in valid_filetypes:
+                        datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}*{filetype}")])
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
