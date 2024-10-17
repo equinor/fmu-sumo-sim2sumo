@@ -74,9 +74,7 @@ def filter_options(submod, kwargs):
         for key, value in kwargs.items()
         if (key in submod_options) or key in ["arrow", "md_log_file"]
     }
-    filtered["arrow"] = kwargs.get(
-        "arrow", True
-    )  # defaulting of arrow happens here
+    filtered["arrow"] = kwargs.get("arrow", True)  # defaulting of arrow happens here
     logger.debug("After filtering options for %s: %s", submod, filtered)
     non_options = [key for key in kwargs if key not in filtered]
     if len(non_options) > 0:
@@ -93,218 +91,139 @@ def filter_options(submod, kwargs):
     return filtered
 
 
-def find_full_path(datafile, paths):
-    """Find full path for datafile from dictionary
+def find_datafiles(seedpoint=None):
+    """Find datafiles relative to an optional seedpoint or the current working directory.
 
     Args:
-        datafile (str): path or name of path
-        paths (dict): dictionary of file paths
+        seedpoint (str|Path|list, optional): Specific file, list of directories, or single directory to search for datafiles.
 
     Returns:
-        Path: path to the full datafile
+        list: The datafiles found with unique stem names, as full paths.
     """
-    logger = logging.getLogger(__file__ + ".find_full_path")
-    data_name = give_name(datafile)
-    try:
-        return paths[data_name]
-    except KeyError:
-        logger.warning(
-            "Datafile %s, with derived name %s, not found in %s, have to skip",
-            datafile,
-            data_name,
-            paths,
-        )
-        return None
+    logger = logging.getLogger(__file__ + ".find_datafiles")
+    valid_filetypes = [".DATA", ".afi", ".in"]
+    datafiles = []
+    cwd = Path().cwd()  # Get the current working directory
 
-
-def find_datafile_paths():
-    """Find all simulator paths
-
-    Returns:
-        dict: key is name to use in sumo, value full path to file
-    """
-    logger = logging.getLogger(__file__ + ".find_datafile_paths")
-    paths = {}
-    for data_path in find_datafiles_no_seedpoint():
-        name = give_name(data_path)
-
-        if name not in paths:
-            paths[name] = data_path
+    if isinstance(seedpoint, dict):
+        # Extract the values (paths) from the dictionary and treat them as a list
+        seedpoint = list(seedpoint.values())
+    elif isinstance(seedpoint, list):
+        # If seedpoint is a list, ensure all elements are strings or Path objects
+        seedpoint = [Path(sp) for sp in seedpoint]
+    elif seedpoint:
+        seedpoint = [seedpoint]
+    
+    if seedpoint:
+        for sp in seedpoint:
+            full_path = (
+                cwd / sp if not sp.is_absolute() else sp
+            )  # Make the path absolute
+            if full_path.suffix in valid_filetypes:
+                if full_path.is_file():
+                    # Add the file if it has a valid filetype
+                    datafiles.append(full_path)
+                else:
+                    datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}")])
+            else:
+                for filetype in valid_filetypes:
+                    if not full_path.is_dir():
+                        # Search for valid files within the directory with partly filename
+                        datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}*{filetype}")])
+                    else:
+                        # Search for valid files within the directory
+                        datafiles.extend([f for f in full_path.rglob(f"*{filetype}")])
+    else:
+        # Search the current working directory if no seedpoint is provided
+        for filetype in valid_filetypes:
+            datafiles.extend([f for f in cwd.rglob(f"*/*/*{filetype}")])
+    # Filter out files with duplicate stems, keeping the first occurrence
+    unique_stems = set()
+    unique_datafiles = []
+    for datafile in datafiles:
+        stem = datafile.with_suffix("").stem
+        if stem not in unique_stems:
+            unique_stems.add(stem)
+            unique_datafiles.append(datafile.resolve())  # Resolve to full path
         else:
             logger.warning(
-                "Name %s from file %s already used", name, data_path
+                "Name %s from file %s already used", stem, datafile
             )
 
-    return paths
+    logger.info(f"Using datafiles: {str(unique_datafiles)} ")
+    return unique_datafiles
 
 
 def create_config_dict(config, datafile=None, datatype=None):
-    """Read config settings and make dictionary for use when exporting
+    """Read config settings and make dictionary for use when exporting.
 
     Args:
-        config (dict): the settings for export of simulator results
-        datafile (str, None): overule with one datafile
-        datatype (str, None): overule with one datatype
+        config (dict): the settings for export of simulator results.
+        datafile (str|Path|list, None): overrule with one datafile or list of datafiles.
+        datatype (str|list, None): overrule with one datatype or a list of datatypes.
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
-              submodule and option
+              submodule and option.
     """
-    # datafile can be read as list, or string which can be either folder or filepath
-    logger = logging.getLogger(__file__ + ".read_config")
-    logger.debug("Using extras %s", [datafile, datatype])
-    logger.debug("Input config keys are %s", config.keys())
-
+    logger = logging.getLogger(__file__ + ".create_config_dict")
     simconfig = config.get("sim2sumo", {})
     logger.debug("sim2sumo config %s", simconfig)
     grid3d = simconfig.get("grid3d", False)
-    if isinstance(simconfig, bool):
-        simconfig = {}
-    datafiles = find_datafiles(datafile, simconfig)
-    paths = find_datafile_paths()
-    logger.debug("Datafiles %s", datafiles)
-    if isinstance(datafiles, dict):
-        outdict = create_config_dict_from_dict(datafiles, paths, grid3d)
-    else:
-        outdict = create_config_dict_from_list(
-            datatype, simconfig, datafiles, paths, grid3d
-        )
-    logger.debug("Returning %s", outdict)
-    return outdict
 
-
-def create_config_dict_from_list(
-    datatype, simconfig, datafiles, paths, grid3d
-):
-    """Prepare dictionary from list of datafiles and simconfig
-
-    Args:
-        datatype (str): datatype to overule input
-        simconfig (dict): dictionary with input for submods and options
-        datafiles (list): list of datafiles
-        paths (dict): list of all relevant datafiles
-
-    Returns:
-        dict: results as one unified dictionary
-    """
-    logger = logging.getLogger(__file__ + ".prepare_list_for_sendoff")
-    logger.debug("Simconfig input is: %s", simconfig)
+    # Use the provided datafile or datatype if given, otherwise use simconfig
+    datafile = datafile if datafile is not None else simconfig.get("datafile", None)
+    datatype = datatype if datatype is not None else simconfig.get("datatypes", None)
 
     if datatype is None:
         submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
 
         if submods == "all":
             submods = SUBMODULES
+    elif isinstance(datatype,list):
+        submods = datatype
     else:
         submods = [datatype]
 
     logger.debug("Submodules to extract with: %s", submods)
-    outdict = {}
-    options = simconfig.get("options", {"arrow": True})
 
-    for datafile in datafiles:
-        datafile_path = find_full_path(datafile, paths)
-        if datafile_path is None:
-            continue
-        outdict[datafile_path] = {}
-        try:
-            suboptions = submods.values()
-        except AttributeError:
-            suboptions = options
-        for submod in submods:
-            outdict[datafile_path][submod] = filter_options(submod, suboptions)
-        outdict[datafile_path]["grid3d"] = grid3d
+    # Initialize the dictionary to hold the configuration for each datafile
+    sim2sumoconfig = {}
 
-    return outdict
+    # If datafile is a dictionary, iterate over its items
+    if isinstance(datafile, dict):
+        for filepath, submods in datafile.items():
+            # Convert the filepath to a Path object
+            path = Path(filepath)
 
+            if path.is_file():
+                # If the path is a file, use it directly, not checking filetype
+                datafiles = [path]
+            # If the path is a directory or part of filename, find all matches
+            else:
+                datafiles = find_datafiles(path)
 
-def create_config_dict_from_dict(datafiles, paths, grid3d):
-    """Prepare dictionary containing datafile information
-
-    Args:
-        datafiles (dict): the dictionary of datafiles
-        paths (dict): list of all relevant datafiles
-
-    Returns:
-        dict: results as one unified dictionary
-    """
-    logger = logging.getLogger(__file__ + ".prepare_dict_for_sendoff")
-
-    outdict = {}
-    for datafile in datafiles:
-        datafile_path = find_full_path(datafile, paths)
-        if datafile_path not in paths.values():
-            logger.warning("%s not contained in paths", datafile_path)
-        if datafile_path is None:
-            continue
-        outdict[datafile_path] = {}
-        if datafile_path is None:
-            continue
-        try:
-            for submod, options in datafiles[datafile].items():
-                logger.debug(
-                    "%s submod %s:\noptions: %s",
-                    datafile_path,
-                    submod,
-                    options,
-                )
-                outdict[datafile_path][submod] = filter_options(
-                    submod, options
-                )
-        except AttributeError:
-            for submod in datafiles[datafile]:
-                outdict[datafile_path][submod] = {}
-        outdict[datafile_path]["grid3d"] = grid3d
-    logger.debug("Returning %s", outdict)
-    return outdict
-
-
-def find_datafiles(seedpoint, simconfig):
-    """Find all relevant paths that can be datafiles
-
-    Args:
-        seedpoint (str, list): path of datafile, or list of folders where one can find one
-        simconfig (dict): the sim2sumo config settings
-
-    Returns:
-        list: list of datafiles to interrogate
-    """
-
-    logger = logging.getLogger(__file__ + ".find_datafiles")
-    datafiles = []
-    seedpoint = simconfig.get("datafile", seedpoint)
-    if seedpoint is None:
-        datafiles = find_datafiles_no_seedpoint()
-
-    elif isinstance(seedpoint, (str, Path)):
-        logger.debug("Using this string %s to find datafile(s)", seedpoint)
-        datafiles.append(seedpoint)
-    elif isinstance(seedpoint, list):
-        logger.debug("%s is list", seedpoint)
-        datafiles.extend(seedpoint)
+            # Create config entries for each datafile
+            for datafile_path in datafiles:
+                sim2sumoconfig[datafile_path] = {}
+                for submod in submods:
+                    # Use the global options or default to {"arrow": True}
+                    options = simconfig.get("options", {"arrow": True})
+                    sim2sumoconfig[datafile_path][submod] = filter_options(
+                        submod, options
+                    )
+                sim2sumoconfig[datafile_path]["grid3d"] = grid3d
     else:
-        datafiles = seedpoint
-    logger.debug("Datafile(s) to use %s", datafiles)
-    return datafiles
+        # If datafile is not a dictionary, use the existing logic
+        datafiles_paths = find_datafiles(datafile)
+        for datafile_path in datafiles_paths:
+            sim2sumoconfig[datafile_path] = {}
+            for submod in submods or []:
+                options = simconfig.get("options", {"arrow": True})
+                sim2sumoconfig[datafile_path][submod] = filter_options(submod, options)
+            sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
-
-def find_datafiles_no_seedpoint():
-    """Find datafiles relative to an ert runpath
-
-    Returns:
-        list: The datafiles found
-    """
-    logger = logging.getLogger(__file__ + ".find_datafiles_no_seedpoint")
-    cwd = Path().cwd()
-    logger.info("Looking for files in %s", cwd)
-    valid_filetypes = [".afi", ".DATA", ".in"]
-    datafiles = list(
-        filter(
-            lambda file: file.suffix in valid_filetypes, cwd.glob("*/*/*.*")
-        )
-    )
-    logger.debug("Found the following datafiles %s", datafiles)
-    return datafiles
+    return sim2sumoconfig
 
 
 class Dispatcher:
@@ -319,20 +238,16 @@ class Dispatcher:
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
-        self._parentid = get_case_uuid(datafile)
+        self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
-        self._mem_limit = (
-            psutil.virtual_memory().available * self._limit_percent
-        )
+        self._mem_limit = psutil.virtual_memory().available * self._limit_percent
         self._config_path = config_path
 
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        self._logger.info(
-            "Init, parent is %s, and env is %s", self.parentid, self.env
-        )
+        self._logger.info("Init, parent is %s, and env is %s", self.parentid, self.env)
 
     @property
     def parentid(self):
@@ -363,9 +278,7 @@ class Dispatcher:
             self._mem_count += file.size
             self._objects.append(file)
             self._count += 1
-            self._mem_limit = (
-                psutil.virtual_memory().available * self._limit_percent
-            )
+            self._mem_limit = psutil.virtual_memory().available * self._limit_percent
 
             self._logger.debug(
                 "Count is %s, and mem frac is %f1.1",
@@ -451,9 +364,7 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     relative_parent = str(Path(datafile_path).parents[2]).replace(
         str(Path(datafile_path).parents[4]), ""
     )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    }
+    metadata["file"] = {"relative_path": f"{relative_parent}/{name}--{tagname}".lower()}
     logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
 
@@ -472,9 +383,7 @@ def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     if len(files) > 0:
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(
-            files, parent_id, connection, config_path=config_path
-        )
+        status = upload_files(files, parent_id, connection, config_path=config_path)
         print("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
             print(f"{state}: {len(obj_status)}")
@@ -494,9 +403,7 @@ def give_name(datafile_path: str) -> str:
     logger = logging.getLogger(__name__ + ".give_name")
     logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(
-        datafile_path_posix.suffix, ""
-    )
+    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
     logger.info("Returning name %s", base_name)
