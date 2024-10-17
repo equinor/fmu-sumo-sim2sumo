@@ -111,8 +111,9 @@ def find_datafiles(seedpoint=None):
     elif isinstance(seedpoint, list):
         # If seedpoint is a list, ensure all elements are strings or Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
-    else:
+    elif seedpoint:
         seedpoint = [seedpoint]
+    
     if seedpoint:
         for sp in seedpoint:
             full_path = (
