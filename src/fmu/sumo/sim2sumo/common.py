@@ -215,7 +215,7 @@ def create_config_dict(config, datafile=None, datatype=None):
         datafiles_paths = find_datafiles(datafile)
         for datafile_path in datafiles_paths:
             sim2sumoconfig[datafile_path] = {}
-            for submod in datatype or []:
+            for submod in submods or []:
                 options = simconfig.get("options", {"arrow": True})
                 sim2sumoconfig[datafile_path][submod] = filter_options(submod, options)
             sim2sumoconfig[datafile_path]["grid3d"] = grid3d
