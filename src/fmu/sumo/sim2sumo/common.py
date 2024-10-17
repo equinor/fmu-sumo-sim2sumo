@@ -108,28 +108,31 @@ def find_datafiles(seedpoint=None):
     if isinstance(seedpoint, dict):
         # Extract the values (paths) from the dictionary and treat them as a list
         seedpoint = list(seedpoint.values())
-    if isinstance(seedpoint, list):
+    elif isinstance(seedpoint, list):
         # If seedpoint is a list, ensure all elements are strings or Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
-
+    else:
+        seedpoint = [seedpoint]
     if seedpoint:
         for sp in seedpoint:
             full_path = (
                 cwd / sp if not sp.is_absolute() else sp
             )  # Make the path absolute
-
             if full_path.is_file() and full_path.suffix in valid_filetypes:
                 # Add the file if it has a valid filetype
                 datafiles.append(full_path)
             else:
-                # Search for valid files within the directory or partly filename
                 for filetype in valid_filetypes:
-                    datafiles.extend(full_path.rglob(f"*{filetype}"))
+                    if not full_path.is_dir():
+                        # Search for valid files within the directory with partly filename
+                        datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}*{filetype}")])
+                    else:
+                        # Search for valid files within the directory
+                        datafiles.extend([f for f in full_path.rglob(f"*{filetype}")])
     else:
         # Search the current working directory if no seedpoint is provided
         for filetype in valid_filetypes:
-            datafiles.extend(cwd.rglob(f"*/*/*{filetype}"))
-
+            datafiles.extend([f for f in cwd.rglob(f"*/*/*{filetype}")])
     # Filter out files with duplicate stems, keeping the first occurrence
     unique_stems = set()
     unique_datafiles = []
