@@ -411,3 +411,8 @@ def validate_sim2sumo_config(config):
     datafiles = config.get("datafile", [])
     if not isinstance(datafiles, list):
         raise ValueError("Config error: datafile must be a list")
+    for file in datafiles:
+        if not isinstance(file, dict):
+            raise ValueError(
+                "Config error: each datafile should be a dictionary"
+            )
