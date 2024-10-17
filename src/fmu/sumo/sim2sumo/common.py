@@ -234,7 +234,7 @@ class Dispatcher:
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
-        self._parentid = get_case_uuid(Path.cwd(), parent_level=1)
+        self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
         self._mem_limit = psutil.virtual_memory().available * self._limit_percent
