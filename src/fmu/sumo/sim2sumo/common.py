@@ -170,13 +170,11 @@ def find_datafiles(seedpoint=None):
     return unique_datafiles
 
 
-def create_config_dict(config, datafile=None, datatype=None):
+def create_config_dict(config):
     """Read config settings and make dictionary for use when exporting.
 
     Args:
         config (dict): the settings for export of simulator results.
-        datafile (str|Path|list, None): overrule with one datafile or list of datafiles.
-        datatype (str|list, None): overrule with one datatype or a list of datatypes.
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
@@ -188,12 +186,8 @@ def create_config_dict(config, datafile=None, datatype=None):
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = (
-        datafile if datafile is not None else simconfig.get("datafile", None)
-    )
-    datatype = (
-        datatype if datatype is not None else simconfig.get("datatypes", None)
-    )
+    datafile = simconfig.get("datafile", None)
+    datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
         submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])

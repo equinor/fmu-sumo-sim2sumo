@@ -33,18 +33,6 @@ def parse_args():
         help="Which sumo environment to upload to",
         default="prod",
     )
-    parser.add_argument(
-        "--datatype",
-        type=str,
-        default=None,
-        help="Override datatype setting, for testing only",
-    )
-    parser.add_argument(
-        "--datafile",
-        type=str,
-        default=None,
-        help="Override datafile setting, for testing only",
-    )
     parser.add_argument("--d", help="Activate debug mode", action="store_true")
     args = parser.parse_args()
     if args.d:
@@ -82,7 +70,7 @@ def main():
     config = yaml_load(args.config_path)
     config["file_path"] = args.config_path
     logger.debug("Added file_path, and config keys are %s", config.keys())
-    sim2sumoconfig = create_config_dict(config, args.datafile, args.datatype)
+    sim2sumoconfig = create_config_dict(config)
     # Init of dispatcher needs one datafile to locate case uuid
     one_datafile = list(sim2sumoconfig.keys())[0]
     try:
