@@ -151,6 +151,9 @@ def create_config_dict(config):
     # datafile can be read as list, or string which can be either folder or filepath
 
     simconfig = config.get("sim2sumo", {})
+
+    validate_sim2sumo_config(simconfig)
+
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
@@ -415,3 +418,9 @@ def give_name(datafile_path: str) -> str:
         base_name = base_name[:-1]
     logger.info("Returning name %s", base_name)
     return base_name
+
+
+def validate_sim2sumo_config(config):
+    datafiles = config.get("datafile", [])
+    if not isinstance(datafiles, list):
+        raise ValueError("Config error: datafile must be a list")

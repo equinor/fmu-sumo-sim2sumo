@@ -5,7 +5,12 @@ import logging
 
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
-from .common import yaml_load, Dispatcher, create_config_dict
+from .common import (
+    validate_sim2sumo_config,
+    yaml_load,
+    Dispatcher,
+    create_config_dict,
+)
 
 
 def parse_args():
@@ -46,8 +51,13 @@ def main():
     args = parse_args()
 
     config = yaml_load(args.config_path)
+
     config["file_path"] = args.config_path
-    sim2sumoconfig = create_config_dict(config)
+    try:
+        sim2sumoconfig = create_config_dict(config)
+    except Exception as e:
+        logger.error("Failed to create config dict: %s", e)
+        return
     # Init of dispatcher needs one datafile to locate case uuid
     one_datafile = list(sim2sumoconfig.keys())[0]
     try:
