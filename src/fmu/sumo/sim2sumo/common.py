@@ -148,12 +148,12 @@ def create_config_dict(config):
     # datafile can be read as list, or string which can be either folder or filepath
 
     simconfig = config.get("sim2sumo", {})
-
+    if isinstance(simconfig, bool) and simconfig is True:
+        simconfig = {}
     validate_sim2sumo_config(simconfig)
 
     grid3d = simconfig.get("grid3d", False)
-    if isinstance(simconfig, bool):
-        simconfig = {}
+
     datafiles = find_datafiles(simconfig)
     paths = find_datafile_paths()
 
@@ -193,12 +193,10 @@ def find_datafiles(simconfig):
     seedpoint = simconfig.get("datafile", None)
     if seedpoint is None:
         datafiles = find_datafiles_no_seedpoint()
-    elif isinstance(seedpoint, (str, Path)):
-        datafiles.append(seedpoint)
     elif isinstance(seedpoint, list):
         datafiles.extend(seedpoint)
     else:
-        datafiles = seedpoint
+        raise ValueError("datafile should be a list or None")
     return datafiles
 
 
