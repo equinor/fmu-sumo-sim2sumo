@@ -427,13 +427,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     Returns:
         dict: the metadata to export
     """
-    logger = logging.getLogger(__name__ + ".generate_meta")
-    logger.info("Obj of type: %s", type(obj))
-    logger.info("Generating metadata")
-    logger.info("Content: %s", content)
-    logger.debug("Config: %s", config)
-    logger.debug("datafile_path: %s", datafile_path)
-    logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
     exp_args = {
         "config": config,
@@ -454,7 +447,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     metadata["file"] = {
         "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
     }
-    logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
 
 
