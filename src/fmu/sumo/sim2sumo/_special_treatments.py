@@ -25,9 +25,7 @@ def convert_to_arrow(frame):
     logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(
-            frame["DATE"], infer_datetime_format=True
-        )
+        frame["DATE"] = pd.to_datetime(frame["DATE"])
     scheme = []
     for column_name in frame.columns:
         if pd.api.types.is_string_dtype(frame[column_name]):
@@ -85,7 +83,6 @@ def find_functions_and_docstring(submod):
             if name not in {"deck", "eclfiles"}
         ),
         "arrow_convertor": find_arrow_convertor(import_path),
-        "doc": func.__doc__,
     }
 
     return returns
@@ -192,29 +189,19 @@ def vfp_to_arrow_dict(datafile, options):
     Returns:
         tuple: vfp keyword, then dictionary with key: table_name, value: table
     """
-    logger = logging.getLogger(__file__ + ".vfp_to_arrow_dict")
     filepath_no_suffix = Path(datafile).with_suffix("")
     resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
     vfp_dict = {}
     keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
-    logger.debug("keyword is %s", keyword)
     vfpnumbers = options.get("vfpnumbers", None)
     if isinstance(keyword, str):
         keywords = [keyword]
     else:
         keywords = keyword
 
-    logger.debug("%s keywords to go through", len(keywords))
-
     for keyword in keywords:
         vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
             resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
-        )
-
-        logger.debug(
-            "Keyword %s, extracted %s vfp tables",
-            keyword,
-            len(vfp_dict[keyword]),
         )
     return vfp_dict
 
@@ -264,38 +251,3 @@ def add_md_to_rft(rft_table, md_file_path):
     logger.debug("Head of merged table to return:\n %s", rft_table.head())
 
     return rft_table
-
-
-def give_help(submod, only_general=False):
-    """Give descriptions of variables available for submodule
-
-    Args:
-        submod (str): submodule
-
-    Returns:
-        str: description of submodule input
-    """
-    general_info = """
-    This utility uses the library ecl2csv, but uploads directly to sumo. Required options are:
-    A config file in yaml format, where you specifiy the variables to extract. What is required
-    is a keyword in the config called "sim2simo". under there you have three optional arguments:
-    * datafile: this can be a string, a list, or it can be absent altogether
-    * datatypes: this needs to be a list, or non existent
-    * options: The options are listed below in the original documentation from ecl2csv. The eclfiles
-               option is replaced with what is under datafile
-
-    """
-    if submod is None:
-        only_general = True
-    if only_general:
-        text_to_return = general_info
-    else:
-        try:
-            text_to_return = general_info + SUBMOD_DICT[submod]["doc"]
-        except KeyError:
-            text_to_return = (
-                f"subtype {submod} does not exist!!, existing options:\n"
-                + "\n".join(SUBMODULES)
-            )
-
-    return text_to_return
