@@ -14,6 +14,7 @@ jobs:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest]
+      max-parallel: 1
     permissions:
       contents: read
       id-token: write
@@ -57,4 +58,4 @@ jobs:
           python -c  'import sys; print(sys.platform)'
           python -c 'import os; import sys; print(os.path.dirname(sys.executable))'
 
-          pytest --log-cli-level WARNING -s --timeout=300
+          pytest --log-cli-level=WARNING -s --timeout=300

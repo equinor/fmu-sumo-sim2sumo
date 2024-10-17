@@ -7,7 +7,6 @@
 """
 import logging
 from pathlib import Path
-import re
 from datetime import datetime
 
 from io import BytesIO
@@ -17,14 +16,10 @@ from resdata.resfile import ResdataRestartFile
 from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
+from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from fmu.dataio import ExportData
-
-from .common import (
-    find_datefield,
-    convert_2_sumo_file,
-    give_name,
-)
+from .common import find_datefield, give_name
 
 
 def xtgeo_2_bytestring(obj):
@@ -36,21 +31,18 @@ def xtgeo_2_bytestring(obj):
     Returns:
         bytestring: bytes
     """
-    logger = logging.getLogger(__name__ + ".xtgeo_2_bytestring")
     if obj is None:
         return obj
-    logger.debug("Converting %s", obj.name)
     sink = BytesIO()
     obj.to_file(sink)
     sink.seek(0)
     bytestring = sink.getbuffer().tobytes()
-    logger.debug("Returning bytestring with size %s", len(bytestring))
 
     return bytestring
 
 
 # Almost equal to tables.py::generate_table_meta, but note difference in name and tagname
-def generate_grid3d_meta(datafile, obj, prefix, config, content):
+def generate_grid3d_meta(datafile, obj, prefix, config):
     """Generate metadata for xtgeo object
 
     Args:
@@ -58,27 +50,26 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
         obj (xtgeo object): the object to generate metadata on
         prefix (str): prefix to include
         config (dict): the fmu config file
-        content (str): content for data
 
     Returns:
         dict: the metadata for obj
     """
-    if obj is None:
-        return obj
+    if isinstance(obj, Grid):
+        content = "depth"
+    else:
+        content = {"property": {"is_discrete": False}}
 
     if prefix == "grid":
         name = prefix
     else:
         name = f"{prefix}-{obj.name}"
     tagname = give_name(datafile)
-
     exp_args = {
         "config": config,
         "name": name,
         "tagname": tagname,
         "content": content,
     }
-
     datefield = find_datefield(tagname)
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
@@ -91,6 +82,9 @@ def generate_grid3d_meta(datafile, obj, prefix, config, content):
     metadata["file"] = {
         "relative_path": f"{relative_parent}/{tagname}--{name}".lower()
     }
+    assert isinstance(
+        metadata, dict
+    ), f"meta should be dict, but is {type(metadata)}"
 
     return metadata
 
@@ -107,90 +101,18 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     Returns:
         SumoFile: Object containing xtgeo object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_xtgeo_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("prefix: %s", prefix)
-    logger.debug("Config: %s", config)
     if obj is None:
         return obj
-    if isinstance(obj, Grid):
-        content = "depth"
-    else:
-        content = "property"
 
-    meta_args = (datafile, obj, prefix, config, content)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "prefix", "config", "content"), meta_args)
-        ),
-    )
-    sumo_file = convert_2_sumo_file(
-        obj, xtgeo_2_bytestring, generate_grid3d_meta, meta_args
-    )
+    bytestring = xtgeo_2_bytestring(obj)
+    metadata = generate_grid3d_meta(datafile, obj, prefix, config)
+
+    sumo_file = FileOnJob(bytestring, metadata)
+    sumo_file.path = metadata["file"]["relative_path"]
+    sumo_file.metadata_path = ""
+    sumo_file.size = len(sumo_file.byte_string)
+
     return sumo_file
-
-
-def get_xtgeo_egrid(datafile):
-    """Export egrid file to sumo
-
-    Args:
-        datafile (str): path to datafile
-    """
-    logger = logging.getLogger(__name__ + ".get_xtgeo_egrid")
-    logger.debug("Fetching %s", datafile)
-    egrid_path = str(datafile).replace(".DATA", ".EGRID")
-    egrid = grid_from_file(egrid_path)
-
-    logger.info("Fetched %s", egrid.name)
-    return egrid
-
-
-def readname(filename):
-    """Read keyword from grdecl file
-
-    Args:
-        filename (str): name of file to read
-
-    Returns:
-        str: keyword name
-    """
-    logger = logging.getLogger(__name__ + ".readname")
-    name = ""
-    linenr = 0
-    with open(filename, "r", encoding="utf-8") as file_handle:
-        for line in file_handle:
-            linenr += 1
-            logger.debug("%s %s", linenr, line)
-            if "ECHO" in line:
-                continue
-            match = re.match(r"^([a-zA-Z].*)", line)
-            # match = re.match(r"$([a-zA-Z][0-9A-Za-z]+)\s+", line)
-            if match:
-                name = match.group(0)
-                break
-            if linenr > 20:
-                break
-    logger.debug("Property %s", name)
-
-    return name
-
-
-def make_dates_from_timelist(time_list):
-    """Convert time list format from resdata.RestartFile to strings
-
-    Args:
-        time_list (ResDataRestartFile.timelist): the input list of dates
-
-    Returns:
-        list: dates in string format
-    """
-    dates = []
-    for date in time_list:
-        date_str = datetime.strftime(date[1], "%Y-%m-%d")
-        dates.append(date_str)
-    return dates
 
 
 def upload_init(init_path, xtgeoegrid, config, dispatcher):
@@ -259,7 +181,6 @@ def upload_restart(
     count = 0
     for prop_name in prop_names:
         for time_step in time_steps:
-
             try:
                 restart_prop = eclrun.import_gridprop_from_restart(
                     FileWrapper(restart_path), prop_name, xtgeoegrid, time_step
@@ -270,9 +191,6 @@ def upload_restart(
 
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
-                # TODO: refactor this if statement together with identical
-                # code in export_init
-                # These are identical, and should be treated as such
                 logger.debug("Exporting %s", xtgeo_prop.name)
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
@@ -286,7 +204,7 @@ def upload_restart(
                     continue
                 dispatcher.add(sumo_file)
                 count += 1
-    logger.info("%s properties sendt on", count)
+    logger.info("%s properties uploaded", count)
 
     return count
 
@@ -299,10 +217,8 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    logger = logging.getLogger(__name__ + ".upload_simulation_runs")
     for datafile in datafiles:
         if not datafiles[datafile]["grid3d"]:
-            logger.info("Export of grid3d deactivated for %s", datafile)
             continue
         upload_simulation_run(datafile, config, dispatcher)
 
@@ -320,9 +236,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     grid_path = str(datafile_path.with_suffix(".EGRID"))
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
-    # grid_exp_path = export_object(
-    #     datafile, "grid", config, xtgeoegrid, "depth"
-    # )
     sumo_file = convert_xtgeo_2_sumo_file(
         restart_path, xtgeoegrid, "grid", config
     )
@@ -347,19 +260,20 @@ def get_timesteps(restart_path, egrid):
         list: list of dates
     """
     restart = ResdataRestartFile(egrid, restart_path)
-    time_steps = make_dates_from_timelist(restart.time_list())
-    return time_steps
+
+    dates = []
+    for date in restart.time_list():
+        date_str = datetime.strftime(date[1], "%Y-%m-%d")
+        dates.append(date_str)
+    return dates
 
 
-def make_xtgeo_prop(
-    xtgeoegrid, prop_dict, describe=False, return_single=False
-):
+def make_xtgeo_prop(xtgeoegrid, prop_dict):
     """Build an xtgeo property from xtgeo record
 
     Args:
         xtgeoegrid (xtgeo.Grid): the grid to connect property to
         prop_dict (dict): xtgeo record
-        describe (bool, optional): Print some statistics for property. Defaults to False.
 
     Returns:
         xtgeo.GridProperty: the extracted results
@@ -369,14 +283,12 @@ def make_xtgeo_prop(
     values = prop_dict["values"]
     single_value = np.unique(values).size == 1
     if single_value:
-        logger.info("%s has only one value", prop_name)
-    if single_value and not return_single:
-        xtgeo_prop = None
-        logger.debug("Will not return single value property")
-    else:
-        xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
-        xtgeo_prop.values = values
-        if describe:
-            xtgeo_prop.describe()
+        logger.debug(
+            "%s has only one value. Will not return single value property.",
+            prop_name,
+        )
+        return None
 
+    xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
+    xtgeo_prop.values = values
     return xtgeo_prop

@@ -6,7 +6,6 @@
 """
 
 import logging
-from pathlib import Path
 import sys
 from typing import Union
 
@@ -14,6 +13,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
 import res2df
+from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
     SUBMOD_DICT,
@@ -23,10 +23,10 @@ from ._special_treatments import (
     find_md_log,
 )
 
+from pathlib import Path
 from fmu.dataio import ExportData
 from .common import (
     find_datefield,
-    convert_2_sumo_file,
     give_name,
 )
 
@@ -35,28 +35,10 @@ SUBMOD_CONTENT = {
     "summary": "timeseries",
     "satfunc": "relperm",
     "vfp": "lift_curves",
+    "rft": "rft",
+    "pvt": "pvt",
+    "transmissibilities": "transmissibilities",
 }
-SUBMOD_CONTENT.update(
-    {name: name for name in ["rft", "pvt", "transmissibilities"]}
-)
-
-
-def table_to_bytes(table: pa.Table):
-    """Return table as bytestring
-
-    Args:
-        table (pa.Table): the table to be converted
-
-    Returns:
-        bytes: table as bytestring
-    """
-    logger = logging.getLogger(__name__ + ".table_to_bytes")
-    sink = pa.BufferOutputStream()
-    logger.debug("Writing %s to sink", table)
-    pq.write_table(table, sink)
-    byte_string = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(byte_string))
-    return byte_string
 
 
 def table_2_bytestring(table):
@@ -66,9 +48,12 @@ def table_2_bytestring(table):
         table (pa.table): the table to convert
 
     Returns:
-        bytest: the bytes string
+        bytes: table as bytestring
     """
-    return table_to_bytes(table)
+    sink = pa.BufferOutputStream()
+    pq.write_table(table, sink)
+    bytestring = sink.getvalue().to_pybytes()
+    return bytestring
 
 
 # Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
@@ -78,9 +63,8 @@ def generate_table_meta(datafile, obj, tagname, config):
     Args:
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
-        prefix (str): prefix to include
+        tagname: tagname
         config (dict): the fmu config file
-        content (str): content for data
 
     Returns:
         dict: the metadata for obj
@@ -126,22 +110,17 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     Returns:
          SumoFile: Object containing table object as bytestring + metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("tagname: %s", tagname)
-    logger.debug("Config: %s", config)
+    if obj is None:
+        return obj
 
-    meta_args = (datafile, obj, tagname, config)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "tagname", "config", "content"), meta_args)
-        ),
-    )
-    sumo_file = convert_2_sumo_file(
-        obj, table_2_bytestring, generate_table_meta, meta_args
-    )
+    bytestring = table_2_bytestring(obj)
+    metadata = generate_table_meta(datafile, obj, tagname, config)
+
+    sumo_file = FileOnJob(bytestring, metadata)
+    sumo_file.path = metadata["file"]["relative_path"]
+    sumo_file.metadata_path = ""
+    sumo_file.size = len(sumo_file.byte_string)
+
     return sumo_file
 
 
@@ -159,9 +138,6 @@ def get_table(
         pd.DataFrame: the extracted data
     """
     logger = logging.getLogger(__file__ + ".get_table")
-    logger.debug(
-        "Input arguments %s",
-    )
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
     try:
@@ -171,7 +147,6 @@ def get_table(
     except KeyError:
         logger.debug("No arrow key to delete")
     output = None
-    trace = None
     # TODO: see if there is a cleaner way with rft, see functions
     # find_md_log, and complete_rft, but needs really to be fixed in res2df
     md_log_file = find_md_log(submod, kwargs)
@@ -212,18 +187,11 @@ def get_table(
             except TypeError:
                 logger.warning("Type error, cannot convert to arrow")
 
-    except TypeError:
-        trace = sys.exc_info()[1]
-    except FileNotFoundError:
-        trace = sys.exc_info()[1]
-    except ValueError:
-        trace = sys.exc_info()[1]
-    if trace is not None:
+    except (TypeError, FileNotFoundError, ValueError):
         logger.warning(
             "Trace: %s, \nNo results produced ",
-            trace,
+            sys.exc_info()[1],
         )
-    logger.debug("Returning %s", output)
     return output
 
 
@@ -235,10 +203,7 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
-        logger.debug("datafile: %s", datafile_path)
         upload_tables_from_simulation_run(
             datafile_path,
             submod_and_options,
@@ -258,18 +223,13 @@ def upload_vfp_tables_from_simulation_run(
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher): job dispatcher
     """
-    logger = logging.getLogger(
-        __name__ + ".upload_vfp_tables_from_simulation_run"
-    )
     vfp_dict = vfp_to_arrow_dict(datafile, options)
     for keyword, tables in vfp_dict.items():
         for table in tables:
             table_number = str(
                 table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
             )
-            logger.debug(table)
             tagname = f"{keyword}_{table_number}"
-            logger.debug("Generated tagname: %s", tagname)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, tagname.lower(), config
             )
@@ -287,10 +247,9 @@ def upload_tables_from_simulation_run(
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
-    logger.info("Extracting tables from %s", datafile)
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
-            logger.debug("No tables for grid3d, skipping")
+            # No tables for grid3d
             continue
 
         if submod == "vfp":
@@ -299,7 +258,6 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, **options)
-            logger.debug("Sending %s onto file creation", table)
             sumo_file = convert_table_2_sumo_file(
                 datafile, table, submod, config
             )

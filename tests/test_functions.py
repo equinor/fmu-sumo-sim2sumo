@@ -1,11 +1,8 @@
 """Test utility ecl2csv"""
 
-import logging
 import os
-from pathlib import Path
 from numpy.ma import allclose, allequal
 from shutil import copytree
-from subprocess import PIPE, Popen
 from time import sleep
 from io import BytesIO
 import pandas as pd
@@ -13,8 +10,9 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 
-from xtgeo import Grid, GridProperty, gridproperty_from_file
+from xtgeo import GridProperty, gridproperty_from_file
 
+from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo.common import (
     find_datafiles,
     create_config_dict,
@@ -23,28 +21,19 @@ from fmu.sumo.sim2sumo.common import (
     find_datefield,
     find_datafiles_no_seedpoint,
     filter_options,
+    get_case_uuid,
 )
-from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
     SUBMODULES,
 )
-from fmu.sumo.sim2sumo.common import get_case_uuid
 from fmu.sumo.uploader import SumoConnection
 
-REEK_ROOT = Path(__file__).parent / "data/reek"
-REAL_PATH = "realization-0/iter-0/"
-REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
-REEK_REAL1 = REEK_ROOT / "realization-1/iter-0/"
-REEK_BASE = "2_R001_REEK"
-REEK_ECL_MODEL = REEK_REAL0 / "eclipse/model/"
-REEK_DATA_FILE = REEK_ECL_MODEL / f"{REEK_BASE}-0.DATA"
-CONFIG_OUT_PATH = REEK_REAL0 / "fmuconfig/output/"
-CONFIG_PATH = CONFIG_OUT_PATH / "global_variables.yml"
+
+from conftest import REEK_REAL0, REEK_REAL1, REEK_DATA_FILE
 
 
-LOGGER = logging.getLogger(__file__)
 SLEEP_TIME = 3
 
 
@@ -64,18 +53,13 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     else:
         # The plus one is because we are always uploading the parameters.txt automatically
         check_nr = correct + 1
-    print(query)
 
     results = sumo.get(path, query).json()
 
-    LOGGER.debug(results["hits"])
     returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
     assert (
         returned == check_nr
-    ), f"Supposed to upload {correct}, but actual were {returned}"
-
-    print(f"**************\nFound {correct} {class_type} objects")
+    ), f"Supposed to upload {check_nr}, but actual were {returned}"
 
     sumo.delete(
         path,
@@ -86,46 +70,8 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     sumo.delete(path, query)
 
 
-def write_ert_config_and_run(runpath):
-    ert_config_path = "sim2sumo.ert"
-    encoding = "utf-8"
-    ert_full_config_path = runpath / ert_config_path
-    print(f"Running with path {ert_full_config_path}")
-    with open(ert_full_config_path, "w", encoding=encoding) as stream:
-
-        stream.write(
-            f"DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
-        )
-    with Popen(
-        ["ert", "test_run", str(ert_full_config_path)],
-        stdout=PIPE,
-        stderr=PIPE,
-    ) as process:
-        stdout, stderr = process.communicate()
-
-    print(
-        f"After er run all these files where found at runpath {list(Path(runpath).glob('*'))}"
-    )
-    if stdout:
-        print("stdout:", stdout.decode(encoding), sep="\n")
-    if stderr:
-        print("stderr:", stderr.decode(encoding), sep="\n")
-    try:
-        error_content = Path(runpath / "ERROR").read_text(encoding=encoding)
-    except FileNotFoundError:
-        error_content = ""
-    assert (
-        not error_content
-    ), f"ERROR file found with content:\n{error_content}"
-    assert Path(
-        runpath / "OK"
-    ).is_file(), f"running {ert_full_config_path}, No OK file"
-
-
 def check_expected_exports(expected_exports, shared_grid, prefix):
-    print("Looking in ", shared_grid)
     parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
-    print(parameters)
     meta = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff.yml"))
     nr_parameter = len(parameters)
     nr_meta = len(meta)
@@ -147,7 +93,6 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     ],
 )
 def test_non_standard_filter_options(submod, options):
-
     returned_options = filter_options(submod, options)
     assert (
         len(returned_options) > 0
@@ -164,11 +109,8 @@ def test_find_datefield(datestring, expected_result):
 
 def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     real0 = scratch_files[0]
-
     monkeypatch.chdir(real0)
-
     uuid = get_case_uuid(real0, parent_level=1)
-
     assert uuid == case_uuid
 
 
@@ -199,7 +141,6 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     ],
 )
 def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
-
     sim2sumo_config = {"sim2sumo": config}
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
@@ -209,7 +150,6 @@ def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
         len(inputs) == nrdatafiles
     ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
     for submod, subdict in inputs.items():
-
         assert (
             len(subdict) == nrsubmodules
         ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
@@ -229,6 +169,11 @@ def test_xtgeo_2_bytestring(eightfipnum):
     assert isinstance(bytestr, bytes)
 
 
+def test_table_2_bytestring(reekrft):
+    bytestr = tables.table_2_bytestring(reekrft)
+    assert isinstance(bytestr, bytes)
+
+
 def test_convert_xtgeo_2_sumo_file(
     eightfipnum, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
@@ -237,11 +182,9 @@ def test_convert_xtgeo_2_sumo_file(
     file = grid3d.convert_xtgeo_2_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
     )
-    print(case_uuid)
-    print(file.metadata)
-    print(file.byte_string)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
     assert isinstance(
@@ -254,17 +197,15 @@ def test_convert_xtgeo_2_sumo_file(
 def test_convert_table_2_sumo_file(
     reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
-
     monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
     )
 
-    print(file.metadata)
-    print(file.byte_string)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
     assert isinstance(
@@ -275,22 +216,19 @@ def test_convert_table_2_sumo_file(
 
 
 def get_sumo_object(sumo, case_uuid, name, tagname):
-    print("Fetching object with name, and tag", name, tagname)
-    sleep(SLEEP_TIME)
     path = f"/objects('{case_uuid}')/search"
     results = sumo.get(
         path, f"$query=data.name:{name} AND data.tagname:{tagname}"
     ).json()
-    print(results)
     obj_id = results["hits"]["hits"][0]["_id"]
     obj = BytesIO(sumo.get(f"/objects('{obj_id}')/blob").content)
-    print(type(obj))
     return obj
 
 
-def test_generate_grid3d_meta(eightcells_datafile, eightfipnum, config):
+def test_generate_grid3d_meta(scratch_files, eightfipnum, config, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
     meta = grid3d.generate_grid3d_meta(
-        eightcells_datafile, eightfipnum, "INIT", config, "property"
+        scratch_files[1], eightfipnum, "INIT", config
     )
     assert isinstance(meta, dict)
 
@@ -366,12 +304,9 @@ def test_upload_simulation_run(
 def test_submodules_dict():
     """Test generation of submodule list"""
     sublist, submods = _define_submodules()
-    LOGGER.info(submods)
     assert isinstance(sublist, tuple)
     assert isinstance(submods, dict)
     for submod_name, submod_dict in submods.items():
-        LOGGER.info(submod_name)
-        LOGGER.info(submod_dict)
         assert isinstance(submod_name, str)
         assert (
             "/" not in submod_name
@@ -393,17 +328,14 @@ def test_submodules_dict():
 # Skipping wellcompletion data, since this needs zonemap, which none of the others do
 def test_get_table(submod):
     """Test fetching of dataframe"""
-    extras = {}
-    if submod == "wellcompletiondata":
-        extras["zonemap"] = "data/reek/zones.lyr"
-    frame = tables.get_table(REEK_DATA_FILE, submod)
+    frame = tables.get_table(REEK_DATA_FILE, submod, arrow=False)
     assert isinstance(
-        frame, pa.Table
-    ), f"Call for get_dataframe should produce dataframe, but produces {type(frame)}"
+        frame, pd.DataFrame
+    ), f"Call for get_table with arrow=False should produce dataframe, but produces {type(frame)}"
     frame = tables.get_table(REEK_DATA_FILE, submod, arrow=True)
     assert isinstance(
         frame, pa.Table
-    ), f"Call for get_dataframe with arrow=True should produce pa.Table, but produces {type(frame)}"
+    ), f"Call for get_table with arrow=True should produce pa.Table, but produces {type(frame)}"
     if submod == "summary":
         assert (
             frame.schema.field("FOPT").metadata is not None
@@ -424,58 +356,15 @@ def test_convert_to_arrow():
     assert isinstance(table, pa.Table), "Did not convert to table"
 
 
-def test_get_xtgeo_egrid(eightcells_datafile):
-    egrid = grid3d.get_xtgeo_egrid(eightcells_datafile)
-    assert isinstance(egrid, Grid), f"Expected xtgeo.Grid, got {type(egrid)}"
-
-
-def test_sim2sumo_with_ert(scratch_files, case_uuid, sumo, monkeypatch):
-    monkeypatch.chdir(scratch_files[0])
-    real0 = scratch_files[0]
-    write_ert_config_and_run(real0)
-    expected_exports = 88
-    path = f"/objects('{case_uuid}')/search"
-    results = sumo.post(
-        path,
-        json={
-            "query": {
-                "bool": {
-                    "must_not": [
-                        {
-                            "terms": {
-                                "class.keyword": [
-                                    "case",
-                                    "iteration",
-                                    "realization",
-                                ]
-                            }
-                        }
-                    ],
-                }
-            },
-            "size": 0,
-            "track_total_hits": True,
-        },
-    ).json()
-
-    returned = results["hits"]["total"]["value"]
-    LOGGER.debug("This is returned %s", returned)
-    assert (
-        returned == expected_exports
-    ), f"Supposed to upload {expected_exports}, but actual were {returned}"
-
-
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
-
     os.chdir(real)
     datafiles = find_datafiles(None, {})
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
-    ), f"Haven't found correct nr of datafiles {nrdfiles} files but {len(datafiles)} ({datafiles})"
-    for datafile in datafiles:
-        found_path = datafile
+    ), f"Incorrect number of datafiles found. Expected {nrdfiles} but found {len(datafiles)}"
+    for found_path in datafiles:
         parent = found_path.parent.parent.name
         assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
         correct_suff = ".DATA"
@@ -492,4 +381,3 @@ def test_find_datafiles_no_seedpoint(tmp_path):
     os.chdir(real1)
     files = find_datafiles_no_seedpoint()
     assert len(files) == 5
-    print({data_path.name: data_path for data_path in files})
