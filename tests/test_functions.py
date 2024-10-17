@@ -358,7 +358,7 @@ def test_convert_to_arrow():
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
-    datafiles = find_datafiles(None, None)
+    datafiles = find_datafiles(None)
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
