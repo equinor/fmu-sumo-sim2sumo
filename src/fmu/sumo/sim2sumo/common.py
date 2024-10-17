@@ -124,8 +124,7 @@ def find_datafiles(seedpoint=None):
                     # Add the file if it has a valid filetype
                     datafiles.append(full_path)
                 else:
-                    for filetype in valid_filetypes:
-                        datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}*{filetype}")])
+                    datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}")])
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
