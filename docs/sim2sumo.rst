@@ -248,14 +248,6 @@ Extracting the default datatypes with sim2sumo
 
 See also :ref:`preconditions`.
 
-Extracting rft data from specified datafile with sim2sumo
-----------------------------------------------------------------
-
-.. code-block::
-   :caption: Extracting rft
-
-   sum2sumo execute --config_path fmuconfig/output/global_variables.yml --datatype rft --datafile eclipse/model/DROGON-0.DATA
-
 
 Getting help on sim2sumo from the command line
 =================================================

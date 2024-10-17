@@ -138,13 +138,11 @@ def find_datafile_paths():
     return paths
 
 
-def create_config_dict(config, datafile=None, datatype=None):
+def create_config_dict(config):
     """Read config settings and make dictionary for use when exporting
 
     Args:
         config (dict): the settings for export of simulator results
-        datafile (str, None): overule with one datafile
-        datatype (str, None): overule with one datatype
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
@@ -156,16 +154,12 @@ def create_config_dict(config, datafile=None, datatype=None):
     grid3d = simconfig.get("grid3d", False)
     if isinstance(simconfig, bool):
         simconfig = {}
-    datafiles = find_datafiles(datafile, simconfig)
+    datafiles = find_datafiles(simconfig)
     paths = find_datafile_paths()
 
-    if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
-    else:
-        submods = [datatype]
+    submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
+    if "all" in submods:
+        submods = SUBMODULES
 
     outdict = {}
     options = simconfig.get("options", {"arrow": True})
@@ -186,32 +180,25 @@ def create_config_dict(config, datafile=None, datatype=None):
     return outdict
 
 
-def find_datafiles(seedpoint, simconfig):
+def find_datafiles(simconfig):
     """Find all relevant paths that can be datafiles
 
     Args:
-        seedpoint (str, list): path of datafile, or list of folders where one can find one
         simconfig (dict): the sim2sumo config settings
 
     Returns:
         list: list of datafiles to interrogate
     """
-
-    logger = logging.getLogger(__file__ + ".find_datafiles")
     datafiles = []
-    seedpoint = simconfig.get("datafile", seedpoint)
+    seedpoint = simconfig.get("datafile", None)
     if seedpoint is None:
         datafiles = find_datafiles_no_seedpoint()
-
     elif isinstance(seedpoint, (str, Path)):
-        logger.debug("Using this string %s to find datafile(s)", seedpoint)
         datafiles.append(seedpoint)
     elif isinstance(seedpoint, list):
-        logger.debug("%s is list", seedpoint)
         datafiles.extend(seedpoint)
     else:
         datafiles = seedpoint
-    logger.debug("Datafile(s) to use %s", datafiles)
     return datafiles
 
 
