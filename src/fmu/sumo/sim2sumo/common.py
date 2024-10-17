@@ -169,7 +169,7 @@ def create_config_dict(config, datafile=None, datatype=None):
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = datafile if datafile is not None else simconfig.get("datafile", {})
+    datafile = datafile if datafile is not None else simconfig.get("datafile", None)
     datatype = datatype if datatype is not None else simconfig.get("datatypes", None)
 
     if datatype is None:
