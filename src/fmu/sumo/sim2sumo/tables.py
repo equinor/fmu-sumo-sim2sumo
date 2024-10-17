@@ -231,14 +231,14 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, **options)
-            sumo_file = convert_table_2_sumo_file(
-                datafile, table, submod, config
-            )
-            if sumo_file is None:
+            if table is None:
                 logger.warning(
                     "Table with datatype %s extracted from %s returned nothing",
                     submod,
                     datafile,
                 )
                 continue
+            sumo_file = convert_table_2_sumo_file(
+                datafile, table, submod, config
+            )
             dispatcher.add(sumo_file)
