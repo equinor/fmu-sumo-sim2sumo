@@ -120,17 +120,12 @@ def find_datafile_paths():
     Returns:
         dict: key is name to use in sumo, value full path to file
     """
-    logger = logging.getLogger(__file__ + ".find_datafile_paths")
     paths = {}
     for data_path in find_datafiles_no_seedpoint():
         name = give_name(data_path)
 
         if name not in paths:
             paths[name] = data_path
-        else:
-            logger.warning(
-                "Name %s from file %s already used", name, data_path
-            )
 
     return paths
 
@@ -403,15 +398,12 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
 
 
