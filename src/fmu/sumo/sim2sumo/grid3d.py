@@ -18,7 +18,8 @@ from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
-from .common import generate_meta
+from fmu.dataio import ExportData
+from .common import find_datefield, give_name
 
 
 def xtgeo_2_bytestring(obj):
@@ -40,6 +41,7 @@ def xtgeo_2_bytestring(obj):
     return bytestring
 
 
+# Almost equal to tables.py::generate_table_meta, but note difference in name and tagname
 def generate_grid3d_meta(datafile, obj, prefix, config):
     """Generate metadata for xtgeo object
 
@@ -58,11 +60,28 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
         content = {"property": {"is_discrete": False}}
 
     if prefix == "grid":
-        tagname = prefix
+        name = prefix
     else:
-        tagname = f"{prefix}-{obj.name}"
-    metadata = generate_meta(config, datafile, tagname, obj, content)
+        name = f"{prefix}-{obj.name}"
+    tagname = give_name(datafile)
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": content,
+    }
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
 
+    exd = ExportData(**exp_args)
+    metadata = exd.generate_metadata(obj)
+    relative_parent = str(Path(datafile).parents[2]).replace(
+        str(Path(datafile).parents[4]), ""
+    )
+    metadata["file"] = {
+        "relative_path": f"{relative_parent}/{tagname}--{name}".lower()
+    }
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"

@@ -7,7 +7,6 @@ from pathlib import Path
 import psutil
 import yaml
 
-from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -413,49 +412,6 @@ def find_datefield(text_string):
     else:
         date = None
     return date
-
-
-def generate_meta(config, datafile_path, tagname, obj, content):
-    """Generate metadata for object
-
-    Args:
-        config (dict): the metadata required
-        datafile_path (str): path to datafile or relative
-        tagname (str): the tagname
-        obj (object): object eligible for dataio
-
-    Returns:
-        dict: the metadata to export
-    """
-    logger = logging.getLogger(__name__ + ".generate_meta")
-    logger.info("Obj of type: %s", type(obj))
-    logger.info("Generating metadata")
-    logger.info("Content: %s", content)
-    logger.debug("Config: %s", config)
-    logger.debug("datafile_path: %s", datafile_path)
-    logger.info("tagname: %s", tagname)
-    name = give_name(datafile_path)
-    exp_args = {
-        "config": config,
-        "name": name,
-        "tagname": tagname,
-        "content": content,
-    }
-
-    datefield = find_datefield(tagname)
-    if datefield is not None:
-        exp_args["timedata"] = [[datefield]]
-
-    exd = ExportData(**exp_args)
-    metadata = exd.generate_metadata(obj)
-    relative_parent = str(Path(datafile_path).parents[2]).replace(
-        str(Path(datafile_path).parents[4]), ""
-    )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    }
-    logger.debug("Generated metadata are:\n%s", metadata)
-    return metadata
 
 
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
