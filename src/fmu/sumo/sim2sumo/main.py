@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+from os import environ
 
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
@@ -54,9 +55,24 @@ def parse_args():
     return args
 
 
+# fmu-dataio needs these when creating metadata
+REQUIRED_ENV_VARS = ["_ERT_EXPERIMENT_ID", "_ERT_RUNPATH"]
+
+
 def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
+
+    missing = 0
+    for envVar in REQUIRED_ENV_VARS:
+        if environ.get(envVar) is None:
+            print(f"Required environment variable {envVar} is not set.")
+            missing += 1
+
+    if missing > 0:
+        print("Required ERT environment variables not found. This can happen if sim2sumo was called outside the ERT context. Stopping.")
+        exit()
+
     args = parse_args()
     logger.debug("Running with arguments %s", args)
 
