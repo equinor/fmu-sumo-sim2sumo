@@ -19,7 +19,6 @@ from fmu.sumo.sim2sumo.common import (
     nodisk_upload,
     Dispatcher,
     find_datefield,
-    find_datafiles_no_seedpoint,
     filter_options,
     get_case_uuid,
 )
@@ -133,10 +132,10 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
             3,
         ),
         ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
-        ({"datafile": "3_R001_REEK"}, 1, 4),
-        ({"datafile": "3_R001_REEK.DATA"}, 1, 4),
-        ({"datafile": "OOGRE_IX.afi"}, 1, 4),
-        ({"datafile": "opm/model/OOGRE_OPM.DATA"}, 1, 4),
+        ({"datafile": ["3_R001_REEK"]}, 1, 4),
+        ({"datafile": ["3_R001_REEK-1.DATA"]}, 1, 4),
+        ({"datafile": ["OOGRE_IX.afi"]}, 1, 4),
+        ({"datafile": ["opm/model/OOGRE_OPM.DATA"]}, 1, 4),
         ({"grid3d": True}, 5, 4),
     ],
 )
@@ -359,7 +358,7 @@ def test_convert_to_arrow():
 @pytest.mark.parametrize("real,nrdfiles", [(REEK_REAL0, 2), (REEK_REAL1, 5)])
 def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
-    datafiles = find_datafiles(None, {})
+    datafiles = find_datafiles(None)
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
@@ -373,11 +372,3 @@ def test_find_datafiles_reek(real, nrdfiles):
         if parent == "pflotran":
             correct_suff = ".in"
         assert found_path.suffix == correct_suff
-
-
-def test_find_datafiles_no_seedpoint(tmp_path):
-    real1 = tmp_path / "realone"
-    copytree(REEK_REAL1, real1)
-    os.chdir(real1)
-    files = find_datafiles_no_seedpoint()
-    assert len(files) == 5
