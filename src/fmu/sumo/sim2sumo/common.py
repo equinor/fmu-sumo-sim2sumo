@@ -104,6 +104,7 @@ def find_datafiles(seedpoint=None):
     datafiles = []
     cwd = Path().cwd()  # Get the current working directory
 
+    # TODO: Be stricter on seedpoint type. Should be either a list or None. If something else: raise ValueError("datafile should be a list or None")
     if isinstance(seedpoint, dict):
         # Extract the values (paths) from the dictionary and treat them as a list
         seedpoint = list(seedpoint.values())
@@ -424,3 +425,9 @@ def validate_sim2sumo_config(config):
     datafiles = config.get("datafile", [])
     if not isinstance(datafiles, list):
         raise ValueError("Config error: datafile must be a list")
+    # TODO: Uncomment and use this if it should be required that each file is a dict
+    # for file in datafiles:
+    #     if not isinstance(file, dict):
+    #         raise ValueError(
+    #             "Config error: each datafile should be a dictionary"
+    #         )

@@ -43,6 +43,8 @@ def parse_args():
     return args
 
 
+# e.g. _ERT_RUNPATH = ../realization-0/iter-0
+# e.g. _ERT_EXPERIMENT_ID = <uuid>
 # fmu-dataio needs these when creating metadata
 REQUIRED_ENV_VARS = ["_ERT_EXPERIMENT_ID", "_ERT_RUNPATH"]
 
