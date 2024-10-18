@@ -70,11 +70,8 @@ def find_functions_and_docstring(submod):
     Returns:
         dictionary: includes functions and doc string
     """
-    logger = logging.getLogger(__file__ + ".find_func_and_info")
-
     import_path = "res2df." + submod
     func = importlib.import_module(import_path).df
-    logger.debug("Assigning %s to %s", func.__name__, submod)
     returns = {
         "extract": func,
         "options": tuple(
@@ -94,8 +91,6 @@ def _define_submodules():
     Returns:
         list: list of submodules
     """
-
-    logger = logging.getLogger(__file__ + "define_submodules")
     package_path = Path(res2df.__file__).parent
 
     submodules = {}
@@ -111,16 +106,8 @@ def _define_submodules():
             submod = "vfp"
         try:
             submodules[submod] = find_functions_and_docstring(submod_string)
-            logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
-            logger.debug("No df function in %s", submod_path)
-
-    logger.debug(
-        "Returning the submodule names as a list: %s ", submodules.keys()
-    )
-    logger.debug(
-        "Returning the submodules extra args as a dictionary: %s ", submodules
-    )
+            pass  # No df function in submod_path, skip it
 
     return tuple(submodules.keys()), submodules
 

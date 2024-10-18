@@ -118,12 +118,11 @@ def get_table(
             "arrow"
         ]  # This argument should not be passed to extract function
     except KeyError:
-        logger.debug("No arrow key to delete")
+        pass  # No arrow key to delete
     output = None
     # TODO: see if there is a cleaner way with rft, see functions
     # find_md_log, and complete_rft, but needs really to be fixed in res2df
     md_log_file = find_md_log(submod, kwargs)
-    logger.debug("Checking these passed options %s", kwargs)
     try:
         logger.info(
             "Extracting data from %s with func %s for %s",
@@ -141,18 +140,11 @@ def get_table(
         if arrow:
             try:
                 convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                logger.debug(
-                    "Using function %s to convert to arrow",
-                    convert_func.__name__,
-                )
                 output = convert_func(output)
             except pa.lib.ArrowInvalid:
                 logger.warning(
-                    "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
+                    "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s). \nFalling back to converting with %s",
                     sys.exc_info()[1],
-                )
-                logger.debug(
-                    "Falling back to converting with %s",
                     convert_to_arrow.__name__,
                 )
                 output = convert_to_arrow(output)

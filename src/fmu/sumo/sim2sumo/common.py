@@ -67,8 +67,6 @@ def filter_options(submod, kwargs):
     """
     logger = logging.getLogger(__file__ + ".filter_options")
     submod_options = SUBMOD_DICT[submod]["options"]
-    logger.debug("Available options for %s are %s", submod, submod_options)
-    logger.debug("Input: %s", kwargs)
     filtered = {
         key: value
         for key, value in kwargs.items()
@@ -77,11 +75,10 @@ def filter_options(submod, kwargs):
     filtered["arrow"] = kwargs.get(
         "arrow", True
     )  # defaulting of arrow happens here
-    logger.debug("After filtering options for %s: %s", submod, filtered)
     non_options = [key for key in kwargs if key not in filtered]
     if len(non_options) > 0:
         logger.warning(
-            "Filtered out options %s for %s, these are not valid",
+            "Skipping invalid options %s for %s.",
             non_options,
             submod,
         )
@@ -163,8 +160,6 @@ def find_datafiles(seedpoint=None):
         if stem not in unique_stems:
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
-        else:
-            logger.warning("Name %s from file %s already used", stem, datafile)
 
     logger.info(f"Using datafiles: {str(unique_datafiles)} ")
     return unique_datafiles
@@ -416,15 +411,12 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
 
 
