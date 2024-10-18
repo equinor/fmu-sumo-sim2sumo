@@ -21,8 +21,6 @@ def convert_to_arrow(frame):
     Returns:
         pa.Table: the converted dataframe
     """
-    logger = logging.getLogger(__file__ + ".convert_to_arrow")
-    logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
         frame["DATE"] = pd.to_datetime(frame["DATE"])
@@ -34,7 +32,6 @@ def convert_to_arrow(frame):
             scheme.append(
                 (column_name, standard.get(column_name, pa.float32()))
             )
-    logger.debug(scheme)
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
 
@@ -70,11 +67,8 @@ def find_functions_and_docstring(submod):
     Returns:
         dictionary: includes functions and doc string
     """
-    logger = logging.getLogger(__file__ + ".find_func_and_info")
-
     import_path = "res2df." + submod
     func = importlib.import_module(import_path).df
-    logger.debug("Assigning %s to %s", func.__name__, submod)
     returns = {
         "extract": func,
         "options": tuple(
@@ -94,8 +88,6 @@ def _define_submodules():
     Returns:
         list: list of submodules
     """
-
-    logger = logging.getLogger(__file__ + "define_submodules")
     package_path = Path(res2df.__file__).parent
 
     submodules = {}
@@ -111,16 +103,8 @@ def _define_submodules():
             submod = "vfp"
         try:
             submodules[submod] = find_functions_and_docstring(submod_string)
-            logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
-            logger.debug("No df function in %s", submod_path)
-
-    logger.debug(
-        "Returning the submodule names as a list: %s ", submodules.keys()
-    )
-    logger.debug(
-        "Returning the submodules extra args as a dictionary: %s ", submodules
-    )
+            pass  # No df function in submod_path, skip it
 
     return tuple(submodules.keys()), submodules
 
@@ -135,7 +119,6 @@ def find_md_log(submod, options):
     Returns:
         str|None: whatever contained in md_log_file
     """
-    logger = logging.getLogger(__file__ + ".find_md_log")
     if submod != "rft":
         return None
     # Special treatment of argument md_log_file
@@ -143,7 +126,7 @@ def find_md_log(submod, options):
     try:
         del options["md_log_file"]
     except KeyError:
-        logger.debug("No md log provided")
+        pass  # No md log provided
 
     return md_log_file
 
@@ -219,9 +202,6 @@ def add_md_to_rft(rft_table, md_file_path):
     Returns:
         pd.Dataframe: the merged results
     """
-    logger = logging.getLogger(__file__ + ".add_md_to_rft")
-    logger.debug("Head of rft table prior to merge:\n %s", rft_table.head())
-
     try:
         md_table = pd.read_csv(md_file_path)
     except FileNotFoundError as fnfe:
@@ -235,19 +215,7 @@ def add_md_to_rft(rft_table, md_file_path):
     md_table[xtgeo_index_names] += 1
     md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
     xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
-    logger.debug(
-        "Datatypes, md_table: %s, rft_table: %s",
-        md_table[xtgeo_index_names].dtypes,
-        rft_table[rft_index_names].dtypes,
-    )
-    logger.debug(
-        "Shapes before merge rft: %s, md: %s", rft_table.shape, md_table.shape
-    )
     md_table.rename(xtgeo_to_rft_names, axis=1, inplace=True)
-    logger.debug("Header of md table after rename %s", md_table.head())
     rft_table = pd.merge(rft_table, md_table, on=rft_index_names, how="left")
-    logger.debug("Shape after merge %s", rft_table.shape)
-    logger.debug("Shape with no nans %s", rft_table.dropna().shape)
-    logger.debug("Head of merged table to return:\n %s", rft_table.head())
 
     return rft_table

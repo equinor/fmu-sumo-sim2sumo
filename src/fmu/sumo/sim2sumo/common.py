@@ -67,19 +67,18 @@ def filter_options(submod, kwargs):
     """
     logger = logging.getLogger(__file__ + ".filter_options")
     submod_options = SUBMOD_DICT[submod]["options"]
-    logger.debug("Available options for %s are %s", submod, submod_options)
-    logger.debug("Input: %s", kwargs)
     filtered = {
         key: value
         for key, value in kwargs.items()
         if (key in submod_options) or key in ["arrow", "md_log_file"]
     }
-    filtered["arrow"] = kwargs.get("arrow", True)  # defaulting of arrow happens here
-    logger.debug("After filtering options for %s: %s", submod, filtered)
+    filtered["arrow"] = kwargs.get(
+        "arrow", True
+    )  # defaulting of arrow happens here
     non_options = [key for key in kwargs if key not in filtered]
     if len(non_options) > 0:
         logger.warning(
-            "Filtered out options %s for %s, these are not valid",
+            "Skipping invalid options %s for %s.",
             non_options,
             submod,
         )
@@ -105,6 +104,7 @@ def find_datafiles(seedpoint=None):
     datafiles = []
     cwd = Path().cwd()  # Get the current working directory
 
+    # TODO: Be stricter on seedpoint type. Should be either a list or None. If something else: raise ValueError("datafile should be a list or None")
     if isinstance(seedpoint, dict):
         # Extract the values (paths) from the dictionary and treat them as a list
         seedpoint = list(seedpoint.values())
@@ -113,7 +113,7 @@ def find_datafiles(seedpoint=None):
         seedpoint = [Path(sp) for sp in seedpoint]
     elif seedpoint:
         seedpoint = [seedpoint]
-    
+
     if seedpoint:
         for sp in seedpoint:
             full_path = (
@@ -124,15 +124,31 @@ def find_datafiles(seedpoint=None):
                     # Add the file if it has a valid filetype
                     datafiles.append(full_path)
                 else:
-                    datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}")])
+                    datafiles.extend(
+                        [
+                            f
+                            for f in full_path.parent.rglob(
+                                f"{full_path.name}"
+                            )
+                        ]
+                    )
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
                         # Search for valid files within the directory with partly filename
-                        datafiles.extend([f for f in full_path.parent.rglob(f"{full_path.name}*{filetype}")])
+                        datafiles.extend(
+                            [
+                                f
+                                for f in full_path.parent.rglob(
+                                    f"{full_path.name}*{filetype}"
+                                )
+                            ]
+                        )
                     else:
                         # Search for valid files within the directory
-                        datafiles.extend([f for f in full_path.rglob(f"*{filetype}")])
+                        datafiles.extend(
+                            [f for f in full_path.rglob(f"*{filetype}")]
+                        )
     else:
         # Search the current working directory if no seedpoint is provided
         for filetype in valid_filetypes:
@@ -145,47 +161,39 @@ def find_datafiles(seedpoint=None):
         if stem not in unique_stems:
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
-        else:
-            logger.warning(
-                "Name %s from file %s already used", stem, datafile
-            )
 
     logger.info(f"Using datafiles: {str(unique_datafiles)} ")
     return unique_datafiles
 
 
-def create_config_dict(config, datafile=None, datatype=None):
+def create_config_dict(config):
     """Read config settings and make dictionary for use when exporting.
 
     Args:
         config (dict): the settings for export of simulator results.
-        datafile (str|Path|list, None): overrule with one datafile or list of datafiles.
-        datatype (str|list, None): overrule with one datatype or a list of datatypes.
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
               submodule and option.
     """
-    logger = logging.getLogger(__file__ + ".create_config_dict")
     simconfig = config.get("sim2sumo", {})
-    logger.debug("sim2sumo config %s", simconfig)
+    validate_sim2sumo_config(simconfig)
+
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = datafile if datafile is not None else simconfig.get("datafile", None)
-    datatype = datatype if datatype is not None else simconfig.get("datatypes", None)
+    datafile = simconfig.get("datafile", None)
+    datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
         submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
 
         if submods == "all":
             submods = SUBMODULES
-    elif isinstance(datatype,list):
+    elif isinstance(datatype, list):
         submods = datatype
     else:
         submods = [datatype]
-
-    logger.debug("Submodules to extract with: %s", submods)
 
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
@@ -220,7 +228,9 @@ def create_config_dict(config, datafile=None, datatype=None):
             sim2sumoconfig[datafile_path] = {}
             for submod in submods or []:
                 options = simconfig.get("options", {"arrow": True})
-                sim2sumoconfig[datafile_path][submod] = filter_options(submod, options)
+                sim2sumoconfig[datafile_path][submod] = filter_options(
+                    submod, options
+                )
             sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig
@@ -241,13 +251,17 @@ class Dispatcher:
         self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
-        self._mem_limit = psutil.virtual_memory().available * self._limit_percent
+        self._mem_limit = (
+            psutil.virtual_memory().available * self._limit_percent
+        )
         self._config_path = config_path
 
         self._mem_count = 0
         self._count = 0
         self._objects = []
-        self._logger.info("Init, parent is %s, and env is %s", self.parentid, self.env)
+        self._logger.info(
+            "Init, parent is %s, and env is %s", self.parentid, self.env
+        )
 
     @property
     def parentid(self):
@@ -278,7 +292,9 @@ class Dispatcher:
             self._mem_count += file.size
             self._objects.append(file)
             self._count += 1
-            self._mem_limit = psutil.virtual_memory().available * self._limit_percent
+            self._mem_limit = (
+                psutil.virtual_memory().available * self._limit_percent
+            )
 
             self._logger.debug(
                 "Count is %s, and mem frac is %f1.1",
@@ -340,13 +356,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     Returns:
         dict: the metadata to export
     """
-    logger = logging.getLogger(__name__ + ".generate_meta")
-    logger.info("Obj of type: %s", type(obj))
-    logger.info("Generating metadata")
-    logger.info("Content: %s", content)
-    logger.debug("Config: %s", config)
-    logger.debug("datafile_path: %s", datafile_path)
-    logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
     exp_args = {
         "config": config,
@@ -364,8 +373,9 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     relative_parent = str(Path(datafile_path).parents[2]).replace(
         str(Path(datafile_path).parents[4]), ""
     )
-    metadata["file"] = {"relative_path": f"{relative_parent}/{name}--{tagname}".lower()}
-    logger.debug("Generated metadata are:\n%s", metadata)
+    metadata["file"] = {
+        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
+    }
     return metadata
 
 
@@ -378,12 +388,13 @@ def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
         connection (str): client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    logger.info("%s files to upload", len(files))
-    logger.info("Uploading to parent %s", parent_id)
     if len(files) > 0:
+        logger.info("Uploading %s files to parent %s", len(files), parent_id)
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(files, parent_id, connection, config_path=config_path)
+        status = upload_files(
+            files, parent_id, connection, config_path=config_path
+        )
         print("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
             print(f"{state}: {len(obj_status)}")
@@ -400,11 +411,22 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
-    base_name = datafile_path_posix.name.replace(datafile_path_posix.suffix, "")
+    base_name = datafile_path_posix.name.replace(
+        datafile_path_posix.suffix, ""
+    )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
+
+
+def validate_sim2sumo_config(config):
+    datafiles = config.get("datafile", [])
+    if not isinstance(datafiles, list):
+        raise ValueError("Config error: datafile must be a list")
+    # TODO: Uncomment and use this if it should be required that each file is a dict
+    # for file in datafiles:
+    #     if not isinstance(file, dict):
+    #         raise ValueError(
+    #             "Config error: each datafile should be a dictionary"
+    #         )

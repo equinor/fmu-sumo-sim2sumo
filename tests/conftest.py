@@ -8,7 +8,7 @@ import uuid
 import pytest
 import yaml
 from fmu.config.utilities import yaml_load
-from fmu.sumo.uploader import CaseOnDisk, SumoConnection
+from fmu.sumo.uploader import CaseOnDisk
 from httpx import HTTPStatusError
 from sumo.wrapper import SumoClient
 
@@ -88,7 +88,7 @@ def _fix_ert_env(monkeypatch):
 
 
 @pytest.fixture(scope="session", name="case_uuid")
-def _fix_register(scratch_files, token):
+def _fix_register(scratch_files, sumo):
     root = scratch_files[0].parents[1]
     case_metadata_path = root / "share/metadata/fmu_case.yml"
     case_metadata = yaml_load(case_metadata_path)
@@ -96,17 +96,16 @@ def _fix_register(scratch_files, token):
     case_metadata["tracklog"][0] = {
         "datetime": datetime.now().isoformat(),
         "user": {
-            "id": "dbs",
+            "id": "sim2sumo_test",
         },
         "event": "created",
     }
     print(case_metadata)
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
-    sumo_conn = SumoConnection(env="dev", token=token)
     case = CaseOnDisk(
         case_metadata_path,
-        sumo_conn,
+        sumo,
         verbosity="DEBUG",
     )
     # Register the case in Sumo
@@ -116,7 +115,7 @@ def _fix_register(scratch_files, token):
 
 
 @pytest.fixture(scope="function", name="ert_run_case_uuid")
-def _fix_ert_run_case_uuid(ert_run_scratch_files, token):
+def _fix_ert_run_case_uuid(ert_run_scratch_files, sumo):
     root = ert_run_scratch_files[0].parents[1]
     case_metadata_path = root / "share/metadata/fmu_case.yml"
     case_metadata = yaml_load(case_metadata_path)
@@ -124,16 +123,15 @@ def _fix_ert_run_case_uuid(ert_run_scratch_files, token):
     case_metadata["tracklog"][0] = {
         "datetime": datetime.now().isoformat(),
         "user": {
-            "id": "dbs",
+            "id": "sim2sumo_test",
         },
         "event": "created",
     }
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
-    sumo_conn = SumoConnection(env="dev", token=token)
     case = CaseOnDisk(
         case_metadata_path,
-        sumo_conn,
+        sumo,
         verbosity="DEBUG",
     )
     # Register the case in Sumo
@@ -142,7 +140,7 @@ def _fix_ert_run_case_uuid(ert_run_scratch_files, token):
 
     # Teardown
     try:
-        sumo_conn.delete(f"/objects('{sumo_uuid}')")
+        sumo.delete(f"/objects('{sumo_uuid}')")
     except HTTPStatusError:
         print(f"{sumo_uuid} Already gone..")
 
