@@ -180,9 +180,9 @@ def create_config_dict(config):
         dict: dictionary with key as path to datafile, value as dict of
               submodule and option.
     """
-    logger = logging.getLogger(__file__ + ".create_config_dict")
     simconfig = config.get("sim2sumo", {})
-    logger.debug("sim2sumo config %s", simconfig)
+    validate_sim2sumo_config(simconfig)
+
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
@@ -198,8 +198,6 @@ def create_config_dict(config):
         submods = datatype
     else:
         submods = [datatype]
-
-    logger.debug("Submodules to extract with: %s", submods)
 
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
@@ -428,3 +426,9 @@ def give_name(datafile_path: str) -> str:
         base_name = base_name[:-1]
     logger.info("Returning name %s", base_name)
     return base_name
+
+
+def validate_sim2sumo_config(config):
+    datafiles = config.get("datafile", [])
+    if not isinstance(datafiles, list):
+        raise ValueError("Config error: datafile must be a list")

@@ -150,37 +150,43 @@ The three relevant sections are:
 
 *datafile*:
 --------------------
-This section is for configuring where you extract results from, meaning where to look for simulation results. This section can be configured in several ways:
+This section is for configuring where you extract results from, meaning where to look for simulation results.
+This section should be a list where each item is either a file path, file stub or a folder path.
 
-1. As a path to a file, or file stub (without an extension):
-
-   .. code-block:: yaml
-
-      datafile ../../eclipse/model/DROGON
-
-
-2. As a path to a folder:
-
-   .. code-block::
-
-      datafile: ../../eclipse/model/
-
-
-3. As a list:
+1. File paths, or file stubs (without an extension):
 
    .. code-block::
 
       datafile:
-        - ../../eclipse/model
-        - ../../ix/model
-        ..
+         - ../../eclipse/model/DROGON
+         - ../../eclipse/model/DROGON-0.DATA
+
+
+2. Folder paths:
+
+   .. code-block::
+
+      datafile:
+         - ../../eclipse/model/
+
+
+You can also specify what datatypes should be extracted for each file, by adding a list of datatypes to each file path:
+
+   .. code-block::
+      datafile:
+         - ../../eclipse/model/DROGON:
+            - summary
+            - wcon
+            - faults
+         - ../../eclipse/model/DROGON-0.DATA:
+            - summary
+            - wcon
+            - faults
 
 
 datatypes:
 ----------------
-This section is for configuration of what data to extract. The section can be configured in several ways.
-
-1. As list:
+This section is for configuration of what data to extract. It should be specified as a list
 
    .. code-block::
 
@@ -190,17 +196,14 @@ This section is for configuration of what data to extract. The section can be co
         - faults
         - ..
 
-2. as string:
-
-   Here there are two options, you can use both the name of one single datatype
-   or the 'all' argument for all datatypes:
+To include all datatypes use a list with a single item "all":
 
    .. code-block::
-      :caption: extracting all available datatypes from simulation run
 
-      datatypes: all
+      datatypes:
+         - all
 
-   For datatypes available see documentation for ``res2df``
+For datatypes available see documentation for ``res2df``
 
 options:
 -------------

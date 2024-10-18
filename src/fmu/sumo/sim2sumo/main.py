@@ -70,7 +70,11 @@ def main():
     config = yaml_load(args.config_path)
     config["file_path"] = args.config_path
     logger.debug("Added file_path, and config keys are %s", config.keys())
-    sim2sumoconfig = create_config_dict(config)
+    try:
+        sim2sumoconfig = create_config_dict(config)
+    except Exception as e:
+        logger.error("Failed to create config dict: %s", e)
+        return
     # Init of dispatcher needs one datafile to locate case uuid
     one_datafile = list(sim2sumoconfig.keys())[0]
     try:
