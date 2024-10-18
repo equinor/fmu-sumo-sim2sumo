@@ -15,7 +15,6 @@ def parse_args():
     Returns:
         argparse.NameSpace: the arguments parsed
     """
-    logger = logging.getLogger(__file__ + ".parse_args")
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Parsing input to control export of simulator data",
@@ -39,7 +38,6 @@ def parse_args():
         logging.basicConfig(
             level="DEBUG", format="%(name)s - %(levelname)s - %(message)s"
         )
-    logger.debug("Returning args %s", vars(args))
     return args
 
 
@@ -66,12 +64,9 @@ def main():
         exit()
 
     args = parse_args()
-    logger.debug("Running with arguments %s", args)
 
-    logger.info("Will be extracting results")
     config = yaml_load(args.config_path)
     config["file_path"] = args.config_path
-    logger.debug("Added file_path, and config keys are %s", config.keys())
     try:
         sim2sumoconfig = create_config_dict(config)
     except Exception as e:
@@ -87,10 +82,10 @@ def main():
         logger.error("Failed to create dispatcher: %s", e)
         return
 
-    logger.debug("Extracting tables")
+    # Extract tables
     upload_tables(sim2sumoconfig, config, dispatcher)
 
-    logger.debug("Extracting 3dgrid(s) with properties")
+    # Extract 3dgrid(s) with properties
     upload_simulation_runs(sim2sumoconfig, config, dispatcher)
 
     dispatcher.finish()

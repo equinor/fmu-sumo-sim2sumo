@@ -135,7 +135,6 @@ def get_table(
             **kwargs,
         )
         if submod == "rft":
-
             output = complete_rft(output, md_log_file)
         if arrow:
             try:
@@ -148,7 +147,6 @@ def get_table(
                     convert_to_arrow.__name__,
                 )
                 output = convert_to_arrow(output)
-
             except TypeError:
                 logger.warning("Type error, cannot convert to arrow")
 
@@ -168,8 +166,6 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
         datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(

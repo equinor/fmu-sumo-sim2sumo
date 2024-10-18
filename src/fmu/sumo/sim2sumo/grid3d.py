@@ -107,13 +107,11 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_init")
-    logger.debug("File to load init from %s", init_path)
     unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
     init_props = list(
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
     )
     count = 0
-    logger.debug("%s properties found in init", len(init_props))
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
             logger.warning("%s will not be exported", init_prop["name"])
@@ -134,7 +132,7 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
             continue
         dispatcher.add(sumo_file)
         count += 1
-    logger.info("%s properties sendt on", count)
+    logger.info("%s properties set for upload", count)
     return count
 
 
@@ -158,7 +156,6 @@ def upload_restart(
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
-    logger.debug("File to load restart from %s", restart_path)
     count = 0
     for prop_name in prop_names:
         for time_step in time_steps:
@@ -172,7 +169,6 @@ def upload_restart(
 
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
-                logger.debug("Exporting %s", xtgeo_prop.name)
                 sumo_file = convert_xtgeo_2_sumo_file(
                     restart_path, xtgeo_prop, "UNRST", config
                 )
@@ -211,7 +207,7 @@ def upload_simulation_run(datafile, config, dispatcher):
         datafile (str): path to datafile
     """
     logger = logging.getLogger(__name__ + ".upload_simulation_run")
-    datafile_path = Path(datafile)
+    datafile_path = Path(datafile).resolve()
     init_path = str(datafile_path.with_suffix(".INIT"))
     restart_path = str(datafile_path.with_suffix(".UNRST"))
     grid_path = str(datafile_path.with_suffix(".EGRID"))
@@ -259,15 +255,12 @@ def make_xtgeo_prop(xtgeoegrid, prop_dict):
     Returns:
         xtgeo.GridProperty: the extracted results
     """
-    logger = logging.getLogger(__name__ + ".make_xtgeo_prop")
     prop_name = prop_dict["name"]
     values = prop_dict["values"]
+    # TODO: Why do we skip single value properties?
     single_value = np.unique(values).size == 1
     if single_value:
-        logger.debug(
-            "%s has only one value. Will not return single value property.",
-            prop_name,
-        )
+        # prop_name has only one value. Will not return single value property."
         return None
 
     xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
