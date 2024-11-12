@@ -118,16 +118,12 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     [
         ({}, 5, 4),
         (
-            {
-                "datafile": {
-                    "3_R001_REEK": {"summary": {"column_keys": "F*P*"}}
-                }
-            },
+            {"datafile": [{"3_R001_REEK": ["summary"]}]},
             1,
             2,
         ),
         (
-            {"datafile": {"3_R001_REEK": ["summary", "rft"]}},
+            {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
             1,
             3,
         ),
