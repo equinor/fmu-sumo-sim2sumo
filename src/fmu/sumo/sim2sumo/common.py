@@ -182,7 +182,7 @@ def create_config_dict(config):
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = simconfig.get("datafile", [None])
+    datafile = simconfig.get("datafile", [])
     datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
@@ -197,46 +197,58 @@ def create_config_dict(config):
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
 
-    for file in datafile:
-        if isinstance(file, str):
-            # If datafile is a string
-            path = Path(file)
+    if datafile:
+        for file in datafile:
+            if isinstance(file, str):
+                # If datafile is a string
+                path = Path(file)
 
-            if path.is_file():
-                # If the path is a file, use it directly, not checking filetype
-                datafiles = [path]
-            # If the path is a directory or part of filename, find all matches
-            else:
-                datafiles = find_datafiles(path)
-            for datafile_path in datafiles:
-                sim2sumoconfig[datafile_path] = {}
-                for submod in default_submods or []:
-                    options = simconfig.get("options", {"arrow": True})
-                    sim2sumoconfig[datafile_path][submod] = filter_options(
-                        submod, options
-                    )
-                sim2sumoconfig[datafile_path]["grid3d"] = grid3d
-        else:
-            # datafile is a dict
-            for filepath, submods in datafile.items():
-                path = Path(filepath)
                 if path.is_file():
                     # If the path is a file, use it directly, not checking filetype
                     datafiles = [path]
                 # If the path is a directory or part of filename, find all matches
                 else:
                     datafiles = find_datafiles(path)
-
-                # Create config entries for each datafile
                 for datafile_path in datafiles:
                     sim2sumoconfig[datafile_path] = {}
-                    for submod in submods:
-                        # Use the global options or default to {"arrow": True}
+                    for submod in default_submods or []:
                         options = simconfig.get("options", {"arrow": True})
                         sim2sumoconfig[datafile_path][submod] = filter_options(
                             submod, options
                         )
                     sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+            else:
+                # datafile is a dict
+                for filepath, submods in datafile.items():
+                    path = Path(filepath)
+                    if path.is_file():
+                        # If the path is a file, use it directly, not checking filetype
+                        datafiles = [path]
+                    # If the path is a directory or part of filename, find all matches
+                    else:
+                        datafiles = find_datafiles(path)
+
+                    # Create config entries for each datafile
+                    for datafile_path in datafiles:
+                        sim2sumoconfig[datafile_path] = {}
+                        for submod in submods:
+                            # Use the global options or default to {"arrow": True}
+                            options = simconfig.get("options", {"arrow": True})
+                            sim2sumoconfig[datafile_path][submod] = (
+                                filter_options(submod, options)
+                            )
+                        sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+    else:
+        # If datafile is not specified, find all valid files in the current directory
+        datafiles_paths = find_datafiles(datafile)
+        for datafile_path in datafiles_paths:
+            sim2sumoconfig[datafile_path] = {}
+            for submod in default_submods or []:
+                options = simconfig.get("options", {"arrow": True})
+                sim2sumoconfig[datafile_path][submod] = filter_options(
+                    submod, options
+                )
+            sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     # # If datafile is a dictionary, iterate over its items
     # if isinstance(datafile, dict):
