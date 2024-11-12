@@ -219,7 +219,7 @@ def create_config_dict(config):
                     sim2sumoconfig[datafile_path]["grid3d"] = grid3d
             else:
                 # datafile is a dict
-                for filepath, submods in datafile.items():
+                for filepath, submods in file.items():
                     path = Path(filepath)
                     if path.is_file():
                         # If the path is a file, use it directly, not checking filetype
