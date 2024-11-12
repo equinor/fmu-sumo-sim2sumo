@@ -186,10 +186,9 @@ def create_config_dict(config):
     datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
+        submods = ["summary", "rft", "satfunc"]
+    elif datatype == "all":
+        submods = SUBMODULES
     elif isinstance(datatype, list):
         submods = datatype
     else:
