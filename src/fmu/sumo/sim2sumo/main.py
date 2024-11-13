@@ -59,7 +59,9 @@ def main():
 
     if missing > 0:
         print(
-            "Required ERT environment variables not found. This can happen if sim2sumo was called outside the ERT context. Stopping."
+            "Required ERT environment variables not found. "
+            "This can happen if sim2sumo was called outside the ERT context. "
+            "Stopping."
         )
         exit()
 

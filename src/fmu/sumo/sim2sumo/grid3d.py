@@ -74,13 +74,15 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     """Convert xtgeo object to SumoFile ready for shipping to Sumo
 
     Args:
-        datafile (str|PosixPath): path to datafile connected to extracted object
+        datafile (str|PosixPath):
+            path to datafile connected to extracted object
         obj (Xtgeo object): The object to prepare for upload
         prefix (str): prefix to distinguish between init and restart
         config (dict): dictionary with master metadata needed for Sumo
 
     Returns:
-        SumoFile: Object containing xtgeo object as bytestring + metadata as dictionary
+        SumoFile: Object containing xtgeo object as bytestring
+                    and metadata as dictionary
     """
     if obj is None:
         return obj
@@ -150,7 +152,8 @@ def upload_restart(
         restart_path (str): path to restart file
         xtgeoegrid (xtge.Grid): the grid to unpack the properties to
         time_steps (list): the timesteps to use
-        prop_names (iterable, optional): the properties to export. Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
+        prop_names (iterable, optional): the properties to export.
+                    Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
 
     Returns:
         int: number of objects to export
@@ -174,7 +177,7 @@ def upload_restart(
                 )
                 if sumo_file is None:
                     logger.warning(
-                        "Property with name %s extracted from %s returned nothing",
+                        "Property %s extracted from %s returned nothing",
                         prop_name,
                         restart_path,
                     )

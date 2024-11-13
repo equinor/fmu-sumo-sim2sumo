@@ -42,7 +42,8 @@ def get_case_uuid(file_path, parent_level=4):
 
     Args:
         file_path (str): path to file in ensemble
-        parent_level (int, optional): nr of levels to move down to root. Defaults to 4.
+        parent_level (int, optional): nr of levels to move down to root.
+                                        Defaults to 4.
 
     Returns:
         str: the case uuid
@@ -91,10 +92,11 @@ def filter_options(submod, kwargs):
 
 
 def find_datafiles(seedpoint=None):
-    """Find datafiles relative to an optional seedpoint or the current working directory.
+    """Find datafiles relative to seedpoint or the current working directory.
 
     Args:
-        seedpoint (str|Path|list, optional): Specific file, list of directories, or single directory to search for datafiles.
+        seedpoint (str|Path|list, optional): Where to search for datafiles.
+            Either a specific file, list of directories, or single directory.
 
     Returns:
         list: The datafiles found with unique stem names, as full paths.
@@ -105,7 +107,7 @@ def find_datafiles(seedpoint=None):
     cwd = Path().cwd()  # Get the current working directory
 
     if isinstance(seedpoint, list):
-        # If seedpoint is a list, ensure all elements are strings or Path objects
+        # Convert all elements to Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
     elif seedpoint:
         seedpoint = [seedpoint]
@@ -131,7 +133,7 @@ def find_datafiles(seedpoint=None):
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
-                        # Search for valid files within the directory with partly filename
+                        # Search for valid files within the directory
                         datafiles.extend(
                             [
                                 f
@@ -415,5 +417,6 @@ def validate_sim2sumo_config(config):
     for file in datafiles:
         if isinstance(file, dict) and len(file) != 1:
             raise ValueError(
-                "Config error: datafiles specified as dictionary must have exactly one key"
+                "Config error: "
+                "datafiles specified as dictionary must have exactly one key"
             )

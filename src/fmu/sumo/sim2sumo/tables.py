@@ -81,7 +81,8 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
         tagname (str): what submodule the table is extracted from
         config (dict): dictionary with master metadata needed for Sumo
     Returns:
-         SumoFile: Object containing table object as bytestring + metadata as dictionary
+        SumoFile: Object containing table object as bytestring and
+            metadata as dictionary
     """
     if obj is None:
         return obj
@@ -142,7 +143,9 @@ def get_table(
                 output = convert_func(output)
             except pa.lib.ArrowInvalid:
                 logger.warning(
-                    "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s). \nFalling back to converting with %s",
+                    "Arrow invalid, cannot convert to arrow, "
+                    "keeping pandas format, "
+                    "(trace %s). \nFalling back to converting with %s",
                     sys.exc_info()[1],
                     convert_to_arrow.__name__,
                 )
@@ -224,7 +227,7 @@ def upload_tables_from_simulation_run(
             table = get_table(datafile, submod, **options)
             if table is None:
                 logger.warning(
-                    "Table with datatype %s extracted from %s returned nothing",
+                    "Table with datatype %s from %s returned nothing",
                     submod,
                     datafile,
                 )
