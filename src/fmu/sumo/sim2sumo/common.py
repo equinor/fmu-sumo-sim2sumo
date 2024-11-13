@@ -104,11 +104,9 @@ def find_datafiles(seedpoint=None):
     datafiles = []
     cwd = Path().cwd()  # Get the current working directory
 
-    # TODO: Be stricter on seedpoint type. Should be either a list or None. If something else: raise ValueError("datafile should be a list or None")
-    if isinstance(seedpoint, dict):
-        # Extract the values (paths) from the dictionary and treat them as a list
-        seedpoint = list(seedpoint.values())
-    elif isinstance(seedpoint, list):
+    # TODO? Validate that seedpoint is either str, Path, list or None?
+
+    if isinstance(seedpoint, list):
         # If seedpoint is a list, ensure all elements are strings or Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
     elif seedpoint:
@@ -199,45 +197,27 @@ def create_config_dict(config):
 
     if datafile:
         for file in datafile:
-            if isinstance(file, str):
-                # If datafile is a string
-                path = Path(file)
-
-                if path.is_file():
-                    # If the path is a file, use it directly, not checking filetype
-                    datafiles = [path]
-                # If the path is a directory or part of filename, find all matches
-                else:
-                    datafiles = find_datafiles(path)
-                for datafile_path in datafiles:
-                    sim2sumoconfig[datafile_path] = {}
-                    for submod in default_submods or []:
-                        options = simconfig.get("options", {"arrow": True})
-                        sim2sumoconfig[datafile_path][submod] = filter_options(
-                            submod, options
-                        )
-                    sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+            if isinstance(file, dict):
+                (((filepath, file_submods)),) = file.items()
+                submods = file_submods or default_submods
             else:
-                # datafile is a dict
-                for filepath, submods in file.items():
-                    path = Path(filepath)
-                    if path.is_file():
-                        # If the path is a file, use it directly, not checking filetype
-                        datafiles = [path]
-                    # If the path is a directory or part of filename, find all matches
-                    else:
-                        datafiles = find_datafiles(path)
+                filepath = file
+                submods = default_submods
 
-                    # Create config entries for each datafile
-                    for datafile_path in datafiles:
-                        sim2sumoconfig[datafile_path] = {}
-                        for submod in submods:
-                            # Use the global options or default to {"arrow": True}
-                            options = simconfig.get("options", {"arrow": True})
-                            sim2sumoconfig[datafile_path][submod] = (
-                                filter_options(submod, options)
-                            )
-                        sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+            path = Path(filepath)
+            if path.is_file():
+                datafiles = [path]
+            else:
+                datafiles = find_datafiles(path)
+
+            for datafile_path in datafiles:
+                sim2sumoconfig[datafile_path] = {}
+                for submod in submods:
+                    options = simconfig.get("options", {"arrow": True})
+                    sim2sumoconfig[datafile_path][submod] = filter_options(
+                        submod, options
+                    )
+                sim2sumoconfig[datafile_path]["grid3d"] = grid3d
     else:
         # If datafile is not specified, find all valid files in the current directory
         datafiles_paths = find_datafiles(datafile)
@@ -249,41 +229,6 @@ def create_config_dict(config):
                     submod, options
                 )
             sim2sumoconfig[datafile_path]["grid3d"] = grid3d
-
-    # # If datafile is a dictionary, iterate over its items
-    # if isinstance(datafile, dict):
-    #     for filepath, submods in datafile.items():
-    #         # Convert the filepath to a Path object
-    #         path = Path(filepath)
-
-    #         if path.is_file():
-    #             # If the path is a file, use it directly, not checking filetype
-    #             datafiles = [path]
-    #         # If the path is a directory or part of filename, find all matches
-    #         else:
-    #             datafiles = find_datafiles(path)
-
-    #         # Create config entries for each datafile
-    #         for datafile_path in datafiles:
-    #             sim2sumoconfig[datafile_path] = {}
-    #             for submod in submods:
-    #                 # Use the global options or default to {"arrow": True}
-    #                 options = simconfig.get("options", {"arrow": True})
-    #                 sim2sumoconfig[datafile_path][submod] = filter_options(
-    #                     submod, options
-    #                 )
-    #             sim2sumoconfig[datafile_path]["grid3d"] = grid3d
-    # else:
-    #     # If datafile is not a dictionary, use the existing logic
-    #     datafiles_paths = find_datafiles(datafile)
-    #     for datafile_path in datafiles_paths:
-    #         sim2sumoconfig[datafile_path] = {}
-    #         for submod in submods or []:
-    #             options = simconfig.get("options", {"arrow": True})
-    #             sim2sumoconfig[datafile_path][submod] = filter_options(
-    #                 submod, options
-    #             )
-    #         sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig
 
@@ -476,9 +421,8 @@ def validate_sim2sumo_config(config):
     datafiles = config.get("datafile", [])
     if not isinstance(datafiles, list):
         raise ValueError("Config error: datafile must be a list")
-    # TODO: Uncomment and use this if it should be required that each file is a dict
-    # for file in datafiles:
-    #     if not isinstance(file, dict):
-    #         raise ValueError(
-    #             "Config error: each datafile should be a dictionary"
-    #         )
+    for file in datafiles:
+        if isinstance(file, dict) and len(file) != 1:
+            raise ValueError(
+                "Config error: datafiles specified as dictionary must have exactly one key"
+            )
