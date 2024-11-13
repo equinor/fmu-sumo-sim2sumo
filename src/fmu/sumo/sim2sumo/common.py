@@ -104,8 +104,6 @@ def find_datafiles(seedpoint=None):
     datafiles = []
     cwd = Path().cwd()  # Get the current working directory
 
-    # TODO? Validate that seedpoint is either str, Path, list or None?
-
     if isinstance(seedpoint, list):
         # If seedpoint is a list, ensure all elements are strings or Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
@@ -192,10 +190,11 @@ def create_config_dict(config):
     else:
         default_submods = [datatype]
 
+    submods = default_submods
+
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
     paths = []
-    submods = default_submods
 
     if datafile:
         for file in datafile:
@@ -207,32 +206,11 @@ def create_config_dict(config):
 
             path = Path(filepath)
             if path.is_file():
-                # datafiles = [path]
                 paths += [path]
             else:
-                # datafiles = find_datafiles(path)
                 paths += find_datafiles(path)
-
-            # for datafile_path in datafiles:
-            #     sim2sumoconfig[datafile_path] = {}
-            #     for submod in submods:
-            #         options = simconfig.get("options", {"arrow": True})
-            #         sim2sumoconfig[datafile_path][submod] = filter_options(
-            #             submod, options
-            #         )
-            #     sim2sumoconfig[datafile_path]["grid3d"] = grid3d
     else:
-        # If datafile is not specified, find all valid files in the current directory
-        # datafiles = find_datafiles(datafile)
         paths += find_datafiles(datafile)
-        # for datafile_path in datafiles:
-        #     sim2sumoconfig[datafile_path] = {}
-        #     for submod in default_submods:
-        #         options = simconfig.get("options", {"arrow": True})
-        #         sim2sumoconfig[datafile_path][submod] = filter_options(
-        #             submod, options
-        #         )
-        #     sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     for datafile_path in paths:
         sim2sumoconfig[datafile_path] = {}
