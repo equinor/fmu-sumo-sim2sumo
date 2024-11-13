@@ -180,7 +180,7 @@ def create_config_dict(config):
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = simconfig.get("datafile", [])
+    datafile = simconfig.get("datafile", None)
     datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
@@ -223,7 +223,7 @@ def create_config_dict(config):
         datafiles_paths = find_datafiles(datafile)
         for datafile_path in datafiles_paths:
             sim2sumoconfig[datafile_path] = {}
-            for submod in default_submods or []:
+            for submod in default_submods:
                 options = simconfig.get("options", {"arrow": True})
                 sim2sumoconfig[datafile_path][submod] = filter_options(
                     submod, options
