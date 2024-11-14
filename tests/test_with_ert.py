@@ -1,5 +1,7 @@
-# When ERT runs it makes changes to the files. This can cause issues for other tests if they expect certain files to exist etc.
-# Tests that run ERT should therefore create their own temporary file structure, completely separate from other tests.
+# When ERT runs it makes changes to the files.
+# This can cause issues for other tests if they expect certain files
+# to exist etc. Tests that run ERT should therefore create their own
+# temporary file structure, completely separate from other tests.
 from pathlib import Path
 
 from subprocess import PIPE, Popen
@@ -13,7 +15,10 @@ def write_ert_config_and_run(runpath):
     with open(ert_full_config_path, "w", encoding=encoding) as stream:
 
         stream.write(
-            f"DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
+            (
+                "DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT"
+                f" 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
+            )
         )
     with Popen(
         ["ert", "test_run", str(ert_full_config_path)],
@@ -23,7 +28,10 @@ def write_ert_config_and_run(runpath):
         stdout, stderr = process.communicate()
 
     print(
-        f"After ert run all these files where found at runpath {[item.name for item in list(Path(runpath).glob('*'))]}"
+        (
+            "After ERT run these files were found at runpath:"
+            f"{[item.name for item in list(Path(runpath).glob('*'))]}"
+        )
     )
     if stdout:
         print("stdout:", stdout.decode(encoding), sep="\n")
@@ -46,7 +54,7 @@ def test_sim2sumo_with_ert(
 ):
     monkeypatch.chdir(ert_run_scratch_files[0])
     real0 = ert_run_scratch_files[0]
-    # After this the files in the current directory are changed and parameters.txt no longer exists
+    # ! This changes files in the current directory and deletes parameters.txt
     write_ert_config_and_run(real0)
     expected_exports = 88
     path = f"/objects('{ert_run_case_uuid}')/search"
