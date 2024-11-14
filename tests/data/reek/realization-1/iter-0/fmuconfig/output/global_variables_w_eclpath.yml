@@ -23,4 +23,5 @@ access:
     name: Drogon
   classification: internal
 sim2sumo:
-  datafile: eclipse/model/2_R001_REEK-0.DATA
+  datafile:
+    - eclipse/model/2_R001_REEK-0.DATA
