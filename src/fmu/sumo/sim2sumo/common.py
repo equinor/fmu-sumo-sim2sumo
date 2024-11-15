@@ -410,13 +410,24 @@ def give_name(datafile_path: str) -> str:
     return base_name
 
 
+DOCS_BASE_URL = (
+    "https://fmu-sumo-sim2sumo.readthedocs.io/en/latest/sim2sumo.html"
+)
+
+
 def validate_sim2sumo_config(config):
     datafiles = config.get("datafile", [])
     if not isinstance(datafiles, list):
-        raise ValueError("Config error: datafile must be a list")
-    for file in datafiles:
-        if isinstance(file, dict) and len(file) != 1:
-            raise ValueError(
-                "Config error: "
-                "datafiles specified as dictionary must have exactly one key"
-            )
+        raise ValueError(
+            "Config error: datafile must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datafile"
+        )
+
+    datatypes = config.get("datatypes", [])
+    if not isinstance(datatypes, list):
+        raise ValueError(
+            "Config error: datatypes must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datatypes"
+        )
