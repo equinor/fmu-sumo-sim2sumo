@@ -193,7 +193,7 @@ def upload_simulation_runs(datafiles, config, dispatcher):
     """Upload 3d grid and parameters for set of simulation runs
 
     Args:
-        datafiles (list): the datafiles defining the rums
+        datafiles (list): the datafiles defining the runs
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
