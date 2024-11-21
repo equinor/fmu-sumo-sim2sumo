@@ -84,18 +84,17 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
 
 
 @pytest.mark.parametrize(
-    "submod,options",
+    "submod,options,expected",
     [
-        ("summary", {"arrow": True}),
-        ("rft", {"md_log_file": "badabing"}),
-        ("vfp", {}),
+        ("summary", {"arrow": True}, {"arrow": True}),
+        ("vfp", {}, {"arrow": True}),
     ],
 )
-def test_non_standard_filter_options(submod, options):
+def test_non_standard_filter_options(submod, options, expected):
     returned_options = filter_options(submod, options)
     assert (
         len(returned_options) > 0
-    ), f"No options left for {submod}, should still be {options}"
+    ), f"No options left for {submod}, should be {expected}"
 
 
 @pytest.mark.parametrize(

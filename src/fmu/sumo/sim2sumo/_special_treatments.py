@@ -109,34 +109,11 @@ def _define_submodules():
     return tuple(submodules.keys()), submodules
 
 
-def find_md_log(submod, options):
-    """Search options for md_log_file
-
-    Args:
-        submod (str): submodule
-        options (dict): the dictionary to check
-
-    Returns:
-        str|None: whatever contained in md_log_file
-    """
-    if submod != "rft":
-        return None
-    # Special treatment of argument md_log_file
-    md_log_file = options.get("md_log_file", None)
-    try:
-        del options["md_log_file"]
-    except KeyError:
-        pass  # No md log provided
-
-    return md_log_file
-
-
-def complete_rft(frame, md_log_file):
+def tidy(frame):
     """Utility function to tidy up mess from res2df for rft
 
     Args:
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
-        md_log_file (str): file with md log file
     """
     # res2df creates three files for rft data, see unwanted list below
     logger = logging.getLogger(__file__ + ".tidy")
@@ -152,9 +129,6 @@ def complete_rft(frame, md_log_file):
             unwanted_posix.unlink()
     if "WELLETC" in frame.columns:
         frame.drop(["WELLETC"], axis=1, inplace=True)
-
-    if md_log_file is not None:
-        frame = add_md_to_rft(frame, md_log_file)
 
     return frame
 
@@ -187,35 +161,3 @@ def vfp_to_arrow_dict(datafile, options):
             resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
         )
     return vfp_dict
-
-
-def add_md_to_rft(rft_table, md_file_path):
-    """Merge md data with rft table
-
-    Args:
-        rft_table (pd.DataFrame): the rft dataframe
-        md_file_path (str): path to file with md data
-
-    Raises:
-        FileNotFoundError: if md_file_path does not point to existing file
-
-    Returns:
-        pd.Dataframe: the merged results
-    """
-    try:
-        md_table = pd.read_csv(md_file_path)
-    except FileNotFoundError as fnfe:
-        raise FileNotFoundError(
-            f"There is no md file called {md_file_path}"
-        ) from fnfe
-
-    xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
-    rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
-    # for grid indeces xtgeo starts from 0, res2df from 1
-    md_table[xtgeo_index_names] += 1
-    md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
-    xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
-    md_table.rename(xtgeo_to_rft_names, axis=1, inplace=True)
-    rft_table = pd.merge(rft_table, md_table, on=rft_index_names, how="left")
-
-    return rft_table

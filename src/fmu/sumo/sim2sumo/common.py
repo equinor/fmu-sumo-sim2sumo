@@ -71,7 +71,7 @@ def filter_options(submod, kwargs):
     filtered = {
         key: value
         for key, value in kwargs.items()
-        if (key in submod_options) or key in ["arrow", "md_log_file"]
+        if (key in submod_options) or key == "arrow"
     }
     filtered["arrow"] = kwargs.get(
         "arrow", True
