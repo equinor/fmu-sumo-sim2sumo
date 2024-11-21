@@ -305,5 +305,24 @@ Accessing help from ``res2df`` via sim2sumo
 
 
 
+VFP export
+***************************************
+**Note** that Sim2sumo exports VFP tables as separate files. (Similar to using ``--arrow`` with ``res2df``)
 
+VFP data can be exported either for all datafiles by adding "vfp" to the datatypes list:
+
+   .. code-block::
+
+      datatypes:
+        - ..
+        - vfp
+
+Or for individual files by adding "vfp" to the list of datatypes for that file:
+
+.. code-block::
+
+      datafile:
+         - ../../eclipse/model/DROGON-0.DATA:
+            - ..
+            - vfp
 
