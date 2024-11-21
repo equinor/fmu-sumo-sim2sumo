@@ -230,8 +230,10 @@ The example shows how to only extract summary data from the first file, and all 
 
 grid3d:
 ----------------
-In order to extract 3D grids data, ``grid3d`` should be set to ``true``.
-This applies to all datafiles specified in the ``datafile`` section.
+When ``grid3d`` is set to ``true``, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
+For the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
+For the restart the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
+
 
    .. code-block::
 
