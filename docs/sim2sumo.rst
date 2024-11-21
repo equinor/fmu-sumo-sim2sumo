@@ -148,7 +148,7 @@ The sim2sumo section in the config file gives you full flexibility for extractin
 You can also change where you extract results from, and even use all the extra custumization options that ``res2df`` has available.
 The three relevant sections are:
 
-datafile:
+datafile
 --------------------
 This section is for configuring where you extract results from, meaning where to look for simulation results.
 This section should be a list where each item is either a file path, file stub or a folder path.
@@ -173,6 +173,7 @@ This section should be a list where each item is either a file path, file stub o
 You can also specify what datatypes should be extracted for each file, by adding a list of datatypes to each file path:
 
    .. code-block::
+
       datafile:
          - ../../eclipse/model/DROGON:
             - summary
@@ -184,7 +185,7 @@ You can also specify what datatypes should be extracted for each file, by adding
             - faults
 
 
-datatypes:
+datatypes
 ----------------
 This section is for configuration of what data to extract. It should be specified as a list
 
@@ -210,8 +211,19 @@ For datatypes available see documentation for ``res2df``
 ..    | This section is for adding extra optional configuration for extracting the different datatypes.
 ..    | This section needs to be in a list format.
 
+grid3d
+----------------
+When ``grid3d`` is set to ``true``, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
+For the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
+For the restart the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
 
-Overriding default datatypes:
+
+   .. code-block::
+
+      grid3d: true
+
+
+Overriding default datatypes
 ----------------
 ``datatypes`` applies to all datafiles specified in the ``datafile`` section.
 It is possible to override this configuration for individual files.
@@ -227,18 +239,6 @@ The example shows how to only extract summary data from the first file, and all 
          - summary
          - wcon
          - faults
-
-grid3d:
-----------------
-| When ``grid3d`` is set to ``true``, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
-| From the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
-| From the restart file the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
-
-
-   .. code-block::
-
-      grid3d: true
-
 
 
 Using sim2sumo in scripts
@@ -305,5 +305,24 @@ Accessing help from ``res2df`` via sim2sumo
 
 
 
+VFP export
+***************************************
+**Note** that Sim2sumo exports VFP tables as separate files. (Similar to using ``--arrow`` with ``res2df``)
 
+VFP data can be exported either for all datafiles by adding "vfp" to the datatypes list:
+
+   .. code-block::
+
+      datatypes:
+        - ..
+        - vfp
+
+Or for individual files by adding "vfp" to the list of datatypes for that file:
+
+.. code-block::
+
+      datafile:
+         - ../../eclipse/model/DROGON-0.DATA:
+            - ..
+            - vfp
 
