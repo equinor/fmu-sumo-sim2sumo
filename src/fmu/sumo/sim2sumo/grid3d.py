@@ -138,28 +138,20 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
     return count
 
 
-def upload_restart(
-    restart_path,
-    xtgeoegrid,
-    time_steps,
-    config,
-    dispatcher,
-    prop_names=("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS"),
-):
+def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
     """Export properties from restart file
 
     Args:
         restart_path (str): path to restart file
         xtgeoegrid (xtge.Grid): the grid to unpack the properties to
         time_steps (list): the timesteps to use
-        prop_names (iterable, optional): the properties to export.
-                    Defaults to ("SWAT", "SGAS", "SOIL", "PRESSURE").
 
     Returns:
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
     count = 0
+    prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
     for prop_name in prop_names:
         for time_step in time_steps:
             try:
@@ -193,7 +185,7 @@ def upload_simulation_runs(datafiles, config, dispatcher):
     """Upload 3d grid and parameters for set of simulation runs
 
     Args:
-        datafiles (list): the datafiles defining the rums
+        datafiles (list): the datafiles defining the runs
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
