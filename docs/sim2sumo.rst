@@ -145,7 +145,7 @@ Custom configuration
 =====================
 
 The sim2sumo section in the config file gives you full flexibility for extracting anything that ``res2df`` can extract.
-You can also change where you extract results from, and even use all the extra custumization options that ``res2df`` has available.
+You can also change where you extract results from, and use some of the extra custumization options that ``res2df`` has available.
 The three relevant sections are:
 
 datafile
