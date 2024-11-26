@@ -56,7 +56,7 @@ def main():
         if envVar not in environ:
             missing.append(envVar)
 
-    if missing > 0:
+    if missing:
         print(
             "Required ERT environment variables not found:"
             f"{', '.join(missing)}.\n"
