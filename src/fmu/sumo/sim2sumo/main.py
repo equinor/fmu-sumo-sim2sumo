@@ -51,16 +51,16 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
 
-    missing = 0
+    missing = []
     for envVar in REQUIRED_ENV_VARS:
-        if environ.get(envVar) is None:
-            print(f"Required environment variable {envVar} is not set.")
-            missing += 1
+        if envVar not in environ:
+            missing.append(envVar)
 
     if missing > 0:
         print(
-            "Required ERT environment variables not found. "
-            "This can happen if sim2sumo was called outside the ERT context. "
+            "Required ERT environment variables not found:"
+            f"{', '.join(missing)}.\n"
+            "This can happen if sim2sumo was called outside the ERT context.\n"
             "Stopping."
         )
         exit()
