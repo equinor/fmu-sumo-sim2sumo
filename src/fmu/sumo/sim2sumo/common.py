@@ -7,11 +7,15 @@ from pathlib import Path
 import psutil
 import yaml
 
-
 from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
-from fmu.sumo.uploader._fileonjob import FileOnJob
 from fmu.sumo.uploader._upload_files import upload_files
+from fmu.sumo.sim2sumo._special_treatments import (
+    SUBMOD_DICT,
+    SUBMODULES,
+)
+
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 
 def yaml_load(file_name):
@@ -38,35 +42,209 @@ def get_case_uuid(file_path, parent_level=4):
 
     Args:
         file_path (str): path to file in ensemble
-        parent_level (int, optional): nr of levels to move down to root. Defaults to 4.
+        parent_level (int, optional): nr of levels to move down to root.
+                                        Defaults to 4.
 
     Returns:
         str: the case uuid
     """
-    logger = logging.getLogger(__name__ + ".get_case_uuid")
-    logger.debug("Asked for parent %s for %s", parent_level, file_path)
     case_meta_path = (
         Path(file_path).parents[parent_level] / "share/metadata/fmu_case.yml"
     )
-    logger.debug("Case meta path: %s", case_meta_path)
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
-    logger.info("Case uuid: %s", uuid)
     return uuid
+
+
+def filter_options(submod, kwargs):
+    """Filter options sent to res2df per given submodule
+
+    Args:
+        submod (str): the submodule to call
+        kwargs (dict): the options passed
+
+    Returns:
+        dict: options relevant for given submod
+    """
+    logger = logging.getLogger(__file__ + ".filter_options")
+    submod_options = SUBMOD_DICT[submod]["options"]
+    filtered = {
+        key: value
+        for key, value in kwargs.items()
+        if (key in submod_options) or key in ["arrow", "md_log_file"]
+    }
+    filtered["arrow"] = kwargs.get(
+        "arrow", True
+    )  # defaulting of arrow happens here
+    non_options = [key for key in kwargs if key not in filtered]
+    if len(non_options) > 0:
+        logger.warning(
+            "Skipping invalid options %s for %s.",
+            non_options,
+            submod,
+        )
+
+    if "zonemap" in filtered:
+        filtered["zonemap"] = convert_lyrlist_to_zonemap(
+            parse_lyrfile(filtered["zonemap"])
+        )
+    return filtered
+
+
+def find_datafiles(seedpoint=None):
+    """Find datafiles relative to seedpoint or the current working directory.
+
+    Args:
+        seedpoint (str|Path|list, optional): Where to search for datafiles.
+            Either a specific file, list of directories, or single directory.
+
+    Returns:
+        list: The datafiles found with unique stem names, as full paths.
+    """
+    logger = logging.getLogger(__file__ + ".find_datafiles")
+    valid_filetypes = [".DATA", ".afi", ".in"]
+    datafiles = []
+    cwd = Path().cwd()  # Get the current working directory
+
+    if isinstance(seedpoint, list):
+        # Convert all elements to Path objects
+        seedpoint = [Path(sp) for sp in seedpoint]
+    elif seedpoint:
+        seedpoint = [seedpoint]
+
+    if seedpoint:
+        for sp in seedpoint:
+            full_path = (
+                cwd / sp if not sp.is_absolute() else sp
+            )  # Make the path absolute
+            if full_path.suffix in valid_filetypes:
+                if full_path.is_file():
+                    # Add the file if it has a valid filetype
+                    datafiles.append(full_path)
+                else:
+                    datafiles.extend(
+                        [
+                            f
+                            for f in full_path.parent.rglob(
+                                f"{full_path.name}"
+                            )
+                        ]
+                    )
+            else:
+                for filetype in valid_filetypes:
+                    if not full_path.is_dir():
+                        # Search for valid files within the directory
+                        datafiles.extend(
+                            [
+                                f
+                                for f in full_path.parent.rglob(
+                                    f"{full_path.name}*{filetype}"
+                                )
+                            ]
+                        )
+                    else:
+                        # Search for valid files within the directory
+                        datafiles.extend(
+                            [f for f in full_path.rglob(f"*{filetype}")]
+                        )
+    else:
+        # Search the current working directory if no seedpoint is provided
+        for filetype in valid_filetypes:
+            datafiles.extend([f for f in cwd.rglob(f"*/*/*{filetype}")])
+    # Filter out files with duplicate stems, keeping the first occurrence
+    unique_stems = set()
+    unique_datafiles = []
+    for datafile in datafiles:
+        stem = datafile.with_suffix("").stem
+        if stem not in unique_stems:
+            unique_stems.add(stem)
+            unique_datafiles.append(datafile.resolve())  # Resolve to full path
+
+    logger.info(f"Using datafiles: {str(unique_datafiles)} ")
+    return unique_datafiles
+
+
+def create_config_dict(config):
+    """Read config settings and make dictionary for use when exporting.
+
+    Args:
+        config (dict): the settings for export of simulator results.
+
+    Returns:
+        dict: dictionary with key as path to datafile, value as dict of
+              submodule and option.
+    """
+    simconfig = config.get("sim2sumo", {})
+    validate_sim2sumo_config(simconfig)
+
+    grid3d = simconfig.get("grid3d", False)
+
+    # Use the provided datafile or datatype if given, otherwise use simconfig
+    datafile = simconfig.get("datafile", None)
+    datatype = simconfig.get("datatypes", None)
+
+    if datatype is None:
+        default_submods = ["summary", "rft", "satfunc"]
+    elif datatype == "all":
+        default_submods = SUBMODULES
+    elif isinstance(datatype, list):
+        default_submods = datatype
+    else:
+        default_submods = [datatype]
+
+    submods = default_submods
+
+    # Initialize the dictionary to hold the configuration for each datafile
+    sim2sumoconfig = {}
+    paths = []
+
+    if datafile:
+        for file in datafile:
+            if isinstance(file, dict):
+                (((filepath, file_submods)),) = file.items()
+                submods = file_submods or default_submods
+            else:
+                filepath = file
+
+            path = Path(filepath)
+            if path.is_file():
+                paths += [path]
+            else:
+                paths += find_datafiles(path)
+    else:
+        paths += find_datafiles(datafile)
+
+    for datafile_path in paths:
+        sim2sumoconfig[datafile_path] = {}
+        for submod in submods:
+            options = simconfig.get("options", {"arrow": True})
+            sim2sumoconfig[datafile_path][submod] = filter_options(
+                submod, options
+            )
+        sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+
+    return sim2sumoconfig
 
 
 class Dispatcher:
     """Controls upload to sumo"""
 
-    def __init__(self, datafile, env, token=None):
+    def __init__(
+        self,
+        datafile,
+        env,
+        config_path="fmuconfig/output/global_variables.yml",
+        token=None,
+    ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
-        self._parentid = get_case_uuid(datafile)
+        self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
         self._env = env
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
+        self._config_path = config_path
 
         self._mem_count = 0
         self._count = 0
@@ -125,13 +303,17 @@ class Dispatcher:
 
     def _upload(self):
         self._logger.debug("%s files to upload", len(self._objects))
-        nodisk_upload(self._objects, self._parentid, connection=self._conn)
+        nodisk_upload(
+            self._objects,
+            self._parentid,
+            self._config_path,
+            connection=self._conn,
+        )
         self._objects = []
         self._mem_count = 0
 
     def finish(self):
         """Cleanup"""
-        self._logger.info("Final stretch")
         self._upload()
 
 
@@ -164,13 +346,6 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     Returns:
         dict: the metadata to export
     """
-    logger = logging.getLogger(__name__ + ".generate_meta")
-    logger.info("Obj of type: %s", type(obj))
-    logger.info("Generating metadata")
-    logger.info("Content: %s", content)
-    logger.debug("Config: %s", config)
-    logger.debug("datafile_path: %s", datafile_path)
-    logger.info("tagname: %s", tagname)
     name = give_name(datafile_path)
     exp_args = {
         "config": config,
@@ -191,59 +366,10 @@ def generate_meta(config, datafile_path, tagname, obj, content):
     metadata["file"] = {
         "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
     }
-    logger.debug("Generated metadata are:\n%s", metadata)
     return metadata
 
 
-def convert_to_bytestring(converter, obj):
-    """Convert what comes out of a function to bytestring
-
-    Args:
-        converter (func): the function to convert to bytestring
-       obj (object): the object to be converted
-
-    Returns:
-        bytestring: the converted bytes
-    """
-    return converter(obj)
-
-
-def convert_2_sumo_file(obj, converter, metacreator, meta_args):
-    """Convert object to sumo file
-
-    Args:
-        obj (object): the object
-        converter (func): function to convert to bytestring
-        metacreator (func): the function that creates the metadata
-        meta_args (iterable): arguments for generating metadata
-
-    Returns:
-        SumoFile: file containing obj
-    """
-    logger = logging.getLogger(__name__ + ".convert_2_sumo_file")
-    logger.debug("Obj type: %s", type(obj))
-    logger.debug("Convert function %s", converter)
-    logger.debug("Meta function %s", metacreator)
-    logger.debug("Arguments for creating metadata %s", meta_args)
-    bytestring = convert_to_bytestring(converter, obj)
-    metadata = metacreator(*meta_args)
-    logger.debug("Metadata created")
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
-    assert isinstance(
-        bytestring, bytes
-    ), f"bytestring should be bytes, but is {type(bytestring)}"
-    sumo_file = FileOnJob(bytestring, metadata)
-    logger.debug("Init of sumo file")
-    sumo_file.path = metadata["file"]["relative_path"]
-    sumo_file.metadata_path = ""
-    sumo_file.size = len(sumo_file.byte_string)
-    logger.debug("Returning from func")
-    return sumo_file
-
-
-def nodisk_upload(files, parent_id, env="prod", connection=None):
+def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     """Upload files to sumo
 
     Args:
@@ -252,12 +378,13 @@ def nodisk_upload(files, parent_id, env="prod", connection=None):
         connection (str): client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    logger.info("%s files to upload", len(files))
-    logger.debug("Uploading to parent %s", parent_id)
     if len(files) > 0:
+        logger.info("Uploading %s files to parent %s", len(files), parent_id)
         if connection is None:
             connection = SumoConnection(env=env)
-        status = upload_files(files, parent_id, connection)
+        status = upload_files(
+            files, parent_id, connection, config_path=config_path
+        )
         print("Status after upload: ", end="\n--------------\n")
         for state, obj_status in status.items():
             print(f"{state}: {len(obj_status)}")
@@ -274,32 +401,33 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
 
 
-def fix_suffix(datafile_path: str, suffix=".DATA"):
-    """Check if suffix is .DATA, if not change to
+DOCS_BASE_URL = (
+    "https://fmu-sumo-sim2sumo.readthedocs.io/en/latest/sim2sumo.html"
+)
 
-    Args:
-        datafile_path (PosixPath): path to check
-        suffix (str): desired suffix
 
-    Returns:
-        str: the corrected path
-    """
-    logger = logging.getLogger(__file__ + ".fix_suffix")
-    string_datafile_path = str(datafile_path)
-    if not string_datafile_path.endswith(suffix):
-        corrected_path = re.sub(r"\..*", suffix, string_datafile_path)
-        logger.debug("Changing %s to %s", string_datafile_path, corrected_path)
-        datafile_path = corrected_path
-    return datafile_path
+def validate_sim2sumo_config(config):
+    datafiles = config.get("datafile", [])
+    if not isinstance(datafiles, list):
+        raise ValueError(
+            "Config error: datafile must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datafile"
+        )
+
+    datatypes = config.get("datatypes", [])
+    if not isinstance(datatypes, list):
+        raise ValueError(
+            "Config error: datatypes must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datatypes"
+        )

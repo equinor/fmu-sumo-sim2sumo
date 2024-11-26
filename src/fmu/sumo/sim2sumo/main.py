@@ -2,12 +2,11 @@
 
 import argparse
 import logging
-from pathlib import Path, PosixPath
+from os import environ
 
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
-from .common import yaml_load, Dispatcher
-from ._special_treatments import give_help, SUBMODULES
+from .common import yaml_load, Dispatcher, create_config_dict
 
 
 def parse_args():
@@ -16,7 +15,6 @@ def parse_args():
     Returns:
         argparse.NameSpace: the arguments parsed
     """
-    logger = logging.getLogger(__file__ + ".parse_args")
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Parsing input to control export of simulator data",
@@ -34,167 +32,65 @@ def parse_args():
         help="Which sumo environment to upload to",
         default="prod",
     )
-    parser.add_argument(
-        "--datatype",
-        type=str,
-        default=None,
-        help="Override datatype setting, intented for testing only",
-    )
-    parser.add_argument(
-        "--datafile",
-        type=str,
-        default=None,
-        help="Override datafile setting, intented for testing only",
-    )
-    parser.add_argument(
-        "--help_on",
-        type=str,
-        help=(
-            "Use this to get documentation of one of the datatypes to upload\n"
-            + f"valid options are \n{', '.join(SUBMODULES)}"
-        ),
-        default="No help",
-    )
     parser.add_argument("--d", help="Activate debug mode", action="store_true")
     args = parser.parse_args()
     if args.d:
         logging.basicConfig(
             level="DEBUG", format="%(name)s - %(levelname)s - %(message)s"
         )
-    logger.debug("Returning args %s", vars(args))
     return args
 
 
-def read_config(config, datafile=None, datatype=None):
-    """Read config settings
-
-    Args:
-        config (dict): the settings for export of simulator results
-        kwargs (dict): overiding settings
-
-    Returns:
-        dict: datafiles as list, submodules to use as list, and options as kwargs
-    """
-    # datafile can be read as list, or string which can be either folder or filepath
-    logger = logging.getLogger(__file__ + ".read_config")
-    logger.debug("Using extras %s", [datafile, datatype])
-    logger.debug("Input config keys are %s", config.keys())
-
-    simconfig = config.get("sim2sumo", {})
-    if isinstance(simconfig, bool):
-        simconfig = {}
-    datafiles = find_datafiles(datafile, simconfig)
-
-    submods = find_datatypes(datatype, simconfig)
-
-    options = simconfig.get("options", {"arrow": True})
-
-    grid3d = simconfig.get("grid3d", False)
-    logger.info(
-        "Running with: datafile(s): \n%s \n Types: \n %s \noptions:\n %s",
-        datafiles,
-        submods,
-        options,
-    )
-    outdict = {
-        "datafiles": datafiles,
-        "submods": submods,
-        "options": options,
-        "grid3d": grid3d,
-    }
-    return outdict
-
-
-def find_datatypes(datatype, simconfig):
-    """Find datatypes to extract
-
-    Args:
-        datatype (str or None): datatype to extract
-        simconfig (dict): the config file settings
-
-    Returns:
-        list or dict: data types to extract
-    """
-
-    if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
-    else:
-        submods = [datatype]
-    return submods
-
-
-def is_datafile(results: PosixPath) -> bool:
-    """Filter results based on suffix
-
-    Args:
-        results (PosixPath): path to file
-
-    Returns:
-        bool: true if correct suffix
-    """
-    valid = [".afi", ".DATA", ".in"]
-    return results.suffix in valid
-
-
-def find_datafiles(seedpoint, simconfig):
-    """Find all relevant paths that can be datafiles
-
-    Args:
-        seedpoint (str, list): path of datafile, or list of folders where one can find one
-        simconfig (dict): the sim2sumo config settings
-
-    Returns:
-        list: list of datafiles to interrogate
-    """
-
-    logger = logging.getLogger(__file__ + ".find_datafiles")
-    datafiles = []
-    seedpoint = simconfig.get("datafile", seedpoint)
-    if seedpoint is None:
-        datafiles = list(filter(is_datafile, Path().cwd().glob("*/model/*.*")))
-
-    elif isinstance(seedpoint, (str, PosixPath)):
-        logger.debug("Using this string %s to find datafile(s)", seedpoint)
-        seedpoint_posix = Path(seedpoint)
-        if seedpoint_posix.is_file():
-            logger.debug("%s is file path, will just use this one", seedpoint)
-            datafiles.append(seedpoint)
-    else:
-        logger.debug("%s is list", seedpoint)
-        datafiles.extend(seedpoint)
-    logger.debug("Datafile(s) to use %s", datafiles)
-    return datafiles
+# e.g. _ERT_RUNPATH = ../realization-0/iter-0
+# e.g. _ERT_EXPERIMENT_ID = <uuid>
+# fmu-dataio needs these when creating metadata
+REQUIRED_ENV_VARS = ["_ERT_EXPERIMENT_ID", "_ERT_RUNPATH"]
 
 
 def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
+
+    missing = 0
+    for envVar in REQUIRED_ENV_VARS:
+        if environ.get(envVar) is None:
+            print(f"Required environment variable {envVar} is not set.")
+            missing += 1
+
+    if missing > 0:
+        print(
+            "Required ERT environment variables not found. "
+            "This can happen if sim2sumo was called outside the ERT context. "
+            "Stopping."
+        )
+        exit()
+
     args = parse_args()
-    logger.debug("Running with arguments %s", args)
-    if args.help_on != "No help":
-        print(give_help(args.help_on))
-    else:
-        logger.info("Will be extracting results")
-        config = yaml_load(args.config_path)
-        config["file_path"] = args.config_path
-        logger.debug("Added file_path, and config keys are %s", config.keys())
-        sim2sumoconfig = read_config(config, args.datafile, args.datatype)
 
-        dispatcher = Dispatcher(sim2sumoconfig["datafiles"][0], args.env)
-        logger.debug("Extracting tables")
-        upload_tables(sim2sumoconfig, config, dispatcher)
+    config = yaml_load(args.config_path)
+    config["file_path"] = args.config_path
+    try:
+        sim2sumoconfig = create_config_dict(config)
+    except Exception as e:
+        logger.error("Failed to create config dict: %s", e)
+        return
+    # Init of dispatcher needs one datafile to locate case uuid
+    one_datafile = list(sim2sumoconfig.keys())[0]
+    try:
+        dispatcher = Dispatcher(
+            one_datafile, args.env, config_path=args.config_path
+        )
+    except Exception as e:
+        logger.error("Failed to create dispatcher: %s", e)
+        return
 
-        if sim2sumoconfig["grid3d"]:
-            logger.debug("Extracting 3dgrid(s) with properties")
-            upload_simulation_runs(
-                sim2sumoconfig["datafiles"], config, dispatcher
-            )
-        else:
-            logger.info("No grid3d extraction")
-        dispatcher.finish()
+    # Extract tables
+    upload_tables(sim2sumoconfig, config, dispatcher)
+
+    # Extract 3dgrid(s) with properties
+    upload_simulation_runs(sim2sumoconfig, config, dispatcher)
+
+    dispatcher.finish()
 
 
 if __name__ == "__main__":

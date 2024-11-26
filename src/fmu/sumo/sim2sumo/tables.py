@@ -13,48 +13,26 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pandas as pd
 import res2df
+from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
     SUBMOD_DICT,
-    convert_options,
-    tidy,
+    complete_rft,
     convert_to_arrow,
+    vfp_to_arrow_dict,
+    find_md_log,
 )
-from .common import (
-    fix_suffix,
-    generate_meta,
-    get_case_uuid,
-    convert_to_bytestring,
-    convert_2_sumo_file,
-)
+from .common import generate_meta
 
 
 SUBMOD_CONTENT = {
     "summary": "timeseries",
     "satfunc": "relperm",
     "vfp": "lift_curves",
+    "rft": "rft",
+    "pvt": "pvt",
+    "transmissibilities": "transmissibilities",
 }
-SUBMOD_CONTENT.update(
-    {name: name for name in ["rft", "pvt", "transmissibilities"]}
-)
-
-
-def table_to_bytes(table: pa.Table):
-    """Return table as bytestring
-
-    Args:
-        table (pa.Table): the table to be converted
-
-    Returns:
-        bytes: table as bytestring
-    """
-    logger = logging.getLogger(__name__ + ".table_to_bytes")
-    sink = pa.BufferOutputStream()
-    logger.debug("Writing %s to sink", table)
-    pq.write_table(table, sink)
-    byte_string = sink.getvalue().to_pybytes()
-    logger.debug("Returning bytestring with size %s", len(byte_string))
-    return byte_string
 
 
 def table_2_bytestring(table):
@@ -64,9 +42,11 @@ def table_2_bytestring(table):
         table (pa.table): the table to convert
 
     Returns:
-        bytest: the bytes string
+        bytes: table as bytestring
     """
-    bytestring = convert_to_bytestring(table_to_bytes, table)
+    sink = pa.BufferOutputStream()
+    pq.write_table(table, sink)
+    bytestring = sink.getvalue().to_pybytes()
     return bytestring
 
 
@@ -76,19 +56,18 @@ def generate_table_meta(datafile, obj, tagname, config):
     Args:
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
-        prefix (str): prefix to include
+        tagname: tagname
         config (dict): the fmu config file
-        content (str): content for data
 
     Returns:
         dict: the metadata for obj
     """
-    logger = logging.getLogger(__name__ + ".generate_table_meta")
+    if "vfp" in tagname.lower():
+        content = "lift_curves"
+    else:
+        content = SUBMOD_CONTENT.get(tagname, "property")
 
-    metadata = generate_meta(
-        config, datafile, tagname, obj, SUBMOD_CONTENT.get(tagname, "property")
-    )
-    logger.debug("Generated meta are %s", metadata)
+    metadata = generate_meta(config, datafile, tagname, obj, content)
 
     return metadata
 
@@ -102,29 +81,25 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
         tagname (str): what submodule the table is extracted from
         config (dict): dictionary with master metadata needed for Sumo
     Returns:
-         SumoFile: Object containing table object as bytestring + metadata as dictionary
+        SumoFile: Object containing table object as bytestring and
+            metadata as dictionary
     """
-    logger = logging.getLogger(__name__ + ".convert_table_2_sumo_file")
-    logger.debug("Datafile %s", datafile)
-    logger.debug("Obj of type: %s", type(obj))
-    logger.debug("tagname: %s", tagname)
-    logger.debug("Config: %s", config)
+    if obj is None:
+        return obj
 
-    meta_args = (datafile, obj, tagname, config)
-    logger.debug(
-        "sending in %s",
-        dict(
-            zip(("datafile", "obj", "tagname", "config", "content"), meta_args)
-        ),
-    )
-    sumo_file = convert_2_sumo_file(
-        obj, table_2_bytestring, generate_table_meta, meta_args
-    )
+    bytestring = table_2_bytestring(obj)
+    metadata = generate_table_meta(datafile, obj, tagname, config)
+
+    sumo_file = FileOnJob(bytestring, metadata)
+    sumo_file.path = metadata["file"]["relative_path"]
+    sumo_file.metadata_path = ""
+    sumo_file.size = len(sumo_file.byte_string)
+
     return sumo_file
 
 
 def get_table(
-    datafile_path: str, submod: str, print_help=False, **kwargs
+    datafile_path: str, submod: str, **kwargs
 ) -> Union[pa.Table, pd.DataFrame]:
     """Fetch arrow.table/pd.dataframe from simulator results
 
@@ -139,68 +114,50 @@ def get_table(
     logger = logging.getLogger(__file__ + ".get_table")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
-    datafile_path = fix_suffix(datafile_path)
+    try:
+        del kwargs[
+            "arrow"
+        ]  # This argument should not be passed to extract function
+    except KeyError:
+        pass  # No arrow key to delete
     output = None
-    trace = None
-    print_help = False
-    if print_help:
-        print("------------------")
-        print(SUBMOD_DICT[submod]["doc"])
-        print("------------------")
-    else:
-        logger.debug("Checking these passed options %s", kwargs)
-        right_kwargs = {
-            key: value
-            for key, value in kwargs.items()
-            if key in SUBMOD_DICT[submod]["options"]
-        }
-        logger.debug("Exporting with arguments %s", right_kwargs)
-        try:
-            logger.info(
-                "Extracting data from %s with func %s",
-                datafile_path,
-                extract_df.__name__,
-            )
-            output = extract_df(
-                res2df.ResdataFiles(datafile_path),
-                **convert_options(right_kwargs),
-            )
-            if submod == "rft":
-                output = tidy(output)
-            if arrow:
-                try:
-                    convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                    logger.debug(
-                        "Using function %s to convert to arrow",
-                        convert_func.__name__,
-                    )
-                    output = convert_func(output)
-                except pa.lib.ArrowInvalid:
-                    logger.warning(
-                        "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
-                        sys.exc_info()[1],
-                    )
-                    logger.debug(
-                        "Falling back to converting with %s",
-                        convert_to_arrow.__name__,
-                    )
-                    output = convert_to_arrow(output)
+    # TODO: see if there is a cleaner way with rft, see functions
+    # find_md_log, and complete_rft, but needs really to be fixed in res2df
+    md_log_file = find_md_log(submod, kwargs)
+    try:
+        logger.info(
+            "Extracting data from %s with func %s for %s",
+            datafile_path,
+            extract_df.__name__,
+            submod,
+        )
+        output = extract_df(
+            res2df.ResdataFiles(datafile_path),
+            **kwargs,
+        )
+        if submod == "rft":
+            output = complete_rft(output, md_log_file)
+        if arrow:
+            try:
+                convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
+                output = convert_func(output)
+            except pa.lib.ArrowInvalid:
+                logger.warning(
+                    "Arrow invalid, cannot convert to arrow, "
+                    "keeping pandas format, "
+                    "(trace %s). \nFalling back to converting with %s",
+                    sys.exc_info()[1],
+                    convert_to_arrow.__name__,
+                )
+                output = convert_to_arrow(output)
+            except TypeError:
+                logger.warning("Type error, cannot convert to arrow")
 
-                except TypeError:
-                    logger.warning("Type error, cannot convert to arrow")
-
-        except TypeError:
-            trace = sys.exc_info()[1]
-        except FileNotFoundError:
-            trace = sys.exc_info()[1]
-        except ValueError:
-            trace = sys.exc_info()[1]
-        if trace is not None:
-            logger.warning(
-                "Trace: %s, \nNo results produced ",
-                trace,
-            )
-    logger.debug("Returning %s", output)
+    except (TypeError, FileNotFoundError, ValueError):
+        logger.warning(
+            "Trace: %s, \nNo results produced ",
+            sys.exc_info()[1],
+        )
     return output
 
 
@@ -212,39 +169,70 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    parentid = get_case_uuid(sim2sumoconfig["datafiles"][0])
-    logger.info("Sumo case uuid: %s", parentid)
-    for datafile in sim2sumoconfig["datafiles"]:
-
+    for datafile_path, submod_and_options in sim2sumoconfig.items():
+        datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(
-            datafile,
-            sim2sumoconfig["submods"],
-            sim2sumoconfig["options"],
+            datafile_path,
+            submod_and_options,
             config,
             dispatcher,
         )
 
 
+def upload_vfp_tables_from_simulation_run(
+    datafile, options, config, dispatcher
+):
+    """Upload vfp tables from one simulator run to Sumo
+
+    Args:
+        datafile (str): the datafile defining the simulation run
+        options (dict): the options for vfp
+        config (dict): the fmu config with metadata
+        dispatcher (sim2sumo.common.Dispatcher): job dispatcher
+    """
+    vfp_dict = vfp_to_arrow_dict(datafile, options)
+    for keyword, tables in vfp_dict.items():
+        for table in tables:
+            table_number = str(
+                table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
+            )
+            tagname = f"{keyword}_{table_number}"
+            sumo_file = convert_table_2_sumo_file(
+                datafile, table, tagname.lower(), config
+            )
+            dispatcher.add(sumo_file)
+
+
 def upload_tables_from_simulation_run(
-    datafile, submods, options, config, dispatcher
+    datafile, submod_and_options, config, dispatcher
 ):
     """Upload tables from one simulator run to Sumo
 
     Args:
         datafile (str): the datafile defining the simulation run
-        submods (list): the datatypes to extract
-        options (dict): the options to pass inn
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
-    logger.info("Extracting tables from %s", datafile)
-    count = 0
-    for submod in submods:
-        table = get_table(datafile, submod, options)
-        logger.debug("Sending %s onto file creation", table)
-        sumo_file = convert_table_2_sumo_file(datafile, table, submod, config)
-        dispatcher.add(sumo_file)
+    for submod, options in submod_and_options.items():
+        if submod == "grid3d":
+            # No tables for grid3d
+            continue
 
-    logger.info("%s properties", count)
+        if submod == "vfp":
+            upload_vfp_tables_from_simulation_run(
+                datafile, options, config, dispatcher
+            )
+        else:
+            table = get_table(datafile, submod, **options)
+            if table is None:
+                logger.warning(
+                    "Table with datatype %s from %s returned nothing",
+                    submod,
+                    datafile,
+                )
+                continue
+            sumo_file = convert_table_2_sumo_file(
+                datafile, table, submod, config
+            )
+            dispatcher.add(sumo_file)

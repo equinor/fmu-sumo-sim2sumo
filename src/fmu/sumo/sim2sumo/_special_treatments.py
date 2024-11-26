@@ -8,7 +8,6 @@ from pathlib import Path
 import pandas as pd
 import pyarrow as pa
 import res2df
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 logging.getLogger(__name__).setLevel(logging.DEBUG)
 
@@ -22,13 +21,9 @@ def convert_to_arrow(frame):
     Returns:
         pa.Table: the converted dataframe
     """
-    logger = logging.getLogger(__file__ + ".convert_to_arrow")
-    logger.debug("!!!!Using convert to arrow!!!")
     standard = {"DATE": pa.timestamp("ms")}
     if "DATE" in frame.columns:
-        frame["DATE"] = pd.to_datetime(
-            frame["DATE"], infer_datetime_format=True
-        )
+        frame["DATE"] = pd.to_datetime(frame["DATE"])
     scheme = []
     for column_name in frame.columns:
         if pd.api.types.is_string_dtype(frame[column_name]):
@@ -37,7 +32,6 @@ def convert_to_arrow(frame):
             scheme.append(
                 (column_name, standard.get(column_name, pa.float32()))
             )
-    logger.debug(scheme)
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
 
@@ -73,11 +67,8 @@ def find_functions_and_docstring(submod):
     Returns:
         dictionary: includes functions and doc string
     """
-    logger = logging.getLogger(__file__ + ".find_func_and_info")
-
     import_path = "res2df." + submod
     func = importlib.import_module(import_path).df
-    logger.debug("Assigning %s to %s", func.__name__, submod)
     returns = {
         "extract": func,
         "options": tuple(
@@ -86,7 +77,6 @@ def find_functions_and_docstring(submod):
             if name not in {"deck", "eclfiles"}
         ),
         "arrow_convertor": find_arrow_convertor(import_path),
-        "doc": func.__doc__,
     }
 
     return returns
@@ -98,8 +88,6 @@ def _define_submodules():
     Returns:
         list: list of submodules
     """
-
-    logger = logging.getLogger(__file__ + "define_submodules")
     package_path = Path(res2df.__file__).parent
 
     submodules = {}
@@ -115,41 +103,40 @@ def _define_submodules():
             submod = "vfp"
         try:
             submodules[submod] = find_functions_and_docstring(submod_string)
-            logger.debug("Assigning %s to %s", submodules[submod], submod)
         except AttributeError:
-            logger.debug("No df function in %s", submod_path)
-
-    logger.debug(
-        "Returning the submodule names as a list: %s ", submodules.keys()
-    )
-    logger.debug(
-        "Returning the submodules extra args as a dictionary: %s ", submodules
-    )
+            pass  # No df function in submod_path, skip it
 
     return tuple(submodules.keys()), submodules
 
 
-def convert_options(options):
-    """Convert dictionary options further
+def find_md_log(submod, options):
+    """Search options for md_log_file
 
     Args:
-        options (dict): the input options
+        submod (str): submodule
+        options (dict): the dictionary to check
 
     Returns:
-        dict: options after special treatment
+        str|None: whatever contained in md_log_file
     """
-    if "zonemap" in options:
-        options["zonemap"] = convert_lyrlist_to_zonemap(
-            parse_lyrfile(options["zonemap"])
-        )
-    return options
+    if submod != "rft":
+        return None
+    # Special treatment of argument md_log_file
+    md_log_file = options.get("md_log_file", None)
+    try:
+        del options["md_log_file"]
+    except KeyError:
+        pass  # No md log provided
+
+    return md_log_file
 
 
-def tidy(frame):
+def complete_rft(frame, md_log_file):
     """Utility function to tidy up mess from res2df for rft
 
     Args:
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
+        md_log_file (str): file with md log file
     """
     # res2df creates three files for rft data, see unwanted list below
     logger = logging.getLogger(__file__ + ".tidy")
@@ -166,42 +153,69 @@ def tidy(frame):
     if "WELLETC" in frame.columns:
         frame.drop(["WELLETC"], axis=1, inplace=True)
 
+    if md_log_file is not None:
+        frame = add_md_to_rft(frame, md_log_file)
+
     return frame
 
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
 
 
-def give_help(submod, only_general=False):
-    """Give descriptions of variables available for submodule
+def vfp_to_arrow_dict(datafile, options):
+    """Generate dictionary with vfp arrow tables
 
     Args:
-        submod (str): submodule
+        datafile (str): The datafile to extract from
+        options (dict): options for extraction
 
     Returns:
-        str: description of submodule input
+        tuple: vfp keyword, then dictionary with key: table_name, value: table
     """
-    general_info = """
-    This utility uses the library ecl2csv, but uploads directly to sumo. Required options are:
-    A config file in yaml format, where you specifiy the variables to extract. What is required
-    is a keyword in the config called "sim2simo". under there you have three optional arguments:
-    * datafile: this can be a string, a list, or it can be absent altogether
-    * datatypes: this needs to be a list, or non existent
-    * options: The options are listed below in the original documentation from ecl2csv. The eclfiles
-               option is replaced with what is under datafile
-
-    """
-    if submod is None:
-        only_general = True
-    if only_general:
-        text_to_return = general_info
+    filepath_no_suffix = Path(datafile).with_suffix("")
+    resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
+    vfp_dict = {}
+    keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
+    vfpnumbers = options.get("vfpnumbers", None)
+    if isinstance(keyword, str):
+        keywords = [keyword]
     else:
-        try:
-            text_to_return = general_info + SUBMOD_DICT[submod]["doc"]
-        except KeyError:
-            text_to_return = (
-                f"subtype {submod} does not exist!!, existing options:\n"
-                + "\n".join(SUBMODULES)
-            )
+        keywords = keyword
 
-    return text_to_return
+    for keyword in keywords:
+        vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
+            resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
+        )
+    return vfp_dict
+
+
+def add_md_to_rft(rft_table, md_file_path):
+    """Merge md data with rft table
+
+    Args:
+        rft_table (pd.DataFrame): the rft dataframe
+        md_file_path (str): path to file with md data
+
+    Raises:
+        FileNotFoundError: if md_file_path does not point to existing file
+
+    Returns:
+        pd.Dataframe: the merged results
+    """
+    try:
+        md_table = pd.read_csv(md_file_path)
+    except FileNotFoundError as fnfe:
+        raise FileNotFoundError(
+            f"There is no md file called {md_file_path}"
+        ) from fnfe
+
+    xtgeo_index_names = ["I_INDEX", "J_INDEX", "K_INDEX"]
+    rft_index_names = ["CONIPOS", "CONJPOS", "CONKPOS"]
+    # for grid indeces xtgeo starts from 0, res2df from 1
+    md_table[xtgeo_index_names] += 1
+    md_table[xtgeo_index_names] = md_table[xtgeo_index_names].astype(int)
+    xtgeo_to_rft_names = dict(zip(xtgeo_index_names, rft_index_names))
+    md_table.rename(xtgeo_to_rft_names, axis=1, inplace=True)
+    rft_table = pd.merge(rft_table, md_table, on=rft_index_names, how="left")
+
+    return rft_table
