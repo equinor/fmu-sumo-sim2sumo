@@ -50,7 +50,7 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
         query += f" AND class:{class_type}"
         check_nr = correct
     else:
-        # The plus one is because we are always uploading the parameters.txt automatically
+        # Plus one because we always upload parameters.txt automatically
         check_nr = correct + 1
 
     results = sumo.get(path, query).json()
@@ -118,16 +118,12 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     [
         ({}, 5, 4),
         (
-            {
-                "datafile": {
-                    "3_R001_REEK": {"summary": {"column_keys": "F*P*"}}
-                }
-            },
+            {"datafile": [{"3_R001_REEK": ["summary"]}]},
             1,
             2,
         ),
         (
-            {"datafile": {"3_R001_REEK": ["summary", "rft"]}},
+            {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
             1,
             3,
         ),
@@ -324,17 +320,19 @@ def test_submodules_dict():
     "submod",
     (name for name in SUBMODULES if name != "wellcompletiondata"),
 )
-# Skipping wellcompletion data, since this needs zonemap, which none of the others do
+# Skipping wellcompletion data, since this requires zonemap
 def test_get_table(submod):
     """Test fetching of dataframe"""
     frame = tables.get_table(REEK_DATA_FILE, submod, arrow=False)
-    assert isinstance(
-        frame, pd.DataFrame
-    ), f"Call for get_table with arrow=False should produce dataframe, but produces {type(frame)}"
+    assert isinstance(frame, pd.DataFrame), (
+        "get_table with arrow=False should return dataframe,"
+        f" but returned {type(frame)}"
+    )
     frame = tables.get_table(REEK_DATA_FILE, submod, arrow=True)
-    assert isinstance(
-        frame, pa.Table
-    ), f"Call for get_table with arrow=True should produce pa.Table, but produces {type(frame)}"
+    assert isinstance(frame, pa.Table), (
+        "get_table with arrow=True should return pa.Table,"
+        f" but returned {type(frame)}"
+    )
     if submod == "summary":
         assert (
             frame.schema.field("FOPT").metadata is not None
@@ -362,7 +360,7 @@ def test_find_datafiles_reek(real, nrdfiles):
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
     assert (
         len(datafiles) == nrdfiles
-    ), f"Incorrect number of datafiles found. Expected {nrdfiles} but found {len(datafiles)}"
+    ), f"Expected {nrdfiles} datafiles but found {len(datafiles)}"
     for found_path in datafiles:
         parent = found_path.parent.parent.name
         assert parent in expected_tools, f"|{parent}| not in {expected_tools}"

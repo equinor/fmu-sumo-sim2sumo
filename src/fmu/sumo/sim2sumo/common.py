@@ -7,6 +7,7 @@ from pathlib import Path
 import psutil
 import yaml
 
+from fmu.dataio import ExportData
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
@@ -41,7 +42,8 @@ def get_case_uuid(file_path, parent_level=4):
 
     Args:
         file_path (str): path to file in ensemble
-        parent_level (int, optional): nr of levels to move down to root. Defaults to 4.
+        parent_level (int, optional): nr of levels to move down to root.
+                                        Defaults to 4.
 
     Returns:
         str: the case uuid
@@ -66,8 +68,6 @@ def filter_options(submod, kwargs):
     """
     logger = logging.getLogger(__file__ + ".filter_options")
     submod_options = SUBMOD_DICT[submod]["options"]
-    logger.debug("Available options for %s are %s", submod, submod_options)
-    logger.debug("Input: %s", kwargs)
     filtered = {
         key: value
         for key, value in kwargs.items()
@@ -76,11 +76,10 @@ def filter_options(submod, kwargs):
     filtered["arrow"] = kwargs.get(
         "arrow", True
     )  # defaulting of arrow happens here
-    logger.debug("After filtering options for %s: %s", submod, filtered)
     non_options = [key for key in kwargs if key not in filtered]
     if len(non_options) > 0:
         logger.warning(
-            "Filtered out options %s for %s, these are not valid",
+            "Skipping invalid options %s for %s.",
             non_options,
             submod,
         )
@@ -93,10 +92,11 @@ def filter_options(submod, kwargs):
 
 
 def find_datafiles(seedpoint=None):
-    """Find datafiles relative to an optional seedpoint or the current working directory.
+    """Find datafiles relative to seedpoint or the current working directory.
 
     Args:
-        seedpoint (str|Path|list, optional): Specific file, list of directories, or single directory to search for datafiles.
+        seedpoint (str|Path|list, optional): Where to search for datafiles.
+            Either a specific file, list of directories, or single directory.
 
     Returns:
         list: The datafiles found with unique stem names, as full paths.
@@ -106,11 +106,8 @@ def find_datafiles(seedpoint=None):
     datafiles = []
     cwd = Path().cwd()  # Get the current working directory
 
-    if isinstance(seedpoint, dict):
-        # Extract the values (paths) from the dictionary and treat them as a list
-        seedpoint = list(seedpoint.values())
-    elif isinstance(seedpoint, list):
-        # If seedpoint is a list, ensure all elements are strings or Path objects
+    if isinstance(seedpoint, list):
+        # Convert all elements to Path objects
         seedpoint = [Path(sp) for sp in seedpoint]
     elif seedpoint:
         seedpoint = [seedpoint]
@@ -136,7 +133,7 @@ def find_datafiles(seedpoint=None):
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
-                        # Search for valid files within the directory with partly filename
+                        # Search for valid files within the directory
                         datafiles.extend(
                             [
                                 f
@@ -162,87 +159,69 @@ def find_datafiles(seedpoint=None):
         if stem not in unique_stems:
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
-        else:
-            logger.warning("Name %s from file %s already used", stem, datafile)
 
     logger.info(f"Using datafiles: {str(unique_datafiles)} ")
     return unique_datafiles
 
 
-def create_config_dict(config, datafile=None, datatype=None):
+def create_config_dict(config):
     """Read config settings and make dictionary for use when exporting.
 
     Args:
         config (dict): the settings for export of simulator results.
-        datafile (str|Path|list, None): overrule with one datafile or list of datafiles.
-        datatype (str|list, None): overrule with one datatype or a list of datatypes.
 
     Returns:
         dict: dictionary with key as path to datafile, value as dict of
               submodule and option.
     """
-    logger = logging.getLogger(__file__ + ".create_config_dict")
     simconfig = config.get("sim2sumo", {})
-    logger.debug("sim2sumo config %s", simconfig)
+    validate_sim2sumo_config(simconfig)
+
     grid3d = simconfig.get("grid3d", False)
 
     # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = (
-        datafile if datafile is not None else simconfig.get("datafile", None)
-    )
-    datatype = (
-        datatype if datatype is not None else simconfig.get("datatypes", None)
-    )
+    datafile = simconfig.get("datafile", None)
+    datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
-        submods = simconfig.get("datatypes", ["summary", "rft", "satfunc"])
-
-        if submods == "all":
-            submods = SUBMODULES
+        default_submods = ["summary", "rft", "satfunc"]
+    elif datatype == "all":
+        default_submods = SUBMODULES
     elif isinstance(datatype, list):
-        submods = datatype
+        default_submods = datatype
     else:
-        submods = [datatype]
+        default_submods = [datatype]
 
-    logger.debug("Submodules to extract with: %s", submods)
+    submods = default_submods
 
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
+    paths = []
 
-    # If datafile is a dictionary, iterate over its items
-    if isinstance(datafile, dict):
-        for filepath, submods in datafile.items():
-            # Convert the filepath to a Path object
-            path = Path(filepath)
-
-            if path.is_file():
-                # If the path is a file, use it directly, not checking filetype
-                datafiles = [path]
-            # If the path is a directory or part of filename, find all matches
+    if datafile:
+        for file in datafile:
+            if isinstance(file, dict):
+                (((filepath, file_submods)),) = file.items()
+                submods = file_submods or default_submods
             else:
-                datafiles = find_datafiles(path)
+                filepath = file
 
-            # Create config entries for each datafile
-            for datafile_path in datafiles:
-                sim2sumoconfig[datafile_path] = {}
-                for submod in submods:
-                    # Use the global options or default to {"arrow": True}
-                    options = simconfig.get("options", {"arrow": True})
-                    sim2sumoconfig[datafile_path][submod] = filter_options(
-                        submod, options
-                    )
-                sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+            path = Path(filepath)
+            if path.is_file():
+                paths += [path]
+            else:
+                paths += find_datafiles(path)
     else:
-        # If datafile is not a dictionary, use the existing logic
-        datafiles_paths = find_datafiles(datafile)
-        for datafile_path in datafiles_paths:
-            sim2sumoconfig[datafile_path] = {}
-            for submod in submods or []:
-                options = simconfig.get("options", {"arrow": True})
-                sim2sumoconfig[datafile_path][submod] = filter_options(
-                    submod, options
-                )
-            sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+        paths += find_datafiles(datafile)
+
+    for datafile_path in paths:
+        sim2sumoconfig[datafile_path] = {}
+        for submod in submods:
+            options = simconfig.get("options", {"arrow": True})
+            sim2sumoconfig[datafile_path][submod] = filter_options(
+                submod, options
+            )
+        sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig
 
@@ -355,6 +334,41 @@ def find_datefield(text_string):
     return date
 
 
+def generate_meta(config, datafile_path, tagname, obj, content):
+    """Generate metadata for object
+
+    Args:
+        config (dict): the metadata required
+        datafile_path (str): path to datafile or relative
+        tagname (str): the tagname
+        obj (object): object eligible for dataio
+
+    Returns:
+        dict: the metadata to export
+    """
+    name = give_name(datafile_path)
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": content,
+    }
+
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
+
+    exd = ExportData(**exp_args)
+    metadata = exd.generate_metadata(obj)
+    relative_parent = str(Path(datafile_path).parents[2]).replace(
+        str(Path(datafile_path).parents[4]), ""
+    )
+    metadata["file"] = {
+        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
+    }
+    return metadata
+
+
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     """Upload files to sumo
 
@@ -364,9 +378,8 @@ def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
         connection (str): client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    logger.info("%s files to upload", len(files))
-    logger.info("Uploading to parent %s", parent_id)
     if len(files) > 0:
+        logger.info("Uploading %s files to parent %s", len(files), parent_id)
         if connection is None:
             connection = SumoConnection(env=env)
         status = upload_files(
@@ -388,13 +401,33 @@ def give_name(datafile_path: str) -> str:
     Returns:
         str: derived name
     """
-    logger = logging.getLogger(__name__ + ".give_name")
-    logger.info("Giving name from path %s", datafile_path)
     datafile_path_posix = Path(datafile_path)
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
     while base_name[-1].isdigit() or base_name.endswith("-"):
         base_name = base_name[:-1]
-    logger.info("Returning name %s", base_name)
     return base_name
+
+
+DOCS_BASE_URL = (
+    "https://fmu-sumo-sim2sumo.readthedocs.io/en/latest/sim2sumo.html"
+)
+
+
+def validate_sim2sumo_config(config):
+    datafiles = config.get("datafile", [])
+    if not isinstance(datafiles, list):
+        raise ValueError(
+            "Config error: datafile must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datafile"
+        )
+
+    datatypes = config.get("datatypes", [])
+    if not isinstance(datatypes, list):
+        raise ValueError(
+            "Config error: datatypes must be a list."
+            " See documentation for examples: "
+            f" {DOCS_BASE_URL}#datatypes"
+        )

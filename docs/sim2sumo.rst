@@ -145,42 +145,49 @@ Custom configuration
 =====================
 
 The sim2sumo section in the config file gives you full flexibility for extracting anything that ``res2df`` can extract.
-You can also change where you extract results from, and even use all the extra custumization options that ``res2df`` has available.
+You can also change where you extract results from, and use some of the extra customization options that ``res2df`` has available.
 The three relevant sections are:
 
-*datafile*:
+datafile
 --------------------
-This section is for configuring where you extract results from, meaning where to look for simulation results. This section can be configured in several ways:
+This section is for configuring where you extract results from, meaning where to look for simulation results.
+This section should be a list where each item is either a file path, file stub or a folder path.
 
-1. As a path to a file, or file stub (without an extension):
-
-   .. code-block:: yaml
-
-      datafile ../../eclipse/model/DROGON
-
-
-2. As a path to a folder:
-
-   .. code-block::
-
-      datafile: ../../eclipse/model/
-
-
-3. As a list:
+1. File paths, or file stubs (without an extension):
 
    .. code-block::
 
       datafile:
-        - ../../eclipse/model
-        - ../../ix/model
-        ..
+         - ../../eclipse/model/DROGON
+         - ../../eclipse/model/DROGON-0.DATA
 
 
-datatypes:
+2. Folder paths:
+
+   .. code-block::
+
+      datafile:
+         - ../../eclipse/model/
+
+
+You can also specify what datatypes should be extracted for each file, by adding a list of datatypes to each file path:
+
+   .. code-block::
+
+      datafile:
+         - ../../eclipse/model/DROGON:
+            - summary
+            - wcon
+            - faults
+         - ../../eclipse/model/DROGON-0.DATA:
+            - summary
+            - wcon
+            - faults
+
+
+datatypes
 ----------------
-This section is for configuration of what data to extract. The section can be configured in several ways.
-
-1. As list:
+This section is for configuration of what data to extract. It should be specified as a list
 
    .. code-block::
 
@@ -190,22 +197,48 @@ This section is for configuration of what data to extract. The section can be co
         - faults
         - ..
 
-2. as string:
-
-   Here there are two options, you can use both the name of one single datatype
-   or the 'all' argument for all datatypes:
+To include all datatypes use a list with a single item "all":
 
    .. code-block::
-      :caption: extracting all available datatypes from simulation run
 
-      datatypes: all
+      datatypes:
+         - all
 
-   For datatypes available see documentation for ``res2df``
+For datatypes available see documentation for ``res2df``
 
-options:
--------------
-   | This section is for adding extra optional configuration for extracting the different datatypes.
-   | This section needs to be in a list format.
+.. options:
+.. -------------
+..    | This section is for adding extra optional configuration for extracting the different datatypes.
+..    | This section needs to be in a list format.
+
+grid3d
+----------------
+When ``grid3d`` is set to ``true``, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
+For the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
+For the restart the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
+
+
+   .. code-block::
+
+      grid3d: true
+
+
+Overriding default datatypes
+----------------
+``datatypes`` applies to all datafiles specified in the ``datafile`` section.
+It is possible to override this configuration for individual files.
+The example shows how to only extract summary data from the first file, and all default ``datatypes`` from the second file.
+
+   .. code-block::
+
+      datafile:
+         - ../../eclipse/model/DROGON-0.DATA:
+            - summary
+         - ../../eclipse/model/DROGON-1.DATA
+      datatypes:
+         - summary
+         - wcon
+         - faults
 
 
 Using sim2sumo in scripts
@@ -248,14 +281,6 @@ Extracting the default datatypes with sim2sumo
 
 See also :ref:`preconditions`.
 
-Extracting rft data from specified datafile with sim2sumo
-----------------------------------------------------------------
-
-.. code-block::
-   :caption: Extracting rft
-
-   sum2sumo execute --config_path fmuconfig/output/global_variables.yml --datatype rft --datafile eclipse/model/DROGON-0.DATA
-
 
 Getting help on sim2sumo from the command line
 =================================================
@@ -280,5 +305,24 @@ Accessing help from ``res2df`` via sim2sumo
 
 
 
+VFP export
+***************************************
+**Note** that Sim2sumo exports VFP tables as separate files. (Similar to using ``--arrow`` with ``res2df``)
 
+VFP data can be exported either for all datafiles by adding "vfp" to the datatypes list:
+
+   .. code-block::
+
+      datatypes:
+        - ..
+        - vfp
+
+Or for individual files by adding "vfp" to the list of datatypes for that file:
+
+.. code-block::
+
+      datafile:
+         - ../../eclipse/model/DROGON-0.DATA:
+            - ..
+            - vfp
 

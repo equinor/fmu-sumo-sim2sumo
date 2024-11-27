@@ -23,13 +23,9 @@ access:
     name: Drogon
   classification: internal
 sim2sumo:
-  datafile: eclipse/model/2_R001_REEK-0.DATA
+  datafile:
+    - eclipse/model/2_R001_REEK-0.DATA
   datatypes:
     - summary
     - grid
     - rft
-  options:
-    arrow: false
-    time_index: daily,
-    start_date: 2002-01-02
-    end_date: 2003-01-02

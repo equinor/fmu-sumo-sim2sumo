@@ -15,7 +15,6 @@ def parse_args():
     Returns:
         argparse.NameSpace: the arguments parsed
     """
-    logger = logging.getLogger(__file__ + ".parse_args")
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Parsing input to control export of simulator data",
@@ -33,28 +32,17 @@ def parse_args():
         help="Which sumo environment to upload to",
         default="prod",
     )
-    parser.add_argument(
-        "--datatype",
-        type=str,
-        default=None,
-        help="Override datatype setting, for testing only",
-    )
-    parser.add_argument(
-        "--datafile",
-        type=str,
-        default=None,
-        help="Override datafile setting, for testing only",
-    )
     parser.add_argument("--d", help="Activate debug mode", action="store_true")
     args = parser.parse_args()
     if args.d:
         logging.basicConfig(
             level="DEBUG", format="%(name)s - %(levelname)s - %(message)s"
         )
-    logger.debug("Returning args %s", vars(args))
     return args
 
 
+# e.g. _ERT_RUNPATH = ../realization-0/iter-0
+# e.g. _ERT_EXPERIMENT_ID = <uuid>
 # fmu-dataio needs these when creating metadata
 REQUIRED_ENV_VARS = ["_ERT_EXPERIMENT_ID", "_ERT_RUNPATH"]
 
@@ -63,24 +51,29 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
 
-    missing = 0
+    missing = []
     for envVar in REQUIRED_ENV_VARS:
-        if environ.get(envVar) is None:
-            print(f"Required environment variable {envVar} is not set.")
-            missing += 1
+        if envVar not in environ:
+            missing.append(envVar)
 
-    if missing > 0:
-        print("Required ERT environment variables not found. This can happen if sim2sumo was called outside the ERT context. Stopping.")
+    if missing:
+        print(
+            "Required ERT environment variables not found:"
+            f"{', '.join(missing)}.\n"
+            "This can happen if sim2sumo was called outside the ERT context.\n"
+            "Stopping."
+        )
         exit()
 
     args = parse_args()
-    logger.debug("Running with arguments %s", args)
 
-    logger.info("Will be extracting results")
     config = yaml_load(args.config_path)
     config["file_path"] = args.config_path
-    logger.debug("Added file_path, and config keys are %s", config.keys())
-    sim2sumoconfig = create_config_dict(config, args.datafile, args.datatype)
+    try:
+        sim2sumoconfig = create_config_dict(config)
+    except Exception as e:
+        logger.error("Failed to create config dict: %s", e)
+        return
     # Init of dispatcher needs one datafile to locate case uuid
     one_datafile = list(sim2sumoconfig.keys())[0]
     try:
@@ -91,10 +84,10 @@ def main():
         logger.error("Failed to create dispatcher: %s", e)
         return
 
-    logger.debug("Extracting tables")
+    # Extract tables
     upload_tables(sim2sumoconfig, config, dispatcher)
 
-    logger.debug("Extracting 3dgrid(s) with properties")
+    # Extract 3dgrid(s) with properties
     upload_simulation_runs(sim2sumoconfig, config, dispatcher)
 
     dispatcher.finish()

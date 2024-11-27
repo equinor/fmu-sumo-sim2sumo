@@ -108,7 +108,8 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
         tagname (str): what submodule the table is extracted from
         config (dict): dictionary with master metadata needed for Sumo
     Returns:
-         SumoFile: Object containing table object as bytestring + metadata as dictionary
+        SumoFile: Object containing table object as bytestring and
+            metadata as dictionary
     """
     if obj is None:
         return obj
@@ -145,12 +146,11 @@ def get_table(
             "arrow"
         ]  # This argument should not be passed to extract function
     except KeyError:
-        logger.debug("No arrow key to delete")
+        pass  # No arrow key to delete
     output = None
     # TODO: see if there is a cleaner way with rft, see functions
     # find_md_log, and complete_rft, but needs really to be fixed in res2df
     md_log_file = find_md_log(submod, kwargs)
-    logger.debug("Checking these passed options %s", kwargs)
     try:
         logger.info(
             "Extracting data from %s with func %s for %s",
@@ -163,27 +163,20 @@ def get_table(
             **kwargs,
         )
         if submod == "rft":
-
             output = complete_rft(output, md_log_file)
         if arrow:
             try:
                 convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                logger.debug(
-                    "Using function %s to convert to arrow",
-                    convert_func.__name__,
-                )
                 output = convert_func(output)
             except pa.lib.ArrowInvalid:
                 logger.warning(
-                    "Arrow invalid, cannot convert to arrow, keeping pandas format, (trace %s)",
+                    "Arrow invalid, cannot convert to arrow, "
+                    "keeping pandas format, "
+                    "(trace %s). \nFalling back to converting with %s",
                     sys.exc_info()[1],
-                )
-                logger.debug(
-                    "Falling back to converting with %s",
                     convert_to_arrow.__name__,
                 )
                 output = convert_to_arrow(output)
-
             except TypeError:
                 logger.warning("Type error, cannot convert to arrow")
 
@@ -203,8 +196,6 @@ def upload_tables(sim2sumoconfig, config, dispatcher):
         config (dict): the fmu config file with metadata
         env (str): what environment to upload to
     """
-    logger = logging.getLogger(__file__ + ".upload_tables")
-    logger.debug("Will upload with settings %s", sim2sumoconfig)
     for datafile_path, submod_and_options in sim2sumoconfig.items():
         datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(
@@ -261,14 +252,14 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, **options)
-            sumo_file = convert_table_2_sumo_file(
-                datafile, table, submod, config
-            )
-            if sumo_file is None:
+            if table is None:
                 logger.warning(
-                    "Table with datatype %s extracted from %s returned nothing",
+                    "Table with datatype %s from %s returned nothing",
                     submod,
                     datafile,
                 )
                 continue
+            sumo_file = convert_table_2_sumo_file(
+                datafile, table, submod, config
+            )
             dispatcher.add(sumo_file)
