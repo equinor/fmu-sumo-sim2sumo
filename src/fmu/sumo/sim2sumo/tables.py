@@ -21,7 +21,13 @@ from ._special_treatments import (
     convert_to_arrow,
     vfp_to_arrow_dict,
 )
-from .common import generate_meta
+
+from pathlib import Path
+from fmu.dataio import ExportData
+from .common import (
+    find_datefield,
+    give_name,
+)
 
 
 SUBMOD_CONTENT = {
@@ -49,6 +55,7 @@ def table_2_bytestring(table):
     return bytestring
 
 
+# Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
 def generate_table_meta(datafile, obj, tagname, config):
     """Generate metadata for xtgeo object
 
@@ -66,7 +73,27 @@ def generate_table_meta(datafile, obj, tagname, config):
     else:
         content = SUBMOD_CONTENT.get(tagname, "property")
 
-    metadata = generate_meta(config, datafile, tagname, obj, content)
+    name = give_name(datafile)
+
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": content,
+    }
+
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
+
+    exd = ExportData(**exp_args)
+    metadata = exd.generate_metadata(obj)
+    relative_parent = str(Path(datafile).parents[2]).replace(
+        str(Path(datafile).parents[4]), ""
+    )
+    metadata["file"] = {
+        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
+    }
 
     return metadata
 
