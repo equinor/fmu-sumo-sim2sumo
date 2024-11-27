@@ -113,7 +113,6 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
     init_props = list(
         eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
     )
-    count = 0
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
             logger.warning("%s will not be exported", init_prop["name"])
@@ -133,9 +132,6 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
             )
             continue
         dispatcher.add(sumo_file)
-        count += 1
-    logger.info("%s properties set for upload", count)
-    return count
 
 
 def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
@@ -150,7 +146,6 @@ def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
-    count = 0
     prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
     for prop_name in prop_names:
         for time_step in time_steps:
@@ -175,10 +170,6 @@ def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
                     )
                     continue
                 dispatcher.add(sumo_file)
-                count += 1
-    logger.info("%s properties uploaded", count)
-
-    return count
 
 
 def upload_simulation_runs(datafiles, config, dispatcher):
@@ -201,7 +192,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     Args:
         datafile (str): path to datafile
     """
-    logger = logging.getLogger(__name__ + ".upload_simulation_run")
     datafile_path = Path(datafile).resolve()
     init_path = str(datafile_path.with_suffix(".INIT"))
     restart_path = str(datafile_path.with_suffix(".UNRST"))
@@ -214,11 +204,8 @@ def upload_simulation_run(datafile, config, dispatcher):
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    count = upload_init(init_path, xtgeoegrid, config, dispatcher)
-    count += upload_restart(
-        restart_path, xtgeoegrid, time_steps, config, dispatcher
-    )
-    logger.info("Exported %s properties", count)
+    upload_init(init_path, xtgeoegrid, config, dispatcher)
+    upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher)
 
 
 def get_timesteps(restart_path, egrid):
