@@ -17,10 +17,9 @@ from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
     SUBMOD_DICT,
-    complete_rft,
+    tidy,
     convert_to_arrow,
     vfp_to_arrow_dict,
-    find_md_log,
 )
 
 from pathlib import Path
@@ -148,9 +147,6 @@ def get_table(
     except KeyError:
         pass  # No arrow key to delete
     output = None
-    # TODO: see if there is a cleaner way with rft, see functions
-    # find_md_log, and complete_rft, but needs really to be fixed in res2df
-    md_log_file = find_md_log(submod, kwargs)
     try:
         logger.info(
             "Extracting data from %s with func %s for %s",
@@ -163,7 +159,7 @@ def get_table(
             **kwargs,
         )
         if submod == "rft":
-            output = complete_rft(output, md_log_file)
+            output = tidy(output)
         if arrow:
             try:
                 convert_func = SUBMOD_DICT[submod]["arrow_convertor"]

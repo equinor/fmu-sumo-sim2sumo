@@ -65,11 +65,6 @@ def _fix_rft_reek():
     )
 
 
-@pytest.fixture(scope="session", name="drogonrft")
-def _fix_rft_drogon():
-    return pd.read_csv(Path(__file__).parent / "data/drogon/rft.csv")
-
-
 @pytest.fixture(scope="session", name="config")
 def _fix_config():
     return yaml_load(CONFIG_PATH)
