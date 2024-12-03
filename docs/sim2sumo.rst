@@ -158,8 +158,8 @@ This section should be a list where each item is either a file path, file stub o
    .. code-block::
 
       datafile:
-         - ../../eclipse/model/DROGON
-         - ../../eclipse/model/DROGON-0.DATA
+         - eclipse/model/DROGON
+         - eclipse/model/DROGON-0.DATA
 
 
 2. Folder paths:
@@ -167,7 +167,7 @@ This section should be a list where each item is either a file path, file stub o
    .. code-block::
 
       datafile:
-         - ../../eclipse/model/
+         - eclipse/model/
 
 
 You can also specify what datatypes should be extracted for each file, by adding a list of datatypes to each file path:
@@ -175,11 +175,11 @@ You can also specify what datatypes should be extracted for each file, by adding
    .. code-block::
 
       datafile:
-         - ../../eclipse/model/DROGON:
+         - eclipse/model/DROGON:
             - summary
             - wcon
             - faults
-         - ../../eclipse/model/DROGON-0.DATA:
+         - eclipse/model/DROGON-0.DATA:
             - summary
             - wcon
             - faults
@@ -232,9 +232,9 @@ The example shows how to only extract summary data from the first file, and all 
    .. code-block::
 
       datafile:
-         - ../../eclipse/model/DROGON-0.DATA:
+         - eclipse/model/DROGON-0.DATA:
             - summary
-         - ../../eclipse/model/DROGON-1.DATA
+         - eclipse/model/DROGON-1.DATA
       datatypes:
          - summary
          - wcon
@@ -322,7 +322,7 @@ Or for individual files by adding "vfp" to the list of datatypes for that file:
 .. code-block::
 
       datafile:
-         - ../../eclipse/model/DROGON-0.DATA:
+         - eclipse/model/DROGON-0.DATA:
             - ..
             - vfp
 
