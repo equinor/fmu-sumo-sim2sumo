@@ -26,11 +26,11 @@ def convert_to_arrow(frame):
         frame["DATE"] = pd.to_datetime(frame["DATE"])
     scheme = []
     for column_name in frame.columns:
-        if pd.api.types.is_string_dtype(frame[column_name]):
-            scheme.append((column_name, pa.string()))
+        if pd.api.types.is_numeric_dtype(frame[column_name]):
+            scheme.append((column_name, pa.float32()))
         else:
             scheme.append(
-                (column_name, standard.get(column_name, pa.float32()))
+                (column_name, standard.get(column_name, pa.string()))
             )
     table = pa.Table.from_pandas(frame, schema=pa.schema(scheme))
     return table
