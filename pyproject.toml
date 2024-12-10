@@ -12,7 +12,7 @@ line-length = 79
 
 [project]
 name = "fmu-sumo-sim2sumo"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.3",
