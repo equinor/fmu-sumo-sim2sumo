@@ -304,7 +304,7 @@ def test_submodules_dict():
         ), f"Left part of folder path for {submod_name}"
         assert isinstance(submod_dict, dict), f"{submod_name} has no subdict"
         assert (
-            "options" in submod_dict.keys()
+            "options" in submod_dict
         ), f"{submod_name} does not have any options"
 
         assert isinstance(

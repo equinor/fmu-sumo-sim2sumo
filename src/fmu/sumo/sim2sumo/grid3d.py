@@ -61,10 +61,7 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     else:
         content = {"property": {"is_discrete": False}}
 
-    if prefix == "grid":
-        name = prefix
-    else:
-        name = f"{prefix}-{obj.name}"
+    name = prefix if prefix == "grid" else f"{prefix}-{obj.name}"
     tagname = give_name(datafile)
     exp_args = {
         "config": config,

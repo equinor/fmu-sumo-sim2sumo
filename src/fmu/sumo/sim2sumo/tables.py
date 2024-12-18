@@ -139,12 +139,10 @@ def get_table(
     logger = logging.getLogger(__file__ + ".get_table")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
-    try:
-        del kwargs[
-            "arrow"
-        ]  # This argument should not be passed to extract function
-    except KeyError:
-        pass  # No arrow key to delete
+    from contextlib import suppress
+
+    with suppress(KeyError):
+        del kwargs["arrow"]
     output = None
     try:
         logger.info(

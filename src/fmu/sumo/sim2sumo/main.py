@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import sys
 from os import environ
 
 from .common import Dispatcher, create_config_dict, yaml_load
@@ -52,9 +53,9 @@ def main():
     logger = logging.getLogger(__file__ + ".main")
 
     missing = []
-    for envVar in REQUIRED_ENV_VARS:
-        if envVar not in environ:
-            missing.append(envVar)
+    for env_var in REQUIRED_ENV_VARS:
+        if env_var not in environ:
+            missing.append(env_var)
 
     if missing:
         print(
@@ -63,7 +64,7 @@ def main():
             "This can happen if sim2sumo was called outside the ERT context.\n"
             "Stopping."
         )
-        exit()
+        sys.exit()
 
     args = parse_args()
 

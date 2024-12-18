@@ -122,34 +122,26 @@ def find_datafiles(seedpoint=None):
                     datafiles.append(full_path)
                 else:
                     datafiles.extend(
-                        [
-                            f
-                            for f in full_path.parent.rglob(
-                                f"{full_path.name}"
-                            )
-                        ]
+                        list(full_path.parent.rglob(f"{full_path.name}"))
                     )
             else:
                 for filetype in valid_filetypes:
                     if not full_path.is_dir():
                         # Search for valid files within the directory
                         datafiles.extend(
-                            [
-                                f
-                                for f in full_path.parent.rglob(
+                            list(
+                                full_path.parent.rglob(
                                     f"{full_path.name}*{filetype}"
                                 )
-                            ]
+                            )
                         )
                     else:
                         # Search for valid files within the directory
-                        datafiles.extend(
-                            [f for f in full_path.rglob(f"*{filetype}")]
-                        )
+                        datafiles.extend(list(full_path.rglob(f"*{filetype}")))
     else:
         # Search the current working directory if no seedpoint is provided
         for filetype in valid_filetypes:
-            datafiles.extend([f for f in cwd.rglob(f"*/*/*{filetype}")])
+            datafiles.extend(list(cwd.rglob(f"*/*/*{filetype}")))
     # Filter out files with duplicate stems, keeping the first occurrence
     unique_stems = set()
     unique_datafiles = []
@@ -326,10 +318,7 @@ def find_datefield(text_string):
         str| None: date as string or None
     """
     datesearch = re.search(".*_([0-9]{8})$", text_string)
-    if datesearch is not None:
-        date = datesearch.group(1)
-    else:
-        date = None
+    date = datesearch.group(1) if datesearch is not None else None
     return date
 
 

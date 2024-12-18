@@ -1,5 +1,6 @@
 """Special treatment of some options used in res2df"""
 
+import contextlib
 import importlib
 import logging
 from inspect import signature
@@ -73,7 +74,7 @@ def find_functions_and_docstring(submod):
         "extract": func,
         "options": tuple(
             name
-            for name in signature(func).parameters.keys()
+            for name in signature(func).parameters
             if name not in {"deck", "eclfiles"}
         ),
         "arrow_convertor": find_arrow_convertor(import_path),
@@ -101,10 +102,8 @@ def _define_submodules():
         except AttributeError:
             submod_string = "vfp._vfp"
             submod = "vfp"
-        try:
+        with contextlib.suppress(AttributeError):
             submodules[submod] = find_functions_and_docstring(submod_string)
-        except AttributeError:
-            pass  # No df function in submod_path, skip it
 
     return tuple(submodules.keys()), submodules
 
@@ -128,7 +127,7 @@ def tidy(frame):
             )
             unwanted_posix.unlink()
     if "WELLETC" in frame.columns:
-        frame.drop(["WELLETC"], axis=1, inplace=True)
+        frame = frame.drop(["WELLETC"], axis=1)
 
     return frame
 
@@ -151,10 +150,7 @@ def vfp_to_arrow_dict(datafile, options):
     vfp_dict = {}
     keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
     vfpnumbers = options.get("vfpnumbers", None)
-    if isinstance(keyword, str):
-        keywords = [keyword]
-    else:
-        keywords = keyword
+    keywords = [keyword] if isinstance(keyword, str) else keyword
 
     for keyword in keywords:
         vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
