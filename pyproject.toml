@@ -2,14 +2,6 @@
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools_scm]
-
-[tool.isort]
-profile = "black"
-
-[tool.black]
-line-length = 79
-
 [project]
 name = "fmu-sumo-sim2sumo"
 requires-python = ">=3.9"
@@ -26,7 +18,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest"]
-dev = ["pytest", "black", "flake8"]
+dev = ["pytest", "ruff"]
 nokomodo = ["ert"]
 
 docs = [
@@ -46,3 +38,36 @@ sim2sumo = "fmu.sumo.sim2sumo.main:main"
 
 [project.entry-points.ert]
 fmu_sumo_sim2sumo_jobs = "fmu.sumo.sim2sumo.hook_implementations.jobs"
+
+[tool.ruff]
+exclude = [
+  ".env",
+  ".git",
+  ".github",
+  ".venv",
+  "venv",
+]
+
+line-length = 79
+
+[tool.ruff.lint]
+ignore = [
+  "E501",
+  "N802",
+]
+
+extend-select = [
+  "C4",  # Flake8-comprehensions
+  "I",   # isort
+  "SIM", # Flake8-simplify
+  "TC",  # Flake8-type-checking
+  "TID", # Flake8-tidy-imports
+  "N",   # pep8-naming  
+  "PD",  # Pandas
+  "NPY",  # NumPy
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+
