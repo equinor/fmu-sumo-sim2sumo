@@ -6,16 +6,15 @@ from pathlib import Path
 
 import psutil
 import yaml
+from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 from fmu.dataio import ExportData
-from fmu.sumo.uploader import SumoConnection
-from fmu.sumo.uploader._upload_files import upload_files
 from fmu.sumo.sim2sumo._special_treatments import (
     SUBMOD_DICT,
     SUBMODULES,
 )
-
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
+from fmu.sumo.uploader import SumoConnection
+from fmu.sumo.uploader._upload_files import upload_files
 
 
 def yaml_load(file_name):

@@ -74,9 +74,7 @@ def _get_jobs_from_directory(directory):
 
 # pylint: disable=no-value-for-parameter
 @hook_implementation
-@plugin_response(
-    plugin_name=PLUGIN_NAME
-)  # pylint: disable=no-value-for-parameter
+@plugin_response(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
 def installable_jobs():
     """Return installable jobs
 
@@ -87,9 +85,7 @@ def installable_jobs():
 
 
 @hook_implementation
-@plugin_response(
-    plugin_name=PLUGIN_NAME
-)  # pylint: disable=no-value-for-parameter
+@plugin_response(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
 def job_documentation(job_name):
     sumo_fmu_jobs = set(installable_jobs().data.keys())
     if job_name not in sumo_fmu_jobs:

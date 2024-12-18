@@ -3,7 +3,6 @@
 # to exist etc. Tests that run ERT should therefore create their own
 # temporary file structure, completely separate from other tests.
 from pathlib import Path
-
 from subprocess import PIPE, Popen
 
 
@@ -13,7 +12,6 @@ def write_ert_config_and_run(runpath):
     ert_full_config_path = runpath / ert_config_path
     print(f"Running with path {ert_full_config_path}")
     with open(ert_full_config_path, "w", encoding=encoding) as stream:
-
         stream.write(
             (
                 "DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT"

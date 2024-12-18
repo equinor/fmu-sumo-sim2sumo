@@ -4,9 +4,9 @@ import argparse
 import logging
 from os import environ
 
+from .common import Dispatcher, create_config_dict, yaml_load
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
-from .common import yaml_load, Dispatcher, create_config_dict
 
 
 def parse_args():

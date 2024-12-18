@@ -1,37 +1,34 @@
 """Test utility ecl2csv"""
 
 import os
-from numpy.ma import allclose, allequal
+from io import BytesIO
 from shutil import copytree
 from time import sleep
-from io import BytesIO
+
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
-
+from conftest import REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
+from numpy.ma import allclose, allequal
 from xtgeo import GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo import grid3d, tables
-from fmu.sumo.sim2sumo.common import (
-    find_datafiles,
-    create_config_dict,
-    nodisk_upload,
-    Dispatcher,
-    find_datefield,
-    filter_options,
-    get_case_uuid,
-)
 from fmu.sumo.sim2sumo._special_treatments import (
+    SUBMODULES,
     _define_submodules,
     convert_to_arrow,
-    SUBMODULES,
+)
+from fmu.sumo.sim2sumo.common import (
+    Dispatcher,
+    create_config_dict,
+    filter_options,
+    find_datafiles,
+    find_datefield,
+    get_case_uuid,
+    nodisk_upload,
 )
 from fmu.sumo.uploader import SumoConnection
-
-
-from conftest import REEK_REAL0, REEK_REAL1, REEK_DATA_FILE
-
 
 SLEEP_TIME = 3
 
