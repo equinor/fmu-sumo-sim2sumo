@@ -1,24 +1,26 @@
 #!/usr/bin/env python
 """Upload grid3d data from reservoir simulators to Sumo
-   Does three things:
-   1. Extracts data from simulator to roff files
-   2. Adds the required metadata while exporting to disc
-   3. Uploads to Sumo
+Does three things:
+1. Extracts data from simulator to roff files
+2. Adds the required metadata while exporting to disc
+3. Uploads to Sumo
 """
-import logging
-from pathlib import Path
-from datetime import datetime
 
+import logging
+from datetime import datetime
 from io import BytesIO
+from pathlib import Path
+
 import numpy as np
 from resdata.grid import Grid
 from resdata.resfile import ResdataRestartFile
 from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
-from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from fmu.dataio import ExportData
+from fmu.sumo.uploader._fileonjob import FileOnJob
+
 from .common import find_datefield, give_name
 
 
@@ -59,10 +61,7 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     else:
         content = {"property": {"is_discrete": False}}
 
-    if prefix == "grid":
-        name = prefix
-    else:
-        name = f"{prefix}-{obj.name}"
+    name = prefix if prefix == "grid" else f"{prefix}-{obj.name}"
     tagname = give_name(datafile)
     exp_args = {
         "config": config,

@@ -1,34 +1,33 @@
 """Upload tabular data from reservoir simulators to sumo
-   Does three things:
-   1. Extracts data from simulator to arrow files
-   2. Adds the required metadata while exporting to disc
-   3. Uploads to Sumo
+Does three things:
+1. Extracts data from simulator to arrow files
+2. Adds the required metadata while exporting to disc
+3. Uploads to Sumo
 """
 
 import logging
 import sys
+from pathlib import Path
 from typing import Union
 
+import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-import pandas as pd
 import res2df
+
+from fmu.dataio import ExportData
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
     SUBMOD_DICT,
-    tidy,
     convert_to_arrow,
+    tidy,
     vfp_to_arrow_dict,
 )
-
-from pathlib import Path
-from fmu.dataio import ExportData
 from .common import (
     find_datefield,
     give_name,
 )
-
 
 SUBMOD_CONTENT = {
     "summary": "timeseries",
@@ -140,12 +139,10 @@ def get_table(
     logger = logging.getLogger(__file__ + ".get_table")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
-    try:
-        del kwargs[
-            "arrow"
-        ]  # This argument should not be passed to extract function
-    except KeyError:
-        pass  # No arrow key to delete
+    from contextlib import suppress
+
+    with suppress(KeyError):
+        del kwargs["arrow"]
     output = None
     try:
         logger.info(
