@@ -173,7 +173,7 @@ def test_convert_xtgeo_2_sumo_file(
 ):
     monkeypatch.chdir(scratch_files[0])
 
-    file = grid3d.convert_xtgeo_2_sumo_file(
+    file = grid3d.convert_xtgeo_to_sumo_file(
         scratch_files[1], eightfipnum, "INIT", config
     )
     sumo_conn = SumoConnection(env="dev", token=token)

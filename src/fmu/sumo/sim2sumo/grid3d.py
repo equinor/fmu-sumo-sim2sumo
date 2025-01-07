@@ -124,7 +124,7 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     return metadata
 
 
-def convert_xtgeo_2_sumo_file(obj, metadata):
+def convert_xtgeo_to_sumo_file(obj, metadata):
     """Convert xtgeo object to SumoFile
 
     Args:
@@ -174,7 +174,7 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         prop_metadata = generate_gridproperty_meta(
             init_path, xtgeo_prop, "INIT", config, xtgeoegrid
         )
-        sumo_file = convert_xtgeo_2_sumo_file(xtgeo_prop, prop_metadata)
+        sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
         if sumo_file is None:
             logger.warning(
                 "Property with name %s extracted from %s returned nothing",
@@ -213,7 +213,7 @@ def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
                 prop_metadata = generate_gridproperty_meta(
                     restart_path, xtgeo_prop, "UNRST", config, xtgeoegrid
                 )
-                sumo_file = convert_xtgeo_2_sumo_file(
+                sumo_file = convert_xtgeo_to_sumo_file(
                     xtgeo_prop, prop_metadata
                 )
                 if sumo_file is None:
@@ -253,7 +253,7 @@ def upload_simulation_run(datafile, config, dispatcher):
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
-    sumo_file = convert_xtgeo_2_sumo_file(xtgeoegrid, grid_metadata)
+    sumo_file = convert_xtgeo_to_sumo_file(xtgeoegrid, grid_metadata)
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
