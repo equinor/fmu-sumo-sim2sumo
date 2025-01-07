@@ -264,9 +264,9 @@ See also :ref:`preconditions`.
 Using sim2sumo from the command line
 ***************************************
 
-sim2sumo can be run from any terminal window where komodo is activated.
-This can be useful for checking that everything works as it is supposed to, but the intension of sim2sumo
-is to be run as an ert FORWARD_MODEL.
+Using sim2sumo from the command line is discouraged, and there is no guarantee that it will work.
+
+The intension of sim2sumo is to be run as an ert FORWARD_MODEL.
 
 Execution of sim2sumo from command line
 ========================================
