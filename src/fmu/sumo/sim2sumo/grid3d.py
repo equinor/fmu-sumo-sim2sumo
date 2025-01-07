@@ -105,7 +105,7 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
         "name": name,
         "tagname": tagname,
         "content": {"property": {"is_discrete": False}},
-        "geometry": geogrid,
+        "geometry": geogrid.filesrc,
     }
     datefield = find_datefield(tagname)
     if datefield is not None:
