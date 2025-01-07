@@ -1,4 +1,5 @@
 import subprocess
+
 from ert import (
     ForwardModelStepJSON,
     ForwardModelStepPlugin,

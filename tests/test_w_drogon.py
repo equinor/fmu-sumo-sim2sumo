@@ -1,12 +1,13 @@
 from pathlib import Path
+
+import pytest
+from test_functions import check_sumo
+
 from fmu.sumo.sim2sumo._special_treatments import vfp_to_arrow_dict
+from fmu.sumo.sim2sumo.common import Dispatcher
 from fmu.sumo.sim2sumo.tables import (
     upload_vfp_tables_from_simulation_run,
-    get_table,
 )
-from fmu.sumo.sim2sumo.common import Dispatcher
-from test_functions import check_sumo
-import pytest
 
 DROGON = Path(__file__).parent / "data/drogon/"
 DROGON_REAL = DROGON / "realization-0/iter-0/"
