@@ -73,9 +73,9 @@ def generate_grid3d_meta(datafile, obj, config):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{tagname}--{name}".lower()
-    }
+    metadata["file"][
+        "relative_path"
+    ] = f"{relative_parent}/{tagname}--{name}".lower()
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -116,9 +116,9 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{tagname}--{name}".lower()
-    }
+    metadata["file"][
+        "relative_path"
+    ] = f"{relative_parent}/{tagname}--{name}".lower()
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
