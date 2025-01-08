@@ -30,7 +30,7 @@ from .common import (
 )
 
 SUBMOD_CONTENT = {
-    "summary": "timeseries",
+    "summary": "simulationtimeseries",
     "satfunc": "relperm",
     "vfp": "lift_curves",
     "rft": "rft",
