@@ -23,6 +23,9 @@ from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from .common import find_datefield, give_name
 
+from tempfile import NamedTemporaryFile
+import yaml
+
 
 def xtgeo_2_bytestring(obj):
     """Convert xtgeo object to bytestring
@@ -150,7 +153,7 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
     return sumo_file
 
 
-def upload_init(init_path, xtgeoegrid, config, dispatcher):
+def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
     """Upload properties from init file
 
     Args:
@@ -174,7 +177,7 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
             logger.warning("%s will not be uploaded", init_prop["name"])
             continue
         prop_metadata = generate_gridproperty_meta(
-            init_path, xtgeo_prop, "INIT", config, xtgeoegrid
+            init_path, xtgeo_prop, "INIT", config, geometry_path
         )
         sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
         if sumo_file is None:
@@ -187,7 +190,9 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         dispatcher.add(sumo_file)
 
 
-def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
+def upload_restart(
+    restart_path, xtgeoegrid, time_steps, config, dispatcher, geometry_path
+):
     """Export properties from restart file
 
     Args:
@@ -213,7 +218,7 @@ def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
                 prop_metadata = generate_gridproperty_meta(
-                    restart_path, xtgeo_prop, "UNRST", config, xtgeoegrid
+                    restart_path, xtgeo_prop, "UNRST", config, geometry_path
                 )
                 sumo_file = convert_xtgeo_to_sumo_file(
                     xtgeo_prop, prop_metadata
@@ -259,8 +264,24 @@ def upload_simulation_run(datafile, config, dispatcher):
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    upload_init(init_path, xtgeoegrid, config, dispatcher)
-    upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher)
+    grid_metadata_abs_path = grid_metadata["file"]["absolute_path"]
+    # with namedtmpfile:
+    #   write grid data to the tmp file
+    #   use the tmp file to link geometry to grid properties
+    with NamedTemporaryFile(suffix=".yml", mode="w+t") as temp_file:
+        yaml.dump(grid_metadata, temp_file)
+        # temp_file.write(grid_metadata)
+        # temp_file.seek(0)
+
+        upload_init(init_path, xtgeoegrid, config, dispatcher, temp_file.name)
+        upload_restart(
+            restart_path,
+            xtgeoegrid,
+            time_steps,
+            config,
+            dispatcher,
+            temp_file.name,
+        )
 
 
 def get_timesteps(restart_path, egrid):
