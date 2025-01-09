@@ -101,7 +101,7 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
         obj (xtgeo object): the object to generate metadata on
         prefix (str): prefix to include
         config (dict): the fmu config file
-        geogrid (xtgeo grid): geometry to link to the grid property
+        geogrid (str): path to the grid to to link as geometry to the grid property
 
     Returns:
         dict: the metadata for obj
@@ -125,10 +125,10 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    print(f"GRIDPROP METADATA: {metadata}")
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
+    print(f"GRIDPROP METADATA: {metadata}")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -317,6 +317,6 @@ def make_xtgeo_prop(xtgeoegrid, prop_dict):
         # prop_name has only one value. Will not return single value property."
         return None
 
-    xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name)
+    xtgeo_prop = GridProperty(xtgeoegrid, name=prop_name, linkgeometry=True)
     xtgeo_prop.values = values
     return xtgeo_prop
