@@ -73,7 +73,7 @@ def generate_grid3d_meta(datafile, obj, config):
     #       export() calls generate_metadata() and puts it into a file.
     #       Can just read that file instead of doing generate_metadata() again.
     metadata = exd.generate_metadata(obj)
-    outgrid = exd.export(obj)
+    exd.export(obj)
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
