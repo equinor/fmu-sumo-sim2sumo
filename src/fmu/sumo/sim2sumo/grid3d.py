@@ -23,9 +23,6 @@ from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from .common import find_datefield, give_name
 
-from tempfile import NamedTemporaryFile
-import yaml
-
 
 def xtgeo_2_bytestring(obj):
     """Convert xtgeo object to bytestring
