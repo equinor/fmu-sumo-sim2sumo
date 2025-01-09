@@ -175,7 +175,6 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
             logger.warning("%s will not be exported", init_prop["name"])
             continue
         xtgeo_prop = make_xtgeo_prop(xtgeoegrid, init_prop)
-        xtgeo_prop.geometry = xtgeoegrid
         if xtgeo_prop is None:
             logger.warning("%s will not be uploaded", init_prop["name"])
             continue
@@ -219,7 +218,6 @@ def upload_restart(
                 continue
 
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
-            xtgeo_prop.geometry = xtgeoegrid
             if xtgeo_prop is not None:
                 prop_metadata = generate_gridproperty_meta(
                     restart_path, xtgeo_prop, "UNRST", config, geometry_path

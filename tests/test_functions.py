@@ -165,14 +165,16 @@ def test_table_2_bytestring(reekrft):
     assert isinstance(bytestr, bytes)
 
 
-def test_convert_xtgeo_2_sumo_file(
+def test_convert_xtgeo_to_sumo_file(
     eightfipnum, scratch_files, config, case_uuid, sumo, monkeypatch, token
 ):
     monkeypatch.chdir(scratch_files[0])
 
-    file = grid3d.convert_xtgeo_to_sumo_file(
-        scratch_files[1], eightfipnum, "INIT", config
+    # Not linking geometry since we don't want to write grid to disk in test
+    metadata = grid3d.generate_gridproperty_meta(
+        scratch_files[1], eightfipnum, "INIT", config, ""
     )
+    file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
     sleep(SLEEP_TIME)
@@ -216,10 +218,19 @@ def get_sumo_object(sumo, case_uuid, name, tagname):
     return obj
 
 
-def test_generate_grid3d_meta(scratch_files, eightfipnum, config, monkeypatch):
+def test_generate_grid3d_meta(scratch_files, xtgeogrid, config, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
-    meta = grid3d.generate_grid3d_meta(
-        scratch_files[1], eightfipnum, "INIT", config
+    meta = grid3d.generate_grid3d_meta(scratch_files[1], xtgeogrid, config)
+    assert isinstance(meta, dict)
+
+
+def test_generate_gridproperty_meta(
+    scratch_files, eightfipnum, config, monkeypatch
+):
+    monkeypatch.chdir(scratch_files[0])
+    # Not linking geometry since we don't want to write grid to disk in test
+    meta = grid3d.generate_gridproperty_meta(
+        scratch_files[1], eightfipnum, "INIT", config, ""
     )
     assert isinstance(meta, dict)
 
@@ -230,11 +241,13 @@ def test_upload_init(
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
     expected_results = 5
+    # Not linking geometry since we don't want to write grid to disk in test
     grid3d.upload_init(
         str(scratch_files[1]).replace(".DATA", ".INIT"),
         xtgeogrid,
         config,
         disp,
+        "",
     )
     uuid = disp.parentid
     disp.finish()
@@ -249,12 +262,14 @@ def test_upload_restart(
 
     expected_results = 9
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
+    # Not linking geometry since we don't want to write grid to disk in test
     grid3d.upload_restart(
         restart_path,
         xtgeogrid,
         grid3d.get_timesteps(restart_path, xtgeogrid),
         config,
         disp,
+        "",
     )
     uuid = disp.parentid
     disp.finish()
