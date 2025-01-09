@@ -43,7 +43,8 @@ def xtgeo_2_bytestring(obj):
     return bytestring
 
 
-# Almost equal to tables.py::generate_table_meta, but note difference in name and tagname
+# Almost equal to tables.py::generate_table_meta,
+# difference in name and tagname
 def generate_grid3d_meta(datafile, obj, config):
     """Generate metadata for xtgeo object
 
@@ -77,9 +78,9 @@ def generate_grid3d_meta(datafile, obj, config):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    metadata["file"][
-        "relative_path"
-    ] = f"{relative_parent}/{tagname}--{name}".lower()
+    metadata["file"]["relative_path"] = (
+        f"{relative_parent}/{tagname}--{name}".lower()
+    )
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -87,7 +88,8 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-# Almost equal to generate_grid3d_meta, difference in name, content and geometry
+# Almost equal to generate_grid3d_meta
+# difference in name, content and geometry
 def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     """Generate metadata for xtgeo object
 
@@ -96,7 +98,7 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
         obj (xtgeo object): the object to generate metadata on
         prefix (str): prefix to include
         config (dict): the fmu config file
-        geogrid (str): path to the grid to to link as geometry to the grid property
+        geogrid (str): path to the grid to link as geometry
 
     Returns:
         dict: the metadata for obj
@@ -120,9 +122,9 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    metadata["file"][
-        "relative_path"
-    ] = f"{relative_parent}/{tagname}--{name}".lower()
+    metadata["file"]["relative_path"] = (
+        f"{relative_parent}/{tagname}--{name}".lower()
+    )
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -263,7 +265,8 @@ def upload_simulation_run(datafile, config, dispatcher):
     xtgeoegrid = grid_from_file(grid_path)
     grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
 
-    # TODO: Have to get absolute_path here, because FileOnJob in convert_xtgeo_to_sumo_file
+    # TODO: Have to get absolute_path here,
+    #       because FileOnJob in convert_xtgeo_to_sumo_file
     #       sets file.absolute_path to "".  Why?
     grid_abs_path = grid_metadata["file"]["absolute_path"]
 
