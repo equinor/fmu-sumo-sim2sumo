@@ -80,11 +80,11 @@ def generate_grid3d_meta(datafile, obj, config):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    print(f"GRID METADATA: {metadata}")
-    print(f"OUTGRID: {outgrid}")
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
+    print(f"OUTGRID: {outgrid}")
+    print(f"GRID METADATA: {metadata}")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -262,6 +262,7 @@ def upload_simulation_run(datafile, config, dispatcher):
     Args:
         datafile (str): path to datafile
     """
+    print(f"UPLOADING GRID FOR DATAFILE: {datafile}")
     datafile_path = Path(datafile).resolve()
     init_path = str(datafile_path.with_suffix(".INIT"))
     restart_path = str(datafile_path.with_suffix(".UNRST"))
