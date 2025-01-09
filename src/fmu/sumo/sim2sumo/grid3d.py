@@ -152,6 +152,7 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
 
     bytestring = xtgeo_2_bytestring(obj)
 
+    # TODO: Why does FileOnJob set file.absolute_path to ""?
     sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
@@ -270,11 +271,15 @@ def upload_simulation_run(datafile, config, dispatcher):
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
     grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
+
+    # TODO: Have to get absolute_path here, because FileOnJob in convert_xtgeo_to_sumo_file
+    #       sets file.absolute_path to "".  Why?
+    grid_abs_path = grid_metadata["file"]["absolute_path"]
+
     sumo_file = convert_xtgeo_to_sumo_file(xtgeoegrid, grid_metadata)
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    grid_abs_path = grid_metadata["file"]["absolute_path"]
     # TODO: Delete the files written to disk after upload to Sumo is done
 
     upload_init(init_path, xtgeoegrid, config, dispatcher, grid_abs_path)
