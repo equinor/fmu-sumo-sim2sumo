@@ -80,8 +80,6 @@ def generate_grid3d_meta(datafile, obj, config):
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
-    print(f"OUTGRID: {outgrid}")
-    print(f"GRID METADATA: {metadata}")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -125,7 +123,6 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
-    print(f"GRIDPROP METADATA: {metadata}")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -260,7 +257,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     Args:
         datafile (str): path to datafile
     """
-    print(f"UPLOADING GRID FOR DATAFILE: {datafile}")
     datafile_path = Path(datafile).resolve()
     init_path = str(datafile_path.with_suffix(".INIT"))
     restart_path = str(datafile_path.with_suffix(".UNRST"))
@@ -278,7 +274,6 @@ def upload_simulation_run(datafile, config, dispatcher):
     time_steps = get_timesteps(restart_path, egrid)
 
     # TODO: Delete the files written to disk after upload to Sumo is done
-
     upload_init(init_path, xtgeoegrid, config, dispatcher, grid_abs_path)
     upload_restart(
         restart_path, xtgeoegrid, time_steps, config, dispatcher, grid_abs_path
