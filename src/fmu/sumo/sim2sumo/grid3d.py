@@ -72,16 +72,15 @@ def generate_grid3d_meta(datafile, obj, config):
         exp_args["timedata"] = [[datefield]]
 
     exd = ExportData(**exp_args)
+    # TODO: Possible to only do .export() and get metadata from there?
     metadata = exd.generate_metadata(obj)
     outgrid = exd.export(obj)
-    print(f"OUTGRID: {outgrid}")
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
-    print(f"METADATA FILE: {metadata['file']}")
     assert isinstance(
         metadata, dict
     ), f"meta should be dict, but is {type(metadata)}"
@@ -267,19 +266,13 @@ def upload_simulation_run(datafile, config, dispatcher):
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    grid_metadata_abs_path = grid_metadata["file"]["absolute_path"]
-    # TODO: Use dataio.export instead of NamedTempFile
+    grid_abs_path = grid_metadata["file"]["absolute_path"]
     # TODO: Delete the files written to disk after upload to Sumo is done
-    # with namedtmpfile:
-    #   write grid data to the tmp file
-    #   use the tmp file to link geometry to grid properties
-    # with NamedTemporaryFile(suffix=".yml", mode="w+t") as temp_file:
-    #     yaml.dump(grid_metadata, temp_file)
-    #     # temp_file.write(grid_metadata)
-    #     # temp_file.seek(0)
 
-    upload_init(init_path, xtgeoegrid, config, dispatcher)
-    upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher)
+    upload_init(init_path, xtgeoegrid, config, dispatcher, grid_abs_path)
+    upload_restart(
+        restart_path, xtgeoegrid, time_steps, config, dispatcher, grid_abs_path
+    )
 
 
 def get_timesteps(restart_path, egrid):
