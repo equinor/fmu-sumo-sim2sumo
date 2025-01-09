@@ -73,11 +73,15 @@ def generate_grid3d_meta(datafile, obj, config):
 
     exd = ExportData(**exp_args)
     # TODO: Possible to only do .export() and get metadata from there?
+    #       export() calls generate_metadata() and puts it into a file.
+    #       Can just read that file instead of doing generate_metadata() again.
     metadata = exd.generate_metadata(obj)
     outgrid = exd.export(obj)
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
+    print(f"GRID METADATA: {metadata}")
+    print(f"OUTGRID: {outgrid}")
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
@@ -121,6 +125,7 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
+    print(f"GRIDPROP METADATA: {metadata}")
     metadata["file"][
         "relative_path"
     ] = f"{relative_parent}/{tagname}--{name}".lower()
