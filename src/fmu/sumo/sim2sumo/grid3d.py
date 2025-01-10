@@ -6,6 +6,7 @@ Does three things:
 3. Uploads to Sumo
 """
 
+import os
 import logging
 from datetime import datetime
 from io import BytesIO
@@ -268,22 +269,31 @@ def upload_simulation_run(datafile, config, dispatcher):
     xtgeoegrid = grid_from_file(grid_path)
     grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
 
-    grid_abs_path = grid_metadata["file"]["absolute_path"]
-    print(f"GRID ABS PATH: {grid_abs_path}")
-    print(f"GRID PATH: {grid_path}")
+    exported_grid_path = Path(grid_metadata["file"]["absolute_path"])
 
     sumo_file = convert_xtgeo_to_sumo_file(xtgeoegrid, grid_metadata)
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    # TODO: Delete the files written to disk after upload to Sumo is done
-    upload_init(init_path, xtgeoegrid, config, dispatcher, grid_abs_path)
+    upload_init(init_path, xtgeoegrid, config, dispatcher, exported_grid_path)
     upload_restart(
-        restart_path, xtgeoegrid, time_steps, config, dispatcher, grid_abs_path
+        restart_path,
+        xtgeoegrid,
+        time_steps,
+        config,
+        dispatcher,
+        exported_grid_path,
     )
 
-    # grid_path = Path(grid_abs_path)
-    # metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
+    if os.path.exists(exported_grid_path):
+        os.remove(exported_grid_path)
+        print(f"DELETED GRID FILE {exported_grid_path}")
+    metadata_path = (
+        exported_grid_path.parent / f".{exported_grid_path.name}.yml"
+    )
+    if os.path.exists(metadata_path):
+        os.remove(metadata_path)
+        print(f"DELETED METADATA FILE {metadata_path}")
 
 
 def get_timesteps(restart_path, egrid):
