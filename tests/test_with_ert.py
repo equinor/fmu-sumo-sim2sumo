@@ -39,12 +39,12 @@ def write_ert_config_and_run(runpath):
         error_content = Path(runpath / "ERROR").read_text(encoding=encoding)
     except FileNotFoundError:
         error_content = ""
-    assert (
-        not error_content
-    ), f"ERROR file found with content:\n{error_content}"
-    assert Path(
-        runpath / "OK"
-    ).is_file(), f"running {ert_full_config_path}, No OK file"
+    assert not error_content, (
+        f"ERROR file found with content:\n{error_content}"
+    )
+    assert Path(runpath / "OK").is_file(), (
+        f"running {ert_full_config_path}, No OK file"
+    )
 
 
 def test_sim2sumo_with_ert(
@@ -80,6 +80,6 @@ def test_sim2sumo_with_ert(
     ).json()
 
     returned = results["hits"]["total"]["value"]
-    assert (
-        returned == expected_exports
-    ), f"Supposed to upload {expected_exports}, but actual were {returned}"
+    assert returned == expected_exports, (
+        f"Supposed to upload {expected_exports}, but actual were {returned}"
+    )

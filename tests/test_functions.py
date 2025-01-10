@@ -53,9 +53,9 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     results = sumo.get(path, query).json()
 
     returned = results["hits"]["total"]["value"]
-    assert (
-        returned == check_nr
-    ), f"Supposed to upload {check_nr}, but actual were {returned}"
+    assert returned == check_nr, (
+        f"Supposed to upload {check_nr}, but actual were {returned}"
+    )
 
     sumo.delete(
         path,
@@ -72,12 +72,12 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     nr_parameter = len(parameters)
     nr_meta = len(meta)
     assert nr_parameter == nr_meta
-    assert (
-        nr_parameter == expected_exports
-    ), f"exported {nr_parameter} params, should be {expected_exports}"
-    assert (
-        nr_meta == expected_exports
-    ), f"exported {nr_meta} metadata objects, should be {expected_exports}"
+    assert nr_parameter == expected_exports, (
+        f"exported {nr_parameter} params, should be {expected_exports}"
+    )
+    assert nr_meta == expected_exports, (
+        f"exported {nr_meta} metadata objects, should be {expected_exports}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -89,9 +89,9 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
 )
 def test_non_standard_filter_options(submod, options, expected):
     returned_options = filter_options(submod, options)
-    assert (
-        len(returned_options) > 0
-    ), f"No options left for {submod}, should be {expected}"
+    assert len(returned_options) > 0, (
+        f"No options left for {submod}, should be {expected}"
+    )
 
 
 @pytest.mark.parametrize(
@@ -137,13 +137,13 @@ def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
     copytree(REEK_REAL1, real1)
     os.chdir(real1)
     inputs = create_config_dict(sim2sumo_config)
-    assert (
-        len(inputs) == nrdatafiles
-    ), f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
+    assert len(inputs) == nrdatafiles, (
+        f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
+    )
     for submod, subdict in inputs.items():
-        assert (
-            len(subdict) == nrsubmodules
-        ), f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
+        assert len(subdict) == nrsubmodules, (
+            f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
+        )
 
 
 def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
@@ -180,9 +180,9 @@ def test_convert_xtgeo_to_sumo_file(
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
-    assert isinstance(
-        prop, GridProperty
-    ), f"obj should be xtgeo.GridProperty but is {type(prop)}"
+    assert isinstance(prop, GridProperty), (
+        f"obj should be xtgeo.GridProperty but is {type(prop)}"
+    )
     assert allclose(prop.values, eightfipnum.values)
     assert allequal(prop.values, eightfipnum.values)
 
@@ -201,9 +201,9 @@ def test_convert_table_2_sumo_file(
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
-    assert isinstance(
-        table, pa.Table
-    ), f"obj should be pa.Table but is {type(table)}"
+    assert isinstance(table, pa.Table), (
+        f"obj should be pa.Table but is {type(table)}"
+    )
     assert table == reekrft
     check_sumo(case_uuid, "rft", 1, "table", sumo)
 
@@ -314,17 +314,17 @@ def test_submodules_dict():
     assert isinstance(submods, dict)
     for submod_name, submod_dict in submods.items():
         assert isinstance(submod_name, str)
-        assert (
-            "/" not in submod_name
-        ), f"Left part of folder path for {submod_name}"
+        assert "/" not in submod_name, (
+            f"Left part of folder path for {submod_name}"
+        )
         assert isinstance(submod_dict, dict), f"{submod_name} has no subdict"
-        assert (
-            "options" in submod_dict
-        ), f"{submod_name} does not have any options"
+        assert "options" in submod_dict, (
+            f"{submod_name} does not have any options"
+        )
 
-        assert isinstance(
-            submod_dict["options"], tuple
-        ), f"options for {submod_name} not tuple"
+        assert isinstance(submod_dict["options"], tuple), (
+            f"options for {submod_name} not tuple"
+        )
 
 
 @pytest.mark.parametrize(
@@ -345,9 +345,9 @@ def test_get_table(submod):
         f" but returned {type(frame)}"
     )
     if submod == "summary":
-        assert (
-            frame.schema.field("FOPT").metadata is not None
-        ), "Metdata not carried across for summary"
+        assert frame.schema.field("FOPT").metadata is not None, (
+            "Metdata not carried across for summary"
+        )
 
 
 def test_convert_to_arrow():
@@ -369,9 +369,9 @@ def test_find_datafiles_reek(real, nrdfiles):
     os.chdir(real)
     datafiles = find_datafiles(None)
     expected_tools = ["eclipse", "opm", "ix", "pflotran"]
-    assert (
-        len(datafiles) == nrdfiles
-    ), f"Expected {nrdfiles} datafiles but found {len(datafiles)}"
+    assert len(datafiles) == nrdfiles, (
+        f"Expected {nrdfiles} datafiles but found {len(datafiles)}"
+    )
     for found_path in datafiles:
         parent = found_path.parent.parent.name
         assert parent in expected_tools, f"|{parent}| not in {expected_tools}"
