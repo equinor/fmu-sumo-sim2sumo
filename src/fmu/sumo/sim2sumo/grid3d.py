@@ -21,7 +21,7 @@ from xtgeo.io._file import FileWrapper
 from fmu.dataio import ExportData
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
-from .common import find_datefield, give_name
+from .common import find_datefield, give_name, yaml_load
 
 
 def xtgeo_2_bytestring(obj):
@@ -69,12 +69,18 @@ def generate_grid3d_meta(datafile, obj, config):
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
+    # Future: refactor to be "diskless"
+    #   i.e. use exd.generate_metadata() instead of exd.export()
+    #       metadata = exd.generate_metadata(obj)
+    #   Currently have to write to disk because GridProperty expects
+    #   the grid to exist on disk when linking geometry
     exd = ExportData(**exp_args)
-    # TODO: Possible to only do .export() and get metadata from there?
-    #       export() calls generate_metadata() and puts it into a file.
-    #       Can just read that file instead of doing generate_metadata() again.
-    metadata = exd.generate_metadata(obj)
-    exd.export(obj)
+    outfile = exd.export(obj)
+    datafile_path = Path(outfile)
+    metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
+    print(f"METADATA PATH: {metadata_path}")
+    metadata = yaml_load(metadata_path)
+
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
@@ -88,8 +94,6 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-# Almost equal to generate_grid3d_meta
-# difference in name, content and geometry
 def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     """Generate metadata for xtgeo object
 
@@ -148,7 +152,6 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
 
     bytestring = xtgeo_2_bytestring(obj)
 
-    # TODO: Why does FileOnJob set file.absolute_path to ""?
     sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
@@ -265,10 +268,9 @@ def upload_simulation_run(datafile, config, dispatcher):
     xtgeoegrid = grid_from_file(grid_path)
     grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
 
-    # TODO: Have to get absolute_path here,
-    #       because FileOnJob in convert_xtgeo_to_sumo_file
-    #       sets file.absolute_path to "".  Why?
     grid_abs_path = grid_metadata["file"]["absolute_path"]
+    print(f"GRID ABS PATH: {grid_abs_path}")
+    print(f"GRID PATH: {grid_path}")
 
     sumo_file = convert_xtgeo_to_sumo_file(xtgeoegrid, grid_metadata)
     dispatcher.add(sumo_file)
@@ -279,6 +281,9 @@ def upload_simulation_run(datafile, config, dispatcher):
     upload_restart(
         restart_path, xtgeoegrid, time_steps, config, dispatcher, grid_abs_path
     )
+
+    # grid_path = Path(grid_abs_path)
+    # metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
 
 
 def get_timesteps(restart_path, egrid):
