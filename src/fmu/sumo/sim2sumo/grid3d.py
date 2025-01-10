@@ -6,8 +6,8 @@ Does three things:
 3. Uploads to Sumo
 """
 
-import os
 import logging
+import os
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
@@ -79,7 +79,6 @@ def generate_grid3d_meta(datafile, obj, config):
     outfile = exd.export(obj)
     datafile_path = Path(outfile)
     metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
-    print(f"METADATA PATH: {metadata_path}")
     metadata = yaml_load(metadata_path)
 
     relative_parent = str(Path(datafile).parents[2]).replace(
@@ -287,13 +286,11 @@ def upload_simulation_run(datafile, config, dispatcher):
 
     if os.path.exists(exported_grid_path):
         os.remove(exported_grid_path)
-        print(f"DELETED GRID FILE {exported_grid_path}")
     metadata_path = (
         exported_grid_path.parent / f".{exported_grid_path.name}.yml"
     )
     if os.path.exists(metadata_path):
         os.remove(metadata_path)
-        print(f"DELETED METADATA FILE {metadata_path}")
 
 
 def get_timesteps(restart_path, egrid):
