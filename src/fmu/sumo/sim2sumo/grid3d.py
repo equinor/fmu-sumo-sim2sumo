@@ -7,6 +7,7 @@ Does three things:
 """
 
 import logging
+import os
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
@@ -21,7 +22,7 @@ from xtgeo.io._file import FileWrapper
 from fmu.dataio import ExportData
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
-from .common import find_datefield, give_name
+from .common import find_datefield, give_name, yaml_load
 
 
 def xtgeo_2_bytestring(obj):
@@ -43,8 +44,57 @@ def xtgeo_2_bytestring(obj):
     return bytestring
 
 
-# Almost equal to tables.py::generate_table_meta, but note difference in name and tagname
-def generate_grid3d_meta(datafile, obj, prefix, config):
+# Almost equal to tables.py::generate_table_meta,
+# difference in name and tagname
+def generate_grid3d_meta(datafile, obj, config):
+    """Generate metadata for xtgeo object
+
+    Args:
+        datafile (str): path to datafile
+        obj (xtgeo object): the object to generate metadata on
+        config (dict): the fmu config file
+
+    Returns:
+        dict: the metadata for obj
+    """
+
+    name = "grid"
+    tagname = give_name(datafile)
+    exp_args = {
+        "config": config,
+        "name": name,
+        "tagname": tagname,
+        "content": "depth",
+    }
+    datefield = find_datefield(tagname)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
+
+    # Future: refactor to be "diskless"
+    #   i.e. use exd.generate_metadata() instead of exd.export()
+    #       metadata = exd.generate_metadata(obj)
+    #   Currently have to write to disk because GridProperty expects
+    #   the grid to exist on disk when linking geometry
+    exd = ExportData(**exp_args)
+    outfile = exd.export(obj)
+    datafile_path = Path(outfile)
+    metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
+    metadata = yaml_load(metadata_path)
+
+    relative_parent = str(Path(datafile).parents[2]).replace(
+        str(Path(datafile).parents[4]), ""
+    )
+    metadata["file"]["relative_path"] = (
+        f"{relative_parent}/{tagname}--{name}".lower()
+    )
+    assert isinstance(metadata, dict), (
+        f"meta should be dict, but is {type(metadata)}"
+    )
+
+    return metadata
+
+
+def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     """Generate metadata for xtgeo object
 
     Args:
@@ -52,22 +102,20 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
         obj (xtgeo object): the object to generate metadata on
         prefix (str): prefix to include
         config (dict): the fmu config file
+        geogrid (str): path to the grid to link as geometry
 
     Returns:
         dict: the metadata for obj
     """
-    if isinstance(obj, Grid):
-        content = "depth"
-    else:
-        content = {"property": {"is_discrete": False}}
 
-    name = prefix if prefix == "grid" else f"{prefix}-{obj.name}"
+    name = f"{prefix}-{obj.name}"
     tagname = give_name(datafile)
     exp_args = {
         "config": config,
         "name": name,
         "tagname": tagname,
-        "content": content,
+        "content": {"property": {"is_discrete": False}},
+        "geometry": geogrid,
     }
     datefield = find_datefield(tagname)
     if datefield is not None:
@@ -78,25 +126,22 @@ def generate_grid3d_meta(datafile, obj, prefix, config):
     relative_parent = str(Path(datafile).parents[2]).replace(
         str(Path(datafile).parents[4]), ""
     )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{tagname}--{name}".lower()
-    }
-    assert isinstance(
-        metadata, dict
-    ), f"meta should be dict, but is {type(metadata)}"
+    metadata["file"]["relative_path"] = (
+        f"{relative_parent}/{tagname}--{name}".lower()
+    )
+    assert isinstance(metadata, dict), (
+        f"meta should be dict, but is {type(metadata)}"
+    )
 
     return metadata
 
 
-def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
-    """Convert xtgeo object to SumoFile ready for shipping to Sumo
+def convert_xtgeo_to_sumo_file(obj, metadata):
+    """Convert xtgeo object to SumoFile
 
     Args:
-        datafile (str|PosixPath):
-            path to datafile connected to extracted object
         obj (Xtgeo object): The object to prepare for upload
-        prefix (str): prefix to distinguish between init and restart
-        config (dict): dictionary with master metadata needed for Sumo
+        metadata (dict): dictionary with metadata
 
     Returns:
         SumoFile: Object containing xtgeo object as bytestring
@@ -106,7 +151,6 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
         return obj
 
     bytestring = xtgeo_2_bytestring(obj)
-    metadata = generate_grid3d_meta(datafile, obj, prefix, config)
 
     sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]
@@ -116,7 +160,7 @@ def convert_xtgeo_2_sumo_file(datafile, obj, prefix, config):
     return sumo_file
 
 
-def upload_init(init_path, xtgeoegrid, config, dispatcher):
+def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
     """Upload properties from init file
 
     Args:
@@ -139,9 +183,10 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         if xtgeo_prop is None:
             logger.warning("%s will not be uploaded", init_prop["name"])
             continue
-        sumo_file = convert_xtgeo_2_sumo_file(
-            init_path, xtgeo_prop, "INIT", config
+        prop_metadata = generate_gridproperty_meta(
+            init_path, xtgeo_prop, "INIT", config, geometry_path
         )
+        sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
         if sumo_file is None:
             logger.warning(
                 "Property with name %s extracted from %s returned nothing",
@@ -152,7 +197,9 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher):
         dispatcher.add(sumo_file)
 
 
-def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
+def upload_restart(
+    restart_path, xtgeoegrid, time_steps, config, dispatcher, geometry_path
+):
     """Export properties from restart file
 
     Args:
@@ -177,8 +224,11 @@ def upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher):
 
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
-                sumo_file = convert_xtgeo_2_sumo_file(
-                    restart_path, xtgeo_prop, "UNRST", config
+                prop_metadata = generate_gridproperty_meta(
+                    restart_path, xtgeo_prop, "UNRST", config, geometry_path
+                )
+                sumo_file = convert_xtgeo_to_sumo_file(
+                    xtgeo_prop, prop_metadata
                 )
                 if sumo_file is None:
                     logger.warning(
@@ -216,14 +266,31 @@ def upload_simulation_run(datafile, config, dispatcher):
     grid_path = str(datafile_path.with_suffix(".EGRID"))
     egrid = Grid(grid_path)
     xtgeoegrid = grid_from_file(grid_path)
-    sumo_file = convert_xtgeo_2_sumo_file(
-        restart_path, xtgeoegrid, "grid", config
-    )
+    grid_metadata = generate_grid3d_meta(restart_path, xtgeoegrid, config)
+
+    exported_grid_path = Path(grid_metadata["file"]["absolute_path"])
+
+    sumo_file = convert_xtgeo_to_sumo_file(xtgeoegrid, grid_metadata)
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    upload_init(init_path, xtgeoegrid, config, dispatcher)
-    upload_restart(restart_path, xtgeoegrid, time_steps, config, dispatcher)
+    upload_init(init_path, xtgeoegrid, config, dispatcher, exported_grid_path)
+    upload_restart(
+        restart_path,
+        xtgeoegrid,
+        time_steps,
+        config,
+        dispatcher,
+        exported_grid_path,
+    )
+
+    if os.path.exists(exported_grid_path):
+        os.remove(exported_grid_path)
+    metadata_path = (
+        exported_grid_path.parent / f".{exported_grid_path.name}.yml"
+    )
+    if os.path.exists(metadata_path):
+        os.remove(metadata_path)
 
 
 def get_timesteps(restart_path, egrid):

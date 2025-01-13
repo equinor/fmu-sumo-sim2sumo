@@ -30,12 +30,12 @@ def test_vfp_to_arrow(options, keycombo, nrkeys, nrtables):
     for value in arrow_dict.values():
         nr_tables += len(value)
 
-    assert (
-        nr_tables == nrtables
-    ), f"Returned {nr_tables} tables, but should be {nrtables}"
-    assert set(arrow_dict.keys()) == set(
-        keycombo
-    ), f"Returned keys {arrow_dict.keys()}, should be {keycombo}"
+    assert nr_tables == nrtables, (
+        f"Returned {nr_tables} tables, but should be {nrtables}"
+    )
+    assert set(arrow_dict.keys()) == set(keycombo), (
+        f"Returned keys {arrow_dict.keys()}, should be {keycombo}"
+    )
 
 
 def test_vfp_tables_from_simulation_run(
