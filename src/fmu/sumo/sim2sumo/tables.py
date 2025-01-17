@@ -115,6 +115,8 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     bytestring = table_2_bytestring(obj)
     metadata = generate_table_meta(datafile, obj, tagname, config)
 
+    print(f"GENERATED METADATA: {metadata}")
+
     sumo_file = FileOnJob(bytestring, metadata)
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
@@ -230,9 +232,12 @@ def upload_tables_from_simulation_run(
 
     Args:
         datafile (str): the datafile defining the simulation run
+        submod_and_options (dict): key=submodule, value=options for submodule
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
+    print(f"CONFIG: {config}")
+
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
