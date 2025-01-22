@@ -194,7 +194,7 @@ def test_convert_table_2_sumo_file(
 
     file = tables.convert_table_2_sumo_file(
         scratch_files[1], reekrft, "rft", config
-    )
+    )[0]
 
     sumo_conn = SumoConnection(env="dev", token=token)
     nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
