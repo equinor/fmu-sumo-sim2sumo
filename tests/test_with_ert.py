@@ -54,7 +54,7 @@ def test_sim2sumo_with_ert(
     real0 = ert_run_scratch_files[0]
     # ! This changes files in the current directory and deletes parameters.txt
     write_ert_config_and_run(real0)
-    expected_exports = 88
+    expected_exports = 90
     path = f"/objects('{ert_run_case_uuid}')/search"
     results = sumo.post(
         path,

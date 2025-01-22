@@ -115,7 +115,7 @@ def generate_table_meta(datafile, obj, tagname, config):
 
 def convert_table_2_sumo_file(datafile, obj, tagname, config):
     """Convert table to Sumo File ready for shipping to sumo
-    If the table has more than 500 columns and a table index is defined
+    If the table is a summary table and has a defined table_index
         we also return the table in chunks of 500 columns with
         _sumo.hidden set to True
 
@@ -137,8 +137,9 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     chunk_size = 500
     columns = metadata["data"]["spec"]["columns"]
     table_index = metadata["data"]["table_index"]
+    tagname = metadata["data"]["tagname"]
 
-    if len(columns) > chunk_size and table_index:
+    if table_index and tagname == "summary":
         cols = [c for c in columns if c not in table_index]
         chunks = batched(cols, chunk_size - len(table_index))
         for idx, chunk in enumerate(chunks):
