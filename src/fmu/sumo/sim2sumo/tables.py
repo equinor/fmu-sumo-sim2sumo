@@ -113,9 +113,11 @@ def generate_table_meta(datafile, obj, tagname, config):
     return metadata
 
 
-# TODO: If the split is inherent in this method it should probably be renamed
 def convert_table_2_sumo_file(datafile, obj, tagname, config):
     """Convert table to Sumo File ready for shipping to sumo
+    If the table has more than 500 columns and a table index is defined
+        we also return the table in chunks of 500 columns with
+        _sumo.hidden set to True
 
     Args:
       datafile (str|PosixPath): path to datafile connected to extracted object
@@ -130,10 +132,6 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
         return obj
 
     metadata = generate_table_meta(datafile, obj, tagname, config)
-
-    print(f"GENERATED METADATA: {metadata}")
-    # TODO: Use metadata["data"]["table_index"]
-    # If table_index is not present, do not split
 
     files = []
     chunk_size = 500
@@ -164,8 +162,6 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
                 f"--{tagname}", f"--{tagname}:{idx:03d}"
             )
 
-            # TODO: FileOnJob resets _sumo metadata
-            # TODO: Create FileOnJob first, THEN update sumo_file.metadata["_sumo"]
             sumo_file = FileOnJob(bytestring, chunk_meta)
             sumo_file.path = chunk_meta["file"]["relative_path"]
             sumo_file.metadata_path = ""
@@ -189,7 +185,6 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     sumo_file.size = len(sumo_file.byte_string)
     files.append(sumo_file)
 
-    # return sumo_file
     return files
 
 
@@ -305,8 +300,6 @@ def upload_tables_from_simulation_run(
         config (dict): the fmu config with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    print(f"CONFIG: {config}")
-
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     for submod, options in submod_and_options.items():
         if submod == "grid3d":
