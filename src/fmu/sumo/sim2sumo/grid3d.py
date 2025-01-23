@@ -119,15 +119,15 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
 
     exd = ExportData(**exp_args)
     metadata = exd.generate_metadata(obj)
-    print(f"METADATA FILE grid_property BEFORE CHANGE: {metadata['file']}")
-    relative_parent = str(Path(datafile).parents[2]).replace(
-        str(Path(datafile).parents[4]), ""
-    )
-    metadata["file"]["relative_path"] = (
-        f"{relative_parent}/{tagname}--{name}".lower()
-    )
-    print(f"METADATA FILE grid_property AFTER CHANGE: {metadata['file']}")
-    print("----------")
+    # print(f"METADATA FILE grid_property BEFORE CHANGE: {metadata['file']}")
+    # relative_parent = str(Path(datafile).parents[2]).replace(
+    #     str(Path(datafile).parents[4]), ""
+    # )
+    # metadata["file"]["relative_path"] = (
+    #     f"{relative_parent}/{tagname}--{name}".lower()
+    # )
+    # print(f"METADATA FILE grid_property AFTER CHANGE: {metadata['file']}")
+    # print("----------")
     assert isinstance(metadata, dict), (
         f"meta should be dict, but is {type(metadata)}"
     )

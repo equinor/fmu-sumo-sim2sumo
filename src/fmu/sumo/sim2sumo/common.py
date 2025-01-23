@@ -348,12 +348,12 @@ def generate_meta(config, datafile_path, tagname, obj, content):
 
     exd = ExportData(**exp_args)
     metadata = exd.generate_metadata(obj)
-    relative_parent = str(Path(datafile_path).parents[2]).replace(
-        str(Path(datafile_path).parents[4]), ""
-    )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    }
+    # relative_parent = str(Path(datafile_path).parents[2]).replace(
+    #     str(Path(datafile_path).parents[4]), ""
+    # )
+    # metadata["file"] = {
+    #     "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
+    # }
     return metadata
 
 
