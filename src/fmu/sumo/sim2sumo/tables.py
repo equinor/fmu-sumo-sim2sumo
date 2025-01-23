@@ -102,15 +102,6 @@ def generate_table_meta(datafile, obj, tagname, config):
 
     exd = ExportData(**exp_args)
     metadata = exd.generate_metadata(obj)
-    # print(f"METADATA FILE TABLE BEFORE CHANGE: {metadata['file']}")
-    # relative_parent = str(Path(datafile).parents[2]).replace(
-    #     str(Path(datafile).parents[4]), ""
-    # )
-    # metadata["file"] = {
-    #     "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    # }
-    # print(f"METADATA FILE TABLE AFTER CHANGE: {metadata['file']}")
-    # print("----------")
 
     return metadata
 
@@ -161,12 +152,9 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
             chunk_meta["file"]["size_bytes"] = len(bytestring)
             chunk_meta["file"]["checksum_md5"] = md5_hex
             relative_path = metadata["file"]["relative_path"]
-            # print(f"METADATA FILE chunk BEFORE CHANGE: {metadata['file']}")
             chunk_meta["file"]["relative_path"] = relative_path.replace(
                 f"--{tagname}", f"--{tagname}:{idx:03d}"
             )
-            # print(f"METADATA FILE chunk AFTER CHANGE: {metadata['file']}")
-            # print("----------")
 
             sumo_file = FileOnJob(bytestring, chunk_meta)
             sumo_file.path = chunk_meta["file"]["relative_path"]
