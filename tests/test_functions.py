@@ -282,7 +282,7 @@ def test_upload_tables_from_simulation_run(
     monkeypatch.chdir(scratch_files[0])
 
     disp = Dispatcher(scratch_files[1], "dev")
-    expected_results = 3
+    expected_results = 2
     tables.upload_tables_from_simulation_run(
         REEK_DATA_FILE,
         {"summary": {"arrow": True}, "rft": {"arrow": True}},
