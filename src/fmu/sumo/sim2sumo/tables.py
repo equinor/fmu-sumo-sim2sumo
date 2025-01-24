@@ -143,7 +143,7 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
             md5_hex = hashlib.md5(bytestring).hexdigest()
             md5_b64 = base64.b64encode(bytes.fromhex(md5_hex)).decode()
-            chunk_meta["data"]["spec"]["columns"] = table.columns
+            chunk_meta["data"]["spec"]["columns"] = table.column_names
             chunk_meta["data"]["spec"]["num_columns"] = table.num_columns
             chunk_meta["data"]["spec"]["num_rows"] = table.num_rows
             chunk_meta["data"]["spec"]["size"] = (
