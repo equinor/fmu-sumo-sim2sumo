@@ -11,7 +11,6 @@ import logging
 import sys
 from copy import deepcopy
 from itertools import islice
-from pathlib import Path
 from typing import Union
 
 import pandas as pd
@@ -103,12 +102,6 @@ def generate_table_meta(datafile, obj, tagname, config):
 
     exd = ExportData(**exp_args)
     metadata = exd.generate_metadata(obj)
-    relative_parent = str(Path(datafile).parents[2]).replace(
-        str(Path(datafile).parents[4]), ""
-    )
-    metadata["file"] = {
-        "relative_path": f"{relative_parent}/{name}--{tagname}".lower()
-    }
 
     return metadata
 
