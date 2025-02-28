@@ -6,13 +6,9 @@ from pathlib import Path
 
 import psutil
 import yaml
-from res2df.common import convert_lyrlist_to_zonemap, parse_lyrfile
 
 from fmu.dataio import ExportData
-from fmu.sumo.sim2sumo._special_treatments import (
-    SUBMOD_DICT,
-    SUBMODULES,
-)
+from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._upload_files import upload_files
 
@@ -53,41 +49,6 @@ def get_case_uuid(file_path, parent_level=4):
     case_meta = yaml_load(case_meta_path)
     uuid = case_meta["fmu"]["case"]["uuid"]
     return uuid
-
-
-def filter_options(submod, kwargs):
-    """Filter options sent to res2df per given submodule
-
-    Args:
-        submod (str): the submodule to call
-        kwargs (dict): the options passed
-
-    Returns:
-        dict: options relevant for given submod
-    """
-    logger = logging.getLogger(__file__ + ".filter_options")
-    submod_options = SUBMOD_DICT[submod]["options"]
-    filtered = {
-        key: value
-        for key, value in kwargs.items()
-        if (key in submod_options) or key == "arrow"
-    }
-    filtered["arrow"] = kwargs.get(
-        "arrow", True
-    )  # defaulting of arrow happens here
-    non_options = [key for key in kwargs if key not in filtered]
-    if len(non_options) > 0:
-        logger.warning(
-            "Skipping invalid options %s for %s.",
-            non_options,
-            submod,
-        )
-
-    if "zonemap" in filtered:
-        filtered["zonemap"] = convert_lyrlist_to_zonemap(
-            parse_lyrfile(filtered["zonemap"])
-        )
-    return filtered
 
 
 def find_datafiles(seedpoint=None):
@@ -208,10 +169,7 @@ def create_config_dict(config):
     for datafile_path in paths:
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
-            options = simconfig.get("options", {"arrow": True})
-            sim2sumoconfig[datafile_path][submod] = filter_options(
-                submod, options
-            )
+            sim2sumoconfig[datafile_path][submod] = {"arrow": True}
         sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig

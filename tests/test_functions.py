@@ -22,7 +22,6 @@ from fmu.sumo.sim2sumo._special_treatments import (
 from fmu.sumo.sim2sumo.common import (
     Dispatcher,
     create_config_dict,
-    filter_options,
     find_datafiles,
     find_datefield,
     get_case_uuid,
@@ -77,20 +76,6 @@ def check_expected_exports(expected_exports, shared_grid, prefix):
     )
     assert nr_meta == expected_exports, (
         f"exported {nr_meta} metadata objects, should be {expected_exports}"
-    )
-
-
-@pytest.mark.parametrize(
-    "submod,options,expected",
-    [
-        ("summary", {"arrow": True}, {"arrow": True}),
-        ("vfp", {}, {"arrow": True}),
-    ],
-)
-def test_non_standard_filter_options(submod, options, expected):
-    returned_options = filter_options(submod, options)
-    assert len(returned_options) > 0, (
-        f"No options left for {submod}, should be {expected}"
     )
 
 
