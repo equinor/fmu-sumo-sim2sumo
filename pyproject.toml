@@ -14,6 +14,7 @@ dependencies = [
   "xtgeo",
   "pandas",
   "arrow",
+  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader@main",
 ]
 
 [project.optional-dependencies]
