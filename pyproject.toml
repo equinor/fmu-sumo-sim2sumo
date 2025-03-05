@@ -14,13 +14,15 @@ dependencies = [
   "xtgeo",
   "pandas",
   "arrow",
-  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader@main",
 ]
 
 [project.optional-dependencies]
 test = ["pytest"]
 dev = ["pytest", "ruff", "pre-commit"]
-nokomodo = ["ert"]
+all = [
+  "ert",
+  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
+]
 
 docs = [
   "sphinx==6.2.1",
