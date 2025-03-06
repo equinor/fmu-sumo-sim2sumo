@@ -19,7 +19,12 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest"]
 dev = ["pytest", "ruff", "pre-commit"]
-nokomodo = ["ert"]
+all = [
+  "ert",
+  # Note: sim2sumo is dependent on fmu-sumo-uploader, but it is not installed by default.
+  #       The uploader version is specified by Komodo and sim2sumo should not override this.
+  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
+]
 
 docs = [
   "sphinx==6.2.1",
