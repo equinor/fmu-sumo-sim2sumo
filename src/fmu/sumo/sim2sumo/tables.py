@@ -24,7 +24,7 @@ from fmu.sumo.uploader._fileonjob import FileOnJob
 from ._special_treatments import (
     SUBMOD_DICT,
     convert_to_arrow,
-    tidy,
+    delete_unwanted_rft_files,
     vfp_to_arrow_dict,
 )
 from .common import (
@@ -215,7 +215,7 @@ def get_table(
             **kwargs,
         )
         if submod == "rft":
-            output = tidy(output)
+            output = delete_unwanted_rft_files(output)
         if arrow:
             try:
                 convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
