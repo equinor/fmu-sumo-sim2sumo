@@ -234,14 +234,9 @@ class Dispatcher:
                 psutil.virtual_memory().available * self._limit_percent
             )
 
-            self._logger.debug(
-                "Count is %s, and mem frac is %f1.1",
-                self._count,
-                self.mem_frac,
-            )
             if (self.mem_frac > 1) or (self._count > 100):
                 self._logger.info(
-                    "Time to upload (mem frac %s, and count is %s)",
+                    "Uploading (mem frac %s, and count is %s)",
                     self.mem_frac,
                     self._count,
                 )
