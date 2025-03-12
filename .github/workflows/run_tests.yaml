@@ -63,3 +63,19 @@ jobs:
           python -c 'import os; import sys; print(os.path.dirname(sys.executable))'
 
           pytest --log-cli-level=WARNING -s --timeout=300
+
+      - name: Notify on Slack
+        if: ${{ github.event_name == 'schedule' && failure() }}
+        uses: slackapi/slack-github-action@v2
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Sim2sumo nightly tests failed."
+
+        # text: "*GitHub Action build result*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+        # blocks:
+        #   - type: "section"
+        #     text:
+        #       type: "mrkdwn"
+        #       text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
