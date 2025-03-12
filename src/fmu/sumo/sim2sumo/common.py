@@ -188,7 +188,6 @@ class Dispatcher:
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
-        self._env = env
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
@@ -198,18 +197,13 @@ class Dispatcher:
         self._count = 0
         self._objects = []
         self._logger.info(
-            "Init, parent is %s, and env is %s", self.parentid, self.env
+            "Init, parent is %s, and env is %s", self.parentid, env
         )
 
     @property
     def parentid(self):
         """Return parentid"""
         return self._parentid
-
-    @property
-    def env(self):
-        """Return env"""
-        return self._env
 
     @property
     def mem_frac(self):

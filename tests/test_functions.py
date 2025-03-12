@@ -121,7 +121,6 @@ def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
     monkeypatch.chdir(scratch_files[0])
     assert disp._parentid == case_uuid
-    assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
     disp.finish()
 
