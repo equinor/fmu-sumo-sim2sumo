@@ -7,7 +7,6 @@ from pathlib import Path
 import psutil
 import yaml
 
-from fmu.dataio import ExportData
 from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._upload_files import upload_files
@@ -278,35 +277,6 @@ def find_datefield(text_string):
     datesearch = re.search(".*_([0-9]{8})$", text_string)
     date = datesearch.group(1) if datesearch is not None else None
     return date
-
-
-def generate_meta(config, datafile_path, tagname, obj, content):
-    """Generate metadata for object
-
-    Args:
-        config (dict): the metadata required
-        datafile_path (str): path to datafile or relative
-        tagname (str): the tagname
-        obj (object): object eligible for dataio
-
-    Returns:
-        dict: the metadata to export
-    """
-    name = give_name(datafile_path)
-    exp_args = {
-        "config": config,
-        "name": name,
-        "tagname": tagname,
-        "content": content,
-    }
-
-    datefield = find_datefield(tagname)
-    if datefield is not None:
-        exp_args["timedata"] = [[datefield]]
-
-    exd = ExportData(**exp_args)
-    metadata = exd.generate_metadata(obj)
-    return metadata
 
 
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
