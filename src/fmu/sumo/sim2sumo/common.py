@@ -7,7 +7,6 @@ from pathlib import Path
 import psutil
 import yaml
 
-from fmu.dataio import ExportData
 from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
 from fmu.sumo.uploader import SumoConnection
 from fmu.sumo.uploader._upload_files import upload_files
@@ -189,7 +188,6 @@ class Dispatcher:
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile.resolve())
         self._conn = SumoConnection(env=env, token=token)
-        self._env = env
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
@@ -199,18 +197,13 @@ class Dispatcher:
         self._count = 0
         self._objects = []
         self._logger.info(
-            "Init, parent is %s, and env is %s", self.parentid, self.env
+            "Init, parent is %s, and env is %s", self.parentid, env
         )
 
     @property
     def parentid(self):
         """Return parentid"""
         return self._parentid
-
-    @property
-    def env(self):
-        """Return env"""
-        return self._env
 
     @property
     def mem_frac(self):
@@ -235,14 +228,9 @@ class Dispatcher:
                 psutil.virtual_memory().available * self._limit_percent
             )
 
-            self._logger.debug(
-                "Count is %s, and mem frac is %f1.1",
-                self._count,
-                self.mem_frac,
-            )
             if (self.mem_frac > 1) or (self._count > 100):
                 self._logger.info(
-                    "Time to upload (mem frac %s, and count is %s)",
+                    "Uploading (mem frac %s, and count is %s)",
                     self.mem_frac,
                     self._count,
                 )
@@ -278,35 +266,6 @@ def find_datefield(text_string):
     datesearch = re.search(".*_([0-9]{8})$", text_string)
     date = datesearch.group(1) if datesearch is not None else None
     return date
-
-
-def generate_meta(config, datafile_path, tagname, obj, content):
-    """Generate metadata for object
-
-    Args:
-        config (dict): the metadata required
-        datafile_path (str): path to datafile or relative
-        tagname (str): the tagname
-        obj (object): object eligible for dataio
-
-    Returns:
-        dict: the metadata to export
-    """
-    name = give_name(datafile_path)
-    exp_args = {
-        "config": config,
-        "name": name,
-        "tagname": tagname,
-        "content": content,
-    }
-
-    datefield = find_datefield(tagname)
-    if datefield is not None:
-        exp_args["timedata"] = [[datefield]]
-
-    exd = ExportData(**exp_args)
-    metadata = exd.generate_metadata(obj)
-    return metadata
 
 
 def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):

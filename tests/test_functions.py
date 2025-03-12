@@ -65,20 +65,6 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
     sumo.delete(path, query)
 
 
-def check_expected_exports(expected_exports, shared_grid, prefix):
-    parameters = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff"))
-    meta = list(shared_grid.glob(f"*--{prefix.lower()}-*.roff.yml"))
-    nr_parameter = len(parameters)
-    nr_meta = len(meta)
-    assert nr_parameter == nr_meta
-    assert nr_parameter == expected_exports, (
-        f"exported {nr_parameter} params, should be {expected_exports}"
-    )
-    assert nr_meta == expected_exports, (
-        f"exported {nr_meta} metadata objects, should be {expected_exports}"
-    )
-
-
 @pytest.mark.parametrize(
     "datestring,expected_result",
     [("bababdbbdd_20240508", "20240508"), ("nodatestring", None)],
@@ -135,7 +121,6 @@ def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
     monkeypatch.chdir(scratch_files[0])
     assert disp._parentid == case_uuid
-    assert disp._env == "dev"
     assert isinstance(disp._conn, SumoConnection)
     disp.finish()
 

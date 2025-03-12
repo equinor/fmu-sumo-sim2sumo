@@ -108,14 +108,14 @@ def _define_submodules():
     return tuple(submodules.keys()), submodules
 
 
-def tidy(frame):
+def delete_unwanted_rft_files(frame):
     """Utility function to tidy up mess from res2df for rft
 
     Args:
         frame (pd.DataFrame): the dataframe fixed with no WELLETC
     """
     # res2df creates three files for rft data, see unwanted list below
-    logger = logging.getLogger(__file__ + ".tidy")
+    logger = logging.getLogger(__file__ + ".delete_unwanted_rft_files")
     unwanteds = ["seg.csv", "con.csv", "icd.csv"]
     cwd = Path().cwd()
     for unwanted in unwanteds:
