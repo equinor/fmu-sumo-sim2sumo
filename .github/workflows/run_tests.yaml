@@ -43,7 +43,7 @@ jobs:
       - name: Run tests
         shell: bash
         env:
-          sharedkey: ${{ secrets.SHARED_KEY_DROGON_WRITE_DEV_2 }}
+          sharedkey: ${{ secrets.SHARED_KEY_DROGON_WRITE_DEV }}
         run: |
           az --version
           az account list
