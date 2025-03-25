@@ -33,7 +33,7 @@ file:
 data:
   name: 2_R001_REEK
   stratigraphic: false
-  content: unset
+  content: depth
   tagname: wellconnstatus
   format: csv
   layout: table
