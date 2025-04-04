@@ -6,9 +6,9 @@ from pathlib import Path
 
 import psutil
 import yaml
+from sumo.wrapper import SumoClient
 
 from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
-from sumo.wrapper import SumoClient
 from fmu.sumo.uploader._upload_files import upload_files
 
 
