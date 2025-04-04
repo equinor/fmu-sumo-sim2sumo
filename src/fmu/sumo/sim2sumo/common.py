@@ -8,7 +8,7 @@ import psutil
 import yaml
 
 from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
-from fmu.sumo.uploader import SumoConnection
+from sumo.wrapper import SumoClient
 from fmu.sumo.uploader._upload_files import upload_files
 
 
@@ -187,7 +187,7 @@ class Dispatcher:
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile.resolve())
-        self._conn = SumoConnection(env=env, token=token)
+        self._conn = SumoClient(env=env, token=token, case_uuid=self._parentid)
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
@@ -280,7 +280,7 @@ def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
     if len(files) > 0:
         logger.info("Uploading %s files to parent %s", len(files), parent_id)
         if connection is None:
-            connection = SumoConnection(env=env)
+            connection = SumoClient(env=env, case_uuid=parent_id)
         status = upload_files(
             files, parent_id, connection, config_path=config_path
         )
