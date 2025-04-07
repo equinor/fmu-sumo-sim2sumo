@@ -136,7 +136,7 @@ def create_config_dict(config):
 
     if datatype is None:
         default_submods = ["summary", "rft", "satfunc"]
-    elif datatype == "all":
+    elif "all" in datatype:
         default_submods = SUBMODULES
     elif isinstance(datatype, list):
         default_submods = datatype
