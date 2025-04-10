@@ -13,7 +13,7 @@ dependencies = [
   "res2df",
   "xtgeo",
   "pandas",
-  "arrow",
+  "pyarrow",
 ]
 
 [project.optional-dependencies]
