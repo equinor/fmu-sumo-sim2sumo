@@ -67,6 +67,7 @@ def test_sim2sumo_with_ert(
                                 "class.keyword": [
                                     "case",
                                     "iteration",
+                                    "ensemble",
                                     "realization",
                                 ]
                             }
