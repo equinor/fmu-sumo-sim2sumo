@@ -1,7 +1,7 @@
 import os
 import shutil
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -89,7 +89,7 @@ def _fix_register(scratch_files, sumo):
     case_metadata = yaml_load(case_metadata_path)
     case_metadata["fmu"]["case"]["uuid"] = str(uuid.uuid4())
     case_metadata["tracklog"][0] = {
-        "datetime": datetime.now().isoformat(),
+        "datetime": datetime.now(UTC).isoformat(),
         "user": {
             "id": "sim2sumo_test",
         },
@@ -116,7 +116,7 @@ def _fix_ert_run_case_uuid(ert_run_scratch_files, sumo):
     case_metadata = yaml_load(case_metadata_path)
     case_metadata["fmu"]["case"]["uuid"] = str(uuid.uuid4())
     case_metadata["tracklog"][0] = {
-        "datetime": datetime.now().isoformat(),
+        "datetime": datetime.now(UTC).isoformat(),
         "user": {
             "id": "sim2sumo_test",
         },
