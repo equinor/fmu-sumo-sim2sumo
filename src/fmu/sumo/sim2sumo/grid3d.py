@@ -85,7 +85,9 @@ def generate_grid3d_meta(datafile, obj, config):
 
     metadata = yaml_load(metadata_path)
 
-    assert isinstance(metadata, dict), f"meta should be dict, but is {type(metadata)}"
+    assert isinstance(metadata, dict), (
+        f"meta should be dict, but is {type(metadata)}"
+    )
 
     return metadata
 
@@ -121,7 +123,9 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     exd = ExportData(**exp_args)
 
     metadata = exd.generate_metadata(obj)
-    assert isinstance(metadata, dict), f"meta should be dict, but is {type(metadata)}"
+    assert isinstance(metadata, dict), (
+        f"meta should be dict, but is {type(metadata)}"
+    )
 
     return metadata
 
@@ -162,7 +166,9 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
     """
     logger = logging.getLogger(__name__ + ".upload_init")
     unwanted = ["ENDNUM", "DX", "DY", "DZ", "TOPS"]
-    init_props = list(eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid))
+    init_props = list(
+        eclrun.find_gridprop_from_init_file(init_path, "all", xtgeoegrid)
+    )
     for init_prop in init_props:
         if init_prop["name"] in unwanted:
             logger.warning("%s will not be exported", init_prop["name"])
@@ -221,7 +227,9 @@ def upload_restart(
                     geometry_path,
                 )
 
-                sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
+                sumo_file = convert_xtgeo_to_sumo_file(
+                    xtgeo_prop, prop_metadata
+                )
                 if sumo_file is None:
                     logger.warning(
                         "Property %s extracted from %s returned nothing",
@@ -278,7 +286,9 @@ def upload_simulation_run(datafile, config, dispatcher):
 
     if os.path.exists(exported_grid_path):
         os.remove(exported_grid_path)
-    metadata_path = exported_grid_path.parent / f".{exported_grid_path.name}.yml"
+    metadata_path = (
+        exported_grid_path.parent / f".{exported_grid_path.name}.yml"
+    )
     if os.path.exists(metadata_path):
         os.remove(metadata_path)
 
