@@ -67,10 +67,8 @@ def generate_grid3d_meta(datafile, obj, config):
         "content": "depth",
     }
 
-    # FIXME can get from object?
-    # Grid doesn't need a date? Can add date to the
-    # grid properties.
-    datefield = find_datefield(tagname)
+    # Grid doesn't need a date?
+    datefield = find_datefield(name)
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
@@ -82,7 +80,6 @@ def generate_grid3d_meta(datafile, obj, config):
     exd = ExportData(**exp_args)
     outfile = exd.export(obj)
 
-    # FIXME datafile in input is not the same as datafile here
     outfile_path = Path(outfile)
     metadata_path = outfile_path.parent / f".{outfile_path.name}.yml"
 
@@ -93,7 +90,7 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid, timestep):
+def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
     """Generate metadata for xtgeo object
 
     Args:
@@ -102,7 +99,6 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid, timestep)
         prefix (str): prefix to include
         config (dict): the fmu config file
         geogrid (str): path to the grid to link as geometry
-        timestep: # TODO what type?
 
     Returns:
         dict: the metadata for obj
@@ -116,17 +112,13 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid, timestep)
         "tagname": tagname,
         "content": {"property": {"is_discrete": False}},
         "geometry": geogrid,
-        "timedata": [[timestep]],
     }
-    # datefield = find_datefield(tagname)
-    # if datefield is not None:
-    #     exp_args["timedata"] = [[datefield]]
-    # print(datefield)
+
+    datefield = find_datefield(name)
+    if datefield is not None:
+        exp_args["timedata"] = [[datefield]]
 
     exd = ExportData(**exp_args)
-
-    # TODO for tesing. Remove after!
-    outfile = exd.export(obj)
 
     metadata = exd.generate_metadata(obj)
     assert isinstance(metadata, dict), f"meta should be dict, but is {type(metadata)}"
@@ -207,8 +199,8 @@ def upload_restart(
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
-    # prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
-    prop_names = ["SWAT"]
+    prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
+
     for prop_name in prop_names:
         for time_step in time_steps:
             try:
@@ -222,22 +214,22 @@ def upload_restart(
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
                 prop_metadata = generate_gridproperty_meta(
-                    restart_path, xtgeo_prop, "UNRST", config, geometry_path, time_step
+                    restart_path,
+                    xtgeo_prop,
+                    "UNRST",
+                    config,
+                    geometry_path,
                 )
 
-                # print(prop_metadata)
-
-                # sumo_file = convert_xtgeo_to_sumo_file(
-                #     xtgeo_prop, prop_metadata
-                # )
-                # if sumo_file is None:
-                #     logger.warning(
-                #         "Property %s extracted from %s returned nothing",
-                #         prop_name,
-                #         restart_path,
-                #     )
-                #     continue
-                # dispatcher.add(sumo_file)
+                sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
+                if sumo_file is None:
+                    logger.warning(
+                        "Property %s extracted from %s returned nothing",
+                        prop_name,
+                        restart_path,
+                    )
+                    continue
+                dispatcher.add(sumo_file)
 
 
 def upload_simulation_runs(datafiles, config, dispatcher):
@@ -305,7 +297,7 @@ def get_timesteps(restart_path, egrid):
 
     dates = []
     for date in restart.time_list():
-        date_str = datetime.strftime(date[1], "%Y%m%d")
+        date_str = datetime.strftime(date[1], "%Y-%m-%d")
         dates.append(date_str)
     return dates
 
