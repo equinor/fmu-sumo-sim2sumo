@@ -66,7 +66,9 @@ def generate_grid3d_meta(datafile, obj, config):
         "tagname": tagname,
         "content": "depth",
     }
-    datefield = find_datefield(tagname)
+
+    # Grid doesn't need a date?
+    datefield = find_datefield(name)
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
@@ -77,8 +79,10 @@ def generate_grid3d_meta(datafile, obj, config):
     #   the grid to exist on disk when linking geometry
     exd = ExportData(**exp_args)
     outfile = exd.export(obj)
-    datafile_path = Path(outfile)
-    metadata_path = datafile_path.parent / f".{datafile_path.name}.yml"
+
+    outfile_path = Path(outfile)
+    metadata_path = outfile_path.parent / f".{outfile_path.name}.yml"
+
     metadata = yaml_load(metadata_path)
 
     assert isinstance(metadata, dict), (
@@ -111,11 +115,13 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
         "content": {"property": {"is_discrete": False}},
         "geometry": geogrid,
     }
-    datefield = find_datefield(tagname)
+
+    datefield = find_datefield(name)
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
     exd = ExportData(**exp_args)
+
     metadata = exd.generate_metadata(obj)
     assert isinstance(metadata, dict), (
         f"meta should be dict, but is {type(metadata)}"
@@ -200,6 +206,7 @@ def upload_restart(
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
     prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
+
     for prop_name in prop_names:
         for time_step in time_steps:
             try:
@@ -213,8 +220,13 @@ def upload_restart(
             xtgeo_prop = make_xtgeo_prop(xtgeoegrid, restart_prop)
             if xtgeo_prop is not None:
                 prop_metadata = generate_gridproperty_meta(
-                    restart_path, xtgeo_prop, "UNRST", config, geometry_path
+                    restart_path,
+                    xtgeo_prop,
+                    "UNRST",
+                    config,
+                    geometry_path,
                 )
+
                 sumo_file = convert_xtgeo_to_sumo_file(
                     xtgeo_prop, prop_metadata
                 )
