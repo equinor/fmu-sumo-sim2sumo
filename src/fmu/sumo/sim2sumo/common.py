@@ -8,7 +8,10 @@ import psutil
 import yaml
 from sumo.wrapper import SumoClient
 
-from fmu.sumo.sim2sumo._special_treatments import SUBMODULES
+from fmu.sumo.sim2sumo._special_treatments import (
+    SUBMODULES,
+    DEFAULT_SUBMODULES,
+)
 from fmu.sumo.uploader._upload_files import upload_files
 
 
@@ -128,16 +131,15 @@ def create_config_dict(config):
     simconfig = config.get("sim2sumo", {})
     validate_sim2sumo_config(simconfig)
 
-    grid3d = simconfig.get("grid3d", False)
-
     # Use the provided datafile or datatype if given, otherwise use simconfig
     datafile = simconfig.get("datafile", None)
     datatype = simconfig.get("datatypes", None)
 
     if datatype is None:
-        default_submods = ["summary", "rft", "satfunc"]
+        default_submods = DEFAULT_SUBMODULES
     elif "all" in datatype:
         default_submods = SUBMODULES
+        print(SUBMODULES)
     elif isinstance(datatype, list):
         default_submods = datatype
     else:
@@ -169,7 +171,7 @@ def create_config_dict(config):
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
             sim2sumoconfig[datafile_path][submod] = {"arrow": True}
-        sim2sumoconfig[datafile_path]["grid3d"] = grid3d
+        # sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig
 

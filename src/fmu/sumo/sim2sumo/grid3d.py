@@ -8,6 +8,7 @@ Does three things:
 
 import logging
 import os
+import re
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
@@ -92,13 +93,12 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
+def generate_gridproperty_meta(datafile, obj, config, geogrid):
     """Generate metadata for xtgeo object
 
     Args:
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
-        prefix (str): prefix to include
         config (dict): the fmu config file
         geogrid (str): path to the grid to link as geometry
 
@@ -106,19 +106,21 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
         dict: the metadata for obj
     """
 
-    name = f"{prefix}-{obj.name}"
     tagname = give_name(datafile)
     exp_args = {
         "config": config,
-        "name": name,
         "tagname": tagname,
         "content": {"property": {"is_discrete": False}},
         "geometry": geogrid,
     }
 
-    datefield = find_datefield(name)
+    datefield = find_datefield(obj.name)
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
+
+    # Time metadata is extracted from the original name,
+    # so the name has to be santised after find_datafield().
+    exp_args["name"] = sanitise_gridprop_name(obj.name)
 
     exd = ExportData(**exp_args)
 
@@ -129,6 +131,29 @@ def generate_gridproperty_meta(datafile, obj, prefix, config, geogrid):
 
     return metadata
 
+
+def sanitise_gridprop_name(name:str) -> str:
+    """
+    Removes date suffix "_YYYYMMDD" from the names of dynamic ("restart") grid
+    properties. If the name of a static ("init") property is passed, the name
+    is returned unchanged.
+
+    >>> sanitise_gridprop_name("PERMX")
+    "PERMX"
+
+    >>> sanitise_gridprop_name("SWAT_20191001")
+    "SWAT"
+
+    Args:
+        name (str): name of an xtgeo grid property object
+
+    Returns:
+        str: name minus the date (if there was one)
+    """
+
+    clean_name = re.sub(r"_\d{8}", "", name)
+
+    return clean_name
 
 def convert_xtgeo_to_sumo_file(obj, metadata):
     """Convert xtgeo object to SumoFile
@@ -178,7 +203,7 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
             logger.warning("%s will not be uploaded", init_prop["name"])
             continue
         prop_metadata = generate_gridproperty_meta(
-            init_path, xtgeo_prop, "INIT", config, geometry_path
+            init_path, xtgeo_prop, config, geometry_path
         )
         sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
         if sumo_file is None:
@@ -222,7 +247,6 @@ def upload_restart(
                 prop_metadata = generate_gridproperty_meta(
                     restart_path,
                     xtgeo_prop,
-                    "UNRST",
                     config,
                     geometry_path,
                 )
@@ -249,7 +273,7 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         dispatcher (sim2sumo.common.Dispatcher)
     """
     for datafile in datafiles:
-        if not datafiles[datafile]["grid3d"]:
+        if not datafiles[datafile]["grid"]:
             continue
         upload_simulation_run(datafile, config, dispatcher)
 

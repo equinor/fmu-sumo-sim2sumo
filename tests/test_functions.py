@@ -15,6 +15,7 @@ from xtgeo import GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
+    DEFAULT_SUBMODULES,
     SUBMODULES,
     _define_submodules,
     convert_to_arrow,
@@ -72,6 +73,13 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
 def test_find_datefield(datestring, expected_result):
     assert find_datefield(datestring) == expected_result
 
+@pytest.mark.parametrize(
+    "string,expected_result",
+    [("SWAT_20191001", "SWAT"), ("PERMX", "PERMX")],
+)
+def test_sanitise_gridprop_name(string, expected_result):
+    assert grid3d.sanitise_gridprop_name(string) == expected_result
+
 
 def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     real0 = scratch_files[0]
@@ -80,26 +88,28 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     assert uuid == case_uuid
 
 
+NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
+
 @pytest.mark.parametrize(
     "config,nrdatafiles,nrsubmodules",
     [
-        ({}, 5, 4),
+        ({}, 5, NR_DEFAULT_SUBMODULES),
         (
             {"datafile": [{"3_R001_REEK": ["summary"]}]},
             1,
-            2,
+            1,
         ),
         (
             {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
             1,
-            3,
+            2,
         ),
-        ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, 4),
-        ({"datafile": ["3_R001_REEK"]}, 1, 4),
-        ({"datafile": ["3_R001_REEK-1.DATA"]}, 1, 4),
-        ({"datafile": ["OOGRE_IX.afi"]}, 1, 4),
-        ({"datafile": ["opm/model/OOGRE_OPM.DATA"]}, 1, 4),
-        ({"grid3d": True}, 5, 4),
+        ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, NR_DEFAULT_SUBMODULES),
+        ({"datafile": ["3_R001_REEK"]}, 1, NR_DEFAULT_SUBMODULES),
+        ({"datafile": ["3_R001_REEK-1.DATA"]}, 1, NR_DEFAULT_SUBMODULES),
+        ({"datafile": ["OOGRE_IX.afi"]}, 1, NR_DEFAULT_SUBMODULES),
+        ({"datafile": ["opm/model/OOGRE_OPM.DATA"]}, 1, NR_DEFAULT_SUBMODULES),
+        ({"datatypes": ["grid"]}, 5, 1),
     ],
 )
 def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
@@ -112,6 +122,13 @@ def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
         f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
     )
     for submod, subdict in inputs.items():
+        print(submod)
+        print("*"*10)
+        print(subdict)
+        print(len(subdict))
+        print(NR_DEFAULT_SUBMODULES)
+        print(nrsubmodules)
+        print("*"*10)
         assert len(subdict) == nrsubmodules, (
             f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
         )
@@ -142,7 +159,7 @@ def test_convert_xtgeo_to_sumo_file(
 
     # Not linking geometry since we don't want to write grid to disk in test
     metadata = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, "INIT", config, ""
+        scratch_files[1], eightfipnum, config, ""
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -200,7 +217,7 @@ def test_generate_gridproperty_meta(
     monkeypatch.chdir(scratch_files[0])
     # Not linking geometry since we don't want to write grid to disk in test
     meta = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, "INIT", config, ""
+        scratch_files[1], eightfipnum, config, ""
     )
     assert isinstance(meta, dict)
 

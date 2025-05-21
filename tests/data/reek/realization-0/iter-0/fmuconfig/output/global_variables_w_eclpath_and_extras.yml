@@ -29,4 +29,3 @@ sim2sumo:
     - summary
     - grid
     - rft
-  grid3d: false
