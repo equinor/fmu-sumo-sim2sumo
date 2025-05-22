@@ -132,7 +132,7 @@ def generate_gridproperty_meta(datafile, obj, config, geogrid):
     return metadata
 
 
-def sanitise_gridprop_name(name:str) -> str:
+def sanitise_gridprop_name(name: str) -> str:
     """
     Removes date suffix "_YYYYMMDD" from the names of dynamic ("restart") grid
     properties. If the name of a static ("init") property is passed, the name
@@ -154,6 +154,7 @@ def sanitise_gridprop_name(name:str) -> str:
     clean_name = re.sub(r"_\d{8}", "", name)
 
     return clean_name
+
 
 def convert_xtgeo_to_sumo_file(obj, metadata):
     """Convert xtgeo object to SumoFile

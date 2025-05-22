@@ -73,6 +73,7 @@ def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
 def test_find_datefield(datestring, expected_result):
     assert find_datefield(datestring) == expected_result
 
+
 @pytest.mark.parametrize(
     "string,expected_result",
     [("SWAT_20191001", "SWAT"), ("PERMX", "PERMX")],
@@ -90,6 +91,7 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
 
 NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
 
+
 @pytest.mark.parametrize(
     "config,nrdatafiles,nrsubmodules",
     [
@@ -104,7 +106,11 @@ NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
             1,
             2,
         ),
-        ({"datafile": ["3_R001_REEK", "OOGRE_PF.in"]}, 2, NR_DEFAULT_SUBMODULES),
+        (
+            {"datafile": ["3_R001_REEK", "OOGRE_PF.in"]},
+            2,
+            NR_DEFAULT_SUBMODULES,
+        ),
         ({"datafile": ["3_R001_REEK"]}, 1, NR_DEFAULT_SUBMODULES),
         ({"datafile": ["3_R001_REEK-1.DATA"]}, 1, NR_DEFAULT_SUBMODULES),
         ({"datafile": ["OOGRE_IX.afi"]}, 1, NR_DEFAULT_SUBMODULES),
@@ -122,13 +128,6 @@ def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
         f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
     )
     for submod, subdict in inputs.items():
-        print(submod)
-        print("*"*10)
-        print(subdict)
-        print(len(subdict))
-        print(NR_DEFAULT_SUBMODULES)
-        print(nrsubmodules)
-        print("*"*10)
         assert len(subdict) == nrsubmodules, (
             f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
         )
