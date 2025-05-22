@@ -211,17 +211,11 @@ For datatypes available see documentation for ``res2df``
 ..    | This section is for adding extra optional configuration for extracting the different datatypes.
 ..    | This section needs to be in a list format.
 
-grid3d
-----------------
-When ``grid3d`` is set to ``true``, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
+grid datatype
+~~~~~~~~~~~~~~~~
+When including the "grid" datatype, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
 For the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
 For the restart the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
-
-
-   .. code-block::
-
-      grid3d: true
-
 
 Overriding default datatypes
 ----------------
