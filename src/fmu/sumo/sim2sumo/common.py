@@ -139,7 +139,6 @@ def create_config_dict(config):
         default_submods = DEFAULT_SUBMODULES
     elif "all" in datatype:
         default_submods = SUBMODULES
-        print(SUBMODULES)
     elif isinstance(datatype, list):
         default_submods = datatype
     else:
@@ -171,7 +170,6 @@ def create_config_dict(config):
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
             sim2sumoconfig[datafile_path][submod] = {"arrow": True}
-        # sim2sumoconfig[datafile_path]["grid3d"] = grid3d
 
     return sim2sumoconfig
 
