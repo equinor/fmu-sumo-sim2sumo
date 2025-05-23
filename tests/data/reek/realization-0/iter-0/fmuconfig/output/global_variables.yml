@@ -23,4 +23,8 @@ access:
     name: Drogon
   classification: internal
 sim2sumo:
-  - grid
+  datatypes:
+    - summary
+    - rft
+    - satfunc
+    - grid

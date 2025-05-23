@@ -22,4 +22,9 @@ access:
   asset:
     name: Drogon
   classification: internal
-sim2sumo: true
+sim2sumo:
+  datatypes:
+    - summary
+    - rft
+    - satfunc
+    - grid
