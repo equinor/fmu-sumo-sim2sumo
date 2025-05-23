@@ -296,7 +296,7 @@ def upload_tables_from_simulation_run(
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")
     for submod, options in submod_and_options.items():
-        if submod == "grid3d":
+        if submod == "grid":
             # No tables for grid3d
             continue
 
