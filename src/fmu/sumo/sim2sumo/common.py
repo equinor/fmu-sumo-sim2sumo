@@ -9,8 +9,8 @@ import yaml
 from sumo.wrapper import SumoClient
 
 from fmu.sumo.sim2sumo._special_treatments import (
-    SUBMODULES,
     DEFAULT_SUBMODULES,
+    SUBMODULES,
 )
 from fmu.sumo.uploader._upload_files import upload_files
 
