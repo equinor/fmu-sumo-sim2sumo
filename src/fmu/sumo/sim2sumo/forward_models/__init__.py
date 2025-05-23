@@ -1,6 +1,6 @@
 import subprocess
 
-from ert import (
+from ert import (  # type: ignore
     ForwardModelStepJSON,
     ForwardModelStepPlugin,
     ForwardModelStepValidationError,
