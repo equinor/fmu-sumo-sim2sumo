@@ -274,7 +274,7 @@ def upload_simulation_runs(datafiles, config, dispatcher):
         dispatcher (sim2sumo.common.Dispatcher)
     """
     for datafile in datafiles:
-        if not datafiles[datafile]["grid"]:
+        if "grid" not in datafiles[datafile]:
             continue
         upload_simulation_run(datafile, config, dispatcher)
 
