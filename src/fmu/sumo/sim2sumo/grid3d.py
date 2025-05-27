@@ -67,7 +67,6 @@ def generate_grid3d_meta(datafile, obj, config):
         "content": "depth",
     }
 
-
     # Future: refactor to be "diskless"
     #   i.e. use exd.generate_metadata() instead of exd.export()
     #       metadata = exd.generate_metadata(obj)
