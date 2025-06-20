@@ -269,6 +269,7 @@ def test_upload_restart(
         xtgeogrid,
         property_units,
         grid3d.get_timesteps(restart_path, xtgeogrid),
+        property_units,
         config,
         disp,
         "",
