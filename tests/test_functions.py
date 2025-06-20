@@ -20,6 +20,7 @@ from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
 )
+from fmu.sumo.sim2sumo._units import get_all_properties_units
 from fmu.sumo.sim2sumo.common import (
     Dispatcher,
     create_config_dict,
@@ -156,9 +157,11 @@ def test_convert_xtgeo_to_sumo_file(
 ):
     monkeypatch.chdir(scratch_files[0])
 
+    property_units = get_all_properties_units("METRIC")
+
     # Not linking geometry since we don't want to write grid to disk in test
     metadata = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, config, ""
+        scratch_files[1], eightfipnum, property_units, config, ""
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -214,9 +217,10 @@ def test_generate_gridproperty_meta(
     scratch_files, eightfipnum, config, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
+    property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     meta = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, config, ""
+        scratch_files[1], eightfipnum, property_units, config, ""
     )
     assert isinstance(meta, dict)
 
@@ -227,10 +231,12 @@ def test_upload_init(
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
     expected_results = 5
+    property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     grid3d.upload_init(
         str(scratch_files[1]).replace(".DATA", ".INIT"),
         xtgeogrid,
+        property_units,
         config,
         disp,
         "",
@@ -245,14 +251,15 @@ def test_upload_restart(
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
-
     expected_results = 9
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
+    property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     grid3d.upload_restart(
         restart_path,
         xtgeogrid,
         grid3d.get_timesteps(restart_path, xtgeogrid),
+        property_units,
         config,
         disp,
         "",
