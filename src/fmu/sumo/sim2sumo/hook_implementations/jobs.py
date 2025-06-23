@@ -4,8 +4,8 @@ import os
 import sys
 from pathlib import Path
 
-from ert.shared.plugins.plugin_manager import hook_implementation
-from ert.shared.plugins.plugin_response import plugin_response
+from ert import plugin
+from ert.plugins.plugin_manager import hook_implementation
 
 from fmu.sumo.sim2sumo.forward_models import Sim2Sumo
 
@@ -74,7 +74,7 @@ def _get_jobs_from_directory(directory):
 
 # pylint: disable=no-value-for-parameter
 @hook_implementation
-@plugin_response(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
+@plugin(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
 def installable_jobs():
     """Return installable jobs
 
@@ -85,7 +85,7 @@ def installable_jobs():
 
 
 @hook_implementation
-@plugin_response(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
+@plugin(plugin_name=PLUGIN_NAME)  # pylint: disable=no-value-for-parameter
 def job_documentation(job_name):
     sumo_fmu_jobs = set(installable_jobs().data.keys())
     if job_name not in sumo_fmu_jobs:
@@ -99,6 +99,6 @@ def job_documentation(job_name):
 
 
 @hook_implementation
-@plugin_response(plugin_name="fmu_sumo_uploader")
+@plugin(plugin_name="fmu_sumo_sim2sumo")
 def installable_forward_model_steps():
     return [Sim2Sumo]
