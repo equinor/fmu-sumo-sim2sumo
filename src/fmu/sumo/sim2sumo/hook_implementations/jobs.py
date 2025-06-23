@@ -10,7 +10,7 @@ from ert.shared.plugins.plugin_response import plugin_response
 from fmu.sumo.sim2sumo.forward_models import Sim2Sumo
 
 DESCRIPTION = """
-Makes result simulator (Eclipse, OPM, IX) available in sumo.
+Makes result simulator (Eclipse, OPM, IX) available in sumo.AAAAAAA
 This is done by SIM2SUMO in a three step process:
 1. Data is extracted in arrow format using res2df
 2. Corresponding metadata are generated via fmu-dataio
