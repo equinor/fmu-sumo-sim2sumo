@@ -5,7 +5,9 @@ from ert import (  # type: ignore
     ForwardModelStepJSON,
     ForwardModelStepPlugin,
     ForwardModelStepValidationError,
+    plugin,
 )
+from ert.plugins.plugin_manager import hook_implementation
 
 
 class Sim2Sumo(ForwardModelStepPlugin):
@@ -97,5 +99,12 @@ stored in Sumo with name: DROGON, tagname: summary, and fmu.realization.id: 1
    produces add section sim2sumo to your fmu_config file.
    (for inclusion of the forward model in your ert setup see examples 1. or 2.)
 """,
-            # category=something.something
+            category="export",
+            source_package="sim2sumo",
         )
+
+
+@hook_implementation
+@plugin(name="fmu_sumo_sim2sumo")
+def installable_forward_model_steps():
+    return [Sim2Sumo]
