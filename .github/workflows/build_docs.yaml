@@ -10,6 +10,9 @@ on:
 jobs:
   build_pywheels:
     name: Build docs with Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
