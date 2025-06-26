@@ -59,19 +59,13 @@ def generate_grid3d_meta(datafile, obj, config):
         dict: the metadata for obj
     """
 
-    name = "grid"
     tagname = give_name(datafile)
     exp_args = {
         "config": config,
-        "name": name,
+        "name": give_name(datafile),
         "tagname": tagname,
         "content": "depth",
     }
-
-    # Grid doesn't need a date?
-    datefield = find_datefield(name)
-    if datefield is not None:
-        exp_args["timedata"] = [[datefield]]
 
     # Future: refactor to be "diskless"
     #   i.e. use exd.generate_metadata() instead of exd.export()
