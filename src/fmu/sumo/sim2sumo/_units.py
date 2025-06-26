@@ -49,11 +49,6 @@ TIME = {
     "PVT-M": "day",
 }
 PERM = "mD"
-PORO = "fraction"
-RELPERM = "fraction"
-SATURATION = "fraction"
-MULT = "dimensionless"
-NTG = "fraction"
 PRESSURE = {
     "METRIC": "bar",
     "FIELD": "psi",
@@ -92,6 +87,16 @@ TRANSMISSIBILITY = {
     for key in RESERVOIR_VOL
 }
 
+PORO = {
+    key: f"{RESERVOIR_VOL[key]}/{RESERVOIR_VOL[key]}" for key in RESERVOIR_VOL
+}
+RELPERM = f"{PERM}/{PERM}"
+SATURATION = {
+    key: f"{RESERVOIR_VOL[key]}/{RESERVOIR_VOL[key]}" for key in RESERVOIR_VOL
+}
+MULT = "dimensionless"
+NTG = {key: f"{LENGTH[key]}/{LENGTH[key]}" for key in LENGTH}
+
 
 def get_all_properties_units(unit_system: str) -> dict:
     """
@@ -109,7 +114,7 @@ def get_all_properties_units(unit_system: str) -> dict:
         )
 
     property_units = {
-        "SATURATION": SATURATION,
+        "SATURATION": SATURATION[unit_system],
         "MULT": MULT,
         "DEPTH": LENGTH[unit_system],
         "BOTTOM": LENGTH[unit_system],
@@ -124,28 +129,31 @@ def get_all_properties_units(unit_system: str) -> dict:
         "PERMX": PERM,
         "PERMY": PERM,
         "PERMZ": PERM,
-        "PORO": PORO,
-        "NTG": NTG,
+        "PORO": PORO[unit_system],
+        "NTG": NTG[unit_system],
         "PORV": RESERVOIR_VOL[unit_system],
-        "SWAT": SATURATION,
-        "SWATINIT": SATURATION,
-        "SWCR": SATURATION,
-        "SWL": SATURATION,
-        "SWU": SATURATION,
-        "SWLPC": SATURATION,
-        "SGLPC": SATURATION,
-        "SGAS": SATURATION,
-        "SGL": SATURATION,
-        "SGU": SATURATION,
-        "SGWCR": SATURATION,
-        "SGCR": SATURATION,
-        "SOIL": SATURATION,
-        "SOWCR": SATURATION,
+        "SWAT": SATURATION[unit_system],
+        "SWATINIT": SATURATION[unit_system],
+        "SWCR": SATURATION[unit_system],
+        "SWL": SATURATION[unit_system],
+        "SWU": SATURATION[unit_system],
+        "SWLPC": SATURATION[unit_system],
+        "SGLPC": SATURATION[unit_system],
+        "SGAS": SATURATION[unit_system],
+        "SGL": SATURATION[unit_system],
+        "SGU": SATURATION[unit_system],
+        "SGWCR": SATURATION[unit_system],
+        "SGCR": SATURATION[unit_system],
+        "SOIL": SATURATION[unit_system],
+        "SOGCR": SATURATION[unit_system],
+        "SOWCR": SATURATION[unit_system],
         "KRG": RELPERM,
         "KRO": RELPERM,
         "KRW": RELPERM,
         "KRGR": RELPERM,
         "KROR": RELPERM,
+        "KROGR": RELPERM,
+        "KRORW": RELPERM,
         "KRWR": RELPERM,
         "PRESSURE": PRESSURE[unit_system],
         "PCG": PRESSURE[unit_system],
