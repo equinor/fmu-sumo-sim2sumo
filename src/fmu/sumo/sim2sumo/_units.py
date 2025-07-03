@@ -94,7 +94,6 @@ RELPERM = f"{PERM}/{PERM}"
 SATURATION = {
     key: f"{RESERVOIR_VOL[key]}/{RESERVOIR_VOL[key]}" for key in RESERVOIR_VOL
 }
-MULT = "dimensionless"
 NTG = {key: f"{LENGTH[key]}/{LENGTH[key]}" for key in LENGTH}
 
 
