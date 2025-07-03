@@ -19,7 +19,7 @@ def get_datafile_unit_system(datafile_path: str) -> str:
     Returns:
         str: unit system name
     """
-    unit_system = None
+    unit_system = ""
 
     # Match any of the allowed unit systems
     # Match beginning of the line to end of word
@@ -114,7 +114,6 @@ def get_all_properties_units(unit_system: str) -> dict:
 
     property_units = {
         "SATURATION": SATURATION[unit_system],
-        "MULT": MULT,
         "DEPTH": LENGTH[unit_system],
         "BOTTOM": LENGTH[unit_system],
         "TOPS": LENGTH[unit_system],

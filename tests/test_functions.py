@@ -1,5 +1,6 @@
 """Test utility ecl2csv"""
 
+from dataclasses import field
 import os
 from io import BytesIO
 from shutil import copytree
@@ -20,7 +21,10 @@ from fmu.sumo.sim2sumo._special_treatments import (
     _define_submodules,
     convert_to_arrow,
 )
-from fmu.sumo.sim2sumo._units import get_all_properties_units
+from fmu.sumo.sim2sumo._units import (
+    get_all_properties_units,
+    get_datafile_unit_system,
+)
 from fmu.sumo.sim2sumo.common import (
     Dispatcher,
     create_config_dict,
@@ -211,6 +215,12 @@ def test_generate_grid3d_meta(scratch_files, xtgeogrid, config, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
     meta = grid3d.generate_grid3d_meta(scratch_files[1], xtgeogrid, config)
     assert isinstance(meta, dict)
+
+
+def test_get_datafile_unit_system(scratch_files, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
+    unit_system = get_datafile_unit_system(scratch_files[1])
+    assert unit_system == "METRIC"
 
 
 def test_generate_gridproperty_meta(
