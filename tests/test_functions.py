@@ -1,6 +1,5 @@
 """Test utility ecl2csv"""
 
-from dataclasses import field
 import os
 from io import BytesIO
 from shutil import copytree
