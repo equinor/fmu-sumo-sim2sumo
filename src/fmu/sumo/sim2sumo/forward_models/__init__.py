@@ -42,9 +42,9 @@ class Sim2Sumo(ForwardModelStepPlugin):
         return_code = subprocess.call(command, shell=True)
 
         err_msg = (
-            "Your config uses Sumo"
-            ", please authenticate using:"
-            f"sumo_login{f' -e {env}' if env != 'prod' else ''}"
+            "Your config uses Sumo, please authenticate"
+            " by running the following in your terminal:"
+            f" sumo_login{f' -e {env}' if env != 'prod' else ''}"
         )
 
         if return_code != 0:
