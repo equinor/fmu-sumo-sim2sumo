@@ -10,6 +10,8 @@ WATER
 START
   1 'JAN' 2000 /
 
+METRIC
+
 TABDIMS
   1 1 20 20 2 /
 

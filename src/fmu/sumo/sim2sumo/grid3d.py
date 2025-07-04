@@ -6,7 +6,7 @@ Does three things:
 3. Uploads to Sumo
 """
 
-import logging
+import logging  # noqa: I001
 import os
 import re
 from datetime import datetime
@@ -24,6 +24,7 @@ from fmu.dataio import ExportData
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from .common import find_datefield, give_name, yaml_load
+from ._units import get_all_properties_units, get_datafile_unit_system
 
 
 def xtgeo_2_bytestring(obj):
@@ -87,12 +88,13 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-def generate_gridproperty_meta(datafile, obj, config, geogrid):
+def generate_gridproperty_meta(datafile, obj, property_units, config, geogrid):
     """Generate metadata for xtgeo object
 
     Args:
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
+        property_units (dict): property - unit map
         config (dict): the fmu config file
         geogrid (str): path to the grid to link as geometry
 
@@ -112,9 +114,11 @@ def generate_gridproperty_meta(datafile, obj, config, geogrid):
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
-    # Time metadata is extracted from the original name,
-    # so the name has to be santised after find_datafield().
+    # Time metadata is extracted from the original object name,
+    # which has the format "PROPERTY-DATE".
+    # The name has to be santised after find_datafield().
     exp_args["name"] = sanitise_gridprop_name(obj.name)
+    exp_args["unit"] = property_units.get(exp_args["name"], None)
 
     exd = ExportData(**exp_args)
 
@@ -174,7 +178,9 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
     return sumo_file
 
 
-def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
+def upload_init(
+    init_path, xtgeoegrid, property_units, config, dispatcher, geometry_path
+):
     """Upload properties from init file
 
     Args:
@@ -198,7 +204,7 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
             logger.warning("%s will not be uploaded", init_prop["name"])
             continue
         prop_metadata = generate_gridproperty_meta(
-            init_path, xtgeo_prop, config, geometry_path
+            init_path, xtgeo_prop, property_units, config, geometry_path
         )
         sumo_file = convert_xtgeo_to_sumo_file(xtgeo_prop, prop_metadata)
         if sumo_file is None:
@@ -212,7 +218,13 @@ def upload_init(init_path, xtgeoegrid, config, dispatcher, geometry_path):
 
 
 def upload_restart(
-    restart_path, xtgeoegrid, time_steps, config, dispatcher, geometry_path
+    restart_path,
+    xtgeoegrid,
+    property_units,
+    time_steps,
+    config,
+    dispatcher,
+    geometry_path,
 ):
     """Export properties from restart file
 
@@ -242,6 +254,7 @@ def upload_restart(
                 prop_metadata = generate_gridproperty_meta(
                     restart_path,
                     xtgeo_prop,
+                    property_units,
                     config,
                     geometry_path,
                 )
@@ -293,10 +306,21 @@ def upload_simulation_run(datafile, config, dispatcher):
     dispatcher.add(sumo_file)
     time_steps = get_timesteps(restart_path, egrid)
 
-    upload_init(init_path, xtgeoegrid, config, dispatcher, exported_grid_path)
+    unit_system = get_datafile_unit_system(datafile)
+    property_units = get_all_properties_units(unit_system)
+
+    upload_init(
+        init_path,
+        xtgeoegrid,
+        property_units,
+        config,
+        dispatcher,
+        exported_grid_path,
+    )
     upload_restart(
         restart_path,
         xtgeoegrid,
+        property_units,
         time_steps,
         config,
         dispatcher,
