@@ -147,9 +147,6 @@ def create_config_dict(config):
 
     submods = default_submods
 
-    # Get rstprops config if it is provided
-    rstprops = simconfig.get("rstprops", None)
-
     # Initialize the dictionary to hold the configuration for each datafile
     sim2sumoconfig = {}
     paths = []
@@ -177,6 +174,9 @@ def create_config_dict(config):
 
             # Restart properties config
             if submod == "grid":
+                 # Get rstprops config if it is provided
+                rstprops = simconfig.get("rstprops", None)
+
                 if rstprops:
                     sim2sumoconfig[datafile_path][submod]["rstprops"] = [x.upper() for x in rstprops]
                 else:
