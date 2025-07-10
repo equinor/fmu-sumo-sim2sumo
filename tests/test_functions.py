@@ -258,7 +258,7 @@ def test_upload_init(
 
 def test_get_all_restart_properties(scratch_files, xtgeogrid):
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
-    props_all = grid3d.get_all_restart_properties(restart_path, xtgeogrid)
+    props_all = grid3d._get_all_restart_properties(restart_path, xtgeogrid)
 
     props_all_set = set(props_all)
     props_all_expected = {

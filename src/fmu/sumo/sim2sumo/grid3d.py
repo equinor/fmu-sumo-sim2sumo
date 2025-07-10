@@ -178,7 +178,7 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
     return sumo_file
 
 
-def get_all_restart_properties(restart_path, xtgeoegrid) -> list:
+def _get_all_restart_properties(restart_path, xtgeoegrid) -> list:
     """
     Get all restart properties in restart file.
 
@@ -218,7 +218,7 @@ def get_restart_properties(restart_path, xtgeoegrid, s2s_config) -> list:
         list: restart properties to be uploaded
     """
     # Get list of restart properties to be uploaded
-    prop_names_all = get_all_restart_properties(restart_path, xtgeoegrid)
+    prop_names_all = _get_all_restart_properties(restart_path, xtgeoegrid)
 
     if "ALL" in s2s_config["grid"]["rstprops"]:
         prop_names = prop_names_all
