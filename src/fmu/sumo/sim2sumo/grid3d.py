@@ -177,6 +177,7 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
 
     return sumo_file
 
+
 def get_all_restart_properties(restart_path, xtgeoegrid) -> list:
     """
     Get all restart properties in restart file.
@@ -192,7 +193,9 @@ def get_all_restart_properties(restart_path, xtgeoegrid) -> list:
     # first to get a list of properties. Getting properties from last timestep
     # as some restart properties are missing when taking the first timestep.
     props_all = list(
-    eclrun.find_gridprops_from_restart_file(restart_path, "all", "last",  xtgeoegrid)
+        eclrun.find_gridprops_from_restart_file(
+            restart_path, "all", "last", xtgeoegrid
+        )
     )
     prop_names_all = [prop["name"] for prop in props_all]
     # SOIL property is not a "real" property. It is calculated from 1 - SWAT - SGAS.
@@ -200,6 +203,7 @@ def get_all_restart_properties(restart_path, xtgeoegrid) -> list:
     prop_names_all.append("SOIL")
 
     return prop_names_all
+
 
 def get_restart_properties(restart_path, xtgeoegrid, s2s_config) -> list:
     """
@@ -331,7 +335,9 @@ def upload_simulation_runs(s2s_config, config, dispatcher):
     for datafile in s2s_config:
         if "grid" not in s2s_config[datafile]:
             continue
-        upload_simulation_run(datafile, s2s_config[datafile], config, dispatcher)
+        upload_simulation_run(
+            datafile, s2s_config[datafile], config, dispatcher
+        )
 
 
 def upload_simulation_run(datafile, s2s_config, config, dispatcher):

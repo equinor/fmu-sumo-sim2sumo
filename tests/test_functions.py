@@ -255,28 +255,47 @@ def test_upload_init(
     disp.finish()
     check_sumo(uuid, "EIGHTCELLS", expected_results, "cpgrid_property", sumo)
 
-def test_get_all_restart_properties(
-        scratch_files, xtgeogrid
-):
-    
+
+def test_get_all_restart_properties(scratch_files, xtgeogrid):
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
     props_all = grid3d.get_all_restart_properties(restart_path, xtgeogrid)
 
     props_all_set = set(props_all)
-    props_all_expected = {'PRESSURE', 'SWAT', 'OIL_VISC', 'OIL_DEN', '1OVERBO', 
-                      'DBOPO', 'WAT_VISC', 'WAT_DEN', '1OVERBW', 'DBWPO', 
-                      'AMATRIX', 'WATKR', 'OILKR', 'SOIL'}
-    
+    props_all_expected = {
+        "PRESSURE",
+        "SWAT",
+        "OIL_VISC",
+        "OIL_DEN",
+        "1OVERBO",
+        "DBOPO",
+        "WAT_VISC",
+        "WAT_DEN",
+        "1OVERBW",
+        "DBWPO",
+        "AMATRIX",
+        "WATKR",
+        "OILKR",
+        "SOIL",
+    }
+
     differences = props_all_expected ^ props_all_set
 
-    assert set(props_all) == set(props_all_expected), (f"Expected properties and extracted properties lists do not match. These properties are not found in both lists: {differences}")
+    assert set(props_all) == set(props_all_expected), (
+        f"Expected properties and extracted properties lists do not match. These properties are not found in both lists: {differences}"
+    )
+
 
 def test_get_restart_properties(scratch_files, xtgeogrid, s2s_config):
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
-    prop_names = grid3d.get_restart_properties(restart_path, xtgeogrid, s2s_config[scratch_files[1]])
+    prop_names = grid3d.get_restart_properties(
+        restart_path, xtgeogrid, s2s_config[scratch_files[1]]
+    )
 
     # Testing using default restart properties
-    assert set(prop_names) == set(DEFAULT_RST_PROPS), (f"Extracted properties ({prop_names}) do not match the expected default properties ({DEFAULT_RST_PROPS})")
+    assert set(prop_names) == set(DEFAULT_RST_PROPS), (
+        f"Extracted properties ({prop_names}) do not match the expected default properties ({DEFAULT_RST_PROPS})"
+    )
+
 
 def test_upload_restart(
     scratch_files, xtgeogrid, config, s2s_config, sumo, token, monkeypatch
@@ -288,14 +307,14 @@ def test_upload_restart(
     property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
 
-    # For EIGHTCELLS.DATA (scratch_files[1]): 
+    # For EIGHTCELLS.DATA (scratch_files[1]):
     # Four restart properties are requested by default (SGAS, SOIL, SWAT, PRESSURE)
     # There is no gas in the model, so the SGAS property is not created in xtgeo,
     # which means only 3/4 properties are extracted.
     # There are 3 timesteps for this restart file.
-    # This gives 3 extracted properties * 3 timesteps = 9 expected results 
+    # This gives 3 extracted properties * 3 timesteps = 9 expected results
     # If the default restart properties change, or a restart file with a different
-    # number of timesteps or phase (gas/oil/water) is used, expected_results will 
+    # number of timesteps or phase (gas/oil/water) is used, expected_results will
     # change
 
     grid3d.upload_restart(
@@ -338,7 +357,9 @@ def test_upload_simulation_run(
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_results = 15
-    grid3d.upload_simulation_run(scratch_files[1], s2s_config[scratch_files[1]],  config, disp)
+    grid3d.upload_simulation_run(
+        scratch_files[1], s2s_config[scratch_files[1]], config, disp
+    )
     uuid = disp.parentid
     disp.finish()
     check_sumo(uuid, "*", expected_results, "cpgrid*", sumo)

@@ -136,6 +136,7 @@ SUBMODULES, SUBMOD_DICT = _define_submodules()
 DEFAULT_SUBMODULES = ["summary", "rft", "satfunc"]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
 
+
 def vfp_to_arrow_dict(datafile, options):
     """Generate dictionary with vfp arrow tables
 

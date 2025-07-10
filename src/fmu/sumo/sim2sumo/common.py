@@ -174,13 +174,17 @@ def create_config_dict(config):
 
             # Restart properties config
             if submod == "grid":
-                 # Get rstprops config if it is provided
+                # Get rstprops config if it is provided
                 rstprops = simconfig.get("rstprops", None)
 
                 if rstprops:
-                    sim2sumoconfig[datafile_path][submod]["rstprops"] = [x.upper() for x in rstprops]
+                    sim2sumoconfig[datafile_path][submod]["rstprops"] = [
+                        x.upper() for x in rstprops
+                    ]
                 else:
-                    sim2sumoconfig[datafile_path][submod]["rstprops"] = DEFAULT_RST_PROPS
+                    sim2sumoconfig[datafile_path][submod]["rstprops"] = (
+                        DEFAULT_RST_PROPS
+                    )
 
     return sim2sumoconfig
 

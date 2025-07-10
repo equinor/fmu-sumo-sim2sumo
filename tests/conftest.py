@@ -70,6 +70,7 @@ def _fix_rft_reek():
 def _fix_config():
     return yaml_load(CONFIG_PATH)
 
+
 @pytest.fixture(name="s2s_config")
 def _fix_s2s_config(scratch_files, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
