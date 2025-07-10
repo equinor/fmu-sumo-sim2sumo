@@ -177,6 +177,52 @@ def convert_xtgeo_to_sumo_file(obj, metadata):
 
     return sumo_file
 
+def get_all_restart_properties(restart_path, xtgeoegrid) -> list:
+    """
+    Get all restart properties in restart file.
+
+    Args:
+        restart_path (str): path to restart file
+        xtgeoegrid (xtgeo.Grid): the grid to unpack the properties to
+
+    Returns:
+        list: all restart properties in restart file
+    """
+    # Get all restart properties names from the restart file. Have to load one timestep
+    # first to get a list of properties. Getting properties from last timestep
+    # as some restart properties are missing when taking the first timestep.
+    props_all = list(
+    eclrun.find_gridprops_from_restart_file(restart_path, "all", "last",  xtgeoegrid)
+    )
+    prop_names_all = [prop["name"] for prop in props_all]
+    # SOIL property is not a "real" property. It is calculated from 1 - SWAT - SGAS.
+    # xtgeo will calculate SOIL if it is requested.
+    prop_names_all.append("SOIL")
+
+    return prop_names_all
+
+def get_restart_properties(restart_path, xtgeoegrid, s2s_config) -> list:
+    """
+    Get properties in restart file based on user config.
+
+    Args:
+        restart_path (str): path to restart file
+        xtgeoegrid (xtgeo.Grid): the grid to unpack the properties to
+        s2s_config (list[dict]): the datafiles defining the runs
+
+    Returns:
+        list: restart properties to be uploaded
+    """
+    # Get list of restart properties to be uploaded
+    prop_names_all = get_all_restart_properties(restart_path, xtgeoegrid)
+
+    if "ALL" in s2s_config["grid"]["rstprops"]:
+        prop_names = prop_names_all
+    else:
+        prop_names = s2s_config["grid"]["rstprops"]
+
+    return prop_names
+
 
 def upload_init(
     init_path, xtgeoegrid, property_units, config, dispatcher, geometry_path
@@ -231,7 +277,7 @@ def upload_restart(
 
     Args:
         restart_path (str): path to restart file
-        xtgeoegrid (xtge.Grid): the grid to unpack the properties to
+        xtgeoegrid (xtgeo.Grid): the grid to unpack the properties to
         time_steps (list): the timesteps to use
 
     Returns:
@@ -239,21 +285,7 @@ def upload_restart(
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
 
-    # Get all restart properties names from the restart file. Have to load one timestep
-    # first to get a list of properties. Getting properties from last timestep
-    # as some restart properties are missing when taking the first timestep.
-    props_all = list(
-    eclrun.find_gridprops_from_restart_file(restart_path, "all", "last",  xtgeoegrid)
-    )
-    prop_names_all = [prop["name"] for prop in props_all]
-    # SOIL property is not a "real" property. It is calculated from 1 - SWAT - SGAS.
-    # xtgeo will calculate SOIL if it is requested.
-    prop_names_all.append("SOIL")
-
-    if "ALL" in s2s_config["grid"]["rstprops"]:
-        prop_names = prop_names_all
-    else:
-        prop_names = s2s_config["grid"]["rstprops"]
+    prop_names = get_restart_properties(restart_path, xtgeoegrid, s2s_config)
 
     for prop_name in prop_names:
         for time_step in time_steps:
@@ -286,7 +318,6 @@ def upload_restart(
                     )
                     continue
                 dispatcher.add(sumo_file)
-
 
 
 def upload_simulation_runs(s2s_config, config, dispatcher):
