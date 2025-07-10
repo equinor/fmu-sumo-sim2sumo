@@ -134,6 +134,7 @@ def delete_unwanted_rft_files(frame):
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
 DEFAULT_SUBMODULES = ["summary", "rft", "satfunc"]
+DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
 
 
 def vfp_to_arrow_dict(datafile, options):

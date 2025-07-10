@@ -215,7 +215,30 @@ grid datatype
 ~~~~~~~~~~~~~~~~
 When including the "grid" datatype, sim2sumo will try to upload 3D grid data and properties for all datafiles specified in the ``datafile`` section.
 For the init file the following properties will be *ignored*: ENDNUM, DX, DY, DZ, TOPS.
-For the restart the following properties will be *exported*: SWAT, SGAS, SOIL, PRESSURE, SFIPOIL, SFIPGAS.
+For the restart the following properties will be *exported by default*: SWAT, SGAS, SOIL, PRESSURE.
+
+Restart properties export configuration
+^^^^^^^^^^^^^^^^
+The ``rstprops`` argument can be used to specify which restart properties to export. If ``rstprops`` isn't defined, the default restart properties will be exported (SWAT, SGAS, SOIL, PRESSURE).
+
+To include all restart properties, use a list with a single item "all":
+
+   .. code-block::
+
+      rstprops:
+         - all
+
+To include specific restart properties, use a list with single items. The following is equivalent to exporting the default restart properties, plus the "RS" property
+
+   .. code-block::
+
+      rstprops:
+         - SWAT
+         - SGAS
+         - SOIL
+         - PRESSURE
+         - RS
+
 
 Overriding default datatypes
 ----------------

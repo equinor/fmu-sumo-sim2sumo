@@ -9,6 +9,7 @@ import yaml
 from sumo.wrapper import SumoClient
 
 from fmu.sumo.sim2sumo._special_treatments import (
+    DEFAULT_RST_PROPS,
     DEFAULT_SUBMODULES,
     SUBMODULES,
 )
@@ -170,6 +171,20 @@ def create_config_dict(config):
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
             sim2sumoconfig[datafile_path][submod] = {"arrow": True}
+
+            # Restart properties config
+            if submod == "grid":
+                # Get rstprops config if it is provided
+                rstprops = simconfig.get("rstprops", None)
+
+                if rstprops:
+                    sim2sumoconfig[datafile_path][submod]["rstprops"] = [
+                        x.upper() for x in rstprops
+                    ]
+                else:
+                    sim2sumoconfig[datafile_path][submod]["rstprops"] = (
+                        DEFAULT_RST_PROPS
+                    )
 
     return sim2sumoconfig
 
