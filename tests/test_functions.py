@@ -15,9 +15,9 @@ from xtgeo import GridProperty, gridproperty_from_file
 
 from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
+    DEFAULT_RST_PROPS,
     DEFAULT_SUBMODULES,
     SUBMODULES,
-    DEFAULT_RST_PROPS,
     _define_submodules,
     convert_to_arrow,
 )
