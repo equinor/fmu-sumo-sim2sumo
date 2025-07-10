@@ -14,6 +14,7 @@ from xtgeo import grid_from_file, gridproperty_from_file
 from fmu.config.utilities import yaml_load
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 from fmu.sumo.uploader import CaseOnDisk
+from fmu.sumo.sim2sumo.common import create_config_dict
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
@@ -68,6 +69,11 @@ def _fix_rft_reek():
 @pytest.fixture(scope="session", name="config")
 def _fix_config():
     return yaml_load(CONFIG_PATH)
+
+@pytest.fixture(name="s2s_config")
+def _fix_s2s_config(scratch_files, monkeypatch):
+    monkeypatch.chdir(scratch_files[0])
+    return create_config_dict(yaml_load(CONFIG_PATH))
 
 
 @pytest.fixture(scope="session", name="sumo")
