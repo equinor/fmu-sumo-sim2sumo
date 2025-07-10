@@ -223,6 +223,7 @@ def upload_restart(
     property_units,
     time_steps,
     config,
+    s2s_config,
     dispatcher,
     geometry_path,
 ):
@@ -237,7 +238,22 @@ def upload_restart(
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
-    prop_names = ("SWAT", "SGAS", "SOIL", "PRESSURE", "SFIPOIL", "SFIPGAS")
+
+    # Get all restart properties names from the restart file. Have to load one timestep
+    # first to get a list of properties. Getting properties from last timestep
+    # as some restart properties are missing when taking the first timestep.
+    props_all = list(
+    eclrun.find_gridprops_from_restart_file(restart_path, "all", "last",  xtgeoegrid)
+    )
+    prop_names_all = [prop["name"] for prop in props_all]
+    # SOIL property is not a "real" property. It is calculated from 1 - SWAT - SGAS.
+    # xtgeo will calculate SOIL if it is requested.
+    prop_names_all.append("SOIL")
+
+    if "ALL" in s2s_config["grid"]["rstprops"]:
+        prop_names = prop_names_all
+    else:
+        prop_names = s2s_config["grid"]["rstprops"]
 
     for prop_name in prop_names:
         for time_step in time_steps:
@@ -272,21 +288,22 @@ def upload_restart(
                 dispatcher.add(sumo_file)
 
 
-def upload_simulation_runs(datafiles, config, dispatcher):
+
+def upload_simulation_runs(s2s_config, config, dispatcher):
     """Upload 3d grid and parameters for set of simulation runs
 
     Args:
-        datafiles (list): the datafiles defining the runs
+        s2s_config (list[dict]): the datafiles defining the runs
         config (dict): the fmu config file with metadata
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    for datafile in datafiles:
-        if "grid" not in datafiles[datafile]:
+    for datafile in s2s_config:
+        if "grid" not in s2s_config[datafile]:
             continue
-        upload_simulation_run(datafile, config, dispatcher)
+        upload_simulation_run(datafile, s2s_config[datafile], config, dispatcher)
 
 
-def upload_simulation_run(datafile, config, dispatcher):
+def upload_simulation_run(datafile, s2s_config, config, dispatcher):
     """Export 3d grid properties from simulation run
 
     Args:
@@ -323,6 +340,7 @@ def upload_simulation_run(datafile, config, dispatcher):
         property_units,
         time_steps,
         config,
+        s2s_config,
         dispatcher,
         exported_grid_path,
     )
