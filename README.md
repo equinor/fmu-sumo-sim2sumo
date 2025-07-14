@@ -41,7 +41,7 @@ Example: Installing sim2sumo from `mybranch` on top of Komodo bleeding
 < Activate the new env >
 
 pip install git+https://github.com/equinor/fmu-sumo-sim2sumo.git@mybranch
-pip install git+https://github.com/equinor/fmu-sumo-uploader.git
+pip install git+https://github.com/equinor/fmu-sumo-uploader.git --force-reinstall
 ```
 
 The [Explorer](https://github.com/equinor/fmu-sumo) is also installed under `fmu/sumo`. Meaning that if the testing scenario includes the Explorer then it should also be installed on top of Komodo.
