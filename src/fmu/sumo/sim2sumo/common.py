@@ -319,9 +319,15 @@ def give_name(datafile_path: str) -> str:
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
-    while base_name[-1].isdigit() or base_name.endswith("-"):
-        base_name = base_name[:-1]
-    return base_name
+
+    pattern = r"^(.*?)-\d*$"
+    match = re.match(pattern, base_name)
+    if match:
+        name = match.group(1)
+        print(name)
+        return name
+    else:
+        return base_name
 
 
 DOCS_BASE_URL = (
