@@ -329,7 +329,6 @@ def give_name(datafile_path: str) -> str:
     match = re.match(pattern, base_name)
     if match:
         name = match.group(1)
-        print(name)
         return name
     else:
         return base_name
