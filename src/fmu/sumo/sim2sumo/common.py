@@ -320,7 +320,7 @@ def give_name(datafile_path: str) -> str:
         datafile_path_posix.suffix, ""
     )
 
-    # `base_name` is expected to be a  string ending with a hyphen and some
+    # `base_name` is expected to be a string ending with a hyphen and some
     # digits, e.g. "BASE_NAME-13". The final digits represent the realisation
     # number of the file on disk. This realisation number should match the
     # number after "realization-" in `datafile_path`, which could be another way
