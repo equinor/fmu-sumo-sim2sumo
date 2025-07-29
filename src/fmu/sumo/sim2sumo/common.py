@@ -319,9 +319,19 @@ def give_name(datafile_path: str) -> str:
     base_name = datafile_path_posix.name.replace(
         datafile_path_posix.suffix, ""
     )
-    while base_name[-1].isdigit() or base_name.endswith("-"):
-        base_name = base_name[:-1]
-    return base_name
+
+    # `base_name` is expected to be a string ending with a hyphen and some
+    # digits, e.g. "BASE_NAME-13". The final digits represent the realisation
+    # number of the file on disk. This realisation number should match the
+    # number after "realization-" in `datafile_path`, which could be another way
+    # of deciding what to remove from `base_name` to get `name`.
+    pattern = r"^(.*?)-\d*$"
+    match = re.match(pattern, base_name)
+    if match:
+        name = match.group(1)
+        return name
+    else:
+        return base_name
 
 
 DOCS_BASE_URL = (
