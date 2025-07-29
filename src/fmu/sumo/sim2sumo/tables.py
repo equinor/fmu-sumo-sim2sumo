@@ -69,18 +69,17 @@ def table_2_bytestring(table):
     return bytestring
 
 
-# Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
-def generate_table_meta(datafile, obj, tagname, config):
-    """Generate metadata for xtgeo object
+# Create an instance of the ExportData class
+def create_export_data(datafile, tagname, config):
+    """Create and return an instance of the ExportData
 
     Args:
         datafile (str): path to datafile
-        obj (xtgeo object): the object to generate metadata on
         tagname: tagname
         config (dict): the fmu config file
 
     Returns:
-        dict: the metadata for obj
+        ExportData(**exp_args)
     """
     if "vfp" in tagname.lower():
         content = "lift_curves"
@@ -100,10 +99,7 @@ def generate_table_meta(datafile, obj, tagname, config):
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
-    exd = ExportData(**exp_args)
-    metadata = exd.generate_metadata(obj)
-
-    return metadata
+    return ExportData(**exp_args)
 
 
 def convert_table_2_sumo_file(datafile, obj, tagname, config):
@@ -124,7 +120,8 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     if obj is None:
         return obj
 
-    metadata = generate_table_meta(datafile, obj, tagname, config)
+    exd = create_export_data(datafile, tagname, config)
+    metadata = exd.generate_metadata(obj)
 
     files = []
     chunk_size = 500
@@ -177,7 +174,9 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
     sumo_file.size = len(sumo_file.byte_string)
-    files.append(sumo_file)
+
+    # Export tye actual file using dataio, which will create an entry in the manifest file.
+    exd.export(sumo_file)
 
     return files
 
