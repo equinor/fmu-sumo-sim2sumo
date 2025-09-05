@@ -46,4 +46,4 @@ def test_vfp_tables_from_simulation_run(
 
     upload_vfp_tables_from_simulation_run(DROGON_DATAFILE, {}, config, disp)
     disp.finish()
-    check_sumo(case_uuid, "vfp", 5, "table", sumo)
+    check_sumo(case_uuid, "table", 5, sumo)
