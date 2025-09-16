@@ -10,6 +10,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 from conftest import REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
+from fmu.sumo.uploader import SumoConnection
 from numpy.ma import allclose, allequal
 from xtgeo import GridProperty, gridproperty_from_file
 
@@ -33,42 +34,47 @@ from fmu.sumo.sim2sumo.common import (
     get_case_uuid,
     nodisk_upload,
 )
-from fmu.sumo.uploader import SumoConnection
 
 SLEEP_TIME = 3
 
 
-def check_sumo(case_uuid, tag_prefix, correct, class_type, sumo):
-    # There has been instances when this fails, probably because of
-    # some time delay, have introduced a little sleep to make it not fail
-    sleep(SLEEP_TIME)
-    if not tag_prefix.endswith("*"):
-        tag_prefix = tag_prefix + "*"
-
-    path = f"/objects('{case_uuid}')/children"
-    query = f"$filter=data.tagname:{tag_prefix}"
-
-    if class_type != "*":
-        query += f" AND class:{class_type}"
-        check_nr = correct
-    else:
-        # Plus one because we always upload parameters.txt automatically
-        check_nr = correct + 1
-
-    results = sumo.get(path, query).json()
-
-    returned = results["hits"]["total"]["value"]
-    assert returned == check_nr, (
-        f"Supposed to upload {check_nr}, but actual were {returned}"
-    )
-
-    sumo.delete(
-        path,
-        "$filter=*",
-    )
+def check_sumo(case_uuid, class_type, expected_count, sumo):
     sleep(SLEEP_TIME)
 
-    sumo.delete(path, query)
+    results = sumo.post(
+        "/search",
+        json={
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "term": {
+                                "_sumo.parent_object.keyword": {
+                                    "value": case_uuid
+                                }
+                            }
+                        },
+                        {"term": {"class.keyword": class_type}},
+                    ],
+                    "must_not": [
+                        {"term": {"_sumo.hidden": {"value": "true"}}}
+                    ],
+                }
+            },
+            "size": expected_count,
+            "track_total_hits": True,
+            "_source": False,
+        },
+    ).json()
+
+    total_hits = results["hits"]["total"]["value"]
+    assert total_hits == expected_count, (
+        f"Supposed to upload {expected_count}, but actual were {total_hits}"
+    )
+
+    for hit in results["hits"]["hits"]:
+        object_id = hit["_id"]
+        sumo.delete(f"/objects('{object_id}')")
 
 
 @pytest.mark.parametrize(
@@ -198,7 +204,7 @@ def test_convert_table_2_sumo_file(
         f"obj should be pa.Table but is {type(table)}"
     )
     assert table == reekrft
-    check_sumo(case_uuid, "rft", 1, "table", sumo)
+    check_sumo(case_uuid, "table", 1, sumo)
 
 
 def get_sumo_object(sumo, case_uuid, name, tagname):
@@ -253,7 +259,7 @@ def test_upload_init(
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "EIGHTCELLS", expected_results, "cpgrid_property", sumo)
+    check_sumo(uuid, "cpgrid_property", expected_results, sumo)
 
 
 def test_get_all_restart_properties(scratch_files, xtgeogrid):
@@ -329,16 +335,16 @@ def test_upload_restart(
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "EIGHTCELLS", expected_results, "cpgrid_property", sumo)
+    check_sumo(uuid, "cpgrid_property", expected_results, sumo)
 
 
 def test_upload_tables_from_simulation_run(
-    scratch_files, config, sumo, monkeypatch
+    scratch_files, config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
 
-    disp = Dispatcher(scratch_files[1], "dev")
-    expected_results = 3
+    disp = Dispatcher(scratch_files[1], "dev", token=token)
+    expected_results = 2
     tables.upload_tables_from_simulation_run(
         REEK_DATA_FILE,
         {"summary": {"arrow": True}, "rft": {"arrow": True}},
@@ -347,7 +353,7 @@ def test_upload_tables_from_simulation_run(
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "*", expected_results, "table", sumo)
+    check_sumo(uuid, "table", expected_results, sumo)
 
 
 def test_upload_simulation_run(
@@ -356,13 +362,15 @@ def test_upload_simulation_run(
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
-    expected_results = 15
+    expected_cpgrid = 1
+    expected_cpgrid_property = 14
     grid3d.upload_simulation_run(
         scratch_files[1], s2s_config[scratch_files[1]], config, disp
     )
     uuid = disp.parentid
     disp.finish()
-    check_sumo(uuid, "*", expected_results, "cpgrid*", sumo)
+    check_sumo(uuid, "cpgrid", expected_cpgrid, sumo)
+    check_sumo(uuid, "cpgrid_property", expected_cpgrid_property, sumo)
 
 
 def test_submodules_dict():
