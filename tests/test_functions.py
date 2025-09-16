@@ -63,7 +63,7 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
             },
             "size": expected_count,
             "track_total_hits": True,
-            "_source": "false",
+            "_source": False,
         },
     ).json()
 
