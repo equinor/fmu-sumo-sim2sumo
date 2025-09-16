@@ -10,6 +10,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 from conftest import REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
+from fmu.sumo.uploader import SumoConnection
 from numpy.ma import allclose, allequal
 from xtgeo import GridProperty, gridproperty_from_file
 
@@ -33,7 +34,6 @@ from fmu.sumo.sim2sumo.common import (
     get_case_uuid,
     nodisk_upload,
 )
-from fmu.sumo.uploader import SumoConnection
 
 SLEEP_TIME = 3
 

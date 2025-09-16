@@ -7,14 +7,14 @@ from pathlib import Path
 import pandas as pd
 import pytest
 import yaml
+from fmu.config.utilities import yaml_load
+from fmu.sumo.uploader import CaseOnDisk
 from httpx import HTTPStatusError
 from sumo.wrapper import SumoClient
 from xtgeo import grid_from_file, gridproperty_from_file
 
-from fmu.config.utilities import yaml_load
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
 from fmu.sumo.sim2sumo.common import create_config_dict
-from fmu.sumo.uploader import CaseOnDisk
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
