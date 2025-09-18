@@ -87,6 +87,7 @@ def _fix_ert_env(monkeypatch):
     monkeypatch.setenv("_ERT_REALIZATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_ITERATION_NUMBER", "0")
     monkeypatch.setenv("_ERT_RUNPATH", "./")
+    monkeypatch.setenv("SUMO_ENV", "dev")
 
 
 @pytest.fixture(scope="session", name="case_uuid")
