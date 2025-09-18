@@ -2,6 +2,7 @@
 # This can cause issues for other tests if they expect certain files
 # to exist etc. Tests that run ERT should therefore create their own
 # temporary file structure, completely separate from other tests.
+import os
 from pathlib import Path
 from subprocess import PIPE, Popen
 
@@ -14,10 +15,11 @@ def write_ert_config_and_run(runpath):
     with open(ert_full_config_path, "w", encoding=encoding) as stream:
         stream.write(
             (
-                "DEFINE <SUMO_ENV> dev\nNUM_REALIZATIONS 1\nMAX_SUBMIT"
+                "NUM_REALIZATIONS 1\nMAX_SUBMIT"
                 f" 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
             )
         )
+    os.environ["SUMO_ENV"] = "dev"
     with Popen(
         ["ert", "test_run", str(ert_full_config_path)],
         stdout=PIPE,
