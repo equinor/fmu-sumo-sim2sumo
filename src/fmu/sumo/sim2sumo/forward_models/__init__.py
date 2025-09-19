@@ -36,6 +36,10 @@ class Sim2Sumo(ForwardModelStepPlugin):
         self, fm_step_json: ForwardModelStepJSON
     ) -> None:
         env = os.environ.get("SUMO_ENV", "prod")
+        if env not in ["preview", "dev", "test", "prod"]:
+            raise ForwardModelStepValidationError(
+                f"Invalid value for environment variable 'SUMO_ENV': {env}. Valid values are preview, dev, test and prod."
+            )
         command = f"sumo_login -e {env} -m silent"
         return_code = subprocess.call(command, shell=True)
 
