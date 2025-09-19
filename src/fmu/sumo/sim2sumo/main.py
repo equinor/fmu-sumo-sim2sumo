@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument(
         "--env",
         type=str,
-        help="Which sumo environment to upload to",
+        help="The '--env' argument is ignored. Sumo environment must be set as an environment variable SUMO_ENV",
         default="prod",
     )
     parser.add_argument("--d", help="Activate debug mode", action="store_true")
@@ -82,9 +82,10 @@ def main():
         return
     # Init of dispatcher needs one datafile to locate case uuid
     one_datafile = list(sim2sumoconfig.keys())[0]
+    env = environ.get("SUMO_ENV", "prod")
     try:
         dispatcher = Dispatcher(
-            one_datafile, args.env, config_path=args.config_path
+            one_datafile, env, config_path=args.config_path
         )
     except Exception as e:
         logger.error("Failed to create dispatcher: %s", e)

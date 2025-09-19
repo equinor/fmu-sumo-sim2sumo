@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from ert import (  # type: ignore
@@ -18,12 +19,9 @@ class Sim2Sumo(ForwardModelStepPlugin):
                 "sim2sumo",
                 "--config_path",
                 "<S2S_CONF_PATH>",
-                "--env",
-                "<SUMO_ENV>",
             ],
             default_mapping={
                 "<S2S_CONF_PATH>": "fmuconfig/output/global_variables.yml",
-                "<SUMO_ENV>": "prod",
             },
             stderr_file="sim2sumo.stderr",
             stdout_file="sim2sumo.stdout",
@@ -37,7 +35,7 @@ class Sim2Sumo(ForwardModelStepPlugin):
     def validate_pre_experiment(
         self, fm_step_json: ForwardModelStepJSON
     ) -> None:
-        env = fm_step_json["argList"][3]
+        env = os.environ.get("SUMO_ENV", "prod")
         command = f"sumo_login -e {env} -m silent"
         return_code = subprocess.call(command, shell=True)
 
