@@ -77,6 +77,8 @@ def main():
     config["file_path"] = args.config_path
     try:
         sim2sumoconfig = create_config_dict(config)
+        if not sim2sumoconfig:
+            raise Exception("Found no files to upload")
     except Exception as e:
         logger.error("Failed to create config dict: %s", e)
         return

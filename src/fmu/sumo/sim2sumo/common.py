@@ -31,7 +31,7 @@ def yaml_load(file_name):
         with open(file_name, "r", encoding="utf-8") as yam:
             config = yaml.safe_load(yam)
     except OSError:
-        logger.warning("Cannot open file, will return empty dict")
+        logger.warning(f"Cannot open file {file_name}, will return empty dict")
     return config
 
 
@@ -147,10 +147,7 @@ def create_config_dict(config):
 
     submods = default_submods
 
-    # Initialize the dictionary to hold the configuration for each datafile
-    sim2sumoconfig = {}
     paths = []
-
     if datafile:
         for file in datafile:
             if isinstance(file, dict):
@@ -165,8 +162,10 @@ def create_config_dict(config):
             else:
                 paths += find_datafiles(path)
     else:
-        paths += find_datafiles(datafile)
+        paths += find_datafiles(None)
 
+    # Initialize the dictionary to hold the configuration for each datafile
+    sim2sumoconfig = {}
     for datafile_path in paths:
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
