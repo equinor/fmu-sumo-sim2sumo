@@ -31,7 +31,7 @@ def yaml_load(file_name):
         with open(file_name, "r", encoding="utf-8") as yam:
             config = yaml.safe_load(yam)
     except OSError:
-        logger.warning("Cannot open file, will return empty dict")
+        logger.warning(f"Cannot open file {file_name}, will return empty dict")
     return config
 
 
