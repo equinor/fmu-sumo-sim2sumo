@@ -147,10 +147,7 @@ def create_config_dict(config):
 
     submods = default_submods
 
-    # Initialize the dictionary to hold the configuration for each datafile
-    sim2sumoconfig = {}
     paths = []
-
     if datafile:
         for file in datafile:
             if isinstance(file, dict):
@@ -165,8 +162,10 @@ def create_config_dict(config):
             else:
                 paths += find_datafiles(path)
     else:
-        paths += find_datafiles(datafile)
+        paths += find_datafiles(None)
 
+    # Initialize the dictionary to hold the configuration for each datafile
+    sim2sumoconfig = {}
     for datafile_path in paths:
         sim2sumoconfig[datafile_path] = {}
         for submod in submods:
