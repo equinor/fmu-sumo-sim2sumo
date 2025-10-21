@@ -240,15 +240,14 @@ def get_table(
     return output
 
 
-def upload_tables(sim2sumoconfig, config, dispatcher):
+def upload_tables(config, dispatcher):
     """Upload tables to sumo
 
     Args:
-        sim2sumoconfig (dict): the sim2sumo configuration
-        config (dict): the fmu config file with metadata
+        config (dict): the fmu config with metadata and the sim2sumo configuration
         env (str): what environment to upload to
     """
-    for datafile_path, submod_and_options in sim2sumoconfig.items():
+    for datafile_path, submod_and_options in config.get("sim2sumoconfig").items():
         datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(
             datafile_path,
@@ -291,7 +290,7 @@ def upload_tables_from_simulation_run(
     Args:
         datafile (str): the datafile defining the simulation run
         submod_and_options (dict): key=submodule, value=options for submodule
-        config (dict): the fmu config with metadata
+        config (dict): the fmu config with metadata and sim2sumoconfig
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")

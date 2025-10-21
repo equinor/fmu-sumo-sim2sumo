@@ -73,17 +73,17 @@ def main():
 
     args = parse_args()
 
-    config = yaml_load(args.config_path)
-    config["file_path"] = args.config_path
+    fmu_config = yaml_load(args.config_path)
+    fmu_config["file_path"] = args.config_path
     try:
-        sim2sumoconfig = create_config_dict(config)
-        if not sim2sumoconfig:
+        config = create_config_dict(fmu_config)
+        if not config.get("sim2sumoconfig"):
             raise Exception("Found no files to upload")
     except Exception as e:
         logger.error("Failed to create config dict: %s", e)
         return
     # Init of dispatcher needs one datafile to locate case uuid
-    one_datafile = list(sim2sumoconfig.keys())[0]
+    one_datafile = list(config.get("sim2sumoconfig").keys())[0]
     env = environ.get("SUMO_ENV", "prod")
     try:
         dispatcher = Dispatcher(
@@ -94,10 +94,10 @@ def main():
         return
 
     # Extract tables
-    upload_tables(sim2sumoconfig, config, dispatcher)
+    upload_tables(config, dispatcher)
 
     # Extract 3dgrid(s) with properties
-    upload_simulation_runs(sim2sumoconfig, config, dispatcher)
+    upload_simulation_runs(config, dispatcher)
 
     dispatcher.finish()
 
