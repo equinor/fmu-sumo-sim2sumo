@@ -113,7 +113,7 @@ NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
             1,
         ),
         (
-            {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
+            {"datafile": [{"3_R001_REEK": ["summary", "rrft"]}]},
             1,
             2,
         ),
@@ -129,16 +129,17 @@ NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
         ({"datatypes": ["grid"]}, 5, 1),
     ],
 )
-def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
-    sim2sumo_config = {"sim2sumo": config}
+def test_create_config_dict(fmu_config, nrdatafiles, nrsubmodules, tmp_path):
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
     os.chdir(real1)
-    inputs = create_config_dict(sim2sumo_config)
-    assert len(inputs) == nrdatafiles, (
-        f"{inputs.keys()} expected to have len {nrdatafiles} datafiles"
+    config = create_config_dict(fmu_config)
+    sim2sumoconfig = config["sim2sumoconfig"]
+    assert len(config.keys()) == 2
+    assert len(sim2sumoconfig) == nrdatafiles, (
+        f"{sim2sumoconfig.keys()} expected to have len {nrdatafiles} datafiles"
     )
-    for submod, subdict in inputs.items():
+    for submod, subdict in sim2sumoconfig.items():
         assert len(subdict) == nrsubmodules, (
             f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
         )
@@ -163,7 +164,7 @@ def test_table_2_bytestring(reekrft):
 
 
 def test_convert_xtgeo_to_sumo_file(
-    eightfipnum, scratch_files, config, case_uuid, sumo, monkeypatch, token
+    eightfipnum, scratch_files, s2s_config, case_uuid, sumo, monkeypatch, token
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -171,7 +172,7 @@ def test_convert_xtgeo_to_sumo_file(
 
     # Not linking geometry since we don't want to write grid to disk in test
     metadata = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, property_units, config, ""
+        scratch_files[1], eightfipnum, property_units, s2s_config, ""
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -187,12 +188,12 @@ def test_convert_xtgeo_to_sumo_file(
 
 
 def test_convert_table_2_sumo_file(
-    reekrft, scratch_files, config, case_uuid, sumo, monkeypatch, token
+    reekrft, scratch_files, s2s_config, case_uuid, sumo, monkeypatch, token
 ):
     monkeypatch.chdir(scratch_files[0])
 
     file = tables.convert_table_2_sumo_file(
-        scratch_files[1], reekrft, "rft", config
+        scratch_files[1], reekrft, "rft", s2s_config
     )[0]
 
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -217,9 +218,11 @@ def get_sumo_object(sumo, case_uuid, name, tagname):
     return obj
 
 
-def test_generate_grid3d_meta(scratch_files, xtgeogrid, config, monkeypatch):
+def test_generate_grid3d_meta(
+    scratch_files, xtgeogrid, s2s_config, monkeypatch
+):
     monkeypatch.chdir(scratch_files[0])
-    meta = grid3d.generate_grid3d_meta(scratch_files[1], xtgeogrid, config)
+    meta = grid3d.generate_grid3d_meta(scratch_files[1], xtgeogrid, s2s_config)
     assert isinstance(meta, dict)
 
 
@@ -230,19 +233,19 @@ def test_get_datafile_unit_system(scratch_files, monkeypatch):
 
 
 def test_generate_gridproperty_meta(
-    scratch_files, eightfipnum, config, monkeypatch
+    scratch_files, eightfipnum, s2s_config, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     meta = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, property_units, config, ""
+        scratch_files[1], eightfipnum, property_units, s2s_config, ""
     )
     assert isinstance(meta, dict)
 
 
 def test_upload_init(
-    scratch_files, xtgeogrid, config, sumo, token, monkeypatch
+    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
@@ -253,7 +256,7 @@ def test_upload_init(
         str(scratch_files[1]).replace(".DATA", ".INIT"),
         xtgeogrid,
         property_units,
-        config,
+        s2s_config,
         disp,
         "",
     )
@@ -294,7 +297,7 @@ def test_get_all_restart_properties(scratch_files, xtgeogrid):
 def test_get_restart_properties(scratch_files, xtgeogrid, s2s_config):
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
     prop_names = grid3d.get_restart_properties(
-        restart_path, xtgeogrid, s2s_config[scratch_files[1]]
+        restart_path, xtgeogrid, s2s_config["sim2sumoconfig"][scratch_files[1]]
     )
 
     # Testing using default restart properties
@@ -304,7 +307,7 @@ def test_get_restart_properties(scratch_files, xtgeogrid, s2s_config):
 
 
 def test_upload_restart(
-    scratch_files, xtgeogrid, config, s2s_config, sumo, token, monkeypatch
+    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
@@ -328,8 +331,8 @@ def test_upload_restart(
         xtgeogrid,
         property_units,
         grid3d.get_timesteps(restart_path, xtgeogrid),
-        config,
-        s2s_config[scratch_files[1]],
+        s2s_config,
+        scratch_files[1],
         disp,
         "",
     )
@@ -339,7 +342,7 @@ def test_upload_restart(
 
 
 def test_upload_tables_from_simulation_run(
-    scratch_files, config, sumo, token, monkeypatch
+    scratch_files, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -348,7 +351,7 @@ def test_upload_tables_from_simulation_run(
     tables.upload_tables_from_simulation_run(
         REEK_DATA_FILE,
         {"summary": {"arrow": True}, "rft": {"arrow": True}},
-        config,
+        s2s_config,
         disp,
     )
     uuid = disp.parentid
@@ -357,16 +360,14 @@ def test_upload_tables_from_simulation_run(
 
 
 def test_upload_simulation_run(
-    scratch_files, config, s2s_config, sumo, token, monkeypatch
+    scratch_files, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
 
     expected_cpgrid = 1
     expected_cpgrid_property = 14
-    grid3d.upload_simulation_run(
-        scratch_files[1], s2s_config[scratch_files[1]], config, disp
-    )
+    grid3d.upload_simulation_run(scratch_files[1], s2s_config, disp)
     uuid = disp.parentid
     disp.finish()
     check_sumo(uuid, "cpgrid", expected_cpgrid, sumo)

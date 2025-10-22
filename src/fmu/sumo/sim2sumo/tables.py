@@ -77,7 +77,7 @@ def generate_table_meta(datafile, obj, tagname, config):
         datafile (str): path to datafile
         obj (xtgeo object): the object to generate metadata on
         tagname: tagname
-        config (dict): the fmu config file
+        config (dict): the fmuconfig with metadata and sim2sumoconfig
 
     Returns:
         dict: the metadata for obj
@@ -90,7 +90,7 @@ def generate_table_meta(datafile, obj, tagname, config):
     name = give_name(datafile)
 
     exp_args = {
-        "config": config,
+        "config": config["fmuconfig"],
         "name": name,
         "tagname": tagname,
         "content": content,
@@ -116,7 +116,7 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
       datafile (str|PosixPath): path to datafile connected to extracted object
       obj (pa.Table): The object to prepare for upload
       tagname (str): what submodule the table is extracted from
-      config (dict): dictionary with master metadata needed for Sumo
+      config (dict): the fmuconfig with metadata and sim2sumoconfig
     Returns:
       files (list): List of SumoFile objects with table object
         as bytestring and metadata as dictionary
@@ -244,10 +244,10 @@ def upload_tables(config, dispatcher):
     """Upload tables to sumo
 
     Args:
-        config (dict): the fmu config with metadata and the sim2sumo configuration
+        config (dict): the fmuconfig with metadata and the sim2sumoconfig
         env (str): what environment to upload to
     """
-    for datafile_path, submod_and_options in config.get("sim2sumoconfig").items():
+    for datafile_path, submod_and_options in config["sim2sumoconfig"].items():
         datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(
             datafile_path,
@@ -265,7 +265,7 @@ def upload_vfp_tables_from_simulation_run(
     Args:
         datafile (str): the datafile defining the simulation run
         options (dict): the options for vfp
-        config (dict): the fmu config with metadata
+        config (dict): the fmuconfig with metadata and sim2sumoconfig
         dispatcher (sim2sumo.common.Dispatcher): job dispatcher
     """
     vfp_dict = vfp_to_arrow_dict(datafile, options)
@@ -290,7 +290,7 @@ def upload_tables_from_simulation_run(
     Args:
         datafile (str): the datafile defining the simulation run
         submod_and_options (dict): key=submodule, value=options for submodule
-        config (dict): the fmu config with metadata and sim2sumoconfig
+        config (dict): the fmuconfig with metadata and sim2sumoconfig
         dispatcher (sim2sumo.common.Dispatcher)
     """
     logger = logging.getLogger(__name__ + ".upload_tables_from_simulation_run")

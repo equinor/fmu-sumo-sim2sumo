@@ -186,7 +186,7 @@ def create_config_dict(config):
                     )
 
     # Return the dictionary that holds both fmu and sim2sumo config
-    return {**config, "sim2sumoconfig": sim2sumoconfig}
+    return {"fmuconfig": config, "sim2sumoconfig": sim2sumoconfig}
 
 
 class Dispatcher:
