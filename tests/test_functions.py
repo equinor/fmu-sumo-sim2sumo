@@ -113,7 +113,7 @@ NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
             1,
         ),
         (
-            {"datafile": [{"3_R001_REEK": ["summary", "rrft"]}]},
+            {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
             1,
             2,
         ),
@@ -129,13 +129,14 @@ NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
         ({"datatypes": ["grid"]}, 5, 1),
     ],
 )
-def test_create_config_dict(fmu_config, nrdatafiles, nrsubmodules, tmp_path):
+def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
     real1 = tmp_path / "realone"
     copytree(REEK_REAL1, real1)
     os.chdir(real1)
-    config = create_config_dict(fmu_config)
-    sim2sumoconfig = config["sim2sumoconfig"]
-    assert len(config.keys()) == 2
+    sim2sumo_config = {"sim2sumo": config}
+    inputs = create_config_dict(sim2sumo_config)
+    sim2sumoconfig = inputs["sim2sumoconfig"]
+    assert len(inputs.keys()) == 2
     assert len(sim2sumoconfig) == nrdatafiles, (
         f"{sim2sumoconfig.keys()} expected to have len {nrdatafiles} datafiles"
     )

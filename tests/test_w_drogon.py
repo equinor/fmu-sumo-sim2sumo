@@ -39,11 +39,13 @@ def test_vfp_to_arrow(options, keycombo, nrkeys, nrtables):
 
 
 def test_vfp_tables_from_simulation_run(
-    scratch_files, config, sumo, case_uuid, monkeypatch
+    scratch_files, s2s_config, sumo, case_uuid, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[2], "dev")
 
-    upload_vfp_tables_from_simulation_run(DROGON_DATAFILE, {}, config, disp)
+    upload_vfp_tables_from_simulation_run(
+        DROGON_DATAFILE, {}, s2s_config, disp
+    )
     disp.finish()
     check_sumo(case_uuid, "table", 5, sumo)
