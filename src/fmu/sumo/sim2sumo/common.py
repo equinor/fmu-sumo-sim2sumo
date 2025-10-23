@@ -123,11 +123,13 @@ def create_config_dict(config):
     """Read config settings and make dictionary for use when exporting.
 
     Args:
-        config (dict): the settings for export of simulator results.
+        config (dict): FMU global variables file created by
+                       fmu-config(https://github.com/equinor/fmu-config).
 
     Returns:
-        dict: dictionary with key as path to datafile, value as dict of
-              submodule and option.
+        dict: A dictionary consists of fmuconfig with metadata and sim2sumoconfig.
+              sim2sumoconfig is a dictionary with key as path to datafile,
+              value as dict of submodule and option.
     """
     simconfig = config.get("sim2sumo", {})
     validate_sim2sumo_config(simconfig)
