@@ -66,7 +66,7 @@ def _fix_rft_reek():
     )
 
 
-@pytest.fixture(scope="session", name="config")
+@pytest.fixture(scope="session", name="fmu_config")
 def _fix_config():
     return yaml_load(CONFIG_PATH)
 
