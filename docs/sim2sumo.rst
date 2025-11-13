@@ -14,7 +14,7 @@ Short introduction
 
 
 The package makes available export of all datatypes that you can export with ``res2df``, and uploads these results to Sumo. It is part of ``komodo`` and can be accessed from the command line with ``sim2sumo``, or from
-``ert`` with the forward model **SIM2SUMO**. In it's simplest form it needs no extra configuration settings, but comes pre-configured to extract datatypes:
+``ert`` with the forward model **SIM2SUMO**. In its simplest form it needs no extra configuration settings, but comes pre-configured to extract datatypes:
 
 
 * summary
