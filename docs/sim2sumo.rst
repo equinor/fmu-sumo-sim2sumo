@@ -14,13 +14,14 @@ Short introduction
 
 
 The package makes available export of all datatypes that you can export with ``res2df``, and uploads these results to Sumo. It is part of ``komodo`` and can be accessed from the command line with ``sim2sumo``, or from
-``ert`` with the forward model **SIM2SUMO**. In it't simplest form it needs no extra configuration settings, but comes pre-configured to extract datatypes:
+``ert`` with the forward model **SIM2SUMO**. In its simplest form it needs no extra configuration settings, but comes pre-configured to extract datatypes:
 
 
 * summary
 * rft
-* wellcompletions
-
+* satfunc
+* gruptree
+* wellcompletiondata
 
 | To run sim2sumo with ert it needs to be inserted in your *ert config file* after the reservoir simulator run, this is typically an **eclipse** run.
 | See :ref:`examples`.
@@ -177,12 +178,12 @@ You can also specify what datatypes should be extracted for each file, by adding
       datafile:
          - eclipse/model/DROGON:
             - summary
-            - wcon
-            - faults
+            - rft
+            - gruptree
          - eclipse/model/DROGON-0.DATA:
             - summary
-            - wcon
-            - faults
+            - rft
+            - gruptree
 
 
 datatypes
@@ -193,8 +194,8 @@ This section is for configuration of what data to extract. It should be specifie
 
       datatypes:
         - summary
-        - wcon
-        - faults
+        - rft
+        - gruptree
         - ..
 
 To include all datatypes use a list with a single item "all":
@@ -204,7 +205,15 @@ To include all datatypes use a list with a single item "all":
       datatypes:
          - all
 
-For datatypes available see documentation for ``res2df``
+The available datatypes are:
+   * summary
+   * rft
+   * satfunc
+   * gruptree
+   * wellcompletiondata
+   * grid
+
+For more information on these datatypes available, see the documentation for ``res2df``
 
 .. options:
 .. -------------
@@ -225,20 +234,25 @@ To include all restart properties, use a list with a single item "all":
 
    .. code-block::
 
-      rstprops:
-         - all
+      sim2sumo:
+         datatypes:
+            - grid
+         rstprops:
+            - all
 
 To include specific restart properties, use a list with single items. The following is equivalent to exporting the default restart properties, plus the "RS" property
 
    .. code-block::
 
-      rstprops:
-         - SWAT
-         - SGAS
-         - SOIL
-         - PRESSURE
-         - RS
-
+      sim2sumo:
+         datatypes:
+            - grid
+         rstprops:
+            - SWAT
+            - SGAS
+            - SOIL
+            - PRESSURE
+            - RS
 
 Overriding default datatypes
 ----------------
@@ -254,8 +268,8 @@ The example shows how to only extract summary data from the first file, and all 
          - eclipse/model/DROGON-1.DATA
       datatypes:
          - summary
-         - wcon
-         - faults
+         - rft
+         - gruptree
 
 
 Using sim2sumo in scripts
@@ -284,6 +298,12 @@ Using sim2sumo from the command line
 Using sim2sumo from the command line is discouraged, and there is no guarantee that it will work.
 
 The intension of sim2sumo is to be run as an ert FORWARD_MODEL.
+
+The following environment variables need to be set if sim2sumo is not run as part of an ert FORWARD_MODEL:
+
+   * _ERT_EXPERIMENT_ID
+   * _ERT_RUNPATH
+   * _ERT_SIMULATION_MODE
 
 Execution of sim2sumo from command line
 ========================================

@@ -133,7 +133,13 @@ def delete_unwanted_rft_files(frame):
 
 
 SUBMODULES, SUBMOD_DICT = _define_submodules()
-DEFAULT_SUBMODULES = ["summary", "rft", "satfunc"]
+DEFAULT_SUBMODULES = [
+    "summary",
+    "rft",
+    "satfunc",
+    "gruptree",
+    "wellcompletiondata",
+]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
 
 

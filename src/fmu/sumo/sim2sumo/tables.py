@@ -32,6 +32,7 @@ from .common import (
     give_name,
 )
 
+# map of res2df modules to fmu.datamodels content
 SUBMOD_CONTENT = {
     "summary": "simulationtimeseries",
     "satfunc": "relperm",
@@ -39,6 +40,8 @@ SUBMOD_CONTENT = {
     "rft": "rft",
     "pvt": "pvt",
     "transmissibilities": "transmissibilities",
+    "gruptree": "production_network",
+    "wellcompletiondata": "well_completions",
 }
 
 if sys.version_info >= (3, 12):
