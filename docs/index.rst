@@ -12,6 +12,5 @@ The package facilitates upload of results from reservoir simulators such as **ec
    :maxdepth: 2
    :caption: Contents
 
-   self
    sim2sumo
    api
