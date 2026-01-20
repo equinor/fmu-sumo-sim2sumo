@@ -33,7 +33,10 @@ def get_datafile_unit_system(datafile_path: str) -> str:
             break
 
     if not unit_system:
-        raise ValueError("Unit system definition not found in datafile")
+        print(
+            f"Unit system definition not found in datafile: {datafile_path}. Defaulting to METRIC."
+        )
+        return "METRIC"
 
     return unit_system
 
