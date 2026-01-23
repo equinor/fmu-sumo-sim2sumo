@@ -44,10 +44,8 @@ class Sim2Sumo(ForwardModelStepPlugin):
         return_code = subprocess.call(command, shell=True)
 
         err_msg = (
-            f"Your config uses Sumo. Detected environment varibale 'SUMO_ENV': {env}\n"
-            "- If the value of `SUMO_ENV` is as expected, please run the following in your terminal:"
-            f" sumo_login{f' -e {env}' if env != 'prod' else ''}\n"
-            f"- If the value is not correct, set `SUMO_ENV` to your desired environment in your terminal. Valid values are preview, dev, test and prod."
+            "Your access token for Sumo is either missing or expired. "
+            "Please run 'sumo_login' in a terminal window to log in again."
         )
 
         if return_code != 0:
