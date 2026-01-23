@@ -23,57 +23,35 @@ The package makes available export of all datatypes that you can export with ``r
 * gruptree
 * wellcompletiondata
 
-| To run sim2sumo with ert it needs to be inserted in your *ert config file* after the reservoir simulator run, this is typically an **eclipse** run.
+| To run sim2sumo with ERT it needs to be inserted in your *ERT config file* after the reservoir simulator run.
 | See :ref:`examples`.
 
-.. note::
-
-   Sim2sumo as fmu-sumo-uploader uses the fmu-config file (aka global variables) to pick up required metadata. For more on this topic see :ref:`config file`
 
 .. _preconditions:
 
 Preconditions
 ***************
 
-.. important:: **First time uploading to sumo?**
+* Sim2sumo needs to run within an FMU workflow which is enabled for using Sumo.
 
-   There are some requirements that need to be in place for sim2sumo to run, these are the same preparations that are required for any upload to sumo.
-   Read the `fmu-dataio preparations section <https://fmu-dataio.readthedocs.io/en/latest/preparations.html>`_ thoroughly.
+.. important:: **First time uploading to Sumo?**
 
-These are the conditions that need to be in place when extracting results with sim2sumo.
+   There are some requirements that need to be in place for sim2sumo to run, these are the same preparations that are required for any upload to Sumo.
+   Refer to the `Getting Started <https://doc-sumo-doc-dev.radix.equinor.com/guides/>`_ section in the Sumo documentation.
 
-* Sim2sumo needs to be run from a location where it can find a case metadata object stored on disk.
-  This means that it needs to be run from within an fmu workflow with RUNPATH = *<CASE_PATH>realization-<IENS>/iter-<ITER>*, and a case metadata object stored at
-  *<CASE_PATH>share/metadata/fmu_case.yml*
-
-  Example::
-
-   RUNPATH = /scratch/fmu/myuser/drogon-ahm-2024-02-05/realization-2/iter-1/
-   Case metadata: /scratch/fmu/myuser/drogon-ahm-2024-02-05/share/metadata/fmu_case.yml
-
-* The case metadata object must have been uploaded to Sumo, and to the same environment that you are intending to upload to.
-  Default sumo environment is **prod**, and you should have a good reason for uploading elsewhere.
-
-* a :ref:`config file <config file>` with the required metadata to identify the asset that the data is coming from.
 
 .. _config file:
 
 The config file
 *****************
 
-In it's simplest form sim2sumo seems to not need any configuration. This is not correct, under the hood it is using the fmu-config file.
-For the simplest implementation this file needs to be stored at *fmuconfig/output/global_variables.yml*, relative to where you run sim2sumo.
-There are two 'parts' in the global variables file that are relevant for sim2sumo:
+In it's simplest form `sim2sumo` does not need any configuration. 
 
-1. The master data needed for the upload to sumo, that is the three sections model, masterdata, and access.
-   These are absolutely neccessary, as with all uploads to sumo. More on this topic can be found in the documentation
-   for ``fmu-dataio``, see :ref:`preconditions`
-
-2. A section named sim2sumo. This section is not strictly needed, but needs to exist for custom configuration of sim2sumo, see :ref:`custom config`
+However, custom configuration of `sim2sumo` can be done through `global_variables.yml`.
 
 .. important::
 
-   If you need to configure sim2sumo for your needs it is strongly encouraged to to add the sim2sumo section to a *_sim2sumo.yml* file and link this into the file *global_master.yml* config file before
+   If you need to include custom configuration for `sim2sumo`, you are encouraged to add the "sim2sumo" section to a *_sim2sumo.yml* file and link this into the file *global_master.yml* config file before
    you generate the *global_variables.yml* and *global_variables.yml.tmpl* files.
 
    Example:
@@ -84,7 +62,7 @@ There are two 'parts' in the global variables file that are relevant for sim2sum
       (rest of global_variables master file)
 
       #===================================================================================
-      # Sim2sumo config settings
+      # sim2sumo config settings
       #===================================================================================
 
       sim2sumo: !include _sim2sumo.yml
@@ -94,13 +72,6 @@ There are two 'parts' in the global variables file that are relevant for sim2sum
 
 Usage and examples
 ********************
-As a FORWARD_MODEL in ERT
-=========================================
-
-| All examples below extracts results to *share/results/tables*, and uploads those results to Sumo.
-| You don't need to have more than one instance of this job, it automatically extracts the default results.
-| If you want to include more datatypes add that to the configuration file, see :ref:`config settings`,
-| See also :ref:`preconditions`.
 
 Simplest case
 -----------------
@@ -109,7 +80,7 @@ Simplest case
 
 
     FORWARD_MODEL ECLIPSE(...)
-    -- Note: SIM2SUMO needs to be run after the reservoir simulation
+    -- Note: sim2sumo needs to be run after the reservoir simulation
     FORWARD_MODEL SIM2SUMO
 
 
@@ -122,7 +93,7 @@ If you for some reason don't have the fmu config file in the standard location o
 
 
     FORWARD_MODEL ECLIPSE(...)
-    -- Note: SIM2SUMO needs to be run after the reservoir simulation
+    -- Note: sim2sumo needs to be run after the reservoir simulation
     FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
 
 .. _config settings:
@@ -145,7 +116,7 @@ Example of config settings for sim2sumo
 Custom configuration
 =====================
 
-The sim2sumo section in the config file gives you full flexibility for extracting anything that ``res2df`` can extract.
+The "sim2sumo" section in the config file gives you full flexibility for extracting anything that ``res2df`` can extract.
 You can also change where you extract results from, and use some of the extra customization options that ``res2df`` has available.
 The three relevant sections are:
 
