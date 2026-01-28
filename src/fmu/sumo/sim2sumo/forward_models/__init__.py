@@ -101,7 +101,7 @@ stored in Sumo with name: DROGON, tagname: summary, and fmu.realization.id: 1
    (for inclusion of the forward model in your ert setup see examples 1. or 2.)
 """,
             category="export",
-            source_package="sim2sumo",
+            source_package="fmu.sumo.sim2sumo",
         )
 
 
