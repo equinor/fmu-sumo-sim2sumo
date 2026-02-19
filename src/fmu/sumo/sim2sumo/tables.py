@@ -6,19 +6,23 @@ Does three things:
 """
 
 import base64
+import contextlib
 import hashlib
 import logging
 import sys
 from copy import deepcopy
 from itertools import islice
-from typing import Union
+from typing import Any, Union
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import res2df
+from pydantic import ValidationError
 
 from fmu.dataio import ExportData
+from fmu.dataio._metadata import generate_metadata
+from fmu.datamodels.fmu_results.standard_result import AnyStandardResult
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
 from ._special_treatments import (
@@ -73,17 +77,22 @@ def table_2_bytestring(table):
 
 
 # Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
-def generate_table_meta(datafile, obj, tagname, config):
+def generate_table_meta(
+    datafile: str,
+    table: pa.Table | pd.DataFrame,
+    tagname: str,
+    config: dict[str, Any],
+) -> dict[str, Any]:
     """Generate metadata for xtgeo object
 
     Args:
-        datafile (str): path to datafile
-        obj (xtgeo object): the object to generate metadata on
+        datafile: path to datafile
+        table: the object to generate metadata on
         tagname: tagname
-        config (dict): the fmuconfig with metadata and sim2sumoconfig
+        config: the fmuconfig with metadata and sim2sumoconfig
 
     Returns:
-        dict: the metadata for obj
+        Dictionary of metadata for the table
     """
     if "vfp" in tagname.lower():
         content = "lift_curves"
@@ -103,10 +112,14 @@ def generate_table_meta(datafile, obj, tagname, config):
     if datefield is not None:
         exp_args["timedata"] = [[datefield]]
 
-    exd = ExportData(**exp_args)
-    metadata = exd.generate_metadata(obj)
+    export_config = ExportData(**exp_args)._export_config
 
-    return metadata
+    # Add standard result if content type is represented as one
+    with contextlib.suppress(ValidationError):
+        standard_result = AnyStandardResult(name=content)
+        export_config = export_config.with_standard_result(standard_result)
+
+    return generate_metadata(export_config, table)
 
 
 def convert_table_2_sumo_file(datafile, obj, tagname, config):
@@ -201,9 +214,8 @@ def get_table(
     logger = logging.getLogger(__file__ + ".get_table")
     extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
-    from contextlib import suppress
 
-    with suppress(KeyError):
+    with contextlib.suppress(KeyError):
         del kwargs["arrow"]
     output = None
     try:
