@@ -39,7 +39,7 @@ SUBMOD_CONTENT = {
     "vfp": "lift_curves",
     "rft": "rft",
     "pvt": "pvt",
-    "transmissibilities": "transmissibilities",
+    "trans": "transmissibilities",
     "gruptree": "production_network",
     "wellcompletiondata": "well_completions",
 }
