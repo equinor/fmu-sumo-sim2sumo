@@ -38,12 +38,7 @@ Exporting data from eclipse with metadata
    SUBMODULE = "summary"
    s2s.upload_with_config(CONFIG_PATH, DATAFILE, SUBMODULE, "prod")
 
-Using sim2sumo from the command line
-***************************************
-
-Using sim2sumo from the command line is discouraged, and there is no guarantee that it will work.
-
-The intension of sim2sumo is to be run as an ert FORWARD_MODEL.
+The intention of sim2sumo is to be run as an ert FORWARD_MODEL.
 
 The following environment variables need to be set if sim2sumo is not run as part of an ert FORWARD_MODEL:
 

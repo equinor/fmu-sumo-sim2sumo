@@ -39,7 +39,7 @@ To include just grid properties:
 
 .. code-block:: yaml
 
-# Example config to upload just default grid properties
+    # Example config to upload just default grid properties
     sim2sumo:
         datatypes:
         - grid
