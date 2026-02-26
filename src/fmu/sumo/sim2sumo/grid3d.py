@@ -106,7 +106,8 @@ def generate_gridproperty_meta(datafile, obj, property_units, config, geogrid):
     exp_args = {
         "config": config["fmuconfig"],
         "tagname": tagname,
-        "content": {"property": {"is_discrete": False}},
+        "content": "property",
+        "content_metadata": {"is_discrete": False},
         "geometry": geogrid,
     }
 
