@@ -256,7 +256,6 @@ def test_generate_gridproperty_meta(
         s2s_config,
         scratch_files[3],
     )
-    # meta = {}
     assert isinstance(meta, dict)
 
 
