@@ -172,7 +172,6 @@ def test_convert_xtgeo_to_sumo_file(
     sumo,
     monkeypatch,
     token,
-    tmp_grid,
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -180,7 +179,11 @@ def test_convert_xtgeo_to_sumo_file(
 
     # Not linking geometry since we don't want to write grid to disk in test
     metadata = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, property_units, s2s_config, tmp_grid
+        scratch_files[1],
+        eightfipnum,
+        property_units,
+        s2s_config,
+        scratch_files[3],
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -241,7 +244,7 @@ def test_get_datafile_unit_system(scratch_files, monkeypatch):
 
 
 def test_generate_gridproperty_meta(
-    scratch_files, eightfipnum, s2s_config, monkeypatch, tmp_grid
+    scratch_files, eightfipnum, s2s_config, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     property_units = get_all_properties_units("METRIC")
@@ -251,14 +254,14 @@ def test_generate_gridproperty_meta(
         eightfipnum,
         property_units,
         s2s_config,
-        tmp_grid,
+        scratch_files[3],
     )
     # meta = {}
     assert isinstance(meta, dict)
 
 
 def test_upload_init(
-    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch, tmp_grid
+    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
@@ -271,7 +274,7 @@ def test_upload_init(
         property_units,
         s2s_config,
         disp,
-        tmp_grid,
+        scratch_files[3],
     )
     uuid = disp.parentid
     disp.finish()
@@ -320,7 +323,7 @@ def test_get_restart_properties(scratch_files, xtgeogrid, s2s_config):
 
 
 def test_upload_restart(
-    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch, tmp_grid
+    scratch_files, xtgeogrid, s2s_config, sumo, token, monkeypatch
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
@@ -347,7 +350,7 @@ def test_upload_restart(
         s2s_config,
         scratch_files[1],
         disp,
-        tmp_grid,
+        scratch_files[3],
     )
     uuid = disp.parentid
     disp.finish()

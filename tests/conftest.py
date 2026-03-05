@@ -33,23 +33,9 @@ def set_up_tmp(path):
     config_path = real0 / "fmuconfig/output/global_variables.yml"
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
 
-    return real0, eight_datafile, config_path
-
-
-def set_up_tmp_egrid(path):
-    reek_tmp = path / "reek_tmp"
-    shutil.copytree(REEK_ROOT, reek_tmp, copy_function=shutil.copy)
-    real0 = reek_tmp / "realization-0/iter-0"
-    config_path = real0 / "fmuconfig/output/global_variables.yml"
-    eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
-
     # Create temporary 3D grid with metadata
     egrid_path = str(eight_datafile).replace(".DATA", ".EGRID")
     egrid = grid_from_file(egrid_path)
-
-    print("*" * 15)
-    print(f"EGRID path {egrid_path}")
-    print("*" * 15)
 
     fmu_config = yaml_load(config_path)
     config = create_config_dict(fmu_config)
@@ -72,13 +58,7 @@ def set_up_tmp_egrid(path):
         egrid
     )  # returns path to file with metadata
 
-    return _egrid_with_metadata
-
-
-@pytest.fixture(scope="function", name="tmp_grid")
-def _fix_grid_with_metadata(tmp_path):
-    # tmp_path is a fixture provided by pytest
-    return set_up_tmp_egrid(tmp_path / "scratch")
+    return real0, eight_datafile, config_path, _egrid_with_metadata
 
 
 @pytest.fixture(scope="function", name="ert_run_scratch_files")
