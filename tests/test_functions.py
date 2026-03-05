@@ -165,7 +165,13 @@ def test_table_2_bytestring(reekrft):
 
 
 def test_convert_xtgeo_to_sumo_file(
-    eightfipnum, scratch_files, s2s_config, case_uuid, sumo, monkeypatch, token
+    eightfipnum,
+    scratch_files,
+    s2s_config,
+    case_uuid,
+    sumo,
+    monkeypatch,
+    token,
 ):
     monkeypatch.chdir(scratch_files[0])
 
@@ -173,7 +179,11 @@ def test_convert_xtgeo_to_sumo_file(
 
     # Not linking geometry since we don't want to write grid to disk in test
     metadata = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, property_units, s2s_config, ""
+        scratch_files[1],
+        eightfipnum,
+        property_units,
+        s2s_config,
+        scratch_files[3],
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
@@ -240,7 +250,11 @@ def test_generate_gridproperty_meta(
     property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     meta = grid3d.generate_gridproperty_meta(
-        scratch_files[1], eightfipnum, property_units, s2s_config, ""
+        scratch_files[1],
+        eightfipnum,
+        property_units,
+        s2s_config,
+        scratch_files[3],
     )
     assert isinstance(meta, dict)
 
@@ -250,7 +264,7 @@ def test_upload_init(
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
-    expected_results = 5
+    expected_results = 5  # DEPTH, TRANX, TRANY, TRANZ and FIPNUM
     property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
     grid3d.upload_init(
@@ -259,7 +273,7 @@ def test_upload_init(
         property_units,
         s2s_config,
         disp,
-        "",
+        scratch_files[3],
     )
     uuid = disp.parentid
     disp.finish()
@@ -312,7 +326,7 @@ def test_upload_restart(
 ):
     monkeypatch.chdir(scratch_files[0])
     disp = Dispatcher(scratch_files[1], "dev", token=token)
-    expected_results = 9
+    expected_results = 9  # SOIL, SWAT and PRESSURE x3 timesteps
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
     property_units = get_all_properties_units("METRIC")
     # Not linking geometry since we don't want to write grid to disk in test
@@ -335,7 +349,7 @@ def test_upload_restart(
         s2s_config,
         scratch_files[1],
         disp,
-        "",
+        scratch_files[3],
     )
     uuid = disp.parentid
     disp.finish()
@@ -402,12 +416,12 @@ def test_submodules_dict():
 # Skipping wellcompletion data, since this requires zonemap
 def test_get_table(submod):
     """Test fetching of dataframe"""
-    frame = tables.get_table(REEK_DATA_FILE, submod, arrow=False)
+    frame = tables.get_table(str(REEK_DATA_FILE), submod, arrow=False)
     assert isinstance(frame, pd.DataFrame), (
         "get_table with arrow=False should return dataframe,"
         f" but returned {type(frame)}"
     )
-    frame = tables.get_table(REEK_DATA_FILE, submod, arrow=True)
+    frame = tables.get_table(str(REEK_DATA_FILE), submod, arrow=True)
     assert isinstance(frame, pa.Table), (
         "get_table with arrow=True should return pa.Table,"
         f" but returned {type(frame)}"

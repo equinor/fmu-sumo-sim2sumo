@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 import yaml
 from fmu.config.utilities import yaml_load
+from fmu.dataio import ExportData
 from fmu.sumo.uploader import CaseOnDisk
 from httpx import HTTPStatusError
 from sumo.wrapper import SumoClient
@@ -31,7 +32,31 @@ def set_up_tmp(path):
     real0 = reek_tmp / "realization-0/iter-0"
     config_path = real0 / "fmuconfig/output/global_variables.yml"
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
-    return real0, eight_datafile, config_path
+
+    # Create temporary 3D grid with metadata
+    grid_path = str(eight_datafile).replace(".DATA", ".EGRID")
+    grid = grid_from_file(grid_path)
+
+    fmu_config = yaml_load(config_path)
+    config = create_config_dict(fmu_config)
+
+    exp_args = {
+        "config": config["fmuconfig"],
+        "name": "",
+        "tagname": "",
+        "content": "depth",
+    }
+
+    # NOTE fmu-dataio ExportData.export() exports to a pre-defined path in the
+    # run directory + share/results/grids/
+    # In this casel, real0 is the run directory
+
+    os.chdir(real0)
+
+    exd = ExportData(**exp_args)
+    grid_with_metadata = exd.export(grid)  # returns path to file with metadata
+
+    return real0, eight_datafile, config_path, grid_with_metadata
 
 
 @pytest.fixture(scope="function", name="ert_run_scratch_files")
