@@ -17,7 +17,7 @@ def test_table_standard_result_metadata(
     monkeypatch: pytest.MonkeyPatch,
     tagname: str,
 ) -> None:
-    realization, datafile, config_path = scratch_files
+    realization, datafile, config_path, grid = scratch_files
 
     with open(config_path) as f:
         global_config_dict = yaml.safe_load(f)

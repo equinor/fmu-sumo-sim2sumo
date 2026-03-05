@@ -34,8 +34,8 @@ def set_up_tmp(path):
     eight_datafile = real0 / "eclipse/model/EIGHTCELLS.DATA"
 
     # Create temporary 3D grid with metadata
-    egrid_path = str(eight_datafile).replace(".DATA", ".EGRID")
-    egrid = grid_from_file(egrid_path)
+    grid_path = str(eight_datafile).replace(".DATA", ".EGRID")
+    grid = grid_from_file(grid_path)
 
     fmu_config = yaml_load(config_path)
     config = create_config_dict(fmu_config)
@@ -54,11 +54,9 @@ def set_up_tmp(path):
     os.chdir(real0)
 
     exd = ExportData(**exp_args)
-    _egrid_with_metadata = exd.export(
-        egrid
-    )  # returns path to file with metadata
+    grid_with_metadata = exd.export(grid)  # returns path to file with metadata
 
-    return real0, eight_datafile, config_path, _egrid_with_metadata
+    return real0, eight_datafile, config_path, grid_with_metadata
 
 
 @pytest.fixture(scope="function", name="ert_run_scratch_files")
