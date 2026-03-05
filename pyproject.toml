@@ -8,12 +8,14 @@ requires-python = ">=3.11"
 dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.24",
-  "fmu-dataio",
+  "fmu-dataio>=2.22.2",
+  "fmu-datamodels",
   "opm>=2020.10.2",
   "res2df",
   "xtgeo",
   "pandas",
   "pyarrow",
+  "pydantic",
 ]
 
 [project.optional-dependencies]
@@ -58,7 +60,7 @@ extend-select = [
   "SIM", # Flake8-simplify
   "TC",  # Flake8-type-checking
   "TID", # Flake8-tidy-imports
-  "N",   # pep8-naming  
+  "N",   # pep8-naming
   "PD",  # Pandas
   "NPY", # NumPy
 ]
