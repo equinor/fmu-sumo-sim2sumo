@@ -31,10 +31,8 @@ from ._special_treatments import (
     delete_unwanted_rft_files,
     vfp_to_arrow_dict,
 )
-from .common import (
-    find_datefield,
-    give_name,
-)
+from .common import find_datefield, give_name
+from .version import version
 
 # map of res2df modules to fmu.datamodels content
 SUBMOD_CONTENT = {
@@ -117,7 +115,9 @@ def generate_table_meta(
     # Add standard result if content type is represented as one
     with contextlib.suppress(ValidationError):
         standard_result = AnyStandardResult(name=content)
-        export_config = export_config.with_standard_result(standard_result)
+        export_config = export_config.with_standard_result(
+            standard_result
+        ).with_tracklog_source("fmu-sumo-sim2sumo", version)
 
     return generate_metadata(export_config, table)
 

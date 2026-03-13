@@ -8,7 +8,7 @@ requires-python = ">=3.11"
 dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.24",
-  "fmu-dataio>=2.22.2",
+  "fmu-dataio>=2.24.0",
   "fmu-datamodels",
   "opm>=2020.10.2",
   "res2df",
@@ -36,9 +36,11 @@ docs = [
   "sphinxcontrib-apidoc",
 ]
 
+[tool.setuptools_scm]
+write_to = "src/fmu/sumo/sim2sumo/version.py"
+
 [tool.setuptools.packages.find]
 where = ["src"]
-
 
 [project.scripts]
 sim2sumo = "fmu.sumo.sim2sumo.main:main"
