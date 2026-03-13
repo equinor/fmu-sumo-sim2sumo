@@ -29,7 +29,7 @@ Default data types
 
    * grid (INIT "initial" and restart "dynamic" 3D grid properties)
    * pvt (PVT tables)
-   * tran (transmissibilities)
+   * trans (transmissibilities)
    * vfp (lift curves; one table for each lift curve)
 
    See `Configuration of sim2sumo`_.
