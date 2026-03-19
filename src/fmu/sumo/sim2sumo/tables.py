@@ -200,7 +200,7 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
 
 def get_table(
     datafile_path: str, submod: str, **kwargs
-) -> Union[pa.Table, pd.DataFrame]:
+) -> Union[pa.Table, pd.DataFrame, None]:
     """Fetch arrow.table/pd.dataframe from simulator results
 
     Args:
@@ -225,10 +225,12 @@ def get_table(
             extract_df.__name__,
             submod,
         )
+
         output = extract_df(
             res2df.ResdataFiles(datafile_path),
             **kwargs,
         )
+
         if submod == "rft":
             output = delete_unwanted_rft_files(output)
         if arrow:
@@ -245,7 +247,7 @@ def get_table(
                 )
                 output = convert_to_arrow(output)
             except TypeError:
-                logger.warning("Type error, cannot convert to arrow")
+                logger.warning("Type error, cannot convert to arrow.")
 
     except (TypeError, FileNotFoundError, ValueError):
         logger.warning(
@@ -320,13 +322,27 @@ def upload_tables_from_simulation_run(
             )
         else:
             table = get_table(datafile, submod, **options)
-            if table is None:
-                logger.warning(
-                    "Table with datatype %s from %s returned nothing",
-                    submod,
-                    datafile,
-                )
-                continue
+
+            if table is not None:
+                if len(table) == 0:
+                    logger.warning(
+                        "Table with datatype %s from %s is empty.",
+                        submod,
+                        datafile,
+                    )
+                    continue
+
+                if isinstance(table, pd.DataFrame):
+                    logger.warning(
+                        (
+                            "Table with datatype %s from %s was not converted to pyarrow format"
+                            "and will not be uploaded to Sumo."
+                        ),
+                        submod,
+                        datafile,
+                    )
+                    continue
+
             sumo_files = convert_table_2_sumo_file(
                 datafile, table, submod, config
             )
