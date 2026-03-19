@@ -323,7 +323,14 @@ def upload_tables_from_simulation_run(
         else:
             table = get_table(datafile, submod, **options)
 
-            if table is not None:
+            if table is None:
+                logger.warning(
+                    "Table with datatype %s from %s returned nothing.",
+                    submod,
+                    datafile,
+                )
+                continue
+            else:
                 if len(table) == 0:
                     logger.warning(
                         "Table with datatype %s from %s is empty.",
