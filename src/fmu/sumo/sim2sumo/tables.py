@@ -325,14 +325,14 @@ def upload_tables_from_simulation_run(
 
             if table is None:
                 logger.warning(
-                    f"Table with datatype {submod} from {datafile} returned None"
+                    f"Table with datatype {submod} from {datafile} returned None "
                     "and will not be uploaded to Sumo."
                 )
                 continue
             else:
                 if len(table) == 0:
                     logger.warning(
-                        f"Table with datatype {submod} from {datafile} is empty"
+                        f"Table with datatype {submod} from {datafile} is empty "
                         "and will not be uploaded to Sumo."
                     )
                     continue
@@ -340,7 +340,7 @@ def upload_tables_from_simulation_run(
                 if isinstance(table, pd.DataFrame):
                     logger.warning(
                         (
-                            f"Table with datatype {submod} from {datafile} could not converted to pyarrow format"
+                            f"Table with datatype {submod} from {datafile} could not converted to pyarrow format "
                             "and will not be uploaded to Sumo."
                         ),
                     )
