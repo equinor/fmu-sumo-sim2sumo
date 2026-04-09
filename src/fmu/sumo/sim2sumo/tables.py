@@ -29,7 +29,6 @@ from ._special_treatments import (
     SUBMOD_DICT,
     convert_to_arrow,
     delete_unwanted_rft_files,
-    vfp_to_arrow_dict,
 )
 from .common import find_datefield, give_name
 from .version import version
@@ -274,31 +273,6 @@ def upload_tables(config, dispatcher):
         )
 
 
-def upload_vfp_tables_from_simulation_run(
-    datafile, options, config, dispatcher
-):
-    """Upload vfp tables from one simulator run to Sumo
-
-    Args:
-        datafile (str): the datafile defining the simulation run
-        options (dict): the options for vfp
-        config (dict): the fmuconfig with metadata and sim2sumoconfig
-        dispatcher (sim2sumo.common.Dispatcher): job dispatcher
-    """
-    vfp_dict = vfp_to_arrow_dict(datafile, options)
-    for keyword, tables in vfp_dict.items():
-        for table in tables:
-            table_number = str(
-                table.schema.metadata[b"TABLE_NUMBER"].decode("utf-8")
-            )
-            tagname = f"{keyword}_{table_number}"
-            sumo_files = convert_table_2_sumo_file(
-                datafile, table, tagname.lower(), config
-            )
-            for file in sumo_files:
-                dispatcher.add(file)
-
-
 def upload_tables_from_simulation_run(
     datafile, submod_and_options, config, dispatcher
 ):
@@ -316,10 +290,6 @@ def upload_tables_from_simulation_run(
             # No tables for grid3d
             continue
 
-        if submod == "vfp":
-            upload_vfp_tables_from_simulation_run(
-                datafile, options, config, dispatcher
-            )
         else:
             table = get_table(datafile, submod, **options)
 

@@ -69,7 +69,11 @@ def find_functions_and_docstring(submod):
         dictionary: includes functions and doc string
     """
     import_path = "res2df." + submod
-    func = importlib.import_module(import_path).df
+    if submod == "vfp":
+        # Load all vfp tables into one dataframe using .dfs
+        func = importlib.import_module(import_path).dfs
+    else:
+        func = importlib.import_module(import_path).df
     returns = {
         "extract": func,
         "options": tuple(
@@ -141,27 +145,3 @@ DEFAULT_SUBMODULES = [
     "wellcompletiondata",
 ]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
-
-
-def vfp_to_arrow_dict(datafile, options):
-    """Generate dictionary with vfp arrow tables
-
-    Args:
-        datafile (str): The datafile to extract from
-        options (dict): options for extraction
-
-    Returns:
-        tuple: vfp keyword, then dictionary with key: table_name, value: table
-    """
-    filepath_no_suffix = Path(datafile).with_suffix("")
-    resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
-    vfp_dict = {}
-    keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
-    vfpnumbers = options.get("vfpnumbers", None)
-    keywords = [keyword] if isinstance(keyword, str) else keyword
-
-    for keyword in keywords:
-        vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
-            resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
-        )
-    return vfp_dict
