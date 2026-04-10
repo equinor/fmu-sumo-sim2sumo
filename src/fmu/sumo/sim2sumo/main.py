@@ -4,8 +4,11 @@ import argparse
 import logging
 import sys
 from os import environ
+from pathlib import Path
 
-from .common import Dispatcher, create_config_dict, yaml_load
+from fmu.dataio._global_config import load_global_config
+
+from .common import Dispatcher, create_config_dict
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
 
@@ -73,8 +76,16 @@ def main():
 
     args = parse_args()
 
-    fmu_config = yaml_load(args.config_path)
-    fmu_config["file_path"] = args.config_path
+    fmu_config_path = Path(args.config_path)
+    try:
+        # Prefers .fmu/ if it exists
+        fmu_config = load_global_config(fmu_config_path)
+    except OSError:
+        logger.warning(
+            f"Cannot open file {fmu_config_path}, will provide empty dict"
+        )
+        fmu_config = {}
+
     try:
         config = create_config_dict(fmu_config)
         if not config.get("sim2sumoconfig"):
