@@ -15,7 +15,7 @@ from sumo.wrapper import SumoClient
 from xtgeo import grid_from_file, gridproperty_from_file
 
 from fmu.sumo.sim2sumo._special_treatments import convert_to_arrow
-from fmu.sumo.sim2sumo.common import create_config_dict
+from fmu.sumo.sim2sumo.config import Sim2SumoConfig
 
 REEK_ROOT = Path(__file__).parent / "data/reek"
 REEK_REAL0 = REEK_ROOT / "realization-0/iter-0/"
@@ -37,11 +37,10 @@ def set_up_tmp(path):
     grid_path = str(eight_datafile).replace(".DATA", ".EGRID")
     grid = grid_from_file(grid_path)
 
-    fmu_config = yaml_load(config_path)
-    config = create_config_dict(fmu_config)
+    config = Sim2SumoConfig.from_global_variables(config_path)
 
     exp_args = {
-        "config": config["fmuconfig"],
+        "config": config.global_config,
         "name": "",
         "tagname": "",
         "content": "depth",
@@ -99,7 +98,7 @@ def _fix_config():
 @pytest.fixture(name="s2s_config")
 def _fix_s2s_config(scratch_files, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
-    return create_config_dict(yaml_load(CONFIG_PATH))
+    return Sim2SumoConfig.from_global_variables(CONFIG_PATH)
 
 
 @pytest.fixture(scope="session", name="sumo")
