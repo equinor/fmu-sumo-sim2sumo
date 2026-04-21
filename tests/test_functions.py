@@ -161,7 +161,9 @@ def test_convert_table_2_sumo_file(
     )[0]
 
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload([file], case_uuid, CONFIG_PATH, connection=sumo_conn)
+    nodisk_upload(
+        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
+    )
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
