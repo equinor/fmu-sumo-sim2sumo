@@ -121,7 +121,7 @@ class Dispatcher:
     def __init__(
         self,
         datafile,
-        env: Literal["dev", "prod"],
+        env: Literal["dev", "test", "preview", "prod"],
         config_path: str | Path = Path(
             "fmuconfig/output/global_variables.yml"
         ),
@@ -215,7 +215,7 @@ def nodisk_upload(
     files: list[Any],
     parent_id: str,
     config_path: Path,
-    env: Literal["dev", "prod"] = "prod",
+    env: Literal["dev", "test", "preview", "prod"] = "prod",
     connection=None,
 ) -> None:
     """Upload files to sumo
