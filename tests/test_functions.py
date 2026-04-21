@@ -138,7 +138,9 @@ def test_convert_xtgeo_to_sumo_file(
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload([file], case_uuid, CONFIG_PATH, connection=sumo_conn)
+    nodisk_upload(
+        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
+    )
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
