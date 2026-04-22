@@ -2,14 +2,13 @@
 
 import os
 from io import BytesIO
-from shutil import copytree
 from time import sleep
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
-from conftest import REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
+from conftest import CONFIG_PATH, REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
 from fmu.sumo.uploader import SumoConnection
 from numpy.ma import allclose, allequal
 from xtgeo import GridProperty, gridproperty_from_file
@@ -17,7 +16,6 @@ from xtgeo import GridProperty, gridproperty_from_file
 from fmu.sumo.sim2sumo import grid3d, tables
 from fmu.sumo.sim2sumo._special_treatments import (
     DEFAULT_RST_PROPS,
-    DEFAULT_SUBMODULES,
     SUBMODULES,
     _define_submodules,
     convert_to_arrow,
@@ -28,7 +26,6 @@ from fmu.sumo.sim2sumo._units import (
 )
 from fmu.sumo.sim2sumo.common import (
     Dispatcher,
-    create_config_dict,
     find_datafiles,
     find_datefield,
     get_case_uuid,
@@ -100,52 +97,6 @@ def test_get_case_uuid(case_uuid, scratch_files, monkeypatch):
     assert uuid == case_uuid
 
 
-NR_DEFAULT_SUBMODULES = len(DEFAULT_SUBMODULES)
-
-
-@pytest.mark.parametrize(
-    "config,nrdatafiles,nrsubmodules",
-    [
-        ({}, 5, NR_DEFAULT_SUBMODULES),
-        (
-            {"datafile": [{"3_R001_REEK": ["summary"]}]},
-            1,
-            1,
-        ),
-        (
-            {"datafile": [{"3_R001_REEK": ["summary", "rft"]}]},
-            1,
-            2,
-        ),
-        (
-            {"datafile": ["3_R001_REEK", "OOGRE_PF.in"]},
-            2,
-            NR_DEFAULT_SUBMODULES,
-        ),
-        ({"datafile": ["3_R001_REEK"]}, 1, NR_DEFAULT_SUBMODULES),
-        ({"datafile": ["3_R001_REEK-1.DATA"]}, 1, NR_DEFAULT_SUBMODULES),
-        ({"datafile": ["OOGRE_IX.afi"]}, 1, NR_DEFAULT_SUBMODULES),
-        ({"datafile": ["opm/model/OOGRE_OPM.DATA"]}, 1, NR_DEFAULT_SUBMODULES),
-        ({"datatypes": ["grid"]}, 5, 1),
-    ],
-)
-def test_create_config_dict(config, nrdatafiles, nrsubmodules, tmp_path):
-    real1 = tmp_path / "realone"
-    copytree(REEK_REAL1, real1)
-    os.chdir(real1)
-    sim2sumo_config = {"sim2sumo": config}
-    inputs = create_config_dict(sim2sumo_config)
-    sim2sumoconfig = inputs["sim2sumoconfig"]
-    assert len(inputs.keys()) == 2
-    assert len(sim2sumoconfig) == nrdatafiles, (
-        f"{sim2sumoconfig.keys()} expected to have len {nrdatafiles} datafiles"
-    )
-    for submod, subdict in sim2sumoconfig.items():
-        assert len(subdict) == nrsubmodules, (
-            f"{subdict} for {submod} expected to have {nrsubmodules} submodules"
-        )
-
-
 def test_Dispatcher(case_uuid, token, scratch_files, monkeypatch):
     disp = Dispatcher(scratch_files[2], "dev", token=token)
     monkeypatch.chdir(scratch_files[0])
@@ -187,7 +138,9 @@ def test_convert_xtgeo_to_sumo_file(
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    nodisk_upload(
+        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
+    )
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
@@ -208,7 +161,9 @@ def test_convert_table_2_sumo_file(
     )[0]
 
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload([file], case_uuid, "dev", connection=sumo_conn)
+    nodisk_upload(
+        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
+    )
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
@@ -312,7 +267,7 @@ def test_get_all_restart_properties(scratch_files, xtgeogrid):
 def test_get_restart_properties(scratch_files, xtgeogrid, s2s_config):
     restart_path = str(scratch_files[1]).replace(".DATA", ".UNRST")
     prop_names = grid3d.get_restart_properties(
-        restart_path, xtgeogrid, s2s_config["sim2sumoconfig"][scratch_files[1]]
+        restart_path, xtgeogrid, s2s_config.sim2sumo[scratch_files[1]]
     )
 
     # Testing using default restart properties

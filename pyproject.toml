@@ -8,7 +8,7 @@ requires-python = ">=3.11"
 dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.24",
-  "fmu-dataio>=2.24.0",
+  "fmu-dataio>=2.26.0",
   "fmu-datamodels",
   "opm>=2020.10.2",
   "res2df",
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "fmu-settings"]
 dev = ["pytest", "ruff", "pre-commit"]
 all = [
   "ert",

@@ -3,16 +3,12 @@
 import logging
 import re
 from pathlib import Path
+from typing import Any, Literal
 
 import psutil
 import yaml
 from sumo.wrapper import SumoClient
 
-from fmu.sumo.sim2sumo._special_treatments import (
-    DEFAULT_RST_PROPS,
-    DEFAULT_SUBMODULES,
-    SUBMODULES,
-)
 from fmu.sumo.uploader._upload_files import upload_files
 
 
@@ -119,86 +115,16 @@ def find_datafiles(seedpoint=None):
     return unique_datafiles
 
 
-def create_config_dict(config):
-    """Read config settings and make dictionary for use when exporting.
-
-    Args:
-        config (dict): FMU global variables file created by
-                       fmu-config(https://github.com/equinor/fmu-config).
-
-    Returns:
-        dict: A dictionary consists of fmuconfig with metadata and sim2sumoconfig.
-              sim2sumoconfig is a dictionary with key as path to datafile,
-              value as dict of submodule and option.
-    """
-    simconfig = config.get("sim2sumo", {})
-    validate_sim2sumo_config(simconfig)
-
-    # Use the provided datafile or datatype if given, otherwise use simconfig
-    datafile = simconfig.get("datafile", None)
-    datatype = simconfig.get("datatypes", None)
-
-    if datatype is None:
-        default_submods = DEFAULT_SUBMODULES
-    elif "all" in datatype:
-        default_submods = SUBMODULES
-    elif isinstance(datatype, list):
-        default_submods = datatype
-    else:
-        default_submods = [datatype]
-
-    submods = default_submods
-
-    paths = []
-    if datafile:
-        for file in datafile:
-            if isinstance(file, dict):
-                (((filepath, file_submods)),) = file.items()
-                submods = file_submods or default_submods
-            else:
-                filepath = file
-
-            path = Path(filepath)
-            if path.is_file():
-                paths += [path]
-            else:
-                paths += find_datafiles(path)
-    else:
-        paths += find_datafiles(None)
-
-    # Initialize the dictionary to hold the configuration for each datafile
-    sim2sumoconfig = {}
-    for datafile_path in paths:
-        sim2sumoconfig[datafile_path] = {}
-        for submod in submods:
-            sim2sumoconfig[datafile_path][submod] = {"arrow": True}
-
-            # Restart properties config
-            if submod == "grid":
-                # Get rstprops config if it is provided
-                rstprops = simconfig.get("rstprops", None)
-
-                if rstprops:
-                    sim2sumoconfig[datafile_path][submod]["rstprops"] = [
-                        x.upper() for x in rstprops
-                    ]
-                else:
-                    sim2sumoconfig[datafile_path][submod]["rstprops"] = (
-                        DEFAULT_RST_PROPS
-                    )
-
-    # Return the dictionary that holds both fmu and sim2sumo config
-    return {"fmuconfig": config, "sim2sumoconfig": sim2sumoconfig}
-
-
 class Dispatcher:
     """Controls upload to sumo"""
 
     def __init__(
         self,
         datafile,
-        env,
-        config_path="fmuconfig/output/global_variables.yml",
+        env: Literal["dev", "test", "preview", "prod"],
+        config_path: str | Path = Path(
+            "fmuconfig/output/global_variables.yml"
+        ),
         token=None,
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
@@ -208,7 +134,7 @@ class Dispatcher:
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
-        self._config_path = config_path
+        self._config_path = Path(config_path)
 
         self._mem_count = 0
         self._count = 0
@@ -285,27 +211,39 @@ def find_datefield(text_string):
     return date
 
 
-def nodisk_upload(files, parent_id, config_path, env="prod", connection=None):
+def nodisk_upload(
+    files: list[Any],
+    parent_id: str,
+    config_path: Path,
+    env: Literal["dev", "test", "preview", "prod"] = "prod",
+    connection=None,
+) -> None:
     """Upload files to sumo
 
     Args:
-        files (list): should contain only SumoFile objects
-        parent_id (str): uuid of parent object
-        connection (str): client to upload with
+        files: list of SumoFile objects
+        parent_id: uuid of parent object
+        config_path: Path to global configuration
+        env: Sumo env
+        connection: client to upload with
     """
     logger = logging.getLogger(__name__ + ".nodisk_upload")
-    if len(files) > 0:
-        logger.info("Uploading %s files to parent %s", len(files), parent_id)
-        if connection is None:
-            connection = SumoClient(env=env, case_uuid=parent_id)
-        status = upload_files(
-            files, parent_id, connection, config_path=config_path
-        )
-        print("Status after upload: ", end="\n--------------\n")
-        for state, obj_status in status.items():
-            print(f"{state}: {len(obj_status)}")
-    else:
+
+    if len(files) == 0:
         logger.info("No passed files, nothing to do here")
+        return
+
+    logger.info("Uploading %s files to parent %s", len(files), parent_id)
+    if connection is None:
+        connection = SumoClient(env=env, case_uuid=parent_id)
+
+    status = upload_files(
+        files, parent_id, connection, config_path=str(config_path)
+    )
+
+    print("Status after upload: ", end="\n--------------\n")
+    for state, obj_status in status.items():
+        print(f"{state}: {len(obj_status)}")
 
 
 def give_name(datafile_path: str) -> str:

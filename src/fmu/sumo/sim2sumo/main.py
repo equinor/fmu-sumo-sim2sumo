@@ -4,13 +4,15 @@ import argparse
 import logging
 import sys
 from os import environ
+from pathlib import Path
 
-from .common import Dispatcher, create_config_dict, yaml_load
+from .common import Dispatcher
+from .config import Sim2SumoConfig
 from .grid3d import upload_simulation_runs
 from .tables import upload_tables
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """Parse arguments for command line tool
 
     Returns:
@@ -44,7 +46,7 @@ def parse_args():
 
 # e.g. _ERT_RUNPATH = ../realization-0/iter-0
 # e.g. _ERT_EXPERIMENT_ID = <uuid>
-# e.g. __ERT_SIMULATION_MODE = ensemble_experiment
+# e.g. _ERT_SIMULATION_MODE = ensemble_experiment
 # fmu-dataio needs these when creating metadata
 REQUIRED_ENV_VARS = [
     "_ERT_EXPERIMENT_ID",
@@ -57,11 +59,7 @@ def main():
     """Main function to be called"""
     logger = logging.getLogger(__file__ + ".main")
 
-    missing = []
-    for env_var in REQUIRED_ENV_VARS:
-        if env_var not in environ:
-            missing.append(env_var)
-
+    missing = [v for v in REQUIRED_ENV_VARS if v not in environ]
     if missing:
         print(
             "Required ERT environment variables not found:"
@@ -72,23 +70,21 @@ def main():
         sys.exit()
 
     args = parse_args()
+    config_path = Path(args.config_path)
 
-    fmu_config = yaml_load(args.config_path)
-    fmu_config["file_path"] = args.config_path
     try:
-        config = create_config_dict(fmu_config)
-        if not config.get("sim2sumoconfig"):
+        config = Sim2SumoConfig.from_global_variables(config_path)
+        if not config.sim2sumo:
             raise Exception("Found no files to upload")
     except Exception as e:
-        logger.error("Failed to create config dict: %s", e)
+        logger.error("Failed to create config: %s", e)
         return
+
     # Init of dispatcher needs one datafile to locate case uuid
-    one_datafile = list(config.get("sim2sumoconfig").keys())[0]
+    one_datafile = next(iter(config.sim2sumo))
     env = environ.get("SUMO_ENV", "prod")
     try:
-        dispatcher = Dispatcher(
-            one_datafile, env, config_path=args.config_path
-        )
+        dispatcher = Dispatcher(one_datafile, env, config_path=config_path)
     except Exception as e:
         logger.error("Failed to create dispatcher: %s", e)
         return
