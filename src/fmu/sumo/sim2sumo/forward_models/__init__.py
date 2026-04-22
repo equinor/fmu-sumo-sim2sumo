@@ -87,14 +87,14 @@ stored in Sumo with name: DROGON, tagname: summary, and fmu.realization.id: 1
    In an Ert config file
    FORWARD_MODEL ECLIPSE100(...)
    --Note: SIM2SUMO must come after ECLIPSE100
-   FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
+   FORWARD_MODEL SIM2SUMO(<S2S_CONF_PATH>=path/to/config/file)
 
 2. Extracting the defaults, but with fmu_config in a non standard location:
 
    In an Ert config file
    FORWARD_MODEL ECLIPSE100(...)
    --Note: SIM2SUMO must come after ECLIPSE100
-   FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
+   FORWARD_MODEL SIM2SUMO(<S2S_CONF_PATH>=path/to/config/file)
 
 3. When you want to configure the fmu_config file to control what SIM2SUMO
    produces add section sim2sumo to your fmu_config file.
