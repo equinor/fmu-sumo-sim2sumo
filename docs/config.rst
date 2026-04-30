@@ -67,7 +67,7 @@ If your config file isn't located here, you need to tell SIM2SUMO where to find 
 
 .. code-block::
 
-   FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file.yml)
+   FORWARD_MODEL SIM2SUMO(<S2S_CONF_PATH>=path/to/config/file.yml)
 
 
 Data types

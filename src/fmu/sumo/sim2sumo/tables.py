@@ -1,4 +1,5 @@
 """Upload tabular data from reservoir simulators to sumo
+
 Does three things:
 1. Extracts data from simulator to arrow files
 2. Adds the required metadata while exporting to disc
@@ -12,6 +13,7 @@ import logging
 import sys
 from copy import deepcopy
 from itertools import islice
+from pathlib import Path
 from typing import Any, Union
 
 import pandas as pd
@@ -31,6 +33,7 @@ from ._special_treatments import (
     delete_unwanted_rft_files,
 )
 from .common import find_datefield, give_name
+from .config import Sim2SumoConfig
 from .version import version
 
 # map of res2df modules to fmu.datamodels content
@@ -73,23 +76,22 @@ def table_2_bytestring(table):
     return bytestring
 
 
-# Almost equal to grid3d.py::generate_grid3d_meta, but note difference in name and tagname
 def generate_table_meta(
-    datafile: str,
+    datafile: str | Path,
     table: pa.Table | pd.DataFrame,
     tagname: str,
-    config: dict[str, Any],
+    config: Sim2SumoConfig,
 ) -> dict[str, Any]:
-    """Generate metadata for xtgeo object
+    """Generate metadata for a table object.
 
     Args:
-        datafile: path to datafile
-        table: the object to generate metadata on
-        tagname: tagname
-        config: the fmuconfig with metadata and sim2sumoconfig
+        datafile: path to the simulator datafile
+        table: the table to generate metadata for
+        tagname: submodule tag
+        config: sim2sumo configuration
 
     Returns:
-        Dictionary of metadata for the table
+        Metadata dict for *obj*.
     """
     if "vfp" in tagname.lower():
         content = "lift_curves"
@@ -98,8 +100,8 @@ def generate_table_meta(
 
     name = give_name(datafile)
 
-    exp_args = {
-        "config": config["fmuconfig"],
+    exp_args: dict[str, Any] = {
+        "config": config.global_config,
         "name": name,
         "tagname": tagname,
         "content": content,
@@ -121,20 +123,26 @@ def generate_table_meta(
     return generate_metadata(export_config, table)
 
 
-def convert_table_2_sumo_file(datafile, obj, tagname, config):
-    """Convert table to Sumo File ready for shipping to sumo
+def convert_table_2_sumo_file(
+    datafile: str | Path,
+    obj: pa.Table | pd.DataFrame | None,
+    tagname: str,
+    config: Sim2SumoConfig,
+) -> list[FileOnJob] | None:
+    """Convert table to Sumo File ready for shipping to sumo.
+
     If the table is a summary table and has a defined table_index
-        we also return the table in chunks of 500 columns with
-        _sumo.hidden set to True
+    we also return the table in chunks of 500 columns with
+    ``_sumo.hidden`` set to True.
 
     Args:
-      datafile (str|PosixPath): path to datafile connected to extracted object
-      obj (pa.Table): The object to prepare for upload
-      tagname (str): what submodule the table is extracted from
-      config (dict): the fmuconfig with metadata and sim2sumoconfig
+      datafile: path to datafile connected to extracted object
+      obj: the table to prepare for upload
+      tagname: what submodule the table is extracted from
+      config: sim2sumo configuration
+
     Returns:
-      files (list): List of SumoFile objects with table object
-        as bytestring and metadata as dictionary
+      List of SumoFile objects, or *None* when *obj* is None.
     """
     if obj is None:
         return obj
@@ -258,14 +266,14 @@ def get_table(
     return output
 
 
-def upload_tables(config, dispatcher):
-    """Upload tables to sumo
+def upload_tables(config: Sim2SumoConfig, dispatcher: Any) -> None:
+    """Upload tables to sumo.
 
     Args:
-        config (dict): the fmuconfig with metadata and the sim2sumoconfig
-        env (str): what environment to upload to
+        config: sim2sumo configuration
+        dispatcher: upload dispatcher
     """
-    for datafile_path, submod_and_options in config["sim2sumoconfig"].items():
+    for datafile_path, submod_and_options in config.sim2sumo.items():
         datafile_path = datafile_path.resolve()
         upload_tables_from_simulation_run(
             datafile_path,

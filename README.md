@@ -27,7 +27,7 @@ If the config file is located elsewhere:
 ```
 FORWARD_MODEL ECLIPSE100(...)
 --Note: SIM2SUMO must come after ECLIPSE100
-FORWARD_MODEL SIM2SUMO(<S2S_CONFIG_PATH>=path/to/config/file)
+FORWARD_MODEL SIM2SUMO(<S2S_CONF_PATH>=path/to/config/file)
 ```
 
 

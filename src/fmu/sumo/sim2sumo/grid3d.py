@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Upload grid3d data from reservoir simulators to Sumo
+
 Does three things:
 1. Extracts data from simulator to roff files
 2. Adds the required metadata while exporting to disc
@@ -12,10 +13,12 @@ import re
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from resdata.grid import Grid
 from resdata.resfile import ResdataRestartFile
+import xtgeo
 from xtgeo import GridProperty, grid_from_file
 from xtgeo.grid3d import _gridprop_import_eclrun as eclrun
 from xtgeo.io._file import FileWrapper
@@ -23,8 +26,9 @@ from xtgeo.io._file import FileWrapper
 from fmu.dataio import ExportData
 from fmu.sumo.uploader._fileonjob import FileOnJob
 
-from .common import find_datefield, give_name, yaml_load
 from ._units import get_all_properties_units, get_datafile_unit_system
+from .common import find_datefield, give_name, yaml_load
+from .config import Sim2SumoConfig
 
 
 def xtgeo_2_bytestring(obj):
@@ -48,21 +52,22 @@ def xtgeo_2_bytestring(obj):
 
 # Almost equal to tables.py::generate_table_meta,
 # difference in name and tagname
-def generate_grid3d_meta(datafile, obj, config):
-    """Generate metadata for xtgeo object
+def generate_grid3d_meta(
+    datafile: str | Path, obj: xtgeo.Grid, config: Sim2SumoConfig
+) -> dict[str, Any]:
+    """Generate metadata for an xtgeo grid object.
 
     Args:
-        datafile (str): path to datafile
-        obj (xtgeo object): the object to generate metadata on
-        config (dict): the fmuconfig with metadata and sim2sumoconfig
+        datafile: path to datafile
+        obj: xtgeo grid object
+        config: sim2sumo configuration
 
     Returns:
-        dict: the metadata for obj
+        Metadata dict for *obj*.
     """
-
     tagname = give_name(datafile)
-    exp_args = {
-        "config": config["fmuconfig"],
+    exp_args: dict[str, Any] = {
+        "config": config.global_config,
         "name": give_name(datafile),
         "tagname": tagname,
         "content": "depth",
@@ -88,23 +93,28 @@ def generate_grid3d_meta(datafile, obj, config):
     return metadata
 
 
-def generate_gridproperty_meta(datafile, obj, property_units, config, geogrid):
-    """Generate metadata for xtgeo object
+def generate_gridproperty_meta(
+    datafile: str | Path,
+    obj: xtgeo.GridProperty,
+    property_units: dict[str, str | None],
+    config: Sim2SumoConfig,
+    geogrid: str | Path,
+) -> dict[str, Any]:
+    """Generate metadata for an xtgeo grid property.
 
     Args:
-        datafile (str): path to datafile
-        obj (xtgeo object): the object to generate metadata on
-        property_units (dict): property - unit map
-        config (dict): the fmuconfig with metadata and sim2sumoconfig
-        geogrid (str): path to the grid to link as geometry
+        datafile: path to datafile
+        obj: xtgeo GridProperty object
+        property_units: property-to-unit mapping
+        config: sim2sumo configuration
+        geogrid: path to the grid to link as geometry
 
     Returns:
-        dict: the metadata for obj
+        Metadata dict for *obj*.
     """
-
     tagname = give_name(datafile)
-    exp_args = {
-        "config": config["fmuconfig"],
+    exp_args: dict[str, Any] = {
+        "config": config.global_config,
         "tagname": tagname,
         "content": "property",
         "content_metadata": {"is_discrete": False},
@@ -119,7 +129,7 @@ def generate_gridproperty_meta(datafile, obj, property_units, config, geogrid):
     # which has the format "PROPERTY-DATE".
     # The name has to be santised after find_datafield().
     exp_args["name"] = sanitise_gridprop_name(obj.name)
-    exp_args["unit"] = property_units.get(exp_args["name"], None)
+    exp_args["unit"] = property_units.get(exp_args["name"])
 
     exd = ExportData(**exp_args)
 
@@ -230,8 +240,13 @@ def get_restart_properties(restart_path, xtgeoegrid, datafileconfig) -> list:
 
 
 def upload_init(
-    init_path, xtgeoegrid, property_units, config, dispatcher, geometry_path
-):
+    init_path: str,
+    xtgeoegrid: Any,
+    property_units: dict[str, str | None],
+    config: Sim2SumoConfig,
+    dispatcher: Any,
+    geometry_path: str | Path,
+) -> None:
     """Upload properties from init file
 
     Args:
@@ -269,15 +284,15 @@ def upload_init(
 
 
 def upload_restart(
-    restart_path,
-    xtgeoegrid,
-    property_units,
-    time_steps,
-    config,
-    datafile,
-    dispatcher,
-    geometry_path,
-):
+    restart_path: str,
+    xtgeoegrid: Any,
+    property_units: dict[str, str | None],
+    time_steps: list[str],
+    config: Sim2SumoConfig,
+    datafile: Path,
+    dispatcher: Any,
+    geometry_path: str | Path,
+) -> None:
     """Export properties from restart file
 
     Args:
@@ -285,14 +300,13 @@ def upload_restart(
         xtgeoegrid (xtgeo.Grid): the grid to unpack the properties to
         time_steps (list): the timesteps to use
         config (dict): the fmuconfig file with metadata and sim2sumoconfig
-
     Returns:
         int: number of objects to export
     """
     logger = logging.getLogger(__name__ + ".upload_restart")
 
     prop_names = get_restart_properties(
-        restart_path, xtgeoegrid, config["sim2sumoconfig"][datafile]
+        restart_path, xtgeoegrid, config.sim2sumo[datafile]
     )
 
     for prop_name in prop_names:
@@ -328,20 +342,22 @@ def upload_restart(
                 dispatcher.add(sumo_file)
 
 
-def upload_simulation_runs(config, dispatcher):
+def upload_simulation_runs(config: Sim2SumoConfig, dispatcher: Any) -> None:
     """Upload 3d grid and parameters for set of simulation runs
 
     Args:
         config (dict): the fmuconfig file with metadata and sim2sumoconfig
         dispatcher (sim2sumo.common.Dispatcher)
     """
-    for datafile in config["sim2sumoconfig"]:
-        if "grid" not in config["sim2sumoconfig"][datafile]:
+    for datafile in config.sim2sumo:
+        if "grid" not in config.sim2sumo[datafile]:
             continue
         upload_simulation_run(datafile, config, dispatcher)
 
 
-def upload_simulation_run(datafile, config, dispatcher):
+def upload_simulation_run(
+    datafile: Path, config: Sim2SumoConfig, dispatcher: Any
+) -> None:
     """Export 3d grid properties from simulation run
 
     Args:

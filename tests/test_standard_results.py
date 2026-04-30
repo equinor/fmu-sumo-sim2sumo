@@ -2,12 +2,12 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-import yaml
 from fmu.dataio._definitions import STANDARD_TABLE_INDEX_COLUMNS
 from fmu.datamodels.fmu_results.enums import Content
 from fmu.datamodels.standard_results import StandardResultName
 
 from fmu.sumo.sim2sumo import __version__
+from fmu.sumo.sim2sumo.config import Sim2SumoConfig
 from fmu.sumo.sim2sumo.tables import SUBMOD_CONTENT, generate_table_meta
 
 
@@ -19,11 +19,7 @@ def test_table_standard_result_metadata(
     tagname: str,
 ) -> None:
     realization, datafile, config_path, grid = scratch_files
-
-    with open(config_path) as f:
-        global_config_dict = yaml.safe_load(f)
-
-    config_dict = {"fmuconfig": global_config_dict}
+    config = Sim2SumoConfig.from_global_variables(config_path)
 
     content_str = SUBMOD_CONTENT.get(tagname)
     content_enum = Content(content_str)
@@ -36,7 +32,7 @@ def test_table_standard_result_metadata(
 
     table = pd.DataFrame({col: [1, 2, 3] for col in std_columns.columns})
 
-    metadata = generate_table_meta(datafile, table, tagname, config_dict)
+    metadata = generate_table_meta(datafile, table, tagname, config)
     assert metadata["data"]["standard_result"] is not None
     assert (
         metadata["data"]["standard_result"]["name"]
