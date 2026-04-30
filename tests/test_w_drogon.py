@@ -21,8 +21,6 @@ def test_get_table_vfp():
         table["TABLE_NUMBER"]
     )  # 1, 2, 3, 4 (all VFP_PROD) & 13 (VFP_INJ)
 
-    print(unique_vfp_type, unique_table_number)
-
     assert len(unique_vfp_type) == 2, (
         f"Returned {len(unique_vfp_type)} ({unique_vfp_type}), but should be 2."
     )

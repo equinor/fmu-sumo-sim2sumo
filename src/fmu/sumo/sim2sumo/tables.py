@@ -197,9 +197,12 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     return files
 
 
-def _extract_vfp_df(datafile_path: str, **kwargs) -> pd.DataFrame:
+def _extract_vfp_df(rdf: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
     """
-    Extract VFP dataframes for both VFPPROD and VFPINJ (if present) and combine into one dataframe.
+    res2df has different behaviour for vfp, so this wrapper is used to have
+    similar behaviour to the other res2df.submod.df methods. Extracts VFP
+    dataframes for both VFPPROD and VFPINJ (if present) and combine into one
+    dataframe.
 
     Args:
         datafile_path (str): the path to the simulator datafile
@@ -207,7 +210,6 @@ def _extract_vfp_df(datafile_path: str, **kwargs) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe with both VFPPROD and VFPINJ data.
     """
-    rdf = res2df.ResdataFiles(datafile_path)
     df_vfpprod = res2df.vfp._vfp.df(rdf, "VFPPROD")
     df_vfpinj = res2df.vfp._vfp.df(rdf, "VFPINJ")
     df = pd.concat((df_vfpprod, df_vfpinj))
@@ -228,13 +230,21 @@ def get_table(
     Returns:
         pd.DataFrame: the extracted data
     """
+
     logger = logging.getLogger(__file__ + ".get_table")
-    extract_df = SUBMOD_DICT[submod]["extract"]
+
+    if submod == "vfp":
+        extract_df = _extract_vfp_df
+
+    else:
+        extract_df = SUBMOD_DICT[submod]["extract"]
+
     arrow = kwargs.get("arrow", True)
 
     with contextlib.suppress(KeyError):
         del kwargs["arrow"]
     output = None
+
     try:
         logger.info(
             "Extracting data from %s with func %s for %s",
@@ -243,14 +253,10 @@ def get_table(
             submod,
         )
 
-        if submod == "vfp":
-            output = _extract_vfp_df(datafile_path, **kwargs)
-
-        else:
-            output = extract_df(
-                res2df.ResdataFiles(datafile_path),
-                **kwargs,
-            )
+        output = extract_df(
+            res2df.ResdataFiles(datafile_path),
+            **kwargs,
+        )
 
         if submod == "rft":
             output = delete_unwanted_rft_files(output)
