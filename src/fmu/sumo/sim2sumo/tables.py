@@ -197,6 +197,24 @@ def convert_table_2_sumo_file(datafile, obj, tagname, config):
     return files
 
 
+def _extract_vfp_df(datafile_path: str, **kwargs) -> pd.DataFrame:
+    """
+    Extract VFP dataframes for both VFPPROD and VFPINJ (if present) and combine into one dataframe.
+
+    Args:
+        datafile_path (str): the path to the simulator datafile
+
+    Returns:
+        pd.DataFrame: dataframe with both VFPPROD and VFPINJ data.
+    """
+    rdf = res2df.ResdataFiles(datafile_path)
+    df_vfpprod = res2df.vfp._vfp.df(rdf, "VFPPROD")
+    df_vfpinj = res2df.vfp._vfp.df(rdf, "VFPINJ")
+    df = pd.concat((df_vfpprod, df_vfpinj))
+
+    return df
+
+
 def get_table(
     datafile_path: str, submod: str, **kwargs
 ) -> Union[pa.Table, pd.DataFrame, None]:
@@ -225,10 +243,14 @@ def get_table(
             submod,
         )
 
-        output = extract_df(
-            res2df.ResdataFiles(datafile_path),
-            **kwargs,
-        )
+        if submod == "vfp":
+            output = _extract_vfp_df(datafile_path, **kwargs)
+
+        else:
+            output = extract_df(
+                res2df.ResdataFiles(datafile_path),
+                **kwargs,
+            )
 
         if submod == "rft":
             output = delete_unwanted_rft_files(output)
