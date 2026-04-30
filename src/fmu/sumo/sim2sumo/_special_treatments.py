@@ -59,6 +59,26 @@ def find_arrow_convertor(path):
     return func
 
 
+def _extract_vfp_df(rdf: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
+    """
+    res2df has different behaviour for vfp, so this wrapper is used to have
+    similar behaviour to the other res2df.submod.df methods. Extracts VFP
+    dataframes for both VFPPROD and VFPINJ (if present) and combine into one
+    dataframe.
+
+    Args:
+        datafile_path (str): the path to the simulator datafile
+
+    Returns:
+        pd.DataFrame: dataframe with both VFPPROD and VFPINJ data.
+    """
+    df_vfpprod = res2df.vfp._vfp.df(rdf, "VFPPROD")
+    df_vfpinj = res2df.vfp._vfp.df(rdf, "VFPINJ")
+    df = pd.concat((df_vfpprod, df_vfpinj))
+
+    return df
+
+
 def find_functions_and_docstring(submod):
     """Find functions for extracting and converting from eclipse native
 
@@ -69,9 +89,9 @@ def find_functions_and_docstring(submod):
         dictionary: includes functions and doc string
     """
     import_path = "res2df." + submod
-    if submod == "vfp":
-        # Load all vfp tables into one dataframe using .dfs
-        func = importlib.import_module(import_path).dfs
+    if submod == "vfp._vfp":
+        # Load all vfp tables into one dataframe using wrapper function
+        func = _extract_vfp_df
     else:
         func = importlib.import_module(import_path).df
     returns = {
