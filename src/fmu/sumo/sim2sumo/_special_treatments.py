@@ -61,10 +61,10 @@ def find_arrow_convertor(path):
 
 def _extract_vfp_df(deck: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
     """
-    res2df has different behaviour for vfp, so this wrapper is used to have
-    similar behaviour to the other res2df.submod.df methods. Extracts VFP
-    dataframes for both VFPPROD and VFPINJ (if present) and combine into one
-    dataframe.
+    res2df has different behaviour for vfp. This wrapper is used so that vfp
+    data extraction has similar behaviour to the other res2df.submod.df methods.
+    Extracts VFP dataframes for both VFPPROD and VFPINJ (if present) and combines
+    them into one dataframe.
 
     Args:
         deck (res2df.ResdataFiles): class containing link to the simulator datafile
