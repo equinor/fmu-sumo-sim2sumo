@@ -59,7 +59,7 @@ def find_arrow_convertor(path):
     return func
 
 
-def _extract_vfp_df(rdf: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
+def _extract_vfp_df(deck: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
     """
     res2df has different behaviour for vfp, so this wrapper is used to have
     similar behaviour to the other res2df.submod.df methods. Extracts VFP
@@ -67,13 +67,13 @@ def _extract_vfp_df(rdf: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
     dataframe.
 
     Args:
-        datafile_path (str): the path to the simulator datafile
+        deck (res2df.ResdataFiles): class containing link to the simulator datafile
 
     Returns:
         pd.DataFrame: dataframe with both VFPPROD and VFPINJ data.
     """
-    df_vfpprod = res2df.vfp._vfp.df(rdf, "VFPPROD")
-    df_vfpinj = res2df.vfp._vfp.df(rdf, "VFPINJ")
+    df_vfpprod = res2df.vfp._vfp.df(deck, "VFPPROD")
+    df_vfpinj = res2df.vfp._vfp.df(deck, "VFPINJ")
     df = pd.concat((df_vfpprod, df_vfpinj))
 
     return df

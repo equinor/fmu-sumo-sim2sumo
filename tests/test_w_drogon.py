@@ -1,8 +1,6 @@
-from enum import unique
 from pathlib import Path
 
 import pyarrow.compute as pc
-import pytest
 
 from fmu.sumo.sim2sumo.tables import (
     get_table,
