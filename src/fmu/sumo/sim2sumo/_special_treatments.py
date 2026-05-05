@@ -59,6 +59,26 @@ def find_arrow_convertor(path):
     return func
 
 
+def _extract_vfp_df(deck: res2df.ResdataFiles, **kwargs) -> pd.DataFrame:
+    """
+    res2df has different behaviour for vfp. This wrapper is used so that vfp
+    data extraction has similar behaviour to the other res2df.submod.df methods.
+    Extracts VFP dataframes for both VFPPROD and VFPINJ (if present) and combines
+    them into one dataframe.
+
+    Args:
+        deck (res2df.ResdataFiles): class containing link to the simulator datafile
+
+    Returns:
+        pd.DataFrame: dataframe with both VFPPROD and VFPINJ data.
+    """
+    df_vfpprod = res2df.vfp._vfp.df(deck, "VFPPROD")
+    df_vfpinj = res2df.vfp._vfp.df(deck, "VFPINJ")
+    df = pd.concat((df_vfpprod, df_vfpinj))
+
+    return df
+
+
 def find_functions_and_docstring(submod):
     """Find functions for extracting and converting from eclipse native
 
@@ -69,7 +89,11 @@ def find_functions_and_docstring(submod):
         dictionary: includes functions and doc string
     """
     import_path = "res2df." + submod
-    func = importlib.import_module(import_path).df
+    if submod == "vfp._vfp":
+        # Load all vfp tables into one dataframe using wrapper function
+        func = _extract_vfp_df
+    else:
+        func = importlib.import_module(import_path).df
     returns = {
         "extract": func,
         "options": tuple(
@@ -141,27 +165,3 @@ DEFAULT_SUBMODULES = [
     "wellcompletiondata",
 ]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
-
-
-def vfp_to_arrow_dict(datafile, options):
-    """Generate dictionary with vfp arrow tables
-
-    Args:
-        datafile (str): The datafile to extract from
-        options (dict): options for extraction
-
-    Returns:
-        tuple: vfp keyword, then dictionary with key: table_name, value: table
-    """
-    filepath_no_suffix = Path(datafile).with_suffix("")
-    resdatafiles = res2df.ResdataFiles(filepath_no_suffix)
-    vfp_dict = {}
-    keyword = options.get("keyword", ["VFPPROD", "VFPINJ"])
-    vfpnumbers = options.get("vfpnumbers", None)
-    keywords = [keyword] if isinstance(keyword, str) else keyword
-
-    for keyword in keywords:
-        vfp_dict[keyword] = res2df.vfp._vfp.pyarrow_tables(
-            resdatafiles.get_deck(), keyword=keyword, vfpnumbers_str=vfpnumbers
-        )
-    return vfp_dict
