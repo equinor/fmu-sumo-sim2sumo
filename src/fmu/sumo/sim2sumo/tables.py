@@ -192,6 +192,7 @@ def convert_table_2_sumo_file(
             _sumo["blob_md5"] = md5_b64
             _sumo["hidden"] = True
             _sumo["fragment"] = idx
+            _sumo["sim2sumo"] = version
 
             files.append(sumo_file)
 
@@ -200,6 +201,7 @@ def convert_table_2_sumo_file(
     sumo_file.path = metadata["file"]["relative_path"]
     sumo_file.metadata_path = ""
     sumo_file.size = len(sumo_file.byte_string)
+    sumo_file.metadata.setdefault("_sumo", {})["sim2sumo"] = version
     files.append(sumo_file)
 
     return files
