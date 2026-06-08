@@ -188,8 +188,6 @@ def convert_table_2_sumo_file(
             if "_sumo" not in file_meta:
                 file_meta["_sumo"] = {}
             _sumo = file_meta["_sumo"]
-            _sumo["blob_size"] = len(bytestring)
-            _sumo["blob_md5"] = md5_b64
             _sumo["hidden"] = True
             _sumo["fragment"] = idx
             _sumo["sim2sumo"] = version
