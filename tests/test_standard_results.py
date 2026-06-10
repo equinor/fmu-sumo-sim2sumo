@@ -25,11 +25,6 @@ def test_table_standard_result_metadata(
     content_enum = Content(content_str)
     std_columns = STANDARD_TABLE_INDEX_COLUMNS.get(content_enum)
 
-    if content_enum is Content.lift_curves:
-        # Standard index columns for lift curves don't exist yet
-        assert std_columns is None
-        return
-
     table = pd.DataFrame({col: [1, 2, 3] for col in std_columns.columns})
 
     metadata = generate_table_meta(datafile, table, tagname, config)
