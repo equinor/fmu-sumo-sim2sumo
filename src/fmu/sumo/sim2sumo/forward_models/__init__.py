@@ -40,16 +40,6 @@ class Sim2Sumo(ForwardModelStepPlugin):
             raise ForwardModelStepValidationError(
                 f"Invalid value for environment variable 'SUMO_ENV': {env}. Valid values are preview, dev, test and prod."
             )
-        command = f"sumo_login -e {env} -m silent"
-        return_code = subprocess.call(command, shell=True)
-
-        err_msg = (
-            "Your access token for Sumo is either missing or expired. "
-            "Please run 'sumo_login' in a terminal window to log in again."
-        )
-
-        if return_code != 0:
-            raise ForwardModelStepValidationError(err_msg)
 
     @staticmethod
     def documentation() -> ForwardModelStepDocumentation | None:
