@@ -46,7 +46,7 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
                     "must": [
                         {
                             "term": {
-                                "_sumo.parent_object.keyword": {
+                                "fmu.case.uuid.keyword": {
                                     "value": case_uuid
                                 }
                             }
@@ -54,7 +54,8 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
                         {"term": {"class.keyword": class_type}},
                     ],
                     "must_not": [
-                        {"term": {"_sumo.hidden": {"value": "true"}}}
+                        {"term": {"_sumo.hidden": {"value": "true"}}},
+                        {"term": {"class.keyword": "case"}},
                     ],
                 }
             },
