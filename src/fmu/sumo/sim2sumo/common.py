@@ -11,6 +11,8 @@ from sumo.wrapper import SumoClient
 
 from fmu.sumo.uploader._upload_files import upload_files
 
+uploader_client_id = "a65dc4cc-3dec-43df-9599-e66d3abc4dca"
+
 
 def yaml_load(file_name):
     """Load yaml config file into dict
@@ -125,12 +127,13 @@ class Dispatcher:
         config_path: str | Path = Path(
             "fmuconfig/output/global_variables.yml"
         ),
-        token=None,
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile.resolve())
-        self._conn = SumoClient(env=env, token=token, case_uuid=self._parentid)
+        self._conn = SumoClient(
+            env=env, case_uuid=self._parentid, client_id=uploader_client_id
+        )
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
@@ -235,7 +238,9 @@ def nodisk_upload(
 
     logger.info("Uploading %s files to parent %s", len(files), parent_id)
     if connection is None:
-        connection = SumoClient(env=env, case_uuid=parent_id)
+        connection = SumoClient(
+            env=env, case_uuid=parent_id, client_id=uploader_client_id
+        )
 
     status = upload_files(
         files, parent_id, connection, config_path=str(config_path)
