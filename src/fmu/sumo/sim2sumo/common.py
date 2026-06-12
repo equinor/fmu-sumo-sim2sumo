@@ -132,12 +132,9 @@ class Dispatcher:
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
         self._limit_percent = 0.5
         self._parentid = get_case_uuid(datafile.resolve())
-        self._conn = SumoClient(
-            env=env,
-            token=token,
-            case_uuid=self._parentid,
-            client_id=uploader_client_id,
-        )
+        self._env = env
+        self._token = token
+        self._conn = self._create_connection()
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
@@ -148,6 +145,14 @@ class Dispatcher:
         self._objects = []
         self._logger.info(
             "Init, parent is %s, and env is %s", self.parentid, env
+        )
+
+    def _create_connection(self) -> SumoClient:
+        return SumoClient(
+            env=self._env,
+            token=self._token,
+            case_uuid=self._parentid,
+            client_id=uploader_client_id,
         )
 
     @property
@@ -190,6 +195,11 @@ class Dispatcher:
 
     def _upload(self):
         self._logger.debug("%s files to upload", len(self._objects))
+
+        # Use a fresh connection for every upload batch, otherwise
+        # we get an "Event loop is closed" error since asyncio.run()
+        # is called per batch, closing the event loop.
+        self._conn = self._create_connection()
         nodisk_upload(
             self._objects,
             self._parentid,
@@ -198,6 +208,7 @@ class Dispatcher:
         )
         self._objects = []
         self._mem_count = 0
+        self._count = 0
 
     def finish(self):
         """Cleanup"""
