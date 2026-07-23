@@ -46,9 +46,7 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
                     "must": [
                         {
                             "term": {
-                                "fmu.case.uuid.keyword": {
-                                    "value": case_uuid
-                                }
+                                "fmu.case.uuid.keyword": {"value": case_uuid}
                             }
                         },
                         {"term": {"class.keyword": class_type}},
