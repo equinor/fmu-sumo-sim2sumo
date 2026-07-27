@@ -25,7 +25,7 @@ all = [
   "ert",
   # Note: sim2sumo is dependent on fmu-sumo-uploader, but it is not installed by default.
   #       The uploader version is specified by Komodo and sim2sumo should not override this.
-  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
+  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader@2.6.0",
 ]
 
 docs = [
