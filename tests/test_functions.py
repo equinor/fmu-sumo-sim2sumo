@@ -4,6 +4,7 @@ import os
 from io import BytesIO
 from time import sleep
 
+import httpx
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -70,7 +71,16 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
 
     for hit in results["hits"]["hits"]:
         object_id = hit["_id"]
-        sumo.delete(f"/objects('{object_id}')")
+        delete_res = sumo.delete(f"/objects('{object_id}')")
+        try:
+            res = sumo.poll(delete_res)
+            assert res.status == 200, (
+                f"Failed to delete object {object_id} when cleaning up test"
+            )
+        except httpx.HTTPStatusError as err:
+            assert False, (
+                f"Failed to delete object {object_id} with err: {err.response.text}"
+            )
 
 
 @pytest.mark.parametrize(
