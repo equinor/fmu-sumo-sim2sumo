@@ -75,7 +75,7 @@ def main():
     try:
         config = Sim2SumoConfig.from_global_variables(config_path)
         if not config.sim2sumo:
-            raise Exception("Found no files to upload")
+            raise Exception("Found no files to upload")  # noqa: TRY002
     except Exception as e:
         logger.error("Failed to create config: %s", e)
         return

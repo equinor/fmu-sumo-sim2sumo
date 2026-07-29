@@ -13,10 +13,8 @@ def write_ert_config_and_run(runpath):
     print(f"Running with path {ert_full_config_path}")
     with open(ert_full_config_path, "w", encoding=encoding) as stream:
         stream.write(
-            (
-                "NUM_REALIZATIONS 1\nMAX_SUBMIT"
-                f" 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
-            )
+            "NUM_REALIZATIONS 1\nMAX_SUBMIT"
+            f" 1\nRUNPATH {runpath}\nFORWARD_MODEL SIM2SUMO"
         )
     with Popen(
         ["ert", "test_run", str(ert_full_config_path)],
@@ -26,10 +24,8 @@ def write_ert_config_and_run(runpath):
         stdout, stderr = process.communicate()
 
     print(
-        (
-            "After ERT run these files were found at runpath:"
-            f"{[item.name for item in list(Path(runpath).glob('*'))]}"
-        )
+        "After ERT run these files were found at runpath:"
+        f"{[item.name for item in list(Path(runpath).glob('*'))]}"
     )
     if stdout:
         print("stdout:", stdout.decode(encoding), sep="\n")
