@@ -113,7 +113,7 @@ def find_datafiles(seedpoint=None):
             unique_stems.add(stem)
             unique_datafiles.append(datafile.resolve())  # Resolve to full path
 
-    logger.info(f"Using datafiles: {str(unique_datafiles)} ")
+    logger.info(f"Using datafiles: {unique_datafiles!s} ")
     return unique_datafiles
 
 
@@ -302,7 +302,7 @@ DOCS_BASE_URL = (
 def validate_sim2sumo_config(config):
     datafiles = config.get("datafile", [])
     if not isinstance(datafiles, list):
-        raise ValueError(
+        raise TypeError(
             "Config error: datafile must be a list."
             " See documentation for examples: "
             f" {DOCS_BASE_URL}#datafile"
@@ -310,7 +310,7 @@ def validate_sim2sumo_config(config):
 
     datatypes = config.get("datatypes", [])
     if not isinstance(datatypes, list):
-        raise ValueError(
+        raise TypeError(
             "Config error: datatypes must be a list."
             " See documentation for examples: "
             f" {DOCS_BASE_URL}#datatypes"

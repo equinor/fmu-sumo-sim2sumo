@@ -109,7 +109,7 @@ def test_create_config_sim2sumo_options_match_yaml(scratch_files, monkeypatch):
     monkeypatch.chdir(scratch_files[0])
     config = Sim2SumoConfig.from_global_variables(CONFIG_PATH)
 
-    for _datafile, submods in config.sim2sumo.items():
+    for submods in config.sim2sumo.values():
         assert set(submods.keys()) == {"summary", "rft", "satfunc", "grid"}
         assert submods["grid"]["rstprops"] == DEFAULT_RST_PROPS
 

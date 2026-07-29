@@ -18,7 +18,7 @@ def test_table_standard_result_metadata(
     monkeypatch: pytest.MonkeyPatch,
     tagname: str,
 ) -> None:
-    realization, datafile, config_path, grid = scratch_files
+    _, datafile, config_path, _ = scratch_files
     config = Sim2SumoConfig.from_global_variables(config_path)
 
     content_str = SUBMOD_CONTENT.get(tagname)

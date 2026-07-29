@@ -14,7 +14,7 @@ import sys
 from copy import deepcopy
 from itertools import islice
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 import pandas as pd
 import pyarrow as pa
@@ -209,7 +209,7 @@ def convert_table_2_sumo_file(
 
 def get_table(
     datafile_path: str, submod: str, **kwargs
-) -> Union[pa.Table, pd.DataFrame, None]:
+) -> pa.Table | pd.DataFrame | None:
     """Fetch arrow.table/pd.dataframe from simulator results
 
     Args:
