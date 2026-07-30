@@ -74,7 +74,7 @@ def check_sumo(case_uuid, class_type, expected_count, sumo):
         delete_res = sumo.delete(f"/objects('{object_id}')")
         try:
             res = sumo.poll(delete_res)
-            assert res.status == 200, (
+            assert res.status_code == 200, (
                 f"Failed to delete object {object_id} when cleaning up test"
             )
         except httpx.HTTPStatusError as err:
