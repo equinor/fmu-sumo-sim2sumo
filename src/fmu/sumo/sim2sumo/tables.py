@@ -103,7 +103,6 @@ def generate_table_meta(
     exp_args: dict[str, Any] = {
         "config": config.global_config,
         "name": name,
-        "tagname": tagname,
         "content": content,
     }
 
