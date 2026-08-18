@@ -20,12 +20,11 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import res2df
-from pydantic import ValidationError
-
 from fmu.dataio import ExportData
 from fmu.dataio._metadata import generate_metadata
 from fmu.datamodels.fmu_results.standard_result import AnyStandardResult
 from fmu.sumo.uploader._fileonjob import FileOnJob
+from pydantic import ValidationError
 
 from ._special_treatments import (
     SUBMOD_DICT,
