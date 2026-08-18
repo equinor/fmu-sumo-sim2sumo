@@ -10,6 +10,7 @@ dependencies = [
   "sumo-wrapper-python>=1.0.24",
   "fmu-dataio>=2.26.0",
   "fmu-datamodels",
+  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
   "opm>=2020.10.2",
   "res2df",
   "xtgeo",
@@ -21,12 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest", "fmu-settings"]
 dev = ["pytest", "ruff", "pre-commit"]
-all = [
-  "ert",
-  # Note: sim2sumo is dependent on fmu-sumo-uploader, but it is not installed by default.
-  #       The uploader version is specified by Komodo and sim2sumo should not override this.
-  "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
-]
+all = ["ert"]
 
 docs = [
   "sphinx==6.2.1",
