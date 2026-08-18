@@ -7,9 +7,8 @@ from typing import Any, Literal
 
 import psutil
 import yaml
-from sumo.wrapper import SumoClient
-
 from fmu.sumo.uploader._upload_files import upload_files
+from sumo.wrapper import SumoClient
 
 uploader_client_id = "a65dc4cc-3dec-43df-9599-e66d3abc4dca"
 

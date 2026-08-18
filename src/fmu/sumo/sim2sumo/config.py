@@ -6,6 +6,7 @@ from typing import Any, Self
 
 from fmu.dataio._global_config import load_global_config
 from fmu.datamodels.fmu_results.global_configuration import GlobalConfiguration
+
 from fmu.sumo.sim2sumo._special_treatments import (
     DEFAULT_RST_PROPS,
     DEFAULT_SUBMODULES,
