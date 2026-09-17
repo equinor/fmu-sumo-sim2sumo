@@ -163,5 +163,6 @@ DEFAULT_SUBMODULES = [
     "satfunc",
     "gruptree",
     "wellcompletiondata",
+    "fipreports",
 ]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]

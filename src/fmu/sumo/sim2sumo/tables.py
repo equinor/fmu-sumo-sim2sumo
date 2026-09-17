@@ -45,6 +45,7 @@ SUBMOD_CONTENT = {
     "trans": "transmissibilities",
     "gruptree": "production_network",
     "wellcompletiondata": "well_completions",
+    "fipreports": "volumes",
 }
 
 if sys.version_info >= (3, 12):
