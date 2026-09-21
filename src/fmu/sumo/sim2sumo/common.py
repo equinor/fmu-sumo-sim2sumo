@@ -122,7 +122,7 @@ class Dispatcher:
     def __init__(
         self,
         datafile,
-        env: Literal["dev", "test", "preview", "prod"],
+        env: Literal["dev", "preview", "prod"],
         token=None,
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
@@ -226,7 +226,7 @@ def find_datefield(text_string):
 def nodisk_upload(
     files: list[Any],
     parent_id: str,
-    env: Literal["dev", "test", "preview", "prod"] = "prod",
+    env: Literal["dev", "preview", "prod"] = "prod",
     connection=None,
 ) -> None:
     """Upload files to sumo
