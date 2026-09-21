@@ -84,7 +84,7 @@ def main():
     one_datafile = next(iter(config.sim2sumo))
     env = environ.get("SUMO_ENV", "prod")
     try:
-        dispatcher = Dispatcher(one_datafile, env, config_path=config_path)
+        dispatcher = Dispatcher(one_datafile, env)
     except Exception as e:
         logger.error("Failed to create dispatcher: %s", e)
         return

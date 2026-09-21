@@ -123,9 +123,6 @@ class Dispatcher:
         self,
         datafile,
         env: Literal["dev", "test", "preview", "prod"],
-        config_path: str | Path = Path(
-            "fmuconfig/output/global_variables.yml"
-        ),
         token=None,
     ):
         self._logger = logging.getLogger(__name__ + ".Dispatcher")
@@ -137,7 +134,6 @@ class Dispatcher:
         self._mem_limit = (
             psutil.virtual_memory().available * self._limit_percent
         )
-        self._config_path = Path(config_path)
 
         self._mem_count = 0
         self._count = 0
@@ -202,7 +198,6 @@ class Dispatcher:
         nodisk_upload(
             self._objects,
             self._parentid,
-            self._config_path,
             connection=self._conn,
         )
         self._objects = []
@@ -231,7 +226,6 @@ def find_datefield(text_string):
 def nodisk_upload(
     files: list[Any],
     parent_id: str,
-    config_path: Path,
     env: Literal["dev", "test", "preview", "prod"] = "prod",
     connection=None,
 ) -> None:
@@ -240,7 +234,6 @@ def nodisk_upload(
     Args:
         files: list of SumoFile objects
         parent_id: uuid of parent object
-        config_path: Path to global configuration
         env: Sumo env
         connection: client to upload with
     """
@@ -256,9 +249,7 @@ def nodisk_upload(
             env=env, case_uuid=parent_id, client_id=uploader_client_id
         )
 
-    status = upload_files(
-        files, parent_id, connection, config_path=str(config_path)
-    )
+    status = upload_files(files, parent_id, connection)
 
     print("Status after upload: ", end="\n--------------\n")
     for state, obj_status in status.items():
