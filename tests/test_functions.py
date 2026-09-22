@@ -9,7 +9,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
-from conftest import CONFIG_PATH, REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
+from conftest import REEK_DATA_FILE, REEK_REAL0, REEK_REAL1
 from fmu.sumo.uploader import SumoConnection
 from numpy.ma import allclose, allequal
 from xtgeo import GridProperty, gridproperty_from_file
@@ -147,9 +147,7 @@ def test_convert_xtgeo_to_sumo_file(
     )
     file = grid3d.convert_xtgeo_to_sumo_file(eightfipnum, metadata)
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload(
-        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
-    )
+    nodisk_upload([file], case_uuid, env="dev", connection=sumo_conn)
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "FIPNUM", "EIGHTCELLS")
     prop = gridproperty_from_file(obj)
@@ -170,9 +168,7 @@ def test_convert_table_2_sumo_file(
     )[0]
 
     sumo_conn = SumoConnection(env="dev", token=token)
-    nodisk_upload(
-        [file], case_uuid, CONFIG_PATH, env="dev", connection=sumo_conn
-    )
+    nodisk_upload([file], case_uuid, env="dev", connection=sumo_conn)
     sleep(SLEEP_TIME)
     obj = get_sumo_object(sumo, case_uuid, "EIGHTCELLS", "rft")
     table = pq.read_table(obj)
