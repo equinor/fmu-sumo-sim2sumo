@@ -31,6 +31,8 @@ from ._special_treatments import (
     convert_to_arrow,
     delete_unwanted_rft_files,
 )
+
+from .sim_volumes import extract_simulator_inplace
 from .common import find_datefield, give_name
 from .config import Sim2SumoConfig
 from .version import version
@@ -45,7 +47,7 @@ SUBMOD_CONTENT = {
     "trans": "transmissibilities",
     "gruptree": "production_network",
     "wellcompletiondata": "well_completions",
-    "fipreports": "volumes",
+    "sim_volumes": "volumes",
 }
 
 if sys.version_info >= (3, 12):
@@ -222,7 +224,6 @@ def get_table(
     """
 
     logger = logging.getLogger(__file__ + ".get_table")
-    extract_df = SUBMOD_DICT[submod]["extract"]
     arrow = kwargs.get("arrow", True)
 
     with contextlib.suppress(KeyError):
@@ -230,35 +231,52 @@ def get_table(
     output = None
 
     try:
-        logger.info(
-            "Extracting data from %s with func %s for %s",
-            datafile_path,
-            extract_df.__name__,
-            submod,
-        )
+        if submod == "sim_volumes":
+            # sim_volumes is a special case as the data is not uploaded as is
+            # from res2df. It requires additional processing
+            output = extract_simulator_inplace(datafile_path)
+            if arrow:
+                try:
+                    output = convert_to_arrow(output)
+                except pa.lib.ArrowInvalid:
+                    logger.warning(
+                        "Arrow invalid, cannot convert to arrow, "
+                        "keeping pandas format."
+                    )
+                except TypeError:
+                    logger.warning("Type error, cannot convert to arrow.")
 
-        output = extract_df(
-            res2df.ResdataFiles(datafile_path),
-            **kwargs,
-        )
+        else:
+            extract_df = SUBMOD_DICT[submod]["extract"]
+            logger.info(
+                "Extracting data from %s with func %s for %s",
+                datafile_path,
+                extract_df.__name__,
+                submod,
+            )
 
-        if submod == "rft":
-            output = delete_unwanted_rft_files(output)
-        if arrow:
-            try:
-                convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
-                output = convert_func(output)
-            except pa.lib.ArrowInvalid:
-                logger.warning(
-                    "Arrow invalid, cannot convert to arrow, "
-                    "keeping pandas format, "
-                    "(trace %s). \nFalling back to converting with %s",
-                    sys.exc_info()[1],
-                    convert_to_arrow.__name__,
-                )
-                output = convert_to_arrow(output)
-            except TypeError:
-                logger.warning("Type error, cannot convert to arrow.")
+            output = extract_df(
+                res2df.ResdataFiles(datafile_path),
+                **kwargs,
+            )
+
+            if submod == "rft":
+                output = delete_unwanted_rft_files(output)
+            if arrow:
+                try:
+                    convert_func = SUBMOD_DICT[submod]["arrow_convertor"]
+                    output = convert_func(output)
+                except pa.lib.ArrowInvalid:
+                    logger.warning(
+                        "Arrow invalid, cannot convert to arrow, "
+                        "keeping pandas format, "
+                        "(trace %s). \nFalling back to converting with %s",
+                        sys.exc_info()[1],
+                        convert_to_arrow.__name__,
+                    )
+                    output = convert_to_arrow(output)
+                except TypeError:
+                    logger.warning("Type error, cannot convert to arrow.")
 
     except (TypeError, FileNotFoundError, ValueError):
         logger.warning(
