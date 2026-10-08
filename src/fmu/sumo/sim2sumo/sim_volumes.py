@@ -1,21 +1,22 @@
+from datetime import date
 from typing import Tuple
 
 import pandas as pd
 import res2df
-from datetime import date
 
 
 def _filter_to_first_date(
     df: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, date]:
     """
-    _summary_
+    Filter fipreports dataframe to initial date.
 
     Args:
-        df (pd.DataFrame): _description_
+        df (pd.DataFrame): fipreports dataframe
 
     Returns:
-        Tuple[pd.DataFrame, date]: _description_
+        Tuple[pd.DataFrame, date]: fipreports dataframe filtered to initial
+        date, the initial date
     """
 
     # Keep only first date for initial in-place volumes
@@ -84,24 +85,25 @@ def _get_fipreport_sr_format(df: pd.DataFrame) -> pd.DataFrame:
 
 def _split_zones_rst(df: pd.DataFrame) -> pd.DataFrame:
     """
-    _summary_
+    Split restart data into oil & gas zones
 
     Args:
-        df (pd.DataFrame): _description_
+        df (pd.DataFrame): restart data
 
     Returns:
-        pd.DataFrame: _description_
+        pd.DataFrame: restart data split into oil & gas zones
     """
 
     cols = ["FIPNUM", "FLUID", "VOLUME", "NET", "PORV", "HCPV"]
     index_cols = ["FIPNUM", "FLUID"]
 
-    # Gas zone will contain the oil-gas transition zone, if one exists
-    # Above GOC is assigned as gas zone
     above_goc_mask = df["SGAS"] > 0
     above_owc_mask = df["SOIL"] > 0
-
+    # Gas zone defined as any cell containing SGAS > 0
+    # All cells above GOC will be assigned to gas zone
     gas_zone = df[above_goc_mask].copy()
+    # Oil zone defined as any cell containing SOIL > 0 and SGAS < 0
+    # All cells above OWC and below GOC will be assigned to oil zone
     oil_zone = df[(above_owc_mask) & ~(above_goc_mask)].copy()
 
     gas_zone["FLUID"] = "gas"
@@ -126,14 +128,14 @@ def _split_zones_rst(df: pd.DataFrame) -> pd.DataFrame:
 
 def _restart_date_exists(datafile_path: str, date: date) -> bool:
     """
-    _summary_
+    Check if restart date exists for the fipreports date
 
     Args:
-        datafile_path (str): _description_
-        first_date (date): _description_
+        datafile_path (str): path to .DATA file
+        date (date): fipreports date
 
     Returns:
-        bool: _description_
+        bool
     """
 
     availables_dates = res2df.grid.get_available_rst_dates(
@@ -143,27 +145,18 @@ def _restart_date_exists(datafile_path: str, date: date) -> bool:
     return date in availables_dates
 
 
-def _extract_rst(datafile_path: str, date: date) -> pd.DataFrame:
-    """
-    _summary_
-
-    Args:
-        datafile_path (str): _description_
-
-    Returns:
-        pd.DataFrame: _description_
-    """
+def _get_rst_data(datafile_path: str, date: date) -> pd.DataFrame:
     # BULK, NET, PORV, HCPV
-    cols = ["FIPNUM", "VOLUME", "PORO", "PORV", "NTG", "SGAS", "SOIL"]
+    cols = ["FIPNUM", "VOLUME", "PORV", "NTG", "SGAS", "SOIL"]
 
     df = res2df.grid.df(res2df.ResdataFiles(datafile_path), rstdates=date)
 
     # Using reindex so any missing columns get NaN rather than failing
     df = df.reindex(columns=cols)
 
-    # Calculate columns that don't exist by default in the simulator output
+    # Calculate columns that don't exist in the simulator/res2df output
     df["NET"] = df["VOLUME"] * df["NTG"]
-    df["HCPV"] = df["PORV"] * (df["SOIL"] + df["SGAS"])  # TODO check
+    df["HCPV"] = df["PORV"] * (df["SOIL"] + df["SGAS"])
 
     return df
 
@@ -171,7 +164,7 @@ def _extract_rst(datafile_path: str, date: date) -> pd.DataFrame:
 def extract_simulator_inplace(datafile_path: str) -> pd.DataFrame:
     """
     Load fipreports dataframe using res2df and convert to in-place
-    standard restults format.
+    standard restults format. Add volume data from grid if available.
 
     Args:
         datafile_path (str): _description_
@@ -189,11 +182,11 @@ def extract_simulator_inplace(datafile_path: str) -> pd.DataFrame:
 
     # Load restart data and add BULK, NET, PORV and HCPV
     if _restart_date_exists(datafile_path, fipreport_date):
-        df_grid = _extract_rst(datafile_path, fipreport_date)
+        df_grid = _get_rst_data(datafile_path, fipreport_date)
         df_grid_zones = _split_zones_rst(df_grid)
 
-        fipreport_sr = pd.merge(
-            fipreport_sr, df_grid_zones.reset_index(), on=["FIPNUM", "FLUID"]
+        fipreport_sr = fipreport_sr.merge(
+            df_grid_zones.reset_index(), on=["FIPNUM", "FLUID"]
         )
 
     return fipreport_sr

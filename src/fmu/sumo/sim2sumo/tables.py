@@ -31,10 +31,9 @@ from ._special_treatments import (
     convert_to_arrow,
     delete_unwanted_rft_files,
 )
-
-from .sim_volumes import extract_simulator_inplace
 from .common import find_datefield, give_name
 from .config import Sim2SumoConfig
+from .sim_volumes import extract_simulator_inplace
 from .version import version
 
 # map of res2df modules to fmu.datamodels content
