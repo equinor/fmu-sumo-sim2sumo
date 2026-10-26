@@ -130,11 +130,7 @@ def _fix_register(scratch_files, sumo):
     print(case_metadata)
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
-    case = CaseOnDisk(
-        case_metadata_path,
-        sumo,
-        verbosity="DEBUG",
-    )
+    case = CaseOnDisk(case_metadata_path, sumo)
     # Register the case in Sumo
     sumo_uuid = case.register()
     print("Generated ", sumo_uuid)
@@ -156,11 +152,7 @@ def _fix_ert_run_case_uuid(ert_run_scratch_files, sumo):
     }
     with open(case_metadata_path, "w", encoding="utf-8") as stream:
         yaml.safe_dump(case_metadata, stream)
-    case = CaseOnDisk(
-        case_metadata_path,
-        sumo,
-        verbosity="DEBUG",
-    )
+    case = CaseOnDisk(case_metadata_path, sumo)
     # Register the case in Sumo
     sumo_uuid = case.register()
     yield sumo_uuid
