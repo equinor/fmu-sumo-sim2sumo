@@ -9,7 +9,7 @@ dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.24",
   "fmu-dataio>=2.26.0",
-  "fmu-datamodels",
+  "fmu-datamodels>=0.27.0",
   "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
   "opm>=2020.10.2",
   "res2df",
