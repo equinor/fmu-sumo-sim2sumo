@@ -172,7 +172,7 @@ def convert_table_2_sumo_file(
                 table.num_columns * table.num_rows
             )
             chunk_meta["file"]["size_bytes"] = len(bytestring)
-            chunk_meta["file"]["checksum_md5"] = md5_hex
+            chunk_meta["file"]["checksum_md5"] = md5_b64
             relative_path = metadata["file"]["relative_path"]
             chunk_meta["file"]["relative_path"] = relative_path.replace(
                 f"--{tagname}", f"--{tagname}:{idx:03d}"
