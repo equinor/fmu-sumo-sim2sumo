@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import res2df
 
@@ -5,22 +7,26 @@ SR_COLS: list[str] = [
     "DATE",
     "FLUID",
     "FIPNUM",
-    "HCPV",
     "STOIIP",
     "GIIP",
     "ASSOCIATEDGAS",
     "ASSOCIATEDOIL",
+    "HCPV",
 ]
 
 
-def extract_simulator_inplace(datafile_path):
+def extract_simulator_inplace(datafile_path: str | Path) -> pd.DataFrame:
     """
-    Requires RPTSOL FIP = 2 (or 3)
+    Extract in-place simulator volumes from a simulator PRT file.
+    Requires RPTSOL FIP = 2 (or 3) to get HCPV values.
     """
+    prtfile = Path(datafile_path).with_suffix(".PRT")
 
-    fipreports = res2df.fipreports.df(
-        datafile_path.with_suffix(".PRT"), fipname="FIPNUM", resv=True
-    )
+    fipreports = res2df.fipreports.df(prtfile, fipname="FIPNUM", resv=True)
+    if fipreports.empty:
+        raise ValueError(
+            f"No FIP reports found in {prtfile}. Cannot extract in-place volumes."
+        )
 
     # Filter to a single fipreport for the first date
     fipreport = _filter_to_first_date(fipreports)

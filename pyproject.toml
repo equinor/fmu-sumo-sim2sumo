@@ -8,11 +8,11 @@ requires-python = ">=3.11"
 dynamic = ["version"]
 dependencies = [
   "sumo-wrapper-python>=1.0.24",
-  "fmu-dataio>=2.26.0",
+  "fmu-dataio>=2.33.0",
   "fmu-datamodels",
   "fmu-sumo-uploader @ git+https://git@github.com/equinor/fmu-sumo-uploader",
   "opm>=2020.10.2",
-  "res2df",
+  "res2df>=1.4.0",
   "xtgeo",
   "pandas",
   "pyarrow",

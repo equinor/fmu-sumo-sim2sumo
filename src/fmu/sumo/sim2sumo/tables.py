@@ -23,8 +23,11 @@ import res2df
 from fmu.dataio import ExportData
 from fmu.dataio._metadata import generate_metadata
 from fmu.datamodels.fmu_results.standard_result import AnyStandardResult
+from fmu.datamodels.standard_results.enums import (
+    SimulatorTables,
+    StandardResultName,
+)
 from fmu.sumo.uploader._fileonjob import FileOnJob
-from pydantic import ValidationError
 
 from ._special_treatments import (
     SUBMOD_DICT,
@@ -33,7 +36,7 @@ from ._special_treatments import (
 )
 from .common import find_datefield, give_name
 from .config import Sim2SumoConfig
-from .sim_volumes import extract_simulator_inplace
+from .inplace_volumes import extract_simulator_inplace
 from .version import version
 
 # map of res2df modules to fmu.datamodels content
@@ -46,7 +49,7 @@ SUBMOD_CONTENT = {
     "trans": "transmissibilities",
     "gruptree": "production_network",
     "wellcompletiondata": "well_completions",
-    "sim_volumes": "volumes",
+    "inplace_volumes": "volumes",
 }
 
 if sys.version_info >= (3, 12):
@@ -60,6 +63,54 @@ else:
             iterator = iter(iterable)
             while chunk := tuple(islice(iterator, chunk_size)):
                 yield chunk
+
+
+def _get_standard_result_name(content: str) -> StandardResultName | None:
+    """Get the standard result name for a given content."""
+    with contextlib.suppress(ValueError):
+        return StandardResultName(
+            "simulator_inplace_volumes" if content == "volumes" else content
+        )
+    return None
+
+
+def _get_table_index_for_standard_result(
+    standard_result_name: StandardResultName,
+) -> list[str]:
+    """Get the table index columns for a given standard result."""
+    if standard_result_name == StandardResultName.simulator_inplace_volumes:
+        return SimulatorTables.SimulatorInplaceVolumesColumns.index_columns()
+    if standard_result_name == StandardResultName.lift_curves:
+        return SimulatorTables.LiftCurvesColumns.index_columns()
+    if standard_result_name == StandardResultName.well_completions:
+        return SimulatorTables.WellCompletionsColumns.index_columns()
+    if standard_result_name == StandardResultName.production_network:
+        return SimulatorTables.ProductionNetworkColumns.index_columns()
+    if standard_result_name == StandardResultName.rft:
+        return SimulatorTables.RftColumns.index_columns()
+    if standard_result_name == StandardResultName.pvt:
+        return SimulatorTables.PvtColumns.index_columns()
+    if standard_result_name == StandardResultName.transmissibilities:
+        return SimulatorTables.TransmissibilitiesColumns.index_columns()
+    if standard_result_name == StandardResultName.relperm:
+        return SimulatorTables.RelpermColumns.index_columns()
+    if standard_result_name == StandardResultName.simulationtimeseries:
+        return SimulatorTables.SimulationTimeseriesColumns.index_columns()
+    raise ValueError(f"Unsupported standard result: {standard_result_name}")
+
+
+def _get_available_table_index(
+    standard_result_name: StandardResultName, table: pa.Table
+) -> list[str]:
+    """Get the table index columns for a standard result that are present in the table.
+
+    All index columns are expected to exist, but missing ones are dropped as a
+    precaution to avoid errors in fmu-dataio.
+    """
+    standard_table_index = _get_table_index_for_standard_result(
+        standard_result_name
+    )
+    return [col for col in standard_table_index if col in table.column_names]
 
 
 def table_2_bytestring(table):
@@ -79,7 +130,7 @@ def table_2_bytestring(table):
 
 def generate_table_meta(
     datafile: str | Path,
-    table: pa.Table | pd.DataFrame,
+    table: pa.Table,
     tagname: str,
     config: Sim2SumoConfig,
 ) -> dict[str, Any]:
@@ -94,18 +145,22 @@ def generate_table_meta(
     Returns:
         Metadata dict for *obj*.
     """
-    if "vfp" in tagname.lower():
-        content = "lift_curves"
-    else:
-        content = SUBMOD_CONTENT.get(tagname, "property")
+    content = SUBMOD_CONTENT.get(tagname, "property")
 
     name = give_name(datafile)
+
+    standard_result_name = _get_standard_result_name(content)
 
     exp_args: dict[str, Any] = {
         "config": config.global_config,
         "name": name,
         "tagname": tagname,
         "content": content,
+        "table_index": (
+            _get_available_table_index(standard_result_name, table)
+            if standard_result_name is not None
+            else None
+        ),
     }
 
     datefield = find_datefield(tagname)
@@ -113,13 +168,12 @@ def generate_table_meta(
         exp_args["timedata"] = [[datefield]]
 
     export_config = ExportData(**exp_args)._export_config
-
-    # Add standard result if content type is represented as one
-    with contextlib.suppress(ValidationError):
-        standard_result = AnyStandardResult(name=content)
-        export_config = export_config.with_standard_result(
-            standard_result
-        ).with_tracklog_source("fmu-sumo-sim2sumo", version)
+    export_config = export_config.with_tracklog_source(
+        "fmu-sumo-sim2sumo", version
+    )
+    if standard_result_name is not None:
+        standard_result = AnyStandardResult(name=standard_result_name)
+        export_config = export_config.with_standard_result(standard_result)
 
     return generate_metadata(export_config, table)
 
@@ -230,8 +284,8 @@ def get_table(
     output = None
 
     try:
-        if submod == "sim_volumes":
-            # sim_volumes is a special case as the data is not uploaded as is
+        if submod == "inplace_volumes":
+            # inplace_volumes is a special case as the data is not uploaded as is
             # from res2df. It requires additional processing
             output = extract_simulator_inplace(datafile_path)
             if arrow:

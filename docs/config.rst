@@ -19,9 +19,12 @@ Default data types
    * rft
    * satfunc (relperm curves)
    * gruptree (production network)
-   * wellcompletiondata 
+   * wellcompletiondata
+   * inplace_volumes
    .. (# TODO: layer table requirement?)
 
+   For ``inplace_volumes``, HCPV values are included only if reservoir-volume
+   reporting is enabled by setting ``RPTSOL FIP=2`` (or ``FIP=3``) in the DATA file.
 
 .. warning::
 
@@ -80,6 +83,7 @@ To specify which data to upload, provide the datatypes as a list
       datatypes:
       - summary
       - rft
+      - inplace_volumes
       - gruptree
       - ...
 

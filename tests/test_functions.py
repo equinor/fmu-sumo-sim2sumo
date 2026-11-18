@@ -1,11 +1,13 @@
 """Test utility ecl2csv"""
 
 import datetime
+import logging
 import os
 from datetime import date
 from io import BytesIO
 from pathlib import Path
 from time import sleep
+from unittest.mock import Mock, patch
 
 import httpx
 import numpy as np
@@ -36,11 +38,13 @@ from fmu.sumo.sim2sumo.common import (
     get_case_uuid,
     nodisk_upload,
 )
-from fmu.sumo.sim2sumo.sim_volumes import (
+from fmu.sumo.sim2sumo.inplace_volumes import (
     _filter_to_first_date,
     _get_fipreport_sr_format,
+    extract_simulator_inplace,
 )
 
+DROGON_FIPREPORT = Path(__file__).parent / "data" / "drogon-fipreports.parquet"
 SLEEP_TIME = 3
 
 
@@ -359,8 +363,7 @@ def test_upload_simulation_run(
 
 def test_submodules_dict():
     """Test generation of submodule list"""
-    sublist, submods = _define_submodules()
-    assert isinstance(sublist, tuple)
+    submods = _define_submodules()
     assert isinstance(submods, dict)
     for submod_name, submod_dict in submods.items():
         assert isinstance(submod_name, str)
@@ -379,7 +382,7 @@ def test_submodules_dict():
 
 @pytest.mark.parametrize(
     "submod",
-    (name for name in SUBMODULES if name != "wellcompletiondata"),
+    [name for name in SUBMODULES if name != "wellcompletiondata"],
 )
 # Skipping wellcompletion data, since this requires zonemap
 def test_get_table(submod):
@@ -433,17 +436,9 @@ def test_find_datafiles_reek(real, nrdfiles):
         assert found_path.suffix == correct_suff
 
 
-DROGON_FIPREPORT = Path(__file__).parent / "data" / "drogon-fipreports.parquet"
-fipreports_df = pd.read_parquet(DROGON_FIPREPORT)
-
-
-@pytest.fixture
-def df_first_date():
-    return _filter_to_first_date(fipreports_df)
-
-
-def test_filter_to_first_date(df_first_date):
-    df = df_first_date
+def test_filter_to_first_date():
+    fipreports_df = pd.read_parquet(DROGON_FIPREPORT)
+    df = _filter_to_first_date(fipreports_df)
     first_date = date(2018, 1, 1)
     assert fipreports_df["DATE"].min() == first_date
     # Check only one date in dataframe
@@ -483,21 +478,21 @@ def test_get_fipreport_sr_format():
                 "DATE": datetime.date(2018, 7, 1),
                 "FLUID": "gas",
                 "FIPNUM": 4,
-                "HCPV": 2193568.0,
                 "STOIIP": 0.0,
                 "GIIP": 509378400.0,
                 "ASSOCIATEDGAS": 0.0,
                 "ASSOCIATEDOIL": 78065.0,
+                "HCPV": 2193568.0,
             },
             {
                 "DATE": datetime.date(2018, 7, 1),
                 "FLUID": "oil",
                 "FIPNUM": 4,
-                "HCPV": 333401.0,
                 "STOIIP": 204742.0,
                 "GIIP": 0.0,
                 "ASSOCIATEDGAS": 40105656.0,
                 "ASSOCIATEDOIL": 0.0,
+                "HCPV": 333401.0,
             },
         ]
     )
@@ -553,3 +548,45 @@ def test_get_fipreport_sr_format_dropna_cols():
     )
 
     pd.testing.assert_frame_equal(dframe, expected_dframe)
+
+
+def test_extract_simulator_inplace_raises_on_empty_fipreports() -> None:
+    """Test that extract_simulator_inplace raises ValueError on empty FIP reports."""
+    with (
+        patch(
+            "fmu.sumo.sim2sumo.inplace_volumes.res2df.fipreports.df",
+            return_value=pd.DataFrame(),
+        ),
+        pytest.raises(ValueError, match="No FIP reports found"),
+    ):
+        extract_simulator_inplace("dummy.DATA")
+
+
+def test_upload_is_skipped_on_empty_fipreports(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test that upload_tables_from_simulation_run skips inplace_volumes when empty."""
+    with (
+        caplog.at_level(logging.WARNING),
+        patch(
+            "fmu.sumo.sim2sumo.inplace_volumes.res2df.fipreports.df",
+            return_value=pd.DataFrame(),
+        ) as mock_fipreports,
+        patch(
+            "fmu.sumo.sim2sumo.tables.convert_table_2_sumo_file",
+        ) as mock_convert,
+    ):
+        tables.upload_tables_from_simulation_run(
+            Path("dummy.DATA"),
+            {"inplace_volumes": {"arrow": True}},
+            config=Mock(),
+            dispatcher=Mock(),
+        )
+
+    assert mock_fipreports.call_count == 1
+
+    assert "Table with datatype inplace_volumes" in caplog.text
+    assert "returned None and will not be uploaded to Sumo" in caplog.text
+
+    # the convert to sumo file function was skipped
+    assert mock_convert.call_count == 0
