@@ -129,7 +129,7 @@ def _define_submodules():
         with contextlib.suppress(AttributeError):
             submodules[submod] = find_functions_and_docstring(submod_string)
 
-    return tuple(submodules.keys()), submodules
+    return submodules
 
 
 def delete_unwanted_rft_files(frame):
@@ -156,12 +156,14 @@ def delete_unwanted_rft_files(frame):
     return frame
 
 
-SUBMODULES, SUBMOD_DICT = _define_submodules()
+SUBMOD_DICT = _define_submodules()
+SUBMODULES = list(SUBMOD_DICT.keys()) + ["inplace_volumes"]
 DEFAULT_SUBMODULES = [
     "summary",
     "rft",
     "satfunc",
     "gruptree",
     "wellcompletiondata",
+    "inplace_volumes",
 ]
 DEFAULT_RST_PROPS = ["SGAS", "SOIL", "SWAT", "PRESSURE"]
