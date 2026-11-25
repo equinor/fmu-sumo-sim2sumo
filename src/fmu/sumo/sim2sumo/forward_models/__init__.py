@@ -62,7 +62,7 @@ It looks for files with suffix ``.DATA``, and then finds the eclipse run results
 This means that if you have more than one eclipse run in that folder, you will
 get the specified result from all those runs.
 The results are stored in Sumo with name ``<name of datafile>`` without the
-habituary ``-<IENS>`` at the end.
+customary ``-<IENS>`` at the end.
 Tagname will be name of datatype extracted.
 
 E.G: summary files extracted from an eclipse run named ``DROGON-1``, will be
